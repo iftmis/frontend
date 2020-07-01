@@ -1,0 +1,98 @@
+<mat-card *ngIf="routeData$ | async as data">
+  <div class="page-heading">
+    <span class="mat-card-title">Audit Program Engagement</span>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        [routerLink]="['/audit-program-engagements', 'new']"
+      >
+        <mat-icon>add</mat-icon>
+        <span>Create</span>
+      </button>
+    </div>
+  </div>
+  <mat-card-content class="table-container">
+    <mat-progress-spinner
+      *ngIf="showLoader"
+      diameter="50"
+      class="table-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div *ngIf="!data.auditProgramEngagements?.length">
+      <span class="table-overlay">No records found</span>
+    </div>
+    <table
+      mat-table
+      [dataSource]="data.auditProgramEngagements"
+      matSort
+      *ngIf="!!data.auditProgramEngagements?.length"
+    >
+      <ng-container matColumnDef="process">
+        <th mat-header-cell *matHeaderCellDef>Process</th>
+        <td mat-cell *matCellDef="let element">{{ element.process }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="subProcess">
+        <th mat-header-cell *matHeaderCellDef>Sub Process</th>
+        <td mat-cell *matCellDef="let element">{{ element.subProcess }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="subSubProcess">
+        <th mat-header-cell *matHeaderCellDef>Sub Sub Process</th>
+        <td mat-cell *matCellDef="let element">{{ element.subSubProcess }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="auditableAreaName">
+        <th mat-header-cell *matHeaderCellDef>AuditableArea</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.auditableAreaName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="formActions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            color="accent"
+            [matMenuTriggerFor]="menu"
+            [matMenuTriggerData]="{ id: element.id, element: element }"
+            aria-label="AuditProgramEngagement form actions "
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        class="data-row"
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-menu #menu="matMenu">
+  <ng-template matMenuContent let-id="id" let-element="element">
+    <button
+      mat-menu-item
+      aria-label="Edit auditProgramEngagement"
+      [routerLink]="['/audit-program-engagements', id, 'edit']"
+    >
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button
+      mat-menu-item
+      aria-label="Delete auditProgramEngagement"
+      (click)="delete(id, element)"
+    >
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>

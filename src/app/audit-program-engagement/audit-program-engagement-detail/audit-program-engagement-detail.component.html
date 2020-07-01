@@ -1,0 +1,98 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-card class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>AuditProgramEngagement</mat-card-title>
+    <mat-card-subtitle>{{
+      auditProgramEngagement?.id
+        ? 'Update an existing auditProgramEngagement.'
+        : 'Creates a new auditProgramEngagement.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width">
+        <mat-label>Process</mat-label>
+        <textarea
+          matInput
+          placeholder="Enter auditProgramEngagement process"
+          formControlName="process"
+          required
+        ></textarea>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('process')"
+            label="Process"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Sub Process</mat-label>
+        <textarea
+          matInput
+          placeholder="Enter auditProgramEngagement sub process"
+          formControlName="subProcess"
+        ></textarea>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('subProcess')"
+            label="Sub Process"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Sub Sub Process</mat-label>
+        <textarea
+          matInput
+          placeholder="Enter auditProgramEngagement sub sub process"
+          formControlName="subSubProcess"
+        ></textarea>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('subSubProcess')"
+            label="Sub Sub Process"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>AuditableArea</mat-label>
+        <mat-select formControlName="auditableAreaId">
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let au of auditableAreas; trackBy: au?.id"
+            [value]="au.id"
+            >{{ au.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('auditableAreaId')"
+            label="AuditableArea"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ auditProgramEngagement?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

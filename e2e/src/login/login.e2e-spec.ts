@@ -1,0 +1,99 @@
+import { browser, logging } from 'protractor';
+
+import { HeaderPage } from '../header.po';
+import { NotificationPage } from '../notification.po';
+import { LoginPage } from './login.po';
+
+describe('login-logout tests', () => {
+  let headerPage: HeaderPage;
+  let loginPage: LoginPage;
+
+  beforeEach(() => {
+    headerPage = new HeaderPage();
+    loginPage = new LoginPage();
+  });
+
+  it('should not allow login with invalid credentials', async () => {
+    await headerPage.navigateTo();
+    expect(await headerPage.loginMenu.isDisplayed()).toBeTruthy();
+
+    await headerPage.loginMenu.click();
+
+    expect(await loginPage.getPageTitleText()).toEqual('Sign In');
+    expect(await loginPage.loginBtn.isEnabled()).toBeFalsy();
+
+    await loginPage.username.sendKeys(
+      (process.env.E2E_USERNAME as string) || 'admin'
+    );
+    await loginPage.password.sendKeys('invalid');
+
+    expect(await loginPage.loginBtn.isEnabled()).toBeTruthy();
+
+    await loginPage.loginBtn.click();
+
+    expect(await headerPage.loginMenu.isPresent()).toBeTruthy();
+    expect(await loginPage.getErrorMessage()).toEqual(
+      'Invalid username or password.'
+    );
+  });
+
+  it('should allow login with valid credentials', async () => {
+    await headerPage.navigateTo();
+    expect(await headerPage.loginMenu.isDisplayed()).toBeTruthy();
+
+    await headerPage.loginMenu.click();
+
+    expect(await loginPage.getPageTitleText()).toEqual('Sign In');
+    expect(await loginPage.loginBtn.isEnabled()).toBeFalsy();
+
+    await loginPage.username.sendKeys(
+      (process.env.E2E_USERNAME as string) || 'admin'
+    );
+    await loginPage.password.sendKeys(
+      (process.env.E2E_PASSWORD as string) || 'admin'
+    );
+
+    expect(await loginPage.loginBtn.isEnabled()).toBeTruthy();
+
+    await loginPage.loginBtn.click();
+
+    expect(await headerPage.loginMenu.isPresent()).toBeFalsy();
+
+    const notificationPage = new NotificationPage();
+    expect(await notificationPage.notifications.count()).toEqual(1);
+    expect(await notificationPage.notifications.first().getText()).toEqual(
+      'Welcome admin'
+    );
+
+    expect(await headerPage.appMenu.isDisplayed()).toBeTruthy();
+    expect(await headerPage.accountMenu.isDisplayed()).toBeTruthy();
+  });
+
+  it('should logout the logged in user', async () => {
+    expect(await headerPage.accountMenu.isDisplayed()).toBeTruthy();
+
+    await headerPage.accountMenu.click();
+    await headerPage.logoutMenu.click();
+
+    expect(await headerPage.loginMenu.isDisplayed()).toBeTruthy();
+    expect(await headerPage.appMenu.isPresent()).toBeFalsy();
+    expect(await headerPage.accountMenu.isPresent()).toBeFalsy();
+  });
+
+  afterEach(async () => {
+    // Assert that there are no errors emitted from the browser
+    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
+    expect(
+      logs.filter(
+        log =>
+          !log.message.includes(
+            '/api/authentication - Failed to load resource: the server responded with a status of 401 (Unauthorized)'
+          )
+      )
+    ).not.toContain(
+      jasmine.objectContaining({
+        level: logging.Level.SEVERE,
+      } as logging.Entry)
+    );
+  });
+});

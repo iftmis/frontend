@@ -1,0 +1,53 @@
+{
+  "name": "auditProgramEngagement",
+  "pageTitle": "Audit Program Engagement",
+  "pageOptions": {
+    "list": {
+      "displayFields": [
+        "process",
+        "subProcess",
+        "subSubProcess",
+        "auditableAreaName"
+      ]
+    }
+  },
+  "fields": [
+    {
+      "label": "Process",
+      "name": "process",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Sub Process",
+      "name": "subProcess",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {}
+    },
+    {
+      "label": "Sub Sub Process",
+      "name": "subSubProcess",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {}
+    },
+    {
+      "label": "AuditableArea",
+      "name": "auditableAreaId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "AuditableArea",
+      "name": "auditableAreaName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}
