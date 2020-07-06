@@ -8,4 +8,7 @@ export class SidenavPage {
   auditProgramEngagementMenu = this.root.element(
     by.css('a[routerLink="/audit-program-engagements"]')
   );
+  categoryOfFindingMenu = this.root.element(
+    by.css('a[routerLink="/category-of-findings"]')
+  );
 }

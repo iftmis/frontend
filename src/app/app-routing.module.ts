@@ -23,14 +23,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'audit-program-engagements',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./audit-program-engagement/audit-program-engagement.module').then(
-        m => m.AuditProgramEngagementModule
-      ),
-  },
-  {
     path: '**',
     component: PageNotFoundComponent,
   },
