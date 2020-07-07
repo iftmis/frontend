@@ -21,4 +21,7 @@ export class SidenavPage {
   findingCategoryMenu = this.root.element(
     by.css('a[routerLink="/finding-categorys"]')
   );
+  findingSubCategoryMenu = this.root.element(
+    by.css('a[routerLink="/finding-sub-categorys"]')
+  );
 }

@@ -53,6 +53,14 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'finding-sub-categorys',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./finding-sub-category/finding-sub-category.module').then(
+        m => m.FindingSubCategoryModule
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },
