@@ -1,0 +1,106 @@
+{
+  "name": "organisationUnit",
+  "pageTitle": "Organisation Unit",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["code", "name", "address", "phoneNumber", "email"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 1,
+        "maxlength": 64
+      }
+    },
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Address",
+      "name": "address",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Phone Number",
+      "name": "phoneNumber",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 10,
+        "maxlength": 20
+      }
+    },
+    {
+      "label": "Email",
+      "name": "email",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Background",
+      "name": "background",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {}
+    },
+    {
+      "label": "Logo",
+      "name": "logo",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Organisation Unit Level",
+      "name": "organisationUnitLevelId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "organisation Unit Level",
+      "name": "organisationUnitLevelName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Parent",
+      "name": "parentId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Parent",
+      "name": "parentName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

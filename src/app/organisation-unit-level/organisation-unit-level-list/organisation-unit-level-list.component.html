@@ -1,11 +1,11 @@
 <mat-card *ngIf="routeData$ | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Financial Year</span>
+    <span class="mat-card-title">Organisation Unit Levels</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/financial-years', 'new']"
+        [routerLink]="['/organisation-unit-levels', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -21,37 +21,28 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!data.financialYears?.length">
+    <div *ngIf="!data.organisationUnitLevels?.length">
       <span class="table-overlay">No records found</span>
     </div>
     <table
       mat-table
-      [dataSource]="data.financialYears"
+      [dataSource]="data.organisationUnitLevels"
       matSort
-      *ngIf="!!data.financialYears?.length"
+      *ngIf="!!data.organisationUnitLevels?.length"
     >
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let element">{{ element.code }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="startDate">
-        <th mat-header-cell *matHeaderCellDef>Start Date</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.startDate | date: 'dd/MM/yy' }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="endDate">
-        <th mat-header-cell *matHeaderCellDef>End Date</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.endDate | date: 'dd/MM/yy' }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="isOpened">
-        <th mat-header-cell *matHeaderCellDef>Is Opened</th>
-        <td mat-cell *matCellDef="let element">{{ element.isOpened }}</td>
+      <ng-container matColumnDef="level">
+        <th mat-header-cell *matHeaderCellDef>Level</th>
+        <td mat-cell *matCellDef="let element">{{ element.level }}</td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
@@ -62,7 +53,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="FinancialYear form actions "
+            aria-label="OrganisationUnitLevel form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -82,15 +73,15 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit financialYear"
-      [routerLink]="['/financial-years', id, 'edit']"
+      aria-label="Edit organisationUnitLevel"
+      [routerLink]="['/organisation-unit-levels', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete financialYear"
+      aria-label="Delete organisationUnitLevel"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

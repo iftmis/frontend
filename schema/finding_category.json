@@ -1,0 +1,32 @@
+{
+  "name": "findingCategory",
+  "pageTitle": "Finding Category",
+  "pageOptions": {
+    "list": {
+      "displayFields": []
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 1,
+        "maxlength": 64
+      }
+    },
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    }
+  ]
+}

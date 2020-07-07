@@ -58,14 +58,29 @@
           ></hip-ngx-error>
         </mat-error>
       </mat-form-field>
+
       <mat-form-field class="full-width">
         <mat-label>End Date</mat-label>
         <input
+          type="text"
+          required
           matInput
           placeholder="Enter financialYear end date"
           formControlName="endDate"
-          required
+          [matDatepicker]="endDatePicker"
         />
+        <mat-datepicker-toggle
+          ng-model-options="{ timezone: 'utc' }"
+          matSuffix
+          color="accent"
+          [for]="endDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          ng-model="date"
+          ng-model-options="{ timezone: 'utc' }"
+          color="accent"
+          #endDatePicker
+        ></mat-datepicker>
         <mat-error>
           <hip-ngx-error
             [control]="form.get('endDate')"
@@ -73,6 +88,7 @@
           ></hip-ngx-error>
         </mat-error>
       </mat-form-field>
+
       <ng-container>
         <mat-slide-toggle color="accent" formControlName="isOpened">
           <mat-label>Is Opened</mat-label>
