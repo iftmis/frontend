@@ -21,7 +21,7 @@ export class SidenavPage {
   findingCategoryMenu = this.root.element(
     by.css('a[routerLink="/finding-categorys"]')
   );
+  financialYearMenu = this.root.element(
+    by.css('a[routerLink="/financial-years"]')
+  );
 }
-financialYearMenu = this.root.element(
-  by.css('a[routerLink="/financial-years"]')
-);

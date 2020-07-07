@@ -1,0 +1,77 @@
+{
+  "name": "quarter",
+  "pageTitle": "Quarter",
+  "pageOptions": {
+    "list": {
+      "displayFields": [
+        "code",
+        "name",
+        "startDate",
+        "endDate",
+        "financialYearName"
+      ]
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 1,
+        "maxlength": 64
+      }
+    },
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+
+    {
+      "label": "Start Date",
+      "name": "startDate",
+      "dataType": "date",
+      "controlType": "date",
+      "format": "dd/MM/yy",
+      "validation": {
+        "required": true
+      }
+    },
+
+    {
+      "label": "End Date",
+      "name": "endDate",
+      "dataType": "date",
+      "controlType": "date",
+      "format": "dd/MM/yy",
+      "validation": {
+        "required": true
+      }
+    },
+
+    {
+      "label": "Financial Year",
+      "name": "financialYearId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Financial Year",
+      "name": "financialYearName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

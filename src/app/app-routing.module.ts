@@ -61,6 +61,12 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'quarters',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./quarter/quarter.module').then(m => m.QuarterModule),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },
