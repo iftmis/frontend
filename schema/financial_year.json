@@ -1,0 +1,53 @@
+{
+  "name": "financialYear",
+  "pageTitle": "Financial Year",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["name", "startDate", "endDate", "isOpened"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+
+    {
+      "label": "Start Date",
+      "name": "startDate",
+      "dataType": "date",
+      "controlType": "date",
+      "format": "dd/MM/yy",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "End Date",
+      "name": "endDate",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+
+    {
+      "label": "Is Opened",
+      "name": "isOpened",
+      "dataType": "boolean",
+      "controlType": "checkbox",
+      "validation": {
+        "required": true
+      }
+    }
+  ]
+}

@@ -23,6 +23,14 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'financial-years',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./financial-year/financial-year.module').then(
+        m => m.FinancialYearModule
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },
