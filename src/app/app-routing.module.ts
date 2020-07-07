@@ -61,6 +61,12 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'sub-areas',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./sub-area/sub-area.module').then(m => m.SubAreaModule),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

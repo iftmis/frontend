@@ -1,21 +1,25 @@
 {
-  "name": "auditableArea",
-  "pageTitle": "Auditable Area",
+  "name": "indicator",
+  "pageTitle": "Indicator",
   "pageOptions": {
     "list": {
-      "displayFields": ["code", "name"]
+      "displayFields": ["subAreaName", "name"]
     }
   },
   "fields": [
     {
-      "label": "Code",
-      "name": "code",
+      "label": "Sub Area",
+      "name": "subAreaId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Sub Area",
+      "name": "subAreaName",
       "dataType": "string",
       "controlType": "text",
-      "validation": {
-        "minlength": 1,
-        "maxlength": 64
-      }
+      "validation": {}
     },
     {
       "label": "Name",
