@@ -53,7 +53,7 @@ const routes: Routes = [
       import('./gfs-code/gfs-code.module').then(m => m.GfsCodeModule),
   },
   {
-    path: 'finding-categorys',
+    path: 'finding-categories',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./finding-category/finding-category.module').then(
