@@ -25,4 +25,5 @@ export class SidenavPage {
     by.css('a[routerLink="/finding-sub-categorys"]')
   );
   subAreaMenu = this.root.element(by.css('a[routerLink="/sub-areas"]'));
+  indicatorMenu = this.root.element(by.css('a[routerLink="/indicators"]'));
 }

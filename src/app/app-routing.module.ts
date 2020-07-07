@@ -67,6 +67,12 @@ const routes: Routes = [
       import('./sub-area/sub-area.module').then(m => m.SubAreaModule),
   },
   {
+    path: 'indicators',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./indicator/indicator.module').then(m => m.IndicatorModule),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

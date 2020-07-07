@@ -12,7 +12,9 @@
       "name": "subAreaId",
       "dataType": "string",
       "controlType": "select",
-      "validation": {}
+      "validation": {
+        "required": true
+      }
     },
     {
       "label": "Sub Area",
