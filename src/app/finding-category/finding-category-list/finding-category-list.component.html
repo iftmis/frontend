@@ -30,6 +30,16 @@
       matSort
       *ngIf="!!data.findingCategorys?.length"
     >
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let element">{{ element.code }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="formActions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">

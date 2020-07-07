@@ -13,7 +13,7 @@ import { FindingCategory } from '../finding-category';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FindingCategoryListComponent implements OnInit {
-  displayedColumns = ['formActions'];
+  displayedColumns = ['code', 'name', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 

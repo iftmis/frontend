@@ -1,6 +1,6 @@
 {
-  "name": "findingCategory",
-  "pageTitle": "Finding Category",
+  "name": "findingSubCategory",
+  "pageTitle": "Finding Sub Category",
   "pageOptions": {
     "list": {
       "displayFields": ["code", "name"]
