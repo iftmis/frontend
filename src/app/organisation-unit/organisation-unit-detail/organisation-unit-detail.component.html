@@ -1,0 +1,173 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-card class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>OrganisationUnit</mat-card-title>
+    <mat-card-subtitle>{{
+      organisationUnit?.id
+        ? 'Update an existing organisationUnit.'
+        : 'Creates a new organisationUnit.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width">
+        <mat-label>Code</mat-label>
+        <input
+          matInput
+          placeholder="Enter organisationUnit code"
+          formControlName="code"
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('code')"
+            label="Code"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter organisationUnit name"
+          formControlName="name"
+          required
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('name')"
+            label="Name"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          placeholder="Enter organisationUnit address"
+          formControlName="address"
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('address')"
+            label="Address"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Phone Number</mat-label>
+        <input
+          matInput
+          placeholder="Enter organisationUnit phone number"
+          formControlName="phoneNumber"
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('phoneNumber')"
+            label="Phone Number"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Enter organisationUnit email"
+          formControlName="email"
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('email')"
+            label="Email"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Background</mat-label>
+        <textarea
+          matInput
+          placeholder="Enter organisationUnit background"
+          formControlName="background"
+        ></textarea>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('background')"
+            label="Background"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Logo</mat-label>
+        <input
+          matInput
+          placeholder="Enter organisationUnit logo"
+          formControlName="logo"
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('logo')"
+            label="Logo"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Organisation Unit Level</mat-label>
+        <mat-select formControlName="organisationUnitLevelId" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let level of organisationUnitLevels"
+            [value]="level.id"
+            >{{ level.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('organisationUnitLevelId')"
+            label="Organisation Unit Level"
+          >
+          </hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Parent</mat-label>
+        <mat-select formControlName="parentId">
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let parent of organisationUnits"
+            [value]="parent.id"
+          >
+            {{ parent.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('parentId')"
+            label="Parent"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ organisationUnit?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

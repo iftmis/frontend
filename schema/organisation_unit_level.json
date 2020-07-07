@@ -1,0 +1,50 @@
+{
+  "name": "organisationUnitLevel",
+  "pageTitle": "Organisation Unit Levels",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["code", "name", "level"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 1,
+        "maxlength": 64
+      }
+    },
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Level",
+      "name": "level",
+      "dataType": "number",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 10
+      }
+    },
+    {
+      "label": "Is Inspectable Level",
+      "name": "isInspectionLevel",
+      "dataType": "boolean",
+      "controlType": "checkbox",
+      "validation": {}
+    }
+  ]
+}
