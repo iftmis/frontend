@@ -1,0 +1,38 @@
+{
+  "name": "indicator",
+  "pageTitle": "Indicator",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["subAreaName", "name"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Sub Area",
+      "name": "subAreaId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Sub Area",
+      "name": "subAreaName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    }
+  ]
+}

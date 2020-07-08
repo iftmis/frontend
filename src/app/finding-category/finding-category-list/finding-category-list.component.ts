@@ -15,7 +15,7 @@ import { Title } from '@angular/platform-browser';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FindingCategoryListComponent implements OnInit {
-  displayedColumns = ['formActions'];
+  displayedColumns = ['code', 'name', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 

@@ -61,6 +61,32 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'finding-sub-categorys',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./finding-sub-category/finding-sub-category.module').then(
+        m => m.FindingSubCategoryModule
+      ),
+  },
+  {
+    path: 'sub-areas',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./sub-area/sub-area.module').then(m => m.SubAreaModule),
+  },
+  {
+    path: 'indicators',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./indicator/indicator.module').then(m => m.IndicatorModule),
+  },
+  {
+    path: 'procedures',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./procedure/procedure.module').then(m => m.ProcedureModule),
+  },
+  {
     path: 'quarters',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
