@@ -18,6 +18,7 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-auditable-area-list',
@@ -30,7 +31,9 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
   routeData$ = this.route.data;
   showLoader = false;
 
-  auditableAreas: AuditableArea[] = [];
+  auditableAreaSubject: BehaviorSubject<AuditableArea[]> = new BehaviorSubject(
+    []
+  );
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -63,6 +66,10 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
       );
   }
 
+  getData(): Observable<AuditableArea[]> {
+    return this.auditableAreaSubject.asObservable();
+  }
+
   ngOnInit() {}
 
   delete(id: number, auditableArea: AuditableArea) {
@@ -85,8 +92,7 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.auditableAreas = [...data];
-    console.log(this.auditableAreas);
+    this.auditableAreaSubject.next(data);
   }
 
   onError(): void {}
