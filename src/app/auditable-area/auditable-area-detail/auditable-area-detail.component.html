@@ -8,11 +8,11 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>AuditableArea</mat-card-title>
+    <mat-card-title>Auditable Areas</mat-card-title>
     <mat-card-subtitle>{{
       auditableArea?.id
-        ? 'Update an existing auditableArea.'
-        : 'Creates a new auditableArea.'
+        ? 'Update an existing auditable Area.'
+        : 'Creates a new auditable Area.'
     }}</mat-card-subtitle>
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
@@ -22,7 +22,7 @@
         <mat-label>Code</mat-label>
         <input
           matInput
-          placeholder="Enter auditableArea code"
+          placeholder="Enter Auditable Area code"
           formControlName="code"
         />
         <mat-error
@@ -36,7 +36,7 @@
         <mat-label>Name</mat-label>
         <input
           matInput
-          placeholder="Enter auditableArea name"
+          placeholder="Enter Auditable Area name"
           formControlName="name"
           required
         />
