@@ -63,7 +63,7 @@ export class IndicatorDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<Indicator>) {
     result.subscribe({
-      next: () => this.router.navigate(['/indicators']),
+      next: () => this.router.navigate(['/settings/indicators']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -77,7 +77,7 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/indicators']);
+    this.router.navigate(['/settings/indicators']);
     return false;
   }
 }

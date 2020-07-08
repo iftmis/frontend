@@ -88,7 +88,7 @@ export class FindingCategoryListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.findingCategoryService.delete(id).subscribe({
-          next: () => this.router.navigate(['/category-of-findings']),
+          next: () => this.router.navigate(['/settings/category-of-findings']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

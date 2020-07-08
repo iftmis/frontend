@@ -68,7 +68,7 @@ export class QuarterDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<Quarter>) {
     result.subscribe({
-      next: () => this.router.navigate(['/quarters']),
+      next: () => this.router.navigate(['/settings/quarters']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -82,7 +82,7 @@ export class QuarterDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/quarters']);
+    this.router.navigate(['/settings/quarters']);
     return false;
   }
 }

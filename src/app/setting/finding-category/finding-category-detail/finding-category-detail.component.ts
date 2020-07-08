@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -80,7 +79,7 @@ export class FindingCategoryDetailComponent implements OnInit {
             'Finding Category Created Successfully'
           );
         }
-        this.router.navigate(['/category-of-findings']);
+        this.router.navigate(['/settings/category-of-findings']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -95,7 +94,7 @@ export class FindingCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/finding-categories']);
+    this.router.navigate(['/settings/finding-categories']);
     return false;
   }
 }

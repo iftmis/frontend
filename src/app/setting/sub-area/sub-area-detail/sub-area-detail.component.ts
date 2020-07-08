@@ -63,7 +63,7 @@ export class SubAreaDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<SubArea>) {
     result.subscribe({
-      next: () => this.router.navigate(['/sub-areas']),
+      next: () => this.router.navigate(['/settings/sub-areas']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -77,7 +77,7 @@ export class SubAreaDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/sub-areas']);
+    this.router.navigate(['/settings/sub-areas']);
     return false;
   }
 }

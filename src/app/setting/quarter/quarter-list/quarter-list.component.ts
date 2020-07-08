@@ -105,7 +105,7 @@ export class QuarterListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.quarterService.delete(id).subscribe({
-          next: () => this.router.navigate(['/quarters']),
+          next: () => this.router.navigate(['/settings/quarters']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

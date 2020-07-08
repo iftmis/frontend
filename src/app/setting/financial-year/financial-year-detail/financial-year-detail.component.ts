@@ -98,7 +98,7 @@ export class FinancialYearDetailComponent implements OnInit {
             'Financial Year Initiated Successfully'
           );
         }
-        this.router.navigate(['/financial-years']);
+        this.router.navigate(['/settings/financial-years']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -113,7 +113,7 @@ export class FinancialYearDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/financial-years']);
+    this.router.navigate(['/settings/financial-years']);
     return false;
   }
 }

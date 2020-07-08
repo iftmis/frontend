@@ -81,7 +81,7 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
       if (result) {
         this.showLoader = true;
         this.auditableAreaService.delete(id).subscribe({
-          next: () => this.router.navigate(['/auditable-areas']),
+          next: () => this.router.navigate(['/settings/auditable-areas']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

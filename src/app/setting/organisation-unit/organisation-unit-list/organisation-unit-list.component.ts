@@ -47,7 +47,7 @@ export class OrganisationUnitListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.organisationUnitService.delete(id).subscribe({
-          next: () => this.router.navigate(['/organisation-units']),
+          next: () => this.router.navigate(['/settings/organisation-units']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

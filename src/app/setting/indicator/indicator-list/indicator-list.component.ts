@@ -35,7 +35,7 @@ export class IndicatorListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.indicatorService.delete(id).subscribe({
-          next: () => this.router.navigate(['/indicators']),
+          next: () => this.router.navigate(['/settings/indicators']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

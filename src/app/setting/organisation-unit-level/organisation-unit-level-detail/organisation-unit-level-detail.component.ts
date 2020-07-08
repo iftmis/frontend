@@ -63,7 +63,7 @@ export class OrganisationUnitLevelDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<OrganisationUnitLevel>) {
     result.subscribe({
-      next: () => this.router.navigate(['/organisation-unit-levels']),
+      next: () => this.router.navigate(['/settings/organisation-unit-levels']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -77,7 +77,7 @@ export class OrganisationUnitLevelDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/organisation-unit-levels']);
+    this.router.navigate(['/settings/organisation-unit-levels']);
     return false;
   }
 }

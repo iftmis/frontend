@@ -81,7 +81,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<OrganisationUnit>) {
     result.subscribe({
-      next: () => this.router.navigate(['/organisation-units']),
+      next: () => this.router.navigate(['/settings/organisation-units']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -95,7 +95,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/organisation-units']);
+    this.router.navigate(['/settings/organisation-units']);
     return false;
   }
 }

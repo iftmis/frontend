@@ -35,7 +35,7 @@ export class SubAreaListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.subAreaService.delete(id).subscribe({
-          next: () => this.router.navigate(['/sub-areas']),
+          next: () => this.router.navigate(['/settings/sub-areas']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

@@ -77,7 +77,7 @@ export class AuditableAreaDetailComponent implements OnInit {
             'Auditable Area Created Successfully!'
           );
         }
-        this.router.navigate(['/auditable-areas']);
+        this.router.navigate(['/settings/auditable-areas']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -92,7 +92,7 @@ export class AuditableAreaDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/auditable-areas']);
+    this.router.navigate(['/settings/auditable-areas']);
     return false;
   }
 }

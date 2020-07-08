@@ -63,7 +63,7 @@ export class ProcedureDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<Procedure>) {
     result.subscribe({
-      next: () => this.router.navigate(['/procedures']),
+      next: () => this.router.navigate(['/settings/procedures']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -77,7 +77,7 @@ export class ProcedureDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/procedures']);
+    this.router.navigate(['/settings/procedures']);
     return false;
   }
 }

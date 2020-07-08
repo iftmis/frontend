@@ -95,7 +95,7 @@ export class FinancialYearListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.financialYearService.delete(id).subscribe({
-          next: () => this.router.navigate(['/financial-years']),
+          next: () => this.router.navigate(['/settings/financial-years']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

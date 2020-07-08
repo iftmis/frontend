@@ -77,7 +77,8 @@ export class FindingSubCategoryListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.findingSubCategoryService.delete(id).subscribe({
-          next: () => this.router.navigate(['/finding-sub-categories']),
+          next: () =>
+            this.router.navigate(['/settings/finding-sub-categories']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

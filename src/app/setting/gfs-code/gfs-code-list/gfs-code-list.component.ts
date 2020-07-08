@@ -40,7 +40,7 @@ export class GfsCodeListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.gfsCodeService.delete(id).subscribe({
-          next: () => this.router.navigate(['/gfs-codes']),
+          next: () => this.router.navigate(['/settings/gfs-codes']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

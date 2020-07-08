@@ -35,7 +35,7 @@ export class ProcedureListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.procedureService.delete(id).subscribe({
-          next: () => this.router.navigate(['/procedures']),
+          next: () => this.router.navigate(['/settings/procedures']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

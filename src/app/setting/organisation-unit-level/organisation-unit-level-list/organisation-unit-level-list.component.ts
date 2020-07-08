@@ -98,7 +98,8 @@ export class OrganisationUnitLevelListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.organisationUnitLevelService.delete(id).subscribe({
-          next: () => this.router.navigate(['/organisation-unit-levels']),
+          next: () =>
+            this.router.navigate(['/settings/organisation-unit-levels']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
