@@ -3,7 +3,7 @@
   "pageTitle": "Finding Category",
   "pageOptions": {
     "list": {
-      "displayFields": []
+      "displayFields": ["code", "name"]
     }
   },
   "fields": [

@@ -21,6 +21,12 @@ export class SidenavPage {
   findingCategoryMenu = this.root.element(
     by.css('a[routerLink="/finding-categorys"]')
   );
+  findingSubCategoryMenu = this.root.element(
+    by.css('a[routerLink="/finding-sub-categorys"]')
+  );
+  subAreaMenu = this.root.element(by.css('a[routerLink="/sub-areas"]'));
+  indicatorMenu = this.root.element(by.css('a[routerLink="/indicators"]'));
+  procedureMenu = this.root.element(by.css('a[routerLink="/procedures"]'));
   financialYearMenu = this.root.element(
     by.css('a[routerLink="/financial-years"]')
   );
