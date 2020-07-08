@@ -10,6 +10,7 @@ import { Quarter } from '../quarter';
 import { FinancialYear } from '../../financial-year/financial-year';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-quarter-detail',
@@ -22,7 +23,7 @@ export class QuarterDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  financialYears: FinancialYear[] = [];
+  financialYears: FinancialYear[];
 
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +48,7 @@ export class QuarterDetailComponent implements OnInit {
   }
 
   loadFinancialYear() {
-    this.financialYearService.query().subscribe(res => {
+    this.financialYearService.getAllUnPaged().subscribe(res => {
       this.financialYears = res;
     });
   }

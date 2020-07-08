@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { createRequestOption } from '../../shared/pagination.constants';
 import { FinancialYear } from './financial-year';
-import { AuditableArea } from '../auditable-area/auditable-area';
 
 @Injectable({
   providedIn: 'root',
@@ -14,21 +13,16 @@ export class FinancialYearService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<FinancialYear[]> {
-    return this.http
-      .get<FinancialYear[]>(this.resourceUrl)
-      .pipe(
-        map((response: FinancialYear[]) => this.parseArrayResponse(response))
-      );
+  getAll(req?: any): Observable<HttpResponse<FinancialYear[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<FinancialYear[]>(this.resourceUrl + '/page', {
+      params: options,
+      observe: 'response',
+    });
   }
 
-  getAll(page: number, size: number): Observable<any> {
-    return this.http.get<any>(this.resourceUrl, {
-      params: {
-        page: `${page}`,
-        size: `${size}`,
-      },
-    });
+  getAllUnPaged(): Observable<FinancialYear[]> {
+    return this.http.get<any>(this.resourceUrl);
   }
 
   getById(id: number): Observable<FinancialYear> {

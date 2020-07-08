@@ -7,14 +7,13 @@ import { GfsCodeDeleteComponent } from '../gfs-code-delete/gfs-code-delete.compo
 import { GfsCode } from '../gfs-code';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { PageEvent } from '@angular/material/paginator';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
-} from '../../shared/pagination.constants';
-import { PageEvent } from '@angular/material/paginator';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { OrganisationUnitLevel } from '../../organisation-unit-level/organisation-unit-level';
-import { HttpHeaders } from '@angular/common/http';
+} from '../../../shared/pagination.constants';
 
 @Component({
   selector: 'app-gfs-code-list',

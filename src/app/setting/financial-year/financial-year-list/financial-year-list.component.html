@@ -73,19 +73,18 @@
     </table>
     <mat-paginator
       [length]="totalItems"
-      (page)="pageChanged($event)"
-      [pageSizeOptions]="perPageOptions"
-      [pageIndex]="page"
-      showFirstLastButtons
-      [pageSize]="size"
-    ></mat-paginator>
+      [pageSize]="itemsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit financialYear"
+      aria-label="Edit auditableArea"
       [routerLink]="['/settings/financial-years', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
@@ -93,7 +92,7 @@
     </button>
     <button
       mat-menu-item
-      aria-label="Delete financialYear"
+      aria-label="Delete auditableArea"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>
