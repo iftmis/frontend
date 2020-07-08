@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { OrganisationUnitLevel } from './organisation-unit-level';
+import { createRequestOption } from '../shared/pagination.constants';
+import { AuditableArea } from '../auditable-area/auditable-area';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +14,12 @@ export class OrganisationUnitLevelService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<OrganisationUnitLevel[]> {
-    return this.http.get<OrganisationUnitLevel[]>(this.resourceUrl);
+  query(req?: any): Observable<HttpResponse<OrganisationUnitLevel[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<OrganisationUnitLevel[]>(this.resourceUrl, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<OrganisationUnitLevel> {
