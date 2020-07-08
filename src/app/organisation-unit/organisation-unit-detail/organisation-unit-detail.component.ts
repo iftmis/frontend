@@ -11,6 +11,7 @@ import { OrganisationUnitLevelService } from 'src/app/organisation-unit-level/or
 import { OrganisationUnitLevel } from 'src/app/organisation-unit-level/organisation-unit-level';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-organisation-unit-detail',
@@ -23,7 +24,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  organisationUnitLevels: OrganisationUnitLevel[] = [];
+  organisationUnitLevels: HttpResponse<OrganisationUnitLevel[]>;
   organisationUnits: OrganisationUnit[] = [];
 
   constructor(
