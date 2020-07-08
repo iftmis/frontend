@@ -54,6 +54,7 @@
           required
           matInput
           placeholder="Select quarter start date"
+          (click)="startDatePicker.open()"
           formControlName="startDate"
           [matDatepicker]="startDatePicker"
         />
@@ -77,6 +78,7 @@
           required
           matInput
           placeholder="Select quarter end date"
+          (click)="endDatePicker.open()"
           formControlName="endDate"
           [matDatepicker]="endDatePicker"
         />

@@ -16,6 +16,15 @@ export class FindingCategoryService {
     return this.http.get<FindingCategory[]>(this.resourceUrl);
   }
 
+  getAll(page: number, size: number): Observable<any> {
+    return this.http.get<any>(this.resourceUrl, {
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+      },
+    });
+  }
+
   getById(id: number): Observable<FindingCategory> {
     return this.http.get<FindingCategory>(`${this.resourceUrl}/${id}`);
   }

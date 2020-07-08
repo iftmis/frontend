@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { FindingSubCategoryService } from '../finding-sub-category.service';
 import { FindingSubCategoryFormService } from './finding-sub-category-form.service';
 import { FindingSubCategory } from '../finding-sub-category';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-finding-sub-category-detail',
@@ -24,7 +25,8 @@ export class FindingSubCategoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: FindingSubCategoryFormService,
-    private findingSubCategoryService: FindingSubCategoryService
+    private findingSubCategoryService: FindingSubCategoryService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -43,20 +45,38 @@ export class FindingSubCategoryDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.findingSubCategoryService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.findingSubCategoryService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<FindingSubCategory>) {
+  private subscribeToResponse(
+    result: Observable<FindingSubCategory>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/finding-sub-categorys']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Finding Sub-Category Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Finding Sub-Category Created Successfully'
+          );
+        }
+        this.router.navigate(['/finding-sub-categories']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -70,7 +90,7 @@ export class FindingSubCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/finding-sub-categorys']);
+    this.router.navigate(['/finding-sub-categories']);
     return false;
   }
 }
