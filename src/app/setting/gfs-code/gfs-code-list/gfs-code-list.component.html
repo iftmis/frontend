@@ -62,6 +62,13 @@
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
     </table>
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="itemsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">

@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import { OrganisationUnitLevel } from './organisation-unit-level';
 import { OrganisationUnitLevelService } from './organisation-unit-level.service';
 import { HttpResponse } from '@angular/common/http';
-import { AuditableArea } from '../auditable-area/auditable-area';
-import { AuditableAreaService } from '../auditable-area/auditable-area.service';
 
 @Injectable({
   providedIn: 'root',
