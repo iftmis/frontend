@@ -42,6 +42,7 @@
           required
           matInput
           placeholder="Select financialYear start date"
+          (click)="startDatePicker.open()"
           formControlName="startDate"
           [matDatepicker]="startDatePicker"
         />
@@ -66,6 +67,7 @@
           required
           matInput
           placeholder="Enter financialYear end date"
+          (click)="endDatePicker.open()"
           formControlName="endDate"
           [matDatepicker]="endDatePicker"
         />
