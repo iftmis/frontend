@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxHipsterModule } from 'ngx-hipster';
 
 @NgModule({
+  imports: [],
   exports: [
     CommonModule,
     MaterialModule,
