@@ -7,6 +7,14 @@ import { GfsCodeDeleteComponent } from '../gfs-code-delete/gfs-code-delete.compo
 import { GfsCode } from '../gfs-code';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import {
+  ITEMS_PER_PAGE,
+  PAGE_SIZE_OPTIONS,
+} from '../../shared/pagination.constants';
+import { PageEvent } from '@angular/material/paginator';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { OrganisationUnitLevel } from '../../organisation-unit-level/organisation-unit-level';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-gfs-code-list',
@@ -19,6 +27,13 @@ export class GfsCodeListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
 
+  totalItems = 0;
+  itemsPerPage = ITEMS_PER_PAGE;
+  pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
+  page!: number;
+
+  private GfsCodeSubject: BehaviorSubject<GfsCode[]> = new BehaviorSubject([]);
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -29,7 +44,38 @@ export class GfsCodeListComponent implements OnInit {
     this.titleService.setTitle('GFS Codes|' + environment.app);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadPage();
+  }
+
+  loadPage() {
+    const pageToLoad = this.page || 0;
+    this.gfsCodeService
+      .query({
+        page: pageToLoad,
+        size: this.itemsPerPage,
+      })
+      .subscribe(
+        resp => this.onSuccess(resp.body, resp.headers, this.page),
+        () => this.onError()
+      );
+  }
+  getData(): Observable<GfsCode[]> {
+    return this.GfsCodeSubject.asObservable();
+  }
+
+  onSuccess(data: any, headers: HttpHeaders, page: number): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.GfsCodeSubject.next(data);
+  }
+  onError(): void {}
+
+  pageChange($event: PageEvent) {
+    this.itemsPerPage = $event.pageSize;
+    this.page = $event.pageIndex;
+    this.loadPage();
+  }
 
   delete(id: number, gfsCode: GfsCode) {
     const dialogRef = this.dialog.open(GfsCodeDeleteComponent, {
