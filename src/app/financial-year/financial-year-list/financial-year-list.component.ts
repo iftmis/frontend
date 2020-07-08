@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FinancialYearService } from './../financial-year.service';
 import { FinancialYearDeleteComponent } from '../financial-year-delete/financial-year-delete.component';
 import { FinancialYear } from '../financial-year';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-financial-year-list',
@@ -27,8 +29,11 @@ export class FinancialYearListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private financialYearService: FinancialYearService
-  ) {}
+    private financialYearService: FinancialYearService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Financial Years|' + environment.app);
+  }
 
   ngOnInit() {}
 

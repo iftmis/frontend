@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrganisationUnitService } from './../organisation-unit.service';
 import { OrganisationUnitDeleteComponent } from '../organisation-unit-delete/organisation-unit-delete.component';
 import { OrganisationUnit } from '../organisation-unit';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-organisation-unit-list',
@@ -28,8 +30,11 @@ export class OrganisationUnitListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private organisationUnitService: OrganisationUnitService
-  ) {}
+    private organisationUnitService: OrganisationUnitService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Organisation Units|' + environment.app);
+  }
 
   ngOnInit() {}
 

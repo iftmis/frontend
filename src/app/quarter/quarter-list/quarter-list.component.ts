@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { QuarterService } from './../quarter.service';
 import { QuarterDeleteComponent } from '../quarter-delete/quarter-delete.component';
 import { Quarter } from '../quarter';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-quarter-list',
@@ -28,8 +30,11 @@ export class QuarterListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private quarterService: QuarterService
-  ) {}
+    private quarterService: QuarterService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Quarters|' + environment.app);
+  }
 
   ngOnInit() {}
 

@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { GfsCodeService } from './../gfs-code.service';
 import { GfsCodeDeleteComponent } from '../gfs-code-delete/gfs-code-delete.component';
 import { GfsCode } from '../gfs-code';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-gfs-code-list',
@@ -21,8 +23,11 @@ export class GfsCodeListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private gfsCodeService: GfsCodeService
-  ) {}
+    private gfsCodeService: GfsCodeService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('GFS Codes|' + environment.app);
+  }
 
   ngOnInit() {}
 
