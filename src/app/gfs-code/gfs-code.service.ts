@@ -3,7 +3,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { GfsCode } from './gfs-code';
-import { OrganisationUnitLevel } from '../organisation-unit-level/organisation-unit-level';
 import { createRequestOption } from '../shared/pagination.constants';
 
 @Injectable({
