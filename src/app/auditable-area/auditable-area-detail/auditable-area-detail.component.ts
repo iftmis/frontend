@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { AuditableAreaService } from '../auditable-area.service';
 import { AuditableAreaFormService } from './auditable-area-form.service';
 import { AuditableArea } from '../auditable-area';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-auditable-area-detail',
@@ -24,8 +26,11 @@ export class AuditableAreaDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: AuditableAreaFormService,
-    private auditableAreaService: AuditableAreaService
-  ) {}
+    private auditableAreaService: AuditableAreaService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Auditable Area Details|' + environment.app);
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ auditableArea }) => {

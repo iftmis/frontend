@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { FindingCategoryService } from '../finding-category.service';
 import { FindingCategoryFormService } from './finding-category-form.service';
 import { FindingCategory } from '../finding-category';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-finding-category-detail',
@@ -24,8 +26,11 @@ export class FindingCategoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: FindingCategoryFormService,
-    private findingCategoryService: FindingCategoryService
-  ) {}
+    private findingCategoryService: FindingCategoryService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Finding Category Details|' + environment.app);
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ findingCategory }) => {

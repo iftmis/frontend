@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { FinancialYearService } from '../financial-year.service';
 import { FinancialYearFormService } from './financial-year-form.service';
 import { FinancialYear } from '../financial-year';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-financial-year-detail',
@@ -24,8 +26,11 @@ export class FinancialYearDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: FinancialYearFormService,
-    private financialYearService: FinancialYearService
-  ) {}
+    private financialYearService: FinancialYearService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Financial Year Details|' + environment.app);
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ financialYear }) => {

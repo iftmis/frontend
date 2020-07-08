@@ -9,6 +9,8 @@ import { OrganisationUnitFormService } from './organisation-unit-form.service';
 import { OrganisationUnit } from '../organisation-unit';
 import { OrganisationUnitLevelService } from 'src/app/organisation-unit-level/organisation-unit-level.service';
 import { OrganisationUnitLevel } from 'src/app/organisation-unit-level/organisation-unit-level';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-organisation-unit-detail',
@@ -29,8 +31,11 @@ export class OrganisationUnitDetailComponent implements OnInit {
     private router: Router,
     private formService: OrganisationUnitFormService,
     private organisationUnitService: OrganisationUnitService,
-    private ouLevelService: OrganisationUnitLevelService
-  ) {}
+    private ouLevelService: OrganisationUnitLevelService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Organization Unit Details|' + environment.app);
+  }
 
   ngOnInit() {
     this.loadLevels();

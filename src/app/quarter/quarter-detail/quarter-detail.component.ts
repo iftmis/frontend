@@ -1,4 +1,4 @@
-import { FinancialYearService } from './../../financial-year/financial-year.service';
+import { FinancialYearService } from '../../financial-year/financial-year.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
@@ -9,6 +9,8 @@ import { QuarterService } from '../quarter.service';
 import { QuarterFormService } from './quarter-form.service';
 import { Quarter } from '../quarter';
 import { FinancialYear } from '../../financial-year/financial-year';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-quarter-detail',
@@ -28,8 +30,11 @@ export class QuarterDetailComponent implements OnInit {
     private router: Router,
     private formService: QuarterFormService,
     private quarterService: QuarterService,
-    private financialYearService: FinancialYearService
-  ) {}
+    private financialYearService: FinancialYearService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Quarter Details|' + environment.app);
+  }
 
   ngOnInit() {
     this.loadFinancialYear();
