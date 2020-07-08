@@ -61,7 +61,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'finding-sub-categorys',
+    path: 'finding-sub-categories',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./finding-sub-category/finding-sub-category.module').then(

@@ -95,7 +95,7 @@ export class FindingCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/finding-categorys']);
+    this.router.navigate(['/finding-categories']);
     return false;
   }
 }
