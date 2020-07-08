@@ -8,11 +8,11 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>OrganisationUnitLevel</mat-card-title>
+    <mat-card-title>Organisation Unit Level</mat-card-title>
     <mat-card-subtitle>{{
       organisationUnitLevel?.id
-        ? 'Update an existing organisationUnitLevel.'
-        : 'Creates a new organisationUnitLevel.'
+        ? 'Update an existing organisation Unit Level.'
+        : 'Create a new organisation Unit Level.'
     }}</mat-card-subtitle>
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
@@ -22,7 +22,7 @@
         <mat-label>Code</mat-label>
         <input
           matInput
-          placeholder="Enter organisationUnitLevel code"
+          placeholder="Enter organisation Unit Level code"
           formControlName="code"
         />
         <mat-error>
@@ -52,7 +52,8 @@
         <input
           matInput
           type="number"
-          placeholder="Enter organisationUnitLevel name"
+          min="1"
+          placeholder="Enter organisation Unit Level"
           formControlName="level"
           required
         />

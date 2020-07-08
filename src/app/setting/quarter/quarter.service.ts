@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Quarter } from './quarter';
+import { OrganisationUnitLevel } from '../organisation-unit-level/organisation-unit-level';
+import { createRequestOption } from '../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +15,12 @@ export class QuarterService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<Quarter[]> {
-    return this.http
-      .get<Quarter[]>(this.resourceUrl)
-      .pipe(map((response: Quarter[]) => this.parseArrayResponse(response)));
+  query(req?: any): Observable<HttpResponse<Quarter[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<Quarter[]>(this.resourceUrl, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<Quarter> {
