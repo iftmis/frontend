@@ -1,0 +1,31 @@
+{
+  "name": "gfsCode",
+  "pageTitle": "Gfs Code",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["code", "description"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 1,
+        "maxlength": 64
+      }
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {
+        "required": true
+      }
+    }
+  ]
+}

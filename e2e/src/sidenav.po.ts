@@ -11,4 +11,17 @@ export class SidenavPage {
   categoryOfFindingMenu = this.root.element(
     by.css('a[routerLink="/category-of-findings"]')
   );
+  organisationUnitLevelMenu = this.root.element(
+    by.css('a[routerLink="/organisation-unit-levels"]')
+  );
+  organisationUnitMenu = this.root.element(
+    by.css('a[routerLink="/organisation-units"]')
+  );
+  gfsCodeMenu = this.root.element(by.css('a[routerLink="/gfs-codes"]'));
+  findingCategoryMenu = this.root.element(
+    by.css('a[routerLink="/finding-categorys"]')
+  );
+  financialYearMenu = this.root.element(
+    by.css('a[routerLink="/financial-years"]')
+  );
 }

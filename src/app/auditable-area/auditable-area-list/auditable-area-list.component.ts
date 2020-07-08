@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuditableAreaService } from './../auditable-area.service';
 import { AuditableAreaDeleteComponent } from '../auditable-area-delete/auditable-area-delete.component';
 import { AuditableArea } from '../auditable-area';
+import { Title } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-auditable-area-list',
@@ -21,8 +23,11 @@ export class AuditableAreaListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    private titleService: Title,
     private auditableAreaService: AuditableAreaService
-  ) {}
+  ) {
+    this.titleService.setTitle('Auditable Areas|' + environment.app);
+  }
 
   ngOnInit() {}
 
