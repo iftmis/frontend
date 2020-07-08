@@ -21,6 +21,15 @@ export class FinancialYearService {
       );
   }
 
+  getAll(page: number, size: number): Observable<any> {
+    return this.http.get<any>(this.resourceUrl, {
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+      },
+    });
+  }
+
   getById(id: number): Observable<FinancialYear> {
     return this.http
       .get<FinancialYear>(`${this.resourceUrl}/${id}`)

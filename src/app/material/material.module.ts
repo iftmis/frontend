@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { from } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   exports: [
@@ -51,6 +52,7 @@ import { from } from 'rxjs';
     MatNativeDateModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatPaginatorModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },

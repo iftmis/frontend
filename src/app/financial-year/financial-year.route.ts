@@ -23,9 +23,9 @@ export const financialYearRoutes: Route[] = [
   {
     path: '',
     component: FinancialYearListComponent,
-    resolve: {
+    /*resolve: {
       financialYears: FinancialYearListResolver,
-    },
+    },*/
     runGuardsAndResolvers: 'always',
   },
 ];

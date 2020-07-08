@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import { DatePipe, KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -9,12 +9,29 @@ import { FinancialYearFormService } from './financial-year-form.service';
 import { FinancialYear } from '../financial-year';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MY_FORMATS } from '../../shared/date-input-format';
 
 @Component({
   selector: 'app-financial-year-detail',
   templateUrl: './financial-year-detail.component.html',
   styleUrls: ['./financial-year-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    DatePipe,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE],
+    },
+
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
 })
 export class FinancialYearDetailComponent implements OnInit {
   financialYear: FinancialYear;
@@ -27,7 +44,8 @@ export class FinancialYearDetailComponent implements OnInit {
     private router: Router,
     private formService: FinancialYearFormService,
     private financialYearService: FinancialYearService,
-    private titleService: Title
+    private titleService: Title,
+    private datePipe: DatePipe
   ) {
     this.titleService.setTitle('Financial Year Details|' + environment.app);
   }
