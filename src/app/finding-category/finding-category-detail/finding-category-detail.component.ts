@@ -9,6 +9,7 @@ import { FindingCategoryFormService } from './finding-category-form.service';
 import { FindingCategory } from '../finding-category';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-finding-category-detail',
@@ -27,7 +28,8 @@ export class FindingCategoryDetailComponent implements OnInit {
     private router: Router,
     private formService: FindingCategoryFormService,
     private findingCategoryService: FindingCategoryService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Finding Category Details|' + environment.app);
   }
@@ -48,20 +50,38 @@ export class FindingCategoryDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.findingCategoryService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.findingCategoryService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<FindingCategory>) {
+  private subscribeToResponse(
+    result: Observable<FindingCategory>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/finding-categorys']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Finding Category Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Finding Category Created Successfully'
+          );
+        }
+        this.router.navigate(['/category-of-findings']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

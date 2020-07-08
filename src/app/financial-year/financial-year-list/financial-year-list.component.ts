@@ -14,8 +14,12 @@ import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
-import { ApiConfig } from '../../shared/api.config';
 import { MatSort } from '@angular/material/sort';
+import {
+  ITEMS_PER_PAGE,
+  PAGE,
+  PAGE_SIZE_OPTIONS,
+} from '../../shared/pagination.constants';
 
 @Component({
   selector: 'app-financial-year-list',
@@ -50,9 +54,9 @@ export class FinancialYearListComponent implements OnInit {
     private titleService: Title
   ) {
     this.titleService.setTitle('Financial Years|' + environment.app);
-    this.page = ApiConfig.page;
-    this.size = ApiConfig.size;
-    this.perPageOptions = ApiConfig.perPageOptions;
+    this.page = PAGE;
+    this.size = ITEMS_PER_PAGE;
+    this.perPageOptions = PAGE_SIZE_OPTIONS;
   }
 
   ngOnInit() {

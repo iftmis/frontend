@@ -16,6 +16,7 @@ import {
 } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MY_FORMATS } from '../../shared/date-input-format';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-financial-year-detail',
@@ -45,7 +46,8 @@ export class FinancialYearDetailComponent implements OnInit {
     private formService: FinancialYearFormService,
     private financialYearService: FinancialYearService,
     private titleService: Title,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Financial Year Details|' + environment.app);
   }
@@ -66,20 +68,38 @@ export class FinancialYearDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.financialYearService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.financialYearService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<FinancialYear>) {
+  private subscribeToResponse(
+    result: Observable<FinancialYear>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/financial-years']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Financial Year Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Financial Year Initiated Successfully'
+          );
+        }
+        this.router.navigate(['/financial-years']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
