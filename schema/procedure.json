@@ -1,0 +1,38 @@
+{
+  "name": "procedure",
+  "pageTitle": "Procedures",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["indicatorName", "name"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Indicator",
+      "name": "indicatorId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Indicator",
+      "name": "indicatorName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    }
+  ]
+}

@@ -73,6 +73,12 @@ const routes: Routes = [
       import('./indicator/indicator.module').then(m => m.IndicatorModule),
   },
   {
+    path: 'procedures',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./procedure/procedure.module').then(m => m.ProcedureModule),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },

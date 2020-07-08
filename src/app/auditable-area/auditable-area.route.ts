@@ -23,9 +23,6 @@ export const auditableAreaRoutes: Route[] = [
   {
     path: '',
     component: AuditableAreaListComponent,
-    resolve: {
-      auditableAreas: AuditableAreaListResolver,
-    },
     runGuardsAndResolvers: 'always',
   },
 ];

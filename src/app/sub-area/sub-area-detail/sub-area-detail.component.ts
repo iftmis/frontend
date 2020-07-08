@@ -43,7 +43,7 @@ export class SubAreaDetailComponent implements OnInit {
 
   loadAuditableAreas() {
     this.areaService.query().subscribe(resp => {
-      this.auditableAreas = resp;
+      this.auditableAreas = resp.body || [];
     });
   }
 

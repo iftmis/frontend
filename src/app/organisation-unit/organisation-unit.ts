@@ -7,8 +7,8 @@ export interface OrganisationUnit {
   email?: string;
   background?: string;
   logo?: string;
-  organisationUnitLevelId: string;
+  organisationUnitLevelId: number;
   organisationUnitLevelName?: string;
-  parentId?: string;
+  parentId?: number;
   parentName?: string;
 }

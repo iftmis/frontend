@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AuditableArea } from './auditable-area';
+import { createRequestOption } from '../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,12 @@ export class AuditableAreaService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<AuditableArea[]> {
-    return this.http.get<AuditableArea[]>(this.resourceUrl);
+  query(req?: any): Observable<HttpResponse<AuditableArea[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<AuditableArea[]>(this.resourceUrl, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<AuditableArea> {

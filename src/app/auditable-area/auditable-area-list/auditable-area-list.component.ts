@@ -5,6 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuditableAreaService } from './../auditable-area.service';
 import { AuditableAreaDeleteComponent } from '../auditable-area-delete/auditable-area-delete.component';
 import { AuditableArea } from '../auditable-area';
+import { HttpHeaders } from '@angular/common/http';
+import {
+  ITEMS_PER_PAGE,
+  PAGE_SIZE_OPTIONS,
+} from '../../shared/pagination.constants';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-auditable-area-list',
@@ -17,6 +24,13 @@ export class AuditableAreaListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
 
+  auditableAreas: AuditableArea[] = [];
+
+  totalItems = 0;
+  itemsPerPage = ITEMS_PER_PAGE;
+  pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
+  page!: number;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -24,7 +38,22 @@ export class AuditableAreaListComponent implements OnInit {
     private auditableAreaService: AuditableAreaService
   ) {}
 
-  ngOnInit() {}
+  loadPage() {
+    const pageToLoad = this.page || 0;
+    this.auditableAreaService
+      .query({
+        page: pageToLoad,
+        size: this.itemsPerPage,
+      })
+      .subscribe(
+        resp => this.onSuccess(resp.body, resp.headers, this.page),
+        () => this.onError()
+      );
+  }
+
+  ngOnInit() {
+    this.loadPage();
+  }
 
   delete(id: number, auditableArea: AuditableArea) {
     const dialogRef = this.dialog.open(AuditableAreaDeleteComponent, {
@@ -41,5 +70,20 @@ export class AuditableAreaListComponent implements OnInit {
         });
       }
     });
+  }
+
+  onSuccess(data: any, headers: HttpHeaders, page: number): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.auditableAreas = data;
+    console.log(this.auditableAreas);
+  }
+
+  onError(): void {}
+
+  pageChange($event: PageEvent) {
+    this.itemsPerPage = $event.pageSize;
+    this.page = $event.pageIndex;
+    this.loadPage();
   }
 }
