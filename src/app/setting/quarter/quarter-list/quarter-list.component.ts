@@ -12,14 +12,14 @@ import { QuarterDeleteComponent } from '../quarter-delete/quarter-delete.compone
 import { Quarter } from '../quarter';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
-import {
-  ITEMS_PER_PAGE,
-  PAGE_SIZE_OPTIONS,
-} from '../../shared/pagination.constants';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { HttpHeaders } from '@angular/common/http';
+import {
+  ITEMS_PER_PAGE,
+  PAGE_SIZE_OPTIONS,
+} from '../../../shared/pagination.constants';
 
 @Component({
   selector: 'app-quarter-list',

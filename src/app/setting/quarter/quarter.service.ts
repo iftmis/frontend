@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { Quarter } from './quarter';
-import { OrganisationUnitLevel } from '../organisation-unit-level/organisation-unit-level';
-import { createRequestOption } from '../shared/pagination.constants';
+import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
