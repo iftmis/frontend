@@ -1,25 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-
-import { FinancialYearService } from '../financial-year.service';
-import { FinancialYearDeleteComponent } from '../financial-year-delete/financial-year-delete.component';
-import { FinancialYear } from '../financial-year';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 import {
   ITEMS_PER_PAGE,
   PAGE,
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
+import { HttpHeaders } from '@angular/common/http';
+import { FinancialYear } from '../financial-year';
+import { FinancialYearService } from '../financial-year.service';
+import { FinancialYearDeleteComponent } from '../financial-year-delete/financial-year-delete.component';
 
 @Component({
   selector: 'app-financial-year-list',
@@ -35,55 +29,47 @@ export class FinancialYearListComponent implements OnInit {
     'isOpened',
     'formActions',
   ];
-  page: number;
-  size: number;
-  perPageOptions: number[];
-  totalItems: number;
+  routeData$ = this.route.data;
   showLoader = false;
-  private financialYearSubject: BehaviorSubject<
-    FinancialYear[]
-  > = new BehaviorSubject([]);
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  financialYearSubject: BehaviorSubject<FinancialYear[]> = new BehaviorSubject(
+    []
+  );
+
+  totalItems = 0;
+  itemsPerPage = ITEMS_PER_PAGE;
+  pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
+  page!: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private financialYearService: FinancialYearService,
-    private titleService: Title
+    private titleService: Title,
+    private financialYearService: FinancialYearService
   ) {
     this.titleService.setTitle('Financial Years|' + environment.app);
-    this.page = PAGE;
-    this.size = ITEMS_PER_PAGE;
-    this.perPageOptions = PAGE_SIZE_OPTIONS;
   }
 
-  ngOnInit() {
-    this.loadData(this.page, this.size);
-  }
-
-  loadData(page: number, size: number) {
-    this.financialYearService.getAll(page, size).subscribe(
-      response => {
-        this.financialYearSubject.next(response.content);
-        this.totalItems = response.totalElements;
-      },
-      error => {
-        console.log(error);
-      }
-    );
+  loadPage() {
+    const pageToLoad = this.page || 0;
+    this.financialYearService
+      .getAll({
+        page: pageToLoad,
+        size: this.itemsPerPage,
+      })
+      .subscribe(
+        resp => this.onSuccess(resp.body, resp.headers, this.page),
+        () => this.onError()
+      );
   }
 
   getData(): Observable<FinancialYear[]> {
     return this.financialYearSubject.asObservable();
   }
 
-  pageChanged(page: any) {
-    this.page = page.pageIndex;
-    this.size = page.pageSize;
-    this.loadData(this.page, this.size);
+  ngOnInit() {
+    this.loadPage();
   }
 
   delete(id: number, financialYear: FinancialYear) {
@@ -95,11 +81,25 @@ export class FinancialYearListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.financialYearService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/financial-years']),
+          next: () => this.router.navigate(['/settings/auditable-areas']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
       }
     });
+  }
+
+  onSuccess(data: any, headers: HttpHeaders, page: number): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.financialYearSubject.next(data);
+  }
+
+  onError(): void {}
+
+  pageChange($event: PageEvent) {
+    this.itemsPerPage = $event.pageSize;
+    this.page = $event.pageIndex;
+    this.loadPage();
   }
 }
