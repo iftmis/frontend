@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { GfsCodeService } from '../gfs-code.service';
 import { GfsCodeFormService } from './gfs-code-form.service';
 import { GfsCode } from '../gfs-code';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-gfs-code-detail',
@@ -24,8 +26,11 @@ export class GfsCodeDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: GfsCodeFormService,
-    private gfsCodeService: GfsCodeService
-  ) {}
+    private gfsCodeService: GfsCodeService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('GFS Code Details|' + environment.app);
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ gfsCode }) => {

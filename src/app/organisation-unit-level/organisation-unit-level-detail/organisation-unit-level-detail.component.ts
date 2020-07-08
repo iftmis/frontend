@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { OrganisationUnitLevelService } from '../organisation-unit-level.service';
 import { OrganisationUnitLevelFormService } from './organisation-unit-level-form.service';
 import { OrganisationUnitLevel } from '../organisation-unit-level';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-organisation-unit-level-detail',
@@ -24,8 +26,13 @@ export class OrganisationUnitLevelDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: OrganisationUnitLevelFormService,
-    private organisationUnitLevelService: OrganisationUnitLevelService
-  ) {}
+    private organisationUnitLevelService: OrganisationUnitLevelService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle(
+      'Organization Unit Level Details|' + environment.app
+    );
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ organisationUnitLevel }) => {

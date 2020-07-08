@@ -17,6 +17,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AuthenticationService } from '../security/authentication.service';
 import { User } from '../security/user';
+import { environment } from '../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -34,13 +36,15 @@ export class LoginComponent implements OnDestroy {
     private ref: ChangeDetectorRef,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private titleService: Title
   ) {
     this.loginForm = formBuilder.group({
       username: formBuilder.control('', [Validators.required]),
       password: formBuilder.control('', [Validators.required]),
     });
     this.loginError = false;
+    this.titleService.setTitle('Login|' + environment.app);
   }
 
   get username(): AbstractControl | null {

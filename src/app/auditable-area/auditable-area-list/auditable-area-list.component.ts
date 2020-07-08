@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -10,8 +15,9 @@ import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from '../../shared/pagination.constants';
-import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
+import { Title } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-auditable-area-list',
@@ -19,7 +25,7 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrls: ['./auditable-area-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuditableAreaListComponent implements OnInit {
+export class AuditableAreaListComponent implements OnInit, AfterViewInit {
   displayedColumns = ['code', 'name', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
@@ -35,8 +41,14 @@ export class AuditableAreaListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    private titleService: Title,
     private auditableAreaService: AuditableAreaService
-  ) {}
+  ) {
+    this.titleService.setTitle('Auditable Areas|' + environment.app);
+  }
+  ngAfterViewInit(): void {
+    this.loadPage();
+  }
 
   loadPage() {
     const pageToLoad = this.page || 0;
@@ -51,9 +63,7 @@ export class AuditableAreaListComponent implements OnInit {
       );
   }
 
-  ngOnInit() {
-    this.loadPage();
-  }
+  ngOnInit() {}
 
   delete(id: number, auditableArea: AuditableArea) {
     const dialogRef = this.dialog.open(AuditableAreaDeleteComponent, {
@@ -75,7 +85,7 @@ export class AuditableAreaListComponent implements OnInit {
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.auditableAreas = data;
+    this.auditableAreas = [...data];
     console.log(this.auditableAreas);
   }
 

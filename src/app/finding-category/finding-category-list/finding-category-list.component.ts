@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FindingCategoryService } from './../finding-category.service';
 import { FindingCategoryDeleteComponent } from '../finding-category-delete/finding-category-delete.component';
 import { FindingCategory } from '../finding-category';
+import { environment } from '../../../environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-finding-category-list',
@@ -21,8 +23,11 @@ export class FindingCategoryListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private findingCategoryService: FindingCategoryService
-  ) {}
+    private findingCategoryService: FindingCategoryService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Finding Categories|' + environment.app);
+  }
 
   ngOnInit() {}
 

@@ -23,6 +23,14 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'financial-years',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./financial-year/financial-year.module').then(
+        m => m.FinancialYearModule
+      ),
+  },
+  {
     path: 'organisation-unit-levels',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
@@ -45,7 +53,7 @@ const routes: Routes = [
       import('./gfs-code/gfs-code.module').then(m => m.GfsCodeModule),
   },
   {
-    path: 'finding-categorys',
+    path: 'finding-categories',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./finding-category/finding-category.module').then(
@@ -77,6 +85,12 @@ const routes: Routes = [
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./procedure/procedure.module').then(m => m.ProcedureModule),
+  },
+  {
+    path: 'quarters',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./quarter/quarter.module').then(m => m.QuarterModule),
   },
   {
     path: '**',

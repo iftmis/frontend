@@ -18,11 +18,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   ShowOnDirtyErrorStateMatcher,
   ErrorStateMatcher,
+  MatNativeDateModule,
 } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { from } from 'rxjs';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -46,6 +48,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCheckboxModule,
     MatSlideToggleModule,
     MatPaginatorModule,
