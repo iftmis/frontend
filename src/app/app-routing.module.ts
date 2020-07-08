@@ -53,7 +53,7 @@ const routes: Routes = [
       import('./gfs-code/gfs-code.module').then(m => m.GfsCodeModule),
   },
   {
-    path: 'finding-categories',
+    path: 'category-of-findings',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./finding-category/finding-category.module').then(
@@ -61,7 +61,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'finding-sub-categorys',
+    path: 'finding-sub-categories',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./finding-sub-category/finding-sub-category.module').then(
@@ -99,7 +99,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload',
+      useHash: true,
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FinancialYear } from './financial-year';
+import { AuditableArea } from '../auditable-area/auditable-area';
 
 @Injectable({
   providedIn: 'root',
@@ -42,11 +43,8 @@ export class FinancialYearService {
     return this.http.post<FinancialYear>(this.resourceUrl, financialYear);
   }
 
-  update(financialYear: FinancialYear): Observable<FinancialYear> {
-    return this.http.put<FinancialYear>(
-      `${this.resourceUrl}/${financialYear.id}`,
-      financialYear
-    );
+  update(row: FinancialYear): Observable<FinancialYear> {
+    return this.http.put<FinancialYear>(`${this.resourceUrl}`, row);
   }
 
   delete(id: number) {
