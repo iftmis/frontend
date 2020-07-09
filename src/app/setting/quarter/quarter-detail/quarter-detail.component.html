@@ -1,0 +1,130 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-card class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>Quarter</mat-card-title>
+    <mat-card-subtitle
+      >{{
+        quarter?.id ? 'Update an existing quarter.' : 'Creates a new quarter.'
+      }}
+    </mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width">
+        <mat-label>Code</mat-label>
+        <input
+          matInput
+          placeholder="Enter quarter code"
+          formControlName="code"
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('code')"
+            label="Code"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter quarter name"
+          formControlName="name"
+          required
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('name')"
+            label="Name"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Start Date</mat-label>
+        <input
+          type="text"
+          required
+          matInput
+          placeholder="Select quarter start date"
+          (click)="startDatePicker.open()"
+          formControlName="startDate"
+          [matDatepicker]="startDatePicker"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          color="accent"
+          [for]="startDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker color="accent" #startDatePicker></mat-datepicker>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('startDate')"
+            label="Start Date"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>End Date</mat-label>
+        <input
+          type="text"
+          required
+          matInput
+          placeholder="Select quarter end date"
+          (click)="endDatePicker.open()"
+          formControlName="endDate"
+          [matDatepicker]="endDatePicker"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          color="accent"
+          [for]="endDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker color="accent" #endDatePicker></mat-datepicker>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('endDate')"
+            label="End Date"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Financial Year</mat-label>
+        <mat-select formControlName="financialYearId" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option *ngFor="let years of financialYears" [value]="years.id">{{
+            years.name
+          }}</mat-option>
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('financialYearId')"
+            label="Financial Year"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ quarter?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
