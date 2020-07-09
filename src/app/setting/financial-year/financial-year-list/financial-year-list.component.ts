@@ -14,6 +14,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { FinancialYear } from '../financial-year';
 import { FinancialYearService } from '../financial-year.service';
 import { FinancialYearDeleteComponent } from '../financial-year-delete/financial-year-delete.component';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-financial-year-list',
@@ -46,7 +47,8 @@ export class FinancialYearListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private financialYearService: FinancialYearService
+    private financialYearService: FinancialYearService,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Financial Years|' + environment.app);
   }
@@ -81,7 +83,14 @@ export class FinancialYearListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.financialYearService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/auditable-areas']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'Financial Year Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/financial-years']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
