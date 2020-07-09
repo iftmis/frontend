@@ -19,6 +19,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-auditable-area-list',
@@ -45,6 +46,7 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
+    private toastService: ToastService,
     private auditableAreaService: AuditableAreaService
   ) {
     this.titleService.setTitle('Auditable Areas|' + environment.app);
@@ -81,7 +83,14 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
       if (result) {
         this.showLoader = true;
         this.auditableAreaService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/auditable-areas']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'Auditable Area Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/auditable-areas']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

@@ -70,7 +70,7 @@ export class GfsCodeDetailComponent implements OnInit {
         } else {
           this.toastService.success(
             'Success!',
-            'GFS Code Initiated Successfully'
+            'GFS Code Created Successfully'
           );
         }
         this.router.navigate(['/settings/gfs-codes']);

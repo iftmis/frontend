@@ -95,7 +95,7 @@ export class FinancialYearDetailComponent implements OnInit {
         } else {
           this.toastService.success(
             'Success!',
-            'Financial Year Initiated Successfully'
+            'Financial Year Created Successfully'
           );
         }
         this.router.navigate(['/settings/financial-years']);
