@@ -14,6 +14,7 @@ import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-gfs-code-list',
@@ -38,7 +39,8 @@ export class GfsCodeListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private gfsCodeService: GfsCodeService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('GFS Codes|' + environment.app);
   }
@@ -85,7 +87,14 @@ export class GfsCodeListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.gfsCodeService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/gfs-codes']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'GFS Code Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/gfs-codes']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
