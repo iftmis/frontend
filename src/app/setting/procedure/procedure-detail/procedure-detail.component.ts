@@ -32,7 +32,7 @@ export class ProcedureDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadIndicator();
+    //   this.loadIndicator();
     this.route.data.subscribe(({ procedure }) => {
       this.procedure = procedure;
       this.form = this.formService.toFormGroup(procedure);
@@ -41,11 +41,11 @@ export class ProcedureDetailComponent implements OnInit {
     this.error = undefined;
   }
 
-  loadIndicator() {
-    this.indicatorService.query().subscribe(resp => {
-      this.indicators = resp;
-    });
-  }
+  // loadIndicator() {
+  //   this.indicatorService.query().subscribe(resp => {
+  //     this.indicators = resp;
+  //   });
+  // }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
