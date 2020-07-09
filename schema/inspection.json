@@ -1,0 +1,93 @@
+{
+  "name": "inspection",
+  "pageTitle": "Inspection",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["inspectionType", "name", "startDate", "endDate"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Start date",
+      "name": "startDate",
+      "dataType": "date",
+      "controlType": "date",
+      "format": "dd/MM/yy",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "End Date",
+      "name": "endDate",
+      "dataType": "date",
+      "controlType": "date",
+      "format": "dd/MM/yy",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Inspection Type",
+      "name": "inspectionType",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "name": "PLANNED",
+          "label": "Planned"
+        },
+        {
+          "name": "SPECIAL",
+          "label": "Special"
+        }
+      ]
+    },
+    {
+      "label": "Financial Year",
+      "name": "financialYearId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Financial Year",
+      "name": "financialYearName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Organisation Unit",
+      "name": "organisationUnitId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Organisation Unit",
+      "name": "organisationUnitName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

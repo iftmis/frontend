@@ -93,6 +93,12 @@ const routes: Routes = [
       import('./quarter/quarter.module').then(m => m.QuarterModule),
   },
   {
+    path: 'inspections',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection/inspection.module').then(m => m.InspectionModule),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },
