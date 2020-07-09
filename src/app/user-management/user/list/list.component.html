@@ -1,1 +1,18 @@
-<p>list works!</p>
+<mat-card>
+  <div class="page-heading">
+    <span class="mat-card-title">Users</span>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        [routerLink]="['/user-management/users', 'new']"
+      >
+        <mat-icon>add</mat-icon>
+        <span>Create</span>
+      </button>
+    </div>
+  </div>
+  <mat-card-content>
+    Users
+  </mat-card-content>
+</mat-card>
