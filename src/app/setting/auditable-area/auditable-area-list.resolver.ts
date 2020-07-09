@@ -15,6 +15,6 @@ export class AuditableAreaListResolver
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<HttpResponse<AuditableArea[]>> {
-    return this.service.query();
+    return this.service.getAllPaged();
   }
 }

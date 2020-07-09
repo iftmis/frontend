@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './layout/error/page-not-found/page-not-fo
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MaterialModule,
+    SharedModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),

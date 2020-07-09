@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { AuditableArea } from './auditable-area';
 import { createRequestOption } from '../../shared/pagination.constants';
+import { SubArea } from '../sub-area/sub-area';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,13 @@ export class AuditableAreaService {
 
   constructor(private http: HttpClient) {}
 
-  query(req?: any): Observable<HttpResponse<AuditableArea[]>> {
+  getAllUnPaged(): Observable<AuditableArea[]> {
+    return this.http.get<any>(this.resourceUrl);
+  }
+
+  getAllPaged(req?: any): Observable<HttpResponse<AuditableArea[]>> {
     const options = createRequestOption(req);
-    return this.http.get<AuditableArea[]>(this.resourceUrl, {
+    return this.http.get<AuditableArea[]>(this.resourceUrl + '/page', {
       params: options,
       observe: 'response',
     });
