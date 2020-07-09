@@ -108,7 +108,12 @@ export class SubAreaListComponent implements OnInit {
   }
 
   filterSubAreaByArea(auditableArea: AuditableArea) {
-    this.areaId = auditableArea.id as number;
-    this.loadPage(this.areaId);
+    if (auditableArea) {
+      this.areaId = auditableArea.id as number;
+      this.loadPage(this.areaId);
+    } else {
+      this.areaId = 0 as number;
+      this.loadPage(0);
+    }
   }
 }

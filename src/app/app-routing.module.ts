@@ -6,6 +6,7 @@ import { AnonymousUserGuard } from './security/anonymous-user.guard';
 import { PageNotFoundComponent } from './layout/error/page-not-found/page-not-found.component';
 import { AuthenticatedUserGuard } from './security/authenticated-user.guard';
 import { SettingComponent } from './setting/setting.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -27,6 +28,15 @@ const routes: Routes = [
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./inspection/inspection.module').then(m => m.InspectionModule),
+  },
+  {
+    path: 'user-management',
+    component: UserManagementComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./user-management/user-management.module').then(
+        m => m.UserManagementModule
+      ),
   },
   {
     path: '**',

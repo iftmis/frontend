@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SettingComponent } from './setting.component';
 import { AuthenticatedUserGuard } from '../security/authenticated-user.guard';
 
 const routes: Routes = [
+  {
+    path: '',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./indicator/indicator.module').then(m => m.IndicatorModule),
+  },
   {
     path: 'auditable-areas',
     canActivateChild: [AuthenticatedUserGuard],

@@ -32,7 +32,7 @@
         (ngModelChange)="filterSubAreaByArea($event)"
         placeholder="Select auditable Area"
       >
-        <mat-option value="0">-All-</mat-option>
+        <mat-option value="null">-All-</mat-option>
         <mat-option *ngFor="let area of auditableAreas" [value]="area">
           {{ area.name }}
         </mat-option>
