@@ -11,6 +11,7 @@ import { FinancialYear } from '../../financial-year/financial-year';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { HttpResponse } from '@angular/common/http';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-quarter-detail',
@@ -31,7 +32,8 @@ export class QuarterDetailComponent implements OnInit {
     private formService: QuarterFormService,
     private quarterService: QuarterService,
     private financialYearService: FinancialYearService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Quarter Details|' + environment.app);
   }
@@ -58,18 +60,30 @@ export class QuarterDetailComponent implements OnInit {
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.quarterService.update(this.formService.fromFormGroup(this.form))
+        this.quarterService.update(this.formService.fromFormGroup(this.form)),
+        'update'
       );
     } else {
       this.subscribeToResponse(
-        this.quarterService.create(this.formService.fromFormGroup(this.form))
+        this.quarterService.create(this.formService.fromFormGroup(this.form)),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<Quarter>) {
+  private subscribeToResponse(result: Observable<Quarter>, action: string) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/quarters']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success('Success!', 'Quarter Updated Successfully');
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Quarter Initiated Successfully'
+          );
+        }
+        this.router.navigate(['/settings/quarters']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

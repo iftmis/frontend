@@ -42,7 +42,7 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   loadSubAreas() {
-    this.subAreaService.query().subscribe(resp => {
+    this.subAreaService.getAllUnPaged().subscribe(resp => {
       this.subAreas = resp;
     });
   }
