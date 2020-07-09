@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { IndicatorService } from '../indicator.service';
 import { IndicatorFormService } from './indicator-form.service';
@@ -21,7 +21,7 @@ export class IndicatorDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  subAreas: SubArea[] = [];
+  subAreas: BehaviorSubject<SubArea[]> = new BehaviorSubject([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -43,8 +43,12 @@ export class IndicatorDetailComponent implements OnInit {
 
   loadSubAreas() {
     this.subAreaService.getAllUnPaged().subscribe(resp => {
-      this.subAreas = resp;
+      this.subAreas.next(resp);
     });
+  }
+
+  getSubAreas(): Observable<SubArea[]> {
+    return this.subAreas.asObservable();
   }
 
   saveOrUpdate() {

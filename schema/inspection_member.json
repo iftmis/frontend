@@ -1,0 +1,89 @@
+{
+  "name": "inpsectionMember",
+  "pageTitle": "Inpesctiom Member",
+  "pageOptions": {
+    "list": {
+      "displayFields": []
+    }
+  },
+  "fields": [
+    {
+      "label": "Full Name",
+      "name": "fullName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2
+      }
+    },
+    {
+      "label": "Email",
+      "name": "email",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Inspection Role",
+      "name": "role",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {},
+      "options": [
+        {
+          "name": "TEAM_LEAD",
+          "label": "Team Lead"
+        },
+        {
+          "name": "MEMBER",
+          "label": "Member"
+        }
+      ]
+    },
+    {
+      "label": "User",
+      "name": "userId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "User",
+      "name": "userFullName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Letter",
+      "name": "letterAttachmentId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Letter",
+      "name": "letterAttachmentPath",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Declaration",
+      "name": "declarationAttachementId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Declaration",
+      "name": "declarationAttachementName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

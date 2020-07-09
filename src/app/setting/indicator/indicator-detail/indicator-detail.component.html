@@ -22,9 +22,11 @@
         <mat-label>Sub Area</mat-label>
         <mat-select formControlName="subAreaId" required>
           <mat-option>--Select--</mat-option>
-          <mat-option *ngFor="let sub of subAreas" [value]="sub.id">{{
-            sub.name
-          }}</mat-option>
+          <mat-option
+            *ngFor="let sub of getSubAreas() | async"
+            [value]="sub.id"
+            >{{ sub.name }}</mat-option
+          >
         </mat-select>
         <mat-error
           ><hip-ngx-error
