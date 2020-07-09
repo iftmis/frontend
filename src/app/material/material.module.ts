@@ -28,6 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSortModule } from '@angular/material/sort';
@@ -66,6 +67,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MatGridListModule,
     MatSortModule,
     MatExpansionModule,
+    FlexLayoutModule,
     MatListModule,
     MatAutocompleteModule,
     MatStepperModule,

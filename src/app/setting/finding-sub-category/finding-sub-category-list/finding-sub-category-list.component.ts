@@ -13,6 +13,7 @@ import {
 import { Title } from '@angular/platform-browser';
 import { FindingSubCategoryService } from '../finding-sub-category.service';
 import { environment } from '../../../../environments/environment';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-finding-sub-category-list',
@@ -39,6 +40,7 @@ export class FindingSubCategoryListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
+    private toastService: ToastService,
     private findingSubCategoryService: FindingSubCategoryService
   ) {
     this.titleService.setTitle('Finding Sub-Categories|' + environment.app);
@@ -77,8 +79,14 @@ export class FindingSubCategoryListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.findingSubCategoryService.delete(id).subscribe({
-          next: () =>
-            this.router.navigate(['/settings/finding-sub-categories']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'Finding Sub-Category Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/finding-sub-categories']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
