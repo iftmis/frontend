@@ -20,6 +20,7 @@ import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-quarter-list',
@@ -56,7 +57,8 @@ export class QuarterListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private quarterService: QuarterService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Quarters|' + environment.app);
   }
@@ -105,7 +107,14 @@ export class QuarterListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.quarterService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/quarters']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'Quarter Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/quarters']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
