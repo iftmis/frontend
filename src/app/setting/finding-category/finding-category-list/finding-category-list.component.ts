@@ -20,6 +20,7 @@ import {
 import { FindingCategoryDeleteComponent } from '../finding-category-delete/finding-category-delete.component';
 import { FindingCategoryService } from '../finding-category.service';
 import { FindingCategory } from '../finding-category';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-finding-category-list',
@@ -45,6 +46,7 @@ export class FindingCategoryListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private findingCategoryService: FindingCategoryService,
+    private toastService: ToastService,
     private titleService: Title
   ) {
     this.titleService.setTitle('Finding Categories|' + environment.app);
@@ -88,7 +90,14 @@ export class FindingCategoryListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.findingCategoryService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/category-of-findings']),
+          next: () => {
+            this.loadData(this.page, this.size);
+            this.toastService.success(
+              'Success',
+              'Finding Category Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/category-of-findings']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
