@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { OrganisationUnitService } from '../organisation-unit.service';
 import { OrganisationUnitFormService } from './organisation-unit-form.service';
@@ -24,7 +24,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  organisationUnitLevels: HttpResponse<OrganisationUnitLevel[]>;
+  levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
   organisationUnits: OrganisationUnit[] = [];
 
   constructor(
@@ -51,8 +51,13 @@ export class OrganisationUnitDetailComponent implements OnInit {
 
   loadLevels() {
     this.ouLevelService.query().subscribe(resp => {
-      this.organisationUnitLevels = resp;
+      const l = resp.body || [];
+      this.levels.next(l);
     });
+  }
+
+  getLevels(): Observable<OrganisationUnitLevel[]> {
+    return this.levels.asObservable();
   }
 
   loadOus() {

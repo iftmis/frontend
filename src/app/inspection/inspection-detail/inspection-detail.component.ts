@@ -2,11 +2,14 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { InspectionService } from '../inspection.service';
 import { InspectionFormService } from './inspection-form.service';
 import { Inspection } from '../inspection';
+import { OrganisationUnit } from 'src/app/setting/organisation-unit/organisation-unit';
+import { FinancialYear } from 'src/app/setting/financial-year/financial-year';
+import { FinancialYearService } from 'src/app/setting/financial-year/financial-year.service';
 
 @Component({
   selector: 'app-inspection-detail',
@@ -23,21 +26,38 @@ export class InspectionDetailComponent implements OnInit {
     { key: 'SPECIAL', value: 'Special' },
   ];
   error: string | undefined = undefined;
+  organisationUnit: OrganisationUnit;
+  financialYears: BehaviorSubject<FinancialYear[]> = new BehaviorSubject([]);
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: InspectionFormService,
-    private inspectionService: InspectionService
+    private inspectionService: InspectionService,
+    private fyService: FinancialYearService
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ inspection }) => {
+    this.route.data.subscribe(({ inspection, organisation }) => {
+      console.log(organisation);
       this.inspection = inspection;
+      this.organisationUnit = organisation;
       this.form = this.formService.toFormGroup(inspection);
+      this.form.patchValue({ organisationUnitId: organisation.id });
     });
+    this.loadFinancialYears();
 
     this.error = undefined;
+  }
+
+  loadFinancialYears() {
+    this.fyService.getAll().subscribe(resp => {
+      this.financialYears.next(resp.body || []);
+    });
+  }
+
+  getFinancialYears(): Observable<FinancialYear[]> {
+    return this.financialYears.asObservable();
   }
 
   saveOrUpdate() {
@@ -56,7 +76,8 @@ export class InspectionDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<Inspection>) {
     result.subscribe({
-      next: () => this.router.navigate(['/inspections']),
+      next: () =>
+        this.router.navigate(['/inspections', this.organisationUnit.id]),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

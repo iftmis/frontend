@@ -78,6 +78,17 @@ $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
   }
 }
 
+div.ou-tree {
+  margin-bottom: 10px;
+  margin-inline-start: 23px;
+  margin-top: 10px;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background-color: #fff;
+  min-height: 400px;
+}
+
 .mat-card-title {
   font-size: 108%;
   font-weight: 400;
