@@ -5,6 +5,7 @@ import { HomeComponent } from './layout/home/home.component';
 import { AnonymousUserGuard } from './security/anonymous-user.guard';
 import { PageNotFoundComponent } from './layout/error/page-not-found/page-not-found.component';
 import { AuthenticatedUserGuard } from './security/authenticated-user.guard';
+import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'settings',
+    component: SettingComponent,
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./setting/setting.module').then(m => m.SettingModule),

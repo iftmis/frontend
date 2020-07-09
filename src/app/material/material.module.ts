@@ -28,6 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   exports: [
@@ -54,6 +55,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSlideToggleModule,
     MatPaginatorModule,
     MatExpansionModule,
+    FlexLayoutModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },

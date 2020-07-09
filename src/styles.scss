@@ -10,7 +10,9 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  //font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: Roboto, system-ui, sans-serif;
+  font-size: 81.25%;
 }
 mat-icon.mat-icon {
   font-size: 1.2rem;
@@ -30,4 +32,55 @@ $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
 
 .content mat-card {
   margin: 16px;
+}
+.secondary-menu {
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.25em;
+  min-width: fit-content;
+
+  a.module-title {
+    color: rgb(53, 101, 214);
+    padding-inline-start: 23px;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    font-weight: 500;
+    margin: 0 4px;
+    min-height: 40px;
+    position: relative;
+    text-decoration: none;
+  }
+
+  div {
+    a {
+      align-items: center;
+      color: rgb(95, 99, 104);
+      display: flex;
+      font-weight: 500;
+      margin-inline-end: 2px;
+      margin-inline-start: 1px;
+      min-height: 20px;
+      padding-bottom: 10px;
+      padding-inline-start: 23px;
+      padding-top: 10px;
+      text-decoration: none;
+    }
+
+    mat-icon {
+      --iron-icon-fill-color: var(--settings-nav-icon-color);
+      margin-inline-end: 24px;
+      pointer-events: none;
+      vertical-align: top;
+    }
+  }
+}
+
+.mat-card-title {
+  font-size: 108%;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  color: rgb(95, 99, 104);
 }
