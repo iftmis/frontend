@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Quarter } from './quarter';
 import { createRequestOption } from '../../shared/pagination.constants';
+import { FinancialYear } from '../financial-year/financial-year';
 
 @Injectable({
   providedIn: 'root',
@@ -31,8 +32,8 @@ export class QuarterService {
     return this.http.post<Quarter>(this.resourceUrl, quarter);
   }
 
-  update(quarter: Quarter): Observable<Quarter> {
-    return this.http.put<Quarter>(`${this.resourceUrl}/${quarter.id}`, quarter);
+  update(row: Quarter): Observable<Quarter> {
+    return this.http.put<Quarter>(`${this.resourceUrl}`, row);
   }
 
   delete(id: number) {

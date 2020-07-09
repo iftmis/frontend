@@ -57,7 +57,7 @@ export class GfsCodeDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<GfsCode>) {
     result.subscribe({
-      next: () => this.router.navigate(['/gfs-codes']),
+      next: () => this.router.navigate(['/settings/gfs-codes']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -71,7 +71,7 @@ export class GfsCodeDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/gfs-codes']);
+    this.router.navigate(['/settings/gfs-codes']);
     return false;
   }
 }
