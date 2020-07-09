@@ -30,3 +30,6 @@ $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
 .content mat-card {
   margin: 16px;
 }
+mat-form-field {
+  width: 100%;
+}
