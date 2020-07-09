@@ -9,6 +9,7 @@ import { SubAreaFormService } from './sub-area-form.service';
 import { SubArea } from '../sub-area';
 import { AuditableArea } from 'src/app/setting/auditable-area/auditable-area';
 import { AuditableAreaService } from 'src/app/setting/auditable-area/auditable-area.service';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-sub-area-detail',
@@ -28,7 +29,8 @@ export class SubAreaDetailComponent implements OnInit {
     private router: Router,
     private formService: SubAreaFormService,
     private subAreaService: SubAreaService,
-    private areaService: AuditableAreaService
+    private areaService: AuditableAreaService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -42,8 +44,8 @@ export class SubAreaDetailComponent implements OnInit {
   }
 
   loadAuditableAreas() {
-    this.areaService.query().subscribe(resp => {
-      this.auditableAreas = resp.body || [];
+    this.areaService.getAllUnPaged().subscribe(resp => {
+      this.auditableAreas = resp || [];
     });
   }
 
@@ -52,18 +54,33 @@ export class SubAreaDetailComponent implements OnInit {
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.subAreaService.update(this.formService.fromFormGroup(this.form))
+        this.subAreaService.update(this.formService.fromFormGroup(this.form)),
+        'update'
       );
     } else {
       this.subscribeToResponse(
-        this.subAreaService.create(this.formService.fromFormGroup(this.form))
+        this.subAreaService.create(this.formService.fromFormGroup(this.form)),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<SubArea>) {
+  private subscribeToResponse(result: Observable<SubArea>, action: string) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/sub-areas']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Sub-Area Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Sub-Area Created Successfully'
+          );
+        }
+        this.router.navigate(['/settings/sub-areas']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -79,5 +96,9 @@ export class SubAreaDetailComponent implements OnInit {
   cancel() {
     this.router.navigate(['/settings/sub-areas']);
     return false;
+  }
+
+  trackAuditableAreaId(index: number, item: AuditableArea) {
+    return item.id;
   }
 }

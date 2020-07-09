@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { createRequestOption } from '../../shared/pagination.constants';
 import { SubArea } from './sub-area';
+import { FinancialYear } from '../financial-year/financial-year';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,16 @@ export class SubAreaService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<SubArea[]> {
-    return this.http.get<SubArea[]>(this.resourceUrl);
+  getAllUnPaged(): Observable<SubArea[]> {
+    return this.http.get<any>(this.resourceUrl);
+  }
+
+  getAllPaged(req?: any): Observable<HttpResponse<SubArea[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<SubArea[]>(this.resourceUrl + '/page', {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<SubArea> {
