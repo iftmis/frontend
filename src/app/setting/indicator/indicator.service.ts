@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Indicator } from './indicator';
+import { OrganisationUnitLevel } from '../organisation-unit-level/organisation-unit-level';
+import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +14,16 @@ export class IndicatorService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<Indicator[]> {
-    return this.http.get<Indicator[]>(this.resourceUrl);
+  // query(): Observable<Indicator[]> {
+  //   return this.http.get<Indicator[]>(this.resourceUrl);
+  // }
+
+  query(req?: any): Observable<HttpResponse<Indicator[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<Indicator[]>(this.resourceUrl, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<Indicator> {

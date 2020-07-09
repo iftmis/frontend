@@ -17,10 +17,17 @@ export class SubAreaService {
     return this.http.get<any>(this.resourceUrl);
   }
 
-  getAllPaged(req?: any): Observable<HttpResponse<SubArea[]>> {
-    const options = createRequestOption(req);
+  getAllPaged(
+    page: number,
+    size: number,
+    areaId: number
+  ): Observable<HttpResponse<SubArea[]>> {
     return this.http.get<SubArea[]>(this.resourceUrl + '/page', {
-      params: options,
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+        areaId: `${areaId}`,
+      },
       observe: 'response',
     });
   }

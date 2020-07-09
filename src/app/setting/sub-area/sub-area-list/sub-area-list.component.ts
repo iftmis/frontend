@@ -14,6 +14,9 @@ import { environment } from '../../../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { SubArea } from '../sub-area';
+import { AuditableAreaService } from '../../auditable-area/auditable-area.service';
+import { AuditableArea } from '../../auditable-area/auditable-area';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sub-area-list',
@@ -32,36 +35,45 @@ export class SubAreaListComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
+  auditableAreas: AuditableArea[];
+  auditableAreaControl = new FormControl(null);
+  areaId: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
     private titleService: Title,
-    private subAreaService: SubAreaService
+    private subAreaService: SubAreaService,
+    private areaService: AuditableAreaService
   ) {
+    this.areaId = 0;
     this.titleService.setTitle('Sub Areas|' + environment.app);
   }
 
-  loadPage() {
+  ngOnInit() {
+    this.loadPage(this.areaId);
+    this.loadAuditableAreas();
+  }
+
+  loadPage(auditableAreaId: number) {
     const pageToLoad = this.page || 0;
     this.subAreaService
-      .getAllPaged({
-        page: pageToLoad,
-        size: this.itemsPerPage,
-      })
+      .getAllPaged(pageToLoad, this.itemsPerPage, auditableAreaId)
       .subscribe(
         resp => this.onSuccess(resp.body, resp.headers, this.page),
         () => this.onError()
       );
   }
 
-  getData(): Observable<SubArea[]> {
-    return this.subAreaSubject.asObservable();
+  loadAuditableAreas() {
+    this.areaService.getAllUnPaged().subscribe(resp => {
+      this.auditableAreas = resp || [];
+    });
   }
 
-  ngOnInit() {
-    this.loadPage();
+  getData(): Observable<SubArea[]> {
+    return this.subAreaSubject.asObservable();
   }
 
   delete(id: number, subArea: SubArea) {
@@ -92,6 +104,16 @@ export class SubAreaListComponent implements OnInit {
   pageChange($event: PageEvent) {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;
-    this.loadPage();
+    this.loadPage(this.areaId);
+  }
+
+  filterSubAreaByArea(auditableArea: AuditableArea) {
+    if (auditableArea) {
+      this.areaId = auditableArea.id as number;
+      this.loadPage(this.areaId);
+    } else {
+      this.areaId = 0 as number;
+      this.loadPage(0);
+    }
   }
 }
