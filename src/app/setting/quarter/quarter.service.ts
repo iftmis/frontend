@@ -6,6 +6,7 @@ import { Quarter } from './quarter';
 import { createRequestOption } from '../../shared/pagination.constants';
 import { FinancialYear } from '../financial-year/financial-year';
 
+// @ts-ignore
 @Injectable({
   providedIn: 'root',
 })
