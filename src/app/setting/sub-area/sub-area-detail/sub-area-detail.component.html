@@ -10,7 +10,7 @@
     </mat-progress-spinner>
     <mat-card-title>SubArea</mat-card-title>
     <mat-card-subtitle>{{
-      subArea?.id ? 'Update an existing subArea.' : 'Creates a new subArea.'
+      subArea?.id ? 'Update an existing Sub-Area.' : 'Creates a new Sub-Area.'
     }}</mat-card-subtitle>
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
@@ -21,7 +21,7 @@
         <mat-select
           formControlName="areaId"
           required
-          placeholder="Select auditble Area"
+          placeholder="Select auditable Area"
         >
           <mat-option *ngFor="let area of auditableAreas" [value]="area.id">{{
             area.name
@@ -38,7 +38,7 @@
         <mat-label>Name</mat-label>
         <input
           matInput
-          placeholder="Enter subArea name"
+          placeholder="Enter Sub-Area name"
           formControlName="name"
           required
         />

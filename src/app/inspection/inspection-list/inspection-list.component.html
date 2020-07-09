@@ -1,11 +1,11 @@
-<mat-card *ngIf="getData() | async as data">
+<mat-card *ngIf="routeData$ | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Sub Areas</span>
+    <span class="mat-card-title">Inspection</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/settings/sub-areas', 'new']"
+        [routerLink]="['/inspections', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -21,22 +21,37 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!getData()">
+    <div *ngIf="!data.inspections?.length">
       <span class="table-overlay">No records found</span>
     </div>
-    <table mat-table [dataSource]="getData()" matSort>
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-      </ng-container>
-      <ng-container matColumnDef="areaName">
-        <th mat-header-cell *matHeaderCellDef>Auditable Area</th>
-        <td mat-cell *matCellDef="let element">{{ element.areaName }}</td>
+    <table
+      mat-table
+      [dataSource]="data.inspections"
+      matSort
+      *ngIf="!!data.inspections?.length"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Sub Area</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef>Start date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.startDate | date: 'dd/MM/yy' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.endDate | date: 'dd/MM/yy' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="inspectionType">
+        <th mat-header-cell *matHeaderCellDef>Inspection Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.inspectionType }}</td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
@@ -47,7 +62,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="AuditableArea form actions "
+            aria-label="Inspection form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -61,28 +76,21 @@
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
     </table>
-    <mat-paginator
-      [length]="totalItems"
-      [pageSize]="itemsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="pageChange($event)"
-    >
-    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit subArea"
-      [routerLink]="['/settings/sub-areas', id, 'edit']"
+      aria-label="Edit inspection"
+      [routerLink]="['/inspections', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete subArea"
+      aria-label="Delete inspection"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

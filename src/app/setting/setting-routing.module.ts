@@ -5,14 +5,6 @@ import { AuthenticatedUserGuard } from '../security/authenticated-user.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    component: SettingComponent,
-    data: {
-      title: 'Dashboard',
-      breadcrumb: null,
-    },
-  },
-  {
     path: 'auditable-areas',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>

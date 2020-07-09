@@ -3,7 +3,6 @@ import { Route } from '@angular/router';
 import { SubAreaListComponent } from './sub-area-list/sub-area-list.component';
 import { SubAreaDetailComponent } from './sub-area-detail/sub-area-detail.component';
 import { SubAreaResolver } from './sub-area.resolver';
-import { SubAreaListResolver } from './sub-area-list.resolver';
 
 export const subAreaRoutes: Route[] = [
   {
@@ -23,9 +22,6 @@ export const subAreaRoutes: Route[] = [
   {
     path: '',
     component: SubAreaListComponent,
-    resolve: {
-      subAreas: SubAreaListResolver,
-    },
     runGuardsAndResolvers: 'always',
   },
 ];

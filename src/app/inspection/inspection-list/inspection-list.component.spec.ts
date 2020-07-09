@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HeaderComponent } from './header.component';
-import { MaterialModule } from 'src/app/material/material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+import { MaterialModule } from '../../material/material.module';
+import { InspectionListComponent } from './inspection-list.component';
+
+describe('InspectionListComponent', () => {
+  let component: InspectionListComponent;
+  let fixture: ComponentFixture<InspectionListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderComponent],
+      declarations: [InspectionListComponent],
       imports: [
         MaterialModule,
         NoopAnimationsModule,
@@ -23,7 +23,7 @@ describe('HeaderComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(InspectionListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -58,7 +58,7 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
   loadPage() {
     const pageToLoad = this.page || 0;
     this.auditableAreaService
-      .query({
+      .getAllPaged({
         page: pageToLoad,
         size: this.itemsPerPage,
       })
