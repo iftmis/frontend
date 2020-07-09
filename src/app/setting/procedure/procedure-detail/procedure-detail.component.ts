@@ -42,7 +42,7 @@ export class ProcedureDetailComponent implements OnInit {
   }
 
   loadIndicator() {
-    this.indicatorService.query().subscribe(resp => {
+    this.indicatorService.getAllPaged().subscribe(resp => {
       this.indicators = resp;
     });
   }

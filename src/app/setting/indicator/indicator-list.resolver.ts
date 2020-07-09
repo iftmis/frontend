@@ -11,6 +11,6 @@ import { IndicatorService } from './indicator.service';
 export class IndicatorListResolver implements Resolve<Indicator[]> {
   constructor(private service: IndicatorService) {}
   resolve(route: ActivatedRouteSnapshot): Observable<Indicator[]> {
-    return this.service.query();
+    return this.service.getAllPaged();
   }
 }

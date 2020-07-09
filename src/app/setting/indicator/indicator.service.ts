@@ -12,7 +12,7 @@ export class IndicatorService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<Indicator[]> {
+  getAllPaged(): Observable<Indicator[]> {
     return this.http.get<Indicator[]>(this.resourceUrl);
   }
 
