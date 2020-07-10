@@ -1,4 +1,4 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+<form [formGroup]="form" novalidate (ngSubmit)="save()">
   <mat-card class="card">
     <mat-progress-spinner
       *ngIf="isSaveOrUpdateInProgress"

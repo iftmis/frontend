@@ -25,7 +25,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
-  organisationUnits: OrganisationUnit[] = [];
+  organisationUnits: OrganisationUnit[];
   event: any[];
   selectedFile: string;
 
@@ -49,6 +49,10 @@ export class OrganisationUnitDetailComponent implements OnInit {
     });
 
     this.error = undefined;
+  }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
   }
 
   onUpload() {
