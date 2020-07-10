@@ -5,7 +5,7 @@
       {{ loginError ? 'Invalid username or password.' : '&nbsp;' }}
     </div>
     <form class="form" [formGroup]="loginForm">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
         <input
           matInput
@@ -17,7 +17,7 @@
           >Username must contain a value</mat-error
         >
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
         <input
           matInput
@@ -33,7 +33,7 @@
       <mat-card-actions>
         <button
           mat-raised-button
-          color="accent"
+          color="primary"
           class="login-btn"
           [disabled]="loginForm.invalid"
           (click)="login()"
