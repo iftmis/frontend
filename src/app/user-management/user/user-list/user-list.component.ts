@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserDeleteComponent } from '../user-delete/user-delete.component';
 import { HttpHeaders } from '@angular/common/http';
@@ -14,6 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Title } from '@angular/platform-browser';
 import { User } from '../user';
 import { environment } from '../../../../environments/environment';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 @Component({
   selector: 'app-user-list',
@@ -108,5 +109,16 @@ export class UserListComponent implements OnInit {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;
     this.loadPage();
+  }
+
+  resetPassword(row: User) {
+    const data = {
+      user: row,
+    };
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = data;
+    this.dialog.open(ResetPasswordComponent, dialogConfig);
   }
 }

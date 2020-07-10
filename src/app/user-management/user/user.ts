@@ -11,7 +11,6 @@ export interface IUser {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
-  password?: string;
 }
 
 export class User implements IUser {
@@ -27,7 +26,20 @@ export class User implements IUser {
     public createdBy?: string,
     public createdDate?: Date,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: Date,
-    public password?: string
+    public lastModifiedDate?: Date
+  ) {}
+}
+
+export interface IPasswordReset {
+  id: number;
+  password: string;
+  passwordConfirmation: string;
+}
+
+export class PasswordReset implements IPasswordReset {
+  constructor(
+    public id: number,
+    public password: string,
+    public passwordConfirmation: string
   ) {}
 }
