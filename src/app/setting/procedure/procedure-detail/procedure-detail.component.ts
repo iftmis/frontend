@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import { ProcedureService } from '../procedure.service';
+import { ToastService } from '../../../shared/toast.service';
 import { ProcedureFormService } from './procedure-form.service';
 import { Procedure } from '../procedure';
-import { Indicator } from 'src/app/setting/indicator/indicator';
-import { IndicatorService } from 'src/app/setting/indicator/indicator.service';
+import { ProcedureService } from '../procedure.service';
+import { IndicatorService } from '../../indicator/indicator.service';
+import { Indicator } from '../../indicator/indicator';
 
 @Component({
   selector: 'app-procedure-detail',
@@ -28,11 +27,12 @@ export class ProcedureDetailComponent implements OnInit {
     private router: Router,
     private formService: ProcedureFormService,
     private procedureService: ProcedureService,
+    private toastService: ToastService,
     private indicatorService: IndicatorService
   ) {}
 
   ngOnInit() {
-    this.loadIndicator();
+    this.loadIndicators();
     this.route.data.subscribe(({ procedure }) => {
       this.procedure = procedure;
       this.form = this.formService.toFormGroup(procedure);
@@ -41,29 +41,44 @@ export class ProcedureDetailComponent implements OnInit {
     this.error = undefined;
   }
 
-  loadIndicator() {
-    this.indicatorService.getAllPaged().subscribe(resp => {
+  loadIndicators() {
+    this.indicatorService.getAllUnPaged().subscribe(resp => {
       this.indicators = resp;
     });
   }
 
-  saveOrUpdate() {
+  save() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.procedureService.update(this.formService.fromFormGroup(this.form))
+        this.procedureService.update(this.formService.fromFormGroup(this.form)),
+        'update'
       );
     } else {
       this.subscribeToResponse(
-        this.procedureService.create(this.formService.fromFormGroup(this.form))
+        this.procedureService.create(this.formService.fromFormGroup(this.form)),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<Procedure>) {
+  private subscribeToResponse(result: Observable<Procedure>, action: string) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/procedures']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Procedure Updated Successfully!'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Procedure Created Successfully!'
+          );
+        }
+        this.router.navigate(['/settings/procedures']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

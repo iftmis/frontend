@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ListComponent } from './list/list.component';
-import { FormComponent } from './form/form.component';
-import { SharedModule } from '../../shared/shared.module';
-import { DeleteComponent } from './delete/delete.component';
 import { RouterModule } from '@angular/router';
-import { roleRoutes } from './role-route';
+
+import { SharedModule } from '../../shared/shared.module';
+import { roleRoutes } from './role.route';
+import { RoleListComponent } from './role-list/role-list.component';
+import { RoleDetailComponent } from './role-detail/role-detail.component';
+import { RoleDeleteComponent } from './role-delete/role-delete.component';
 
 @NgModule({
-  declarations: [ListComponent, FormComponent, DeleteComponent],
-  imports: [CommonModule, SharedModule, RouterModule.forChild(roleRoutes)],
+  declarations: [RoleListComponent, RoleDetailComponent, RoleDeleteComponent],
+  imports: [SharedModule, RouterModule.forChild(roleRoutes)],
+  exports: [],
 })
 export class RoleModule {}

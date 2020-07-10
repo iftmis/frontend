@@ -9,12 +9,6 @@ const routes: Routes = [
     loadChildren: () => import('./user/user.module').then(m => m.UserModule),
   },
   {
-    path: 'permissions',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./permission/permission.module').then(m => m.PermissionModule),
-  },
-  {
     path: 'roles',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () => import('./role/role.module').then(m => m.RoleModule),

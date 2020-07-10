@@ -9,6 +9,7 @@ import { IndicatorFormService } from './indicator-form.service';
 import { Indicator } from '../indicator';
 import { SubArea } from 'src/app/setting/sub-area/sub-area';
 import { SubAreaService } from 'src/app/setting/sub-area/sub-area.service';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-indicator-detail',
@@ -28,7 +29,8 @@ export class IndicatorDetailComponent implements OnInit {
     private router: Router,
     private formService: IndicatorFormService,
     private indicatorService: IndicatorService,
-    private subAreaService: SubAreaService
+    private subAreaService: SubAreaService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -56,18 +58,33 @@ export class IndicatorDetailComponent implements OnInit {
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.indicatorService.update(this.formService.fromFormGroup(this.form))
+        this.indicatorService.update(this.formService.fromFormGroup(this.form)),
+        'update'
       );
     } else {
       this.subscribeToResponse(
-        this.indicatorService.create(this.formService.fromFormGroup(this.form))
+        this.indicatorService.create(this.formService.fromFormGroup(this.form)),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<Indicator>) {
+  private subscribeToResponse(result: Observable<Indicator>, action: string) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/indicators']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Indicator Updated Successfully!'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Indicator Created Successfully!'
+          );
+        }
+        this.router.navigate(['/settings/indicators']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

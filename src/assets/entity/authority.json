@@ -1,0 +1,16 @@
+{
+  "name": "role",
+  "pageTitle": "Roles",
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "maxlength": 50
+      }
+    }
+  ]
+}

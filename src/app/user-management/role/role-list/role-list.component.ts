@@ -1,33 +1,32 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-
-import { HttpHeaders } from '@angular/common/http';
-import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { ToastService } from '../../../shared/toast.service';
-import { IndicatorService } from '../indicator.service';
+import { PageEvent } from '@angular/material/paginator';
 import { Title } from '@angular/platform-browser';
-import { IndicatorDeleteComponent } from '../indicator-delete/indicator-delete.component';
-import { Indicator } from '../indicator';
 import { environment } from '../../../../environments/environment';
+import { Role } from '../role';
+import { RoleService } from '../role.service';
+import { RoleDeleteComponent } from '../role-delete/role-delete.component';
 
 @Component({
-  selector: 'app-indicator-list',
-  templateUrl: './indicator-list.component.html',
-  styleUrls: ['./indicator-list.component.scss'],
+  selector: 'app-role-list',
+  templateUrl: './role-list.component.html',
+  styleUrls: ['./role-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IndicatorListComponent implements OnInit {
-  displayedColumns = ['id', 'indicator', 'subArea', 'formActions'];
+export class RoleListComponent implements OnInit {
+  displayedColumns = ['id', 'role', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 
-  auditableAreaSubject: BehaviorSubject<Indicator[]> = new BehaviorSubject([]);
+  roleSubject: BehaviorSubject<Role[]> = new BehaviorSubject([]);
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -40,14 +39,14 @@ export class IndicatorListComponent implements OnInit {
     private dialog: MatDialog,
     private titleService: Title,
     private toastService: ToastService,
-    private auditableAreaService: IndicatorService
+    private roleService: RoleService
   ) {
-    this.titleService.setTitle('Indicators|' + environment.app);
+    this.titleService.setTitle('Roles|' + environment.app);
   }
 
   loadPage() {
     const pageToLoad = this.page || 0;
-    this.auditableAreaService
+    this.roleService
       .getAllPaged({
         page: pageToLoad,
         size: this.itemsPerPage,
@@ -58,30 +57,27 @@ export class IndicatorListComponent implements OnInit {
       );
   }
 
-  getData(): Observable<Indicator[]> {
-    return this.auditableAreaSubject.asObservable();
+  getData(): Observable<Role[]> {
+    return this.roleSubject.asObservable();
   }
 
   ngOnInit() {
     this.loadPage();
   }
 
-  delete(id: number, auditableArea: Indicator) {
-    const dialogRef = this.dialog.open(IndicatorDeleteComponent, {
-      data: auditableArea,
+  delete(id: string, role: Role) {
+    const dialogRef = this.dialog.open(RoleDeleteComponent, {
+      data: role,
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.showLoader = true;
-        this.auditableAreaService.delete(id).subscribe({
+        this.roleService.delete(id).subscribe({
           next: () => {
             this.loadPage();
-            this.toastService.success(
-              'Success',
-              'Indicator Area Deleted Successfully!'
-            );
-            this.router.navigate(['/settings/indicators']);
+            this.toastService.success('Success', 'Role Deleted Successfully!');
+            this.router.navigate(['/user-management/roles']);
           },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
@@ -93,7 +89,7 @@ export class IndicatorListComponent implements OnInit {
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.auditableAreaSubject.next(data);
+    this.roleSubject.next(data);
   }
 
   onError(): void {}

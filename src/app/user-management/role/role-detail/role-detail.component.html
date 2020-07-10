@@ -1,4 +1,4 @@
-<form [formGroup]="form" novalidate (ngSubmit)="save()">
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
   <mat-card class="card">
     <mat-progress-spinner
       *ngIf="isSaveOrUpdateInProgress"
@@ -8,36 +8,19 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>Procedure</mat-card-title>
+    <mat-card-title>Role</mat-card-title>
     <mat-card-subtitle>{{
-      procedure?.id
-        ? 'Update an existing procedure.'
-        : 'Creates a new procedure.'
+      role?.name ? 'Update an existing role.' : 'Creates a new role.'
     }}</mat-card-subtitle>
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
     </div>
     <mat-card-content class="content">
       <mat-form-field class="full-width">
-        <mat-label>Indicator</mat-label>
-        <mat-select formControlName="indicatorId" required>
-          <mat-option>--Select--</mat-option>
-          <mat-option *ngFor="let ind of indicators" [value]="ind.id">{{
-            ind.name
-          }}</mat-option>
-        </mat-select>
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('indicatorId')"
-            label="Indicator"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
         <mat-label>Name</mat-label>
         <input
           matInput
-          placeholder="Enter procedure name"
+          placeholder="Enter role name"
           formControlName="name"
           required
         />
@@ -61,7 +44,7 @@
         type="submit"
       >
         <mat-icon>save</mat-icon>
-        <span>{{ procedure?.id ? 'Update' : 'Save' }} </span>
+        <span>{{ role?.name ? 'Update' : 'Save' }} </span>
       </button>
     </mat-card-actions>
   </mat-card>

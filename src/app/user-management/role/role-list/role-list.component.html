@@ -1,11 +1,11 @@
 <mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Indicators</span>
+    <span class="mat-card-title">Roles</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/settings/indicators', 'new']"
+        [routerLink]="['/user-management/roles', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -29,14 +29,10 @@
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
       </ng-container>
-      <ng-container matColumnDef="indicator">
-        <th mat-header-cell *matHeaderCellDef>Indicator</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      </ng-container>
 
-      <ng-container matColumnDef="subArea">
-        <th mat-header-cell *matHeaderCellDef>Sub-Area</th>
-        <td mat-cell *matCellDef="let element">{{ element.subAreaName }}</td>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Role</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
@@ -46,8 +42,8 @@
             mat-icon-button
             color="accent"
             [matMenuTriggerFor]="menu"
-            [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="AuditableArea form actions "
+            [matMenuTriggerData]="{ id: element.name, element: element }"
+            aria-label="Role form actions"
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -74,15 +70,15 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit Indicator"
-      [routerLink]="['/settings/indicators', id, 'edit']"
+      aria-label="Edit Role"
+      [routerLink]="['/user-management/roles', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete Indicator"
+      aria-label="Delete Role"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>
