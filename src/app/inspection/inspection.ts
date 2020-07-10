@@ -4,8 +4,8 @@ export interface Inspection {
   startDate: Date;
   endDate: Date;
   inspectionType: string;
-  financialYearId: string;
+  financialYearId: number;
   financialYearName?: string;
-  organisationUnitId: string;
+  organisationUnitId: number;
   organisationUnitName?: string;
 }

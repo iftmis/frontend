@@ -16,7 +16,7 @@ export class OrganisationUnitResolver
     route: ActivatedRouteSnapshot
   ): Observable<OrganisationUnit | undefined> {
     const idParam = 'id';
-    const id = route.params[idParam];
+    const id = route.params['organisationUnitId'] || route.params[idParam];
     if (id) {
       return this.service.getById(id);
     }
