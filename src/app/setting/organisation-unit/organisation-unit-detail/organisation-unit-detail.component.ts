@@ -51,10 +51,6 @@ export class OrganisationUnitDetailComponent implements OnInit {
     this.error = undefined;
   }
 
-  onFileChanged(event) {
-    this.selectedFile = event.target.files[0];
-  }
-
   onUpload() {
     // upload code goes here
   }
