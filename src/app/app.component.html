@@ -2,9 +2,9 @@
   <app-header (toggleSidenav)="snav.toggle()"></app-header>
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #snav mode="over" fixedInViewport="true" fixedTopGap="68">
-      <app-sidenav></app-sidenav>
+      <app-sidenav (click)="snav.toggle()"></app-sidenav>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content (click)="snav.open()">
       <div class="body">
         <div class="content">
           <router-outlet></router-outlet>
