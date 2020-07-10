@@ -78,7 +78,18 @@
       "name": "authorities",
       "dataType": "string",
       "controlType": "text",
-      "validation": {}
+      "validation": {},
+      "options": [
+        {"name": "ROLE_ADMIN", "label": "ROLE_ADMIN"},
+        {"name": "ROLE_USER", "label": "ROLE_USER"},
+        {"name": "ROLE_CAG", "label": "ROLE_CAG"},
+        {"name": "ROLE_TAMISEMI", "label": "ROLE_TAMISEMI"},
+        {"name": "ROLE_RS", "label": "ROLE_RS"},
+        {"name": "ROLE_LGA", "label": "ROLE_LGA"},
+        {"name": "ROLE_BUNGE", "label": "ROLE_BUNGE"},
+        {"name": "ROLE_PRIME_MINISTER", "label": "ROLE_PRIME_MINISTER"},
+        {"name": "ROLE_IAG", "label": "ROLE_IAG"}
+      ]
     }
   ]
 }

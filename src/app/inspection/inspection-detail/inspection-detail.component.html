@@ -18,7 +18,7 @@
       {{ error ? error : '&nbsp;' }}
     </div>
     <mat-card-content class="content">
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Financial Year</mat-label>
         <mat-select formControlName="financialYearId" required>
           <mat-option>--Select--</mat-option>
@@ -35,7 +35,7 @@
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Inspection Type</mat-label>
         <mat-select formControlName="inspectionType" required>
           <mat-option>--Select--</mat-option>
@@ -53,7 +53,7 @@
         ></mat-error>
       </mat-form-field>
 
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input
           matInput
@@ -68,7 +68,7 @@
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Start date</mat-label>
         <input
           type="text"
@@ -91,7 +91,7 @@
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>End Date</mat-label>
         <input
           type="text"
