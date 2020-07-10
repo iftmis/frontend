@@ -1,21 +1,67 @@
 <div fxLayout="row">
   <div class="secondary-menu" fxLayout="column">
-    <a class="module-title">Settings</a>
-    <div>
-      <a mat-list-item routerLink="./procedures">Procedures</a>
-      <a mat-list-item routerLink="./indicators">Indicators</a>
-      <a mat-list-item routerLink="./sub-areas">Sub Areas</a>
-      <a mat-list-item routerLink="./auditable-areas">Auditable Areas</a>
+    <mat-nav-list class="nav-links">
+      <a mat-list-item class="module-title">Settings</a>
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./procedures"
+        >Procedures</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./indicators"
+        >Indicators</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./sub-areas"
+        >Sub Areas</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./auditable-areas"
+        >Auditable Areas</a
+      >
       <mat-divider></mat-divider>
-      <a mat-list-item routerLink="./financial-years">Financial Years</a>
-      <a mat-list-item routerLink="./quarters">Quarters</a>
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./financial-years"
+        >Financial Years</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./quarters"
+        >Quarters</a
+      >
       <a mat-list-item routerLink="./gfs-codes">Gfs Codes</a>
       <mat-divider></mat-divider>
-      <a mat-list-item routerLink="./organisation-unit-levels"
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./organisation-unit-levels"
         >Organisation Unit Levels</a
       >
-      <a mat-list-item routerLink="./organisation-units">Organisation Units</a>
-    </div>
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./organisation-units"
+        >Organisation Units</a
+      >
+    </mat-nav-list>
   </div>
   <div fxFlex>
     <router-outlet></router-outlet>
