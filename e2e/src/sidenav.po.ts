@@ -32,4 +32,5 @@ export class SidenavPage {
   );
   inspectionMenu = this.root.element(by.css('a[routerLink="/inspections"]'));
   roleMenu = this.root.element(by.css('a[routerLink="/roles"]'));
+  userMenu = this.root.element(by.css('a[routerLink="/users"]'));
 }
