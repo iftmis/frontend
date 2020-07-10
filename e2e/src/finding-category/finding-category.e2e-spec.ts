@@ -79,7 +79,7 @@ describe('FindingCategory tests', () => {
       initialCount = 0;
     } else {
       initialCount = await listPage.table.records.count();
-      expect(await listPage.table.columns.count()).toEqual(1);
+      expect(await listPage.table.columns.count()).toEqual(3);
 
       const actionsMenu = listPage.table.getActionsBtn(initialCount - 1);
       await actionsMenu.click();
@@ -109,7 +109,7 @@ describe('FindingCategory tests', () => {
     await detailPage.saveBtn.click();
 
     const actualRecordsCount = await listPage.table.records.count();
-    expect(await listPage.table.columns.count()).toEqual(1);
+    expect(await listPage.table.columns.count()).toEqual(3);
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
@@ -142,7 +142,7 @@ describe('FindingCategory tests', () => {
     await detailPage.saveBtn.click();
 
     const actualRecordsCount = await listPage.table.records.count();
-    expect(await listPage.table.columns.count()).toEqual(1);
+    expect(await listPage.table.columns.count()).toEqual(3);
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 

@@ -26,7 +26,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { from } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSortModule } from '@angular/material/sort';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   exports: [
@@ -50,7 +63,21 @@ import { from } from 'rxjs';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatPaginatorModule,
+    MatGridListModule,
+    MatSortModule,
+    MatExpansionModule,
+    FlexLayoutModule,
+    MatListModule,
+    MatAutocompleteModule,
+    MatStepperModule,
+    MatBadgeModule,
     MatSlideToggleModule,
+    MatChipsModule,
+    MatSliderModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatBottomSheetModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },

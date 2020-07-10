@@ -6,86 +6,92 @@
   ></mat-progress-bar>
 </div>
 <mat-toolbar
+  class="mat-elevated-z4"
   role="heading"
   color="primary"
   *ngIf="{ details: user$ | async } as user"
 >
-  <mat-toolbar-row>
-    <button
-      mat-icon-button
-      class="app-menu"
-      *ngIf="!!user.details"
-      (click)="toggleSidenav.emit()"
-    >
-      <mat-icon>menu</mat-icon>
-    </button>
-    <a class="logo" href="#" routerLink="/">
-      <img
-        alt="Angular Logo"
-        class="logo-img"
-        src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-      />
-    </a>
-    <span>IFT-MIS</span>
-    <span class="spacer"></span>
-    <mat-nav-list class="nav-links">
-      <a
-        mat-list-item
-        class="app-login nav-links__item"
-        *ngIf="!user.details"
-        href="#"
-        routerLink="/login"
-        routerLinkActive="nav-links__item--active"
-      >
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Sign In</span>
-      </a>
-      <button
-        *ngIf="!!user.details"
-        mat-icon-button
-        class="app-account nav-links__item"
-        [matMenuTriggerFor]="userMenu"
-      >
-        <mat-icon>account_circle</mat-icon>
-      </button>
-      <mat-menu #userMenu="matMenu">
-        <button mat-menu-item class="app-logout" (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Sign Out</span>
-        </button>
-      </mat-menu>
-    </mat-nav-list>
-  </mat-toolbar-row>
-  <mat-toolbar-row
-    class="primary-menu mat-elevation-z8"
-    style="background-color: white; color: #333;"
+  <button
+    mat-icon-button
+    class="app-menu"
+    *ngIf="!!user.details"
+    (click)="toggleSidenav.emit()"
   >
-    <button mat-button>
-      <mat-icon>pie_chart</mat-icon><span>Dashboard</span>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a class="logo" href="#" routerLink="/">
+    <img alt="IFT-MIS" class="logo-img" src="assets/img/logo.png" />
+  </a>
+  <span>IFT-MIS</span>
+  <span class="spacer"></span>
+  <mat-nav-list class="nav-links">
+    <a
+      mat-list-item
+      class="app-login nav-links__item"
+      *ngIf="!user.details"
+      href="#"
+      routerLink="/login"
+      routerLinkActive="nav-links__item--active"
+    >
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Sign In</span>
+    </a>
+    <button
+      *ngIf="!!user.details"
+      mat-icon-button
+      class="app-account nav-links__item"
+      [matMenuTriggerFor]="primaryMenu"
+    >
+      <mat-icon>more_vert</mat-icon>
     </button>
-    <button mat-button [matMenuTriggerFor]="menu">
-      <mat-icon>settings</mat-icon><span>Setup</span
-      ><mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button routerLink="/auditable-areas" mat-menu-item>
-        Auditable Areas
+    <mat-menu #primaryMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>menu</mat-icon>
+        <span>Risk Management</span>
       </button>
-      <button routerLink="/audit-program-engagements" mat-menu-item>
-        Audit Programs
+      <button mat-menu-item>
+        <mat-icon>menu</mat-icon>
+        <span>Inspection Planning</span>
+      </button>
+      <button mat-menu-item class="app-logout" routerLink="/inspection-phases">
+        <mat-icon>settings</mat-icon>
+        <span>Inspection Phases</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>menu</mat-icon>
+        <span>Findings Management</span>
+      </button>
+      <button mat-menu-item routerLink="/inspections">
+        <mat-icon>menu</mat-icon>
+        <span>Inspection</span>
+      </button>
+      <button mat-menu-item class="app-logout" routerLink="/settings">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>menu</mat-icon>
+        <span>Report</span>
+      </button>
+      <button mat-menu-item class="app-logout" routerLink="/user-management">
+        <mat-icon>people</mat-icon>
+        <span>User Management</span>
       </button>
     </mat-menu>
-    <button mat-button [matMenuTriggerFor]="menu">
-      <mat-icon>article</mat-icon><span>Audit Finding Management</span
-      ><mat-icon>keyboard_arrow_down</mat-icon>
+
+    <button
+      *ngIf="!!user.details"
+      mat-icon-button
+      class="app-account nav-links__item"
+      [matMenuTriggerFor]="userMenu"
+    >
+      <mat-icon>account_circle</mat-icon>
     </button>
-    <button mat-button [matMenuTriggerFor]="menu">
-      <mat-icon>visibility</mat-icon><span>Inspection</span
-      ><mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <button mat-button [matMenuTriggerFor]="menu">
-      <mat-icon>picture_as_pdf</mat-icon><span>Report</span
-      ><mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-  </mat-toolbar-row>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item class="app-logout" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+  </mat-nav-list>
 </mat-toolbar>

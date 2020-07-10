@@ -5,6 +5,9 @@ import { HomeComponent } from './layout/home/home.component';
 import { AnonymousUserGuard } from './security/anonymous-user.guard';
 import { PageNotFoundComponent } from './layout/error/page-not-found/page-not-found.component';
 import { AuthenticatedUserGuard } from './security/authenticated-user.guard';
+import { SettingComponent } from './setting/setting.component';
+import { InspectionComponent } from './inspection/inspection.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -15,56 +18,27 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
   },
   {
-    path: 'auditable-areas',
+    path: 'settings',
+    component: SettingComponent,
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
-      import('./auditable-area/auditable-area.module').then(
-        m => m.AuditableAreaModule
+      import('./setting/setting.module').then(m => m.SettingModule),
+  },
+  {
+    path: 'inspections',
+    component: InspectionComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection/inspection.module').then(m => m.InspectionModule),
+  },
+  {
+    path: 'user-management',
+    component: UserManagementComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./user-management/user-management.module').then(
+        m => m.UserManagementModule
       ),
-  },
-  {
-    path: 'financial-years',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./financial-year/financial-year.module').then(
-        m => m.FinancialYearModule
-      ),
-  },
-  {
-    path: 'organisation-unit-levels',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./organisation-unit-level/organisation-unit-level.module').then(
-        m => m.OrganisationUnitLevelModule
-      ),
-  },
-  {
-    path: 'organisation-units',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./organisation-unit/organisation-unit.module').then(
-        m => m.OrganisationUnitModule
-      ),
-  },
-  {
-    path: 'gfs-codes',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./gfs-code/gfs-code.module').then(m => m.GfsCodeModule),
-  },
-  {
-    path: 'finding-categories',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./finding-category/finding-category.module').then(
-        m => m.FindingCategoryModule
-      ),
-  },
-  {
-    path: 'quarters',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./quarter/quarter.module').then(m => m.QuarterModule),
   },
   {
     path: '**',
@@ -73,7 +47,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload',
+      useHash: true,
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

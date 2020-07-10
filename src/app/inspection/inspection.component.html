@@ -1,0 +1,16 @@
+<div fxLayout="row">
+  <div class="secondary-menu" fxLayout="column">
+    <a class="module-title">Inspections</a>
+    <div class="ou-tree">
+      <tree-root
+        [nodes]="nodes | async"
+        (activate)="onOuChange($event)"
+        [options]="options"
+      >
+      </tree-root>
+    </div>
+  </div>
+  <div fxFlex>
+    <router-outlet></router-outlet>
+  </div>
+</div>

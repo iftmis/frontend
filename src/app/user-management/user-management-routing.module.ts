@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthenticatedUserGuard } from '../security/authenticated-user.guard';
+
+const routes: Routes = [
+  /*{
+    path: '',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+  },*/
+  {
+    path: 'roles',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () => import('./role/role.module').then(m => m.RoleModule),
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class UserManagementRoutingModule {}
