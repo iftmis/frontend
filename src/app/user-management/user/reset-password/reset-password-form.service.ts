@@ -16,10 +16,7 @@ export class ResetPasswordFormService {
         Validators.required,
         Validators.minLength(8),
       ]),
-      passwordConfirmation: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
+      passwordConfirmation: this.formBuilder.control('', [Validators.required]),
     });
   }
 
