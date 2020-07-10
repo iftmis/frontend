@@ -4,13 +4,17 @@ import { Observable } from 'rxjs';
 
 import { Indicator } from './indicator';
 import { IndicatorService } from './indicator.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
-export class IndicatorListResolver implements Resolve<Indicator[]> {
+export class IndicatorListResolver
+  implements Resolve<HttpResponse<Indicator[]>> {
   constructor(private service: IndicatorService) {}
-  resolve(route: ActivatedRouteSnapshot): Observable<Indicator[]> {
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): Observable<HttpResponse<Indicator[]>> {
     return this.service.query();
   }
 }

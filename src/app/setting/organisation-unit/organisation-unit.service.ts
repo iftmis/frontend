@@ -20,6 +20,16 @@ export class OrganisationUnitService {
     return this.http.get<OrganisationUnit>(`${this.resourceUrl}/${id}`);
   }
 
+  getByUser(): Observable<OrganisationUnit[]> {
+    return this.http.get<OrganisationUnit[]>(`${this.resourceUrl}/by-user`);
+  }
+
+  getByParent(parentId: number): Observable<OrganisationUnit[]> {
+    return this.http.get<OrganisationUnit[]>(
+      `${this.resourceUrl}/by-parent/${parentId}`
+    );
+  }
+
   create(organisationUnit: OrganisationUnit): Observable<OrganisationUnit> {
     return this.http.post<OrganisationUnit>(this.resourceUrl, organisationUnit);
   }

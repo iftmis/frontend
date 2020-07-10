@@ -6,6 +6,7 @@ import { OrganisationUnitLevel } from './organisation-unit-level';
 import { createRequestOption } from '../../shared/pagination.constants';
 import { AuditableArea } from '../auditable-area/auditable-area';
 
+// @ts-ignore
 @Injectable({
   providedIn: 'root',
 })

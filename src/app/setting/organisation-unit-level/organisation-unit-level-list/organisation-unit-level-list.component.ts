@@ -20,6 +20,7 @@ import {
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { HttpHeaders } from '@angular/common/http';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-organisation-unit-level-list',
@@ -49,7 +50,8 @@ export class OrganisationUnitLevelListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private organisationUnitLevelService: OrganisationUnitLevelService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Organisation Unit Levels|' + environment.app);
   }
@@ -98,8 +100,15 @@ export class OrganisationUnitLevelListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.organisationUnitLevelService.delete(id).subscribe({
-          next: () =>
-            this.router.navigate(['/settings/organisation-unit-levels']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'Organisation Unit Level Deleted Successfully!'
+            );
+            this.router.navigate(['/settings/organisation-unit-levels']);
+          },
+
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

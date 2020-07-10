@@ -8,6 +8,7 @@ import { AuthenticationService } from './security/authentication.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
+  year = new Date();
   constructor(private authenticationService: AuthenticationService) {}
   ngOnInit() {
     this.authenticationService.fetchUserInfoWhenAuthenticated().subscribe();
