@@ -105,11 +105,20 @@
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Logo</mat-label>
+        <!--        <input-->
+        <!--          matInput-->
+        <!--          placeholder="Enter organisationUnit logo"-->
+        <!--          formControlName="logo"-->
+        <!--        />-->
         <input
-          matInput
-          placeholder="Enter organisationUnit logo"
-          formControlName="logo"
+          style="display: none;"
+          type="file"
+          (change)="onFileChanged($event)"
+          #fileInput
         />
+        <button (click)="fileInput.click()">Select File</button>
+        <button (click)="onUpload()">Upload!</button>
+
         <mat-error>
           <hip-ngx-error
             [control]="form.get('logo')"

@@ -26,6 +26,8 @@ export class OrganisationUnitDetailComponent implements OnInit {
   error: string | undefined = undefined;
   levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
   organisationUnits: OrganisationUnit[] = [];
+  event: any[];
+  selectedFile: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +49,14 @@ export class OrganisationUnitDetailComponent implements OnInit {
     });
 
     this.error = undefined;
+  }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpload() {
+    // upload code goes here
   }
 
   loadLevels() {
