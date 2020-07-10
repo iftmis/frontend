@@ -4,13 +4,15 @@ import { InspectionListComponent } from './inspection-list/inspection-list.compo
 import { InspectionDetailComponent } from './inspection-detail/inspection-detail.component';
 import { InspectionResolver } from './inspection.resolver';
 import { InspectionListResolver } from './inspection-list.resolver';
+import { OrganisationUnitResolver } from '../setting/organisation-unit/organisation-unit.resolver';
 
 export const inspectionRoutes: Route[] = [
   {
-    path: 'new',
+    path: ':organisationUnitId/new',
     component: InspectionDetailComponent,
     resolve: {
       inspection: InspectionResolver,
+      organisation: OrganisationUnitResolver,
     },
   },
   {
@@ -21,10 +23,10 @@ export const inspectionRoutes: Route[] = [
     },
   },
   {
-    path: '',
+    path: ':organisationUnitId',
     component: InspectionListComponent,
     resolve: {
-      inspections: InspectionListResolver,
+      organisation: OrganisationUnitResolver,
     },
     runGuardsAndResolvers: 'always',
   },

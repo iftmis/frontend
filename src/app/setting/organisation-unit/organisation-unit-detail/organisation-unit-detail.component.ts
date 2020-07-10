@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { OrganisationUnitService } from '../organisation-unit.service';
 import { OrganisationUnitFormService } from './organisation-unit-form.service';
@@ -11,6 +11,7 @@ import { OrganisationUnitLevelService } from 'src/app/setting/organisation-unit-
 import { OrganisationUnitLevel } from 'src/app/setting/organisation-unit-level/organisation-unit-level';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { ToastService } from '../../../shared/toast.service';
 import { HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -24,8 +25,8 @@ export class OrganisationUnitDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  organisationUnitLevels: HttpResponse<OrganisationUnitLevel[]>;
-  organisationUnits: OrganisationUnit[] = [];
+  levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
+  organisationUnits: HttpResponse<OrganisationUnit[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +34,8 @@ export class OrganisationUnitDetailComponent implements OnInit {
     private formService: OrganisationUnitFormService,
     private organisationUnitService: OrganisationUnitService,
     private ouLevelService: OrganisationUnitLevelService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Organization Unit Details|' + environment.app);
   }
@@ -51,8 +53,13 @@ export class OrganisationUnitDetailComponent implements OnInit {
 
   loadLevels() {
     this.ouLevelService.query().subscribe(resp => {
-      this.organisationUnitLevels = resp;
+      const l = resp.body || [];
+      this.levels.next(l);
     });
+  }
+
+  getLevels(): Observable<OrganisationUnitLevel[]> {
+    return this.levels.asObservable();
   }
 
   loadOus() {
@@ -68,20 +75,38 @@ export class OrganisationUnitDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.organisationUnitService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.organisationUnitService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<OrganisationUnit>) {
+  private subscribeToResponse(
+    result: Observable<OrganisationUnit>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/organisation-units']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Organisation Unit Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Organisation Unit Created Successfully'
+          );
+        }
+        this.router.navigate(['/settings/organisation-units']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

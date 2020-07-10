@@ -6,6 +6,7 @@ import { AnonymousUserGuard } from './security/anonymous-user.guard';
 import { PageNotFoundComponent } from './layout/error/page-not-found/page-not-found.component';
 import { AuthenticatedUserGuard } from './security/authenticated-user.guard';
 import { SettingComponent } from './setting/setting.component';
+import { InspectionComponent } from './inspection/inspection.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'inspections',
+    component: InspectionComponent,
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./inspection/inspection.module').then(m => m.InspectionModule),

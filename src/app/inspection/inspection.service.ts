@@ -13,9 +13,9 @@ export class InspectionService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<Inspection[]> {
+  query(ouId: number): Observable<Inspection[]> {
     return this.http
-      .get<Inspection[]>(this.resourceUrl)
+      .get<Inspection[]>(`${this.resourceUrl}/by-ou/${ouId}`)
       .pipe(map((response: Inspection[]) => this.parseArrayResponse(response)));
   }
 
