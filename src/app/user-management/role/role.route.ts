@@ -3,7 +3,6 @@ import { Route } from '@angular/router';
 import { RoleListComponent } from './role-list/role-list.component';
 import { RoleDetailComponent } from './role-detail/role-detail.component';
 import { RoleResolver } from './role.resolver';
-import { RoleListResolver } from './role-list.resolver';
 
 export const roleRoutes: Route[] = [
   {
@@ -23,9 +22,6 @@ export const roleRoutes: Route[] = [
   {
     path: '',
     component: RoleListComponent,
-    resolve: {
-      roles: RoleListResolver,
-    },
     runGuardsAndResolvers: 'always',
   },
 ];

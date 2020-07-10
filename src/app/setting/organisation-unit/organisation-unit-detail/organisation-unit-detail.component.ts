@@ -11,6 +11,7 @@ import { OrganisationUnitLevelService } from 'src/app/setting/organisation-unit-
 import { OrganisationUnitLevel } from 'src/app/setting/organisation-unit-level/organisation-unit-level';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { ToastService } from '../../../shared/toast.service';
 import { HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -25,9 +26,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
-  organisationUnits: OrganisationUnit[];
-  event: any[];
-  selectedFile: string;
+  organisationUnits: HttpResponse<OrganisationUnit[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +34,8 @@ export class OrganisationUnitDetailComponent implements OnInit {
     private formService: OrganisationUnitFormService,
     private organisationUnitService: OrganisationUnitService,
     private ouLevelService: OrganisationUnitLevelService,
-    private titleService: Title
+    private titleService: Title,
+    private toastService: ToastService
   ) {
     this.titleService.setTitle('Organization Unit Details|' + environment.app);
   }
@@ -49,14 +49,6 @@ export class OrganisationUnitDetailComponent implements OnInit {
     });
 
     this.error = undefined;
-  }
-
-  onFileChanged(event) {
-    this.selectedFile = event.target.files[0];
-  }
-
-  onUpload() {
-    // upload code goes here
   }
 
   loadLevels() {
@@ -83,20 +75,38 @@ export class OrganisationUnitDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.organisationUnitService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.organisationUnitService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<OrganisationUnit>) {
+  private subscribeToResponse(
+    result: Observable<OrganisationUnit>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/organisation-units']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Organisation Unit Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Organisation Unit Created Successfully'
+          );
+        }
+        this.router.navigate(['/settings/organisation-units']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
