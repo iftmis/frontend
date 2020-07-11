@@ -38,6 +38,7 @@
     "moment": "^2.27.0",
     "ng-jhipster": "^0.14.0",
     "ngx-hipster": "^0.7.0",
+    "ngx-image-uploader": "^6.0.0-beta.1",
     "ngx-toastr": "^12.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
