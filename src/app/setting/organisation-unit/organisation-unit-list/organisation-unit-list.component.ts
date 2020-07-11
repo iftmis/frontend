@@ -7,14 +7,8 @@ import { OrganisationUnitDeleteComponent } from '../organisation-unit-delete/org
 import { OrganisationUnit } from '../organisation-unit';
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
-import {
-  ITEMS_PER_PAGE,
-  PAGE_SIZE_OPTIONS,
-} from '../../../shared/pagination.constants';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
-import { HttpHeaders } from '@angular/common/http';
-import { GfsCode } from '../../gfs-code/gfs-code';
 import { ToastService } from '../../../shared/toast.service';
 import { Page } from '../../../shared/page';
 
@@ -25,14 +19,7 @@ import { Page } from '../../../shared/page';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrganisationUnitListComponent implements OnInit {
-  displayedColumns = [
-    'code',
-    'name',
-    'address',
-    'phoneNumber',
-    'email',
-    'formActions',
-  ];
+  displayedColumns = ['code', 'name', 'level', 'parent', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 
