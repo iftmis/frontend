@@ -99,7 +99,15 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit Indicator"
+      aria-label="Password Reset"
+      (click)="resetPassword(element)"
+    >
+      <mat-icon>lock</mat-icon>
+      <span>Reset Password</span>
+    </button>
+    <button
+      mat-menu-item
+      aria-label="Edit User"
       [routerLink]="['/user-management/users', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
@@ -107,7 +115,7 @@
     </button>
     <button
       mat-menu-item
-      aria-label="Delete Indicator"
+      aria-label="Delete User"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

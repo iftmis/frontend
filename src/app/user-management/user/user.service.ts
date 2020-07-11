@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { createRequestOption } from '../../shared/pagination.constants';
-import { User } from './user';
+import { PasswordReset, User } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +43,12 @@ export class UserService {
 
   delete(id: number) {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`);
+  }
+
+  resetPassword(passwordReset: PasswordReset): Observable<User> {
+    return this.http.post<User>(
+      this.resourceUrl + '/resetPassword',
+      passwordReset
+    );
   }
 }
