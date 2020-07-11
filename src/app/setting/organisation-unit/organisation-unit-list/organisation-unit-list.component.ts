@@ -16,6 +16,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { HttpHeaders } from '@angular/common/http';
 import { GfsCode } from '../../gfs-code/gfs-code';
 import { ToastService } from '../../../shared/toast.service';
+import { Page } from '../../../shared/page';
 
 @Component({
   selector: 'app-organisation-unit-list',
@@ -35,10 +36,13 @@ export class OrganisationUnitListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
 
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
-  page!: number;
+  totalItems: number;
+  pageSizeOptions: number[];
+
+  page: number;
+  size: number;
+  sortBy: string;
+  queryString: string;
 
   private OrganisationUnitSubject: BehaviorSubject<
     OrganisationUnit[]
@@ -53,38 +57,45 @@ export class OrganisationUnitListComponent implements OnInit {
     private toastService: ToastService
   ) {
     this.titleService.setTitle('Organisation Units|' + environment.app);
+    this.page = Page.page;
+    this.size = Page.size;
+    this.pageSizeOptions = Page.perPageOptions;
+    this.queryString = '_';
+    this.sortBy = 'name';
   }
 
   ngOnInit() {
-    this.loadPage();
+    this.loadPage(this.page, this.size, this.sortBy, this.queryString);
   }
 
-  loadPage() {
-    const pageToLoad = this.page || 0;
+  loadPage(page: number, size: number, sortBy: string, queryString: string) {
     this.organisationUnitService
-      .query({
-        page: pageToLoad,
-        size: this.itemsPerPage,
-      })
+      .getAllPaged(page, size, sortBy, queryString)
       .subscribe(
-        resp => this.onSuccess(resp.body, resp.headers, this.page),
-        () => this.onError()
+        response => {
+          this.onSuccess(response);
+        },
+        error => {
+          this.onError();
+        }
       );
   }
+
+  private onSuccess(response: any) {
+    this.OrganisationUnitSubject.next(response.content);
+    this.totalItems = response.totalElements;
+  }
+
   getData(): Observable<OrganisationUnit[]> {
     return this.OrganisationUnitSubject.asObservable();
   }
-  onSuccess(data: any, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.OrganisationUnitSubject.next(data);
-  }
+
   onError(): void {}
 
   pageChange($event: PageEvent) {
-    this.itemsPerPage = $event.pageSize;
+    this.size = $event.pageSize;
     this.page = $event.pageIndex;
-    this.loadPage();
+    this.loadPage(this.page, this.size, this.sortBy, this.queryString);
   }
 
   delete(id: number, organisationUnit: OrganisationUnit) {
@@ -97,7 +108,7 @@ export class OrganisationUnitListComponent implements OnInit {
         this.showLoader = true;
         this.organisationUnitService.delete(id).subscribe({
           next: () => {
-            this.loadPage();
+            this.loadPage(this.page, this.size, this.sortBy, this.queryString);
             this.toastService.success(
               'Success',
               'Organisation Unit Deleted Successfully!'

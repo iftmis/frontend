@@ -35,16 +35,15 @@ export class OrganisationUnitFormService {
       ]),
       background: this.formBuilder.control(organisationUnit.background, []),
       logo: this.formBuilder.control(organisationUnit.logo, []),
-      organisationUnitLevelId: this.formBuilder.control(
-        organisationUnit.organisationUnitLevelId,
-        [Validators.required]
-      ),
-      organisationUnitLevelName: this.formBuilder.control(
-        organisationUnit.organisationUnitLevelName,
+      logoContentType: this.formBuilder.control(
+        organisationUnit.logoContentType,
         []
       ),
-      parentId: this.formBuilder.control(organisationUnit.parentId, []),
-      parentName: this.formBuilder.control(organisationUnit.parentName, []),
+      organisationUnitLevel: this.formBuilder.control(
+        organisationUnit.organisationUnitLevel,
+        []
+      ),
+      parent: this.formBuilder.control(organisationUnit.parent, []),
     });
   }
 
@@ -58,11 +57,9 @@ export class OrganisationUnitFormService {
       email: formGroup.get('email')!.value,
       background: formGroup.get('background')!.value,
       logo: formGroup.get('logo')!.value,
-      organisationUnitLevelId: formGroup.get('organisationUnitLevelId')!.value,
-      organisationUnitLevelName: formGroup.get('organisationUnitLevelName')!
-        .value,
-      parentId: formGroup.get('parentId')!.value,
-      parentName: formGroup.get('parentName')!.value,
+      logoContentType: formGroup.get('logoContentType')!.value,
+      organisationUnitLevel: formGroup.get('organisationUnitLevel')!.value,
+      parent: formGroup.get('parent')!.value,
     };
   }
 }

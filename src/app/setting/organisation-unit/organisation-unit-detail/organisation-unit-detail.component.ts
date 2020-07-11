@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -12,7 +16,7 @@ import { OrganisationUnitLevel } from 'src/app/setting/organisation-unit-level/o
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ToastService } from '../../../shared/toast.service';
-import { HttpResponse } from '@angular/common/http';
+import { JhiDataUtils, JhiFileLoadError } from 'ng-jhipster';
 
 @Component({
   selector: 'app-organisation-unit-detail',
@@ -26,7 +30,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
-  organisationUnits: HttpResponse<OrganisationUnit[]>;
+  organisationUnits: OrganisationUnit[];
 
   constructor(
     private route: ActivatedRoute,
@@ -35,14 +39,15 @@ export class OrganisationUnitDetailComponent implements OnInit {
     private organisationUnitService: OrganisationUnitService,
     private ouLevelService: OrganisationUnitLevelService,
     private titleService: Title,
-    private toastService: ToastService
+    private toastService: ToastService,
+    protected dataUtils: JhiDataUtils,
+    protected elementRef: ElementRef
   ) {
     this.titleService.setTitle('Organization Unit Details|' + environment.app);
   }
 
   ngOnInit() {
     this.loadLevels();
-    this.loadOus();
     this.route.data.subscribe(({ organisationUnit }) => {
       this.organisationUnit = organisationUnit;
       this.form = this.formService.toFormGroup(organisationUnit);
@@ -62,10 +67,36 @@ export class OrganisationUnitDetailComponent implements OnInit {
     return this.levels.asObservable();
   }
 
-  loadOus() {
-    this.organisationUnitService.query().subscribe(resp => {
-      this.organisationUnits = resp;
-    });
+  filterParent(value: string) {
+    if (value.length > 0) {
+      this.organisationUnitService.getAllUnPaged(value.toLowerCase()).subscribe(
+        response => {
+          this.organisationUnits = response;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  displayFn(item: OrganisationUnit) {
+    if (item) {
+      return item.name;
+    } else {
+      return '';
+    }
+  }
+
+  checkParent() {
+    const x = this.form.value.parent as OrganisationUnit;
+    if (x === null) {
+      this.form.value.parent.reset();
+    } else {
+      if (!x.id) {
+        this.form.value.parent.reset();
+      }
+    }
   }
 
   saveOrUpdate() {
@@ -117,6 +148,56 @@ export class OrganisationUnitDetailComponent implements OnInit {
       },
       complete: () => (this.isSaveOrUpdateInProgress = false),
     });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils
+      .loadFileToForm(event, this.form, field, isImage)
+      .subscribe(null, (err: JhiFileLoadError) => {
+        this.toastService.error('Error', 'Image Upload Error');
+      });
+  }
+
+  clearInputImage(
+    field: string,
+    fieldContentType: string,
+    idInput: string
+  ): void {
+    this.form.patchValue({
+      [field]: null,
+      [fieldContentType]: null,
+    });
+    if (
+      this.elementRef &&
+      idInput &&
+      this.elementRef.nativeElement.querySelector('#' + idInput)
+    ) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
+    }
+  }
+
+  trackOrganisationUnitLevelId(index: number, item: OrganisationUnitLevel) {
+    return item.id;
+  }
+
+  getLevelId(): number {
+    if (this.form.value.organisationUnitLevel) {
+      return this.form.value.organisationUnitLevel.id as number;
+    } else {
+      return 0;
+    }
+  }
+
+  getLevel(): OrganisationUnitLevel {
+    if (this.form.value.organisationUnitLevel) {
+      return this.form.value.organisationUnitLevel as OrganisationUnitLevel;
+    } else {
+      return {} as OrganisationUnitLevel;
+    }
   }
 
   cancel() {
