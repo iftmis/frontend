@@ -23,3 +23,21 @@ export class OrganisationUnitResolver
     return of(undefined);
   }
 }
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ParentOrganisationUnitResolver
+  implements Resolve<OrganisationUnit | undefined> {
+  constructor(private service: OrganisationUnitService) {}
+
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): Observable<OrganisationUnit | undefined> {
+    const id = route.params['parentId'];
+    if (id) {
+      return this.service.getById(id);
+    }
+    return of(undefined);
+  }
+}
