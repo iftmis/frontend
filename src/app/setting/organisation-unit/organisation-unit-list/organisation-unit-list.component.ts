@@ -25,7 +25,6 @@ export class OrganisationUnitListComponent implements OnInit {
 
   totalItems: number;
   pageSizeOptions: number[];
-
   page: number;
   size: number;
   sortBy: string;
