@@ -48,22 +48,6 @@ const routes: Routes = [
       import('./gfs-code/gfs-code.module').then(m => m.GfsCodeModule),
   },
   {
-    path: 'category-of-findings',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./finding-category/finding-category.module').then(
-        m => m.FindingCategoryModule
-      ),
-  },
-  {
-    path: 'finding-sub-categories',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./finding-sub-category/finding-sub-category.module').then(
-        m => m.FindingSubCategoryModule
-      ),
-  },
-  {
     path: 'sub-areas',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>

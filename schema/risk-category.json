@@ -1,0 +1,24 @@
+{
+  "name": "riskCategory",
+  "pageTitle": "Risk Categories",
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    }
+  ]
+}
