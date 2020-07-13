@@ -1,0 +1,38 @@
+<div fxLayout="row">
+  <div class="secondary-menu" fxLayout="column">
+    <mat-nav-list class="nav-links">
+      <a mat-list-item class="module-title">Inspection Process</a>
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./preparation"
+        >Preparation</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./mobilization"
+        >Mobilization</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./execution"
+        >Execution</a
+      >
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./reporting-and-followup"
+        >Reporing & Followup</a
+      >
+    </mat-nav-list>
+  </div>
+  <div fxFlex>
+    <router-outlet></router-outlet>
+  </div>
+</div>

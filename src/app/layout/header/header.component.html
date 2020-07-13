@@ -45,21 +45,21 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #primaryMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>menu</mat-icon>
+      <button mat-menu-item class="app-logout" routerLink="/risk-management">
+        <mat-icon>settings</mat-icon>
         <span>Risk Management</span>
       </button>
       <button mat-menu-item>
         <mat-icon>menu</mat-icon>
         <span>Inspection Planning</span>
       </button>
-      <button mat-menu-item class="app-logout" routerLink="/inspection-phases">
+      <button mat-menu-item class="app-logout" routerLink="/inspection-process">
         <mat-icon>settings</mat-icon>
-        <span>Inspection Phases</span>
+        <span>Inspection Process</span>
       </button>
-      <button mat-menu-item>
-        <mat-icon>menu</mat-icon>
-        <span>Findings Management</span>
+      <button mat-menu-item class="app-logout" routerLink="/finding-management">
+        <mat-icon>settings</mat-icon>
+        <span>Finding Management</span>
       </button>
       <button mat-menu-item routerLink="/inspections">
         <mat-icon>menu</mat-icon>
@@ -69,8 +69,8 @@
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </button>
-      <button mat-menu-item>
-        <mat-icon>menu</mat-icon>
+      <button mat-menu-item class="app-logout" routerLink="/report">
+        <mat-icon>settings</mat-icon>
         <span>Report</span>
       </button>
       <button mat-menu-item class="app-logout" routerLink="/user-management">

@@ -8,6 +8,10 @@ import { AuthenticatedUserGuard } from './security/authenticated-user.guard';
 import { SettingComponent } from './setting/setting.component';
 import { InspectionComponent } from './inspection/inspection.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { RiskManagementComponent } from './risk-management/risk-management.component';
+import { ReportComponent } from './report/report.component';
+import { FindingManagementComponent } from './finding-management/finding-management.component';
+import { InspectionProcessComponent } from './inspection-process/inspection-process.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -32,6 +36,15 @@ const routes: Routes = [
       import('./inspection/inspection.module').then(m => m.InspectionModule),
   },
   {
+    path: 'inspection-process',
+    component: InspectionProcessComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-process/inspection-process.module').then(
+        m => m.InspectionProcessModule
+      ),
+  },
+  {
     path: 'user-management',
     component: UserManagementComponent,
     canActivateChild: [AuthenticatedUserGuard],
@@ -39,6 +52,31 @@ const routes: Routes = [
       import('./user-management/user-management.module').then(
         m => m.UserManagementModule
       ),
+  },
+  {
+    path: 'risk-management',
+    component: RiskManagementComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./risk-management/risk-management.module').then(
+        m => m.RiskManagementModule
+      ),
+  },
+  {
+    path: 'finding-management',
+    component: FindingManagementComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./finding-management/finding-management.module').then(
+        m => m.FindingManagementModule
+      ),
+  },
+  {
+    path: 'report',
+    component: ReportComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./report/report.module').then(m => m.ReportModule),
   },
   {
     path: '**',
