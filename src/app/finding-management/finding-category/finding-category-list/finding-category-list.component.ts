@@ -96,7 +96,7 @@ export class FindingCategoryListComponent implements OnInit {
               'Success',
               'Finding Category Deleted Successfully!'
             );
-            this.router.navigate(['/settings/category-of-findings']);
+            this.router.navigate(['/finding-management/finding-categories']);
           },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),

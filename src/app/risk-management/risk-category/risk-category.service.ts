@@ -7,8 +7,8 @@ import { RiskCategory } from './risk-category';
 @Injectable({
   providedIn: 'root',
 })
-export class RiskCategoryService {
-  private resourceUrl = 'api/risk-categorys';
+export class riskCategorieservice {
+  private resourceUrl = 'api/risk-categories';
 
   constructor(private http: HttpClient) {}
 

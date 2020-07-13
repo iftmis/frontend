@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { RiskCategoryService } from '../risk-category.service';
+import { riskCategorieservice } from '../risk-category.service';
 import { RiskCategoryDeleteComponent } from '../risk-category-delete/risk-category-delete.component';
 import { RiskCategory } from '../risk-category';
 
@@ -21,7 +21,7 @@ export class RiskCategoryListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private riskCategoryService: RiskCategoryService
+    private riskCategoryService: riskCategorieservice
   ) {}
 
   ngOnInit() {}
@@ -35,7 +35,8 @@ export class RiskCategoryListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.riskCategoryService.delete(id).subscribe({
-          next: () => this.router.navigate(['/risk-categorys']),
+          next: () =>
+            this.router.navigate(['/risk-management/risk-categories']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

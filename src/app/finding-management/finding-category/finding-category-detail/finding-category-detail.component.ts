@@ -79,7 +79,7 @@ export class FindingCategoryDetailComponent implements OnInit {
             'Finding Category Created Successfully'
           );
         }
-        this.router.navigate(['/settings/category-of-findings']);
+        this.router.navigate(['/finding-management/finding-categories']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -94,7 +94,7 @@ export class FindingCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/settings/finding-categories']);
+    this.router.navigate(['/finding-management/finding-categories']);
     return false;
   }
 }

@@ -75,7 +75,7 @@ export class FindingSubCategoryDetailComponent implements OnInit {
             'Finding Sub-Category Created Successfully'
           );
         }
-        this.router.navigate(['/settings/finding-sub-categories']);
+        this.router.navigate(['/finding-management/finding-sub-categories']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -90,7 +90,7 @@ export class FindingSubCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/settings/finding-sub-categories']);
+    this.router.navigate(['/finding-management/finding-sub-categories']);
     return false;
   }
 }
