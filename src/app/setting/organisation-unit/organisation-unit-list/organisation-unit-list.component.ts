@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { ToastService } from '../../../shared/toast.service';
 import { Page } from '../../../shared/page';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-organisation-unit-list',
@@ -56,10 +57,15 @@ export class OrganisationUnitListComponent implements OnInit {
 
   loadPage(page: number, size: number, sortBy: string, queryString: string) {
     this.organisationUnitService
-      .getAllPaged(page, size, sortBy, queryString)
+      .getPage({
+        page,
+        size,
+        sort: ['name,asc'],
+        queryString,
+      })
       .subscribe(
-        response => {
-          this.onSuccess(response);
+        resp => {
+          this.onSuccess(resp.body, resp.headers);
         },
         error => {
           this.onError();
@@ -67,9 +73,9 @@ export class OrganisationUnitListComponent implements OnInit {
       );
   }
 
-  private onSuccess(response: any) {
-    this.OrganisationUnitSubject.next(response.content);
-    this.totalItems = response.totalElements;
+  private onSuccess(data: OrganisationUnit[] | null, headers: HttpHeaders) {
+    this.OrganisationUnitSubject.next(data || []);
+    this.totalItems = parseInt(headers.get('x-total-count') || '0', 10);
   }
 
   getData(): Observable<OrganisationUnit[]> {

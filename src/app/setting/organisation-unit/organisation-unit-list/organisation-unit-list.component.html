@@ -38,13 +38,13 @@
       <ng-container matColumnDef="level">
         <th mat-header-cell *matHeaderCellDef>Level</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.organisationUnitLevel?.name }}
+          {{ element.organisationUnitLevelName }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="parent">
         <th mat-header-cell *matHeaderCellDef>Parent</th>
-        <td mat-cell *matCellDef="let element">{{ element.parent?.name }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.parentName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">

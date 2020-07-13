@@ -69,14 +69,18 @@ export class OrganisationUnitDetailComponent implements OnInit {
 
   filterParent(value: string) {
     if (value.length > 0) {
-      this.organisationUnitService.getAllUnPaged(value.toLowerCase()).subscribe(
-        response => {
-          this.organisationUnits = response;
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      this.organisationUnitService
+        .query({
+          'name.contains': value.toLowerCase(),
+        })
+        .subscribe(
+          resp => {
+            this.organisationUnits = resp.body || [];
+          },
+          error => {
+            console.log(error);
+          }
+        );
     }
   }
 
@@ -91,10 +95,10 @@ export class OrganisationUnitDetailComponent implements OnInit {
   checkParent() {
     const x = this.form.value.parent as OrganisationUnit;
     if (x === null) {
-      this.form.value.parent.reset();
+      this.form.value.parentId.reset();
     } else {
       if (!x.id) {
-        this.form.value.parent.reset();
+        this.form.value.parentId.reset();
       }
     }
   }

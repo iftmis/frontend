@@ -38,6 +38,22 @@ export class OrganisationUnitService {
     });
   }
 
+  query(req?: any): Observable<HttpResponse<OrganisationUnit[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<OrganisationUnit[]>(this.resourceUrl, {
+      params: options,
+      observe: 'response',
+    });
+  }
+
+  getPage(req?: any): Observable<HttpResponse<OrganisationUnit[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<OrganisationUnit[]>(`${this.resourceUrl}/page`, {
+      params: options,
+      observe: 'response',
+    });
+  }
+
   getById(id: number): Observable<OrganisationUnit> {
     return this.http.get<OrganisationUnit>(`${this.resourceUrl}/${id}`);
   }

@@ -143,12 +143,12 @@
           (focusout)="checkParent()"
           (keyup)="filterParent($event.target.value)"
           [matAutocomplete]="auto"
-          formControlName="parent"
+          formControlName="parentId"
         />
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option
             *ngFor="let organisationUnit of organisationUnits"
-            [value]="organisationUnit"
+            [value]="organisationUnit.id"
           >
             {{ organisationUnit.name }}
           </mat-option>
