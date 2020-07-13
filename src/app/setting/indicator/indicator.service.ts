@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { createRequestOption } from '../../shared/pagination.constants';
 import { Indicator } from './indicator';
+import { SubArea } from '../sub-area/sub-area';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +16,17 @@ export class IndicatorService {
     return this.http.get<any>(this.resourceUrl);
   }
 
-  getAllPaged(req?: any): Observable<HttpResponse<Indicator[]>> {
-    const options = createRequestOption(req);
+  getAllPaged(
+    page: number,
+    size: number,
+    subAreaId: number
+  ): Observable<HttpResponse<Indicator[]>> {
     return this.http.get<Indicator[]>(this.resourceUrl + '/page', {
-      params: options,
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+        subAreaId: `${subAreaId}`,
+      },
       observe: 'response',
     });
   }

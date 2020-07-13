@@ -1,0 +1,17 @@
+<div fxLayout="row">
+  <div class="secondary-menu" fxLayout="column">
+    <mat-nav-list class="nav-links">
+      <a mat-list-item class="module-title">Risk Management</a>
+      <a
+        mat-list-item
+        class="nav-links__item"
+        routerLinkActive="nav-links__item--active"
+        routerLink="./risk-categories"
+        >Risk Categories</a
+      >
+    </mat-nav-list>
+  </div>
+  <div fxFlex>
+    <router-outlet></router-outlet>
+  </div>
+</div>

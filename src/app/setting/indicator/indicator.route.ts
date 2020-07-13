@@ -3,7 +3,6 @@ import { Route } from '@angular/router';
 import { IndicatorListComponent } from './indicator-list/indicator-list.component';
 import { IndicatorDetailComponent } from './indicator-detail/indicator-detail.component';
 import { IndicatorResolver } from './indicator.resolver';
-import { IndicatorListResolver } from './indicator-list.resolver';
 
 export const indicatorRoutes: Route[] = [
   {
@@ -23,9 +22,6 @@ export const indicatorRoutes: Route[] = [
   {
     path: '',
     component: IndicatorListComponent,
-    resolve: {
-      indicators: IndicatorListResolver,
-    },
     runGuardsAndResolvers: 'always',
   },
 ];
