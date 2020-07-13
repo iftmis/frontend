@@ -104,56 +104,121 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Logo</mat-label>
-        <input
-          matInput
-          placeholder="Enter organisationUnit logo"
-          formControlName="logo"
-        />
-
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('logo')"
-            label="Logo"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
         <mat-label>Organisation Unit Level</mat-label>
-        <mat-select formControlName="organisationUnitLevelId" required>
-          <mat-option>--Select--</mat-option>
+        <mat-select formControlName="organisationUnitLevel">
           <mat-option
-            *ngFor="let level of getLevels() | async"
-            [value]="level.id"
-            >{{ level.name }}</mat-option
+            *ngIf="!getLevel()"
+            [value]="null"
+            aria-selected="true"
+          ></mat-option>
+          <mat-option
+            [value]="
+              organisationUnitLevel.id === getLevelId()
+                ? getLevel()
+                : organisationUnitLevel
+            "
+            *ngFor="
+              let organisationUnitLevel of getLevels() | async;
+              trackBy: trackOrganisationUnitLevelId
+            "
+            value="organisationUnitLevel"
           >
+            {{ organisationUnitLevel.code }} - {{ organisationUnitLevel.name }}
+          </mat-option>
         </mat-select>
         <mat-error>
           <hip-ngx-error
-            [control]="form.get('organisationUnitLevelId')"
+            [control]="form.get('organisationUnitLevel')"
             label="Organisation Unit Level"
           >
           </hip-ngx-error>
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
+        <mat-icon matPrefix>search</mat-icon>
         <mat-label>Parent</mat-label>
-        <mat-select formControlName="parentId">
-          <mat-option>--Select--</mat-option>
+        <input
+          matInput
+          placeholder="Parent"
+          (focusout)="checkParent()"
+          (keyup)="filterParent($event.target.value)"
+          [matAutocomplete]="auto"
+          formControlName="parent"
+        />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option
-            *ngFor="let parent of organisationUnits"
-            [value]="parent.id"
+            *ngFor="let organisationUnit of organisationUnits"
+            [value]="organisationUnit"
           >
-            {{ parent.name }}</mat-option
-          >
-        </mat-select>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('parentId')"
-            label="Parent"
-          ></hip-ngx-error>
-        </mat-error>
+            {{ organisationUnit.name }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
+      <div class="form-group">
+        <label class="form-control-label" for="field_logo">Logo</label>
+        <div>
+          <img
+            [src]="
+              'data:' +
+              form.get('logoContentType')!.value +
+              ';base64,' +
+              form.get('logo')!.value
+            "
+            style="max-height: 100px;"
+            *ngIf="form.get('logo')!.value"
+            alt="client image"
+          />
+          <div
+            *ngIf="form.get('logo')!.value"
+            class="form-text text-danger clearfix"
+          >
+            <span class="pull-left"
+              >{{ form.get('logoContentType')!.value }},
+              {{ byteSize(form.get('logo')!.value) }}</span
+            >
+            <button
+              type="button"
+              (click)="clearInputImage('logo', 'logoContentType', 'file_photo')"
+              class="btn btn-secondary btn-xs pull-right"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <input
+            type="file"
+            id="file_photo"
+            (change)="setFileData($event, 'logo', true)"
+            accept="image/*"
+          />
+        </div>
+        <input
+          type="hidden"
+          class="form-control"
+          name="logo"
+          id="field_logo"
+          formControlName="logo"
+        />
+        <input
+          type="hidden"
+          class="form-control"
+          name="logoContentType"
+          id="field_logoContentType"
+          formControlName="logoContentType"
+        />
+        <div
+          *ngIf="
+            form.get('logo')!.invalid &&
+            (form.get('logo')!.dirty || form.get('logo')!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="form.get('logo')?.errors?.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button (click)="cancel()">
