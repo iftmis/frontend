@@ -85,6 +85,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./objective/objective.module').then(m => m.ObjectiveModule),
   },
+  {
+    path: 'risk-ranks',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./risk-rank/risk-rank.module').then(m => m.RiskRankModule),
+  },
 ];
 
 @NgModule({
