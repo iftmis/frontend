@@ -4,9 +4,11 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { riskCategorieservice } from '../risk-category.service';
+import { RiskCategoryService } from '../risk-category.service';
 import { RiskCategoryFormService } from './risk-category-form.service';
 import { RiskCategory } from '../risk-category';
+import { ToastService } from '../../../shared/toast.service';
+import { action } from 'angular-tree-component/dist/mobx-angular/mobx-proxy';
 
 @Component({
   selector: 'app-risk-category-detail',
@@ -24,7 +26,8 @@ export class RiskCategoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: RiskCategoryFormService,
-    private riskCategoryService: riskCategorieservice
+    private riskCategoryService: RiskCategoryService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -43,20 +46,38 @@ export class RiskCategoryDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.riskCategoryService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.riskCategoryService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<RiskCategory>) {
+  private subscribeToResponse(
+    result: Observable<RiskCategory>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/risk-management/risk-categories']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Risk Category Updated Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Risk Category Created Successfully'
+          );
+        }
+        this.router.navigate(['/settings/risk-categories']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -70,7 +91,7 @@ export class RiskCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/risk-management/risk-categories']);
+    this.router.navigate(['/settings/risk-categories']);
     return false;
   }
 }

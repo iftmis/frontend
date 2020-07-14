@@ -42,7 +42,7 @@ export class OrganisationUnitFormService {
       ),
       organisationUnitLevelId: this.formBuilder.control(
         organisationUnit.organisationUnitLevelId,
-        []
+        [Validators.required]
       ),
       parentId: this.formBuilder.control(organisationUnit.parentId, []),
     });
