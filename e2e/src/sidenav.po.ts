@@ -36,4 +36,10 @@ export class SidenavPage {
   riskCategoryMenu = this.root.element(
     by.css('a[routerLink="/risk-categorys"]')
   );
+  inpsectionMemberMenu = this.root.element(
+    by.css('a[routerLink="/inpsection-members"]')
+  );
+  inspectionMemberMenu = this.root.element(
+    by.css('a[routerLink="/inspection-members"]')
+  );
 }

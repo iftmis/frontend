@@ -1,9 +1,15 @@
 {
-  "name": "inpsectionMember",
-  "pageTitle": "Inpesctiom Member",
+  "name": "inspectionMember",
+  "pageTitle": "Inspection Member",
   "pageOptions": {
     "list": {
-      "displayFields": []
+      "displayFields": [
+        "userFullName",
+        "email",
+        "role",
+        "letterAttachmentPath",
+        "declarationAttachementName"
+      ]
     }
   },
   "fields": [

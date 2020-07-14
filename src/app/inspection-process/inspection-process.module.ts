@@ -7,6 +7,9 @@ import { ExecutionComponent } from './execution/execution.component';
 import { ReportAndFollowupComponent } from './report-and-followup/report-and-followup.component';
 import { SharedModule } from '../shared/shared.module';
 import { InspectionProcessRoutingModule } from './inspection-process-routing.module';
+import { InspectionMemberListComponent } from './preparation/inspection-member/inspection-member-list/inspection-member-list.component';
+import { InspectionMemberDetailComponent } from './preparation/inspection-member/inspection-member-detail/inspection-member-detail.component';
+import { InspectionMemberDeleteComponent } from './preparation/inspection-member/inspection-member-delete/inspection-member-delete.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +18,9 @@ import { InspectionProcessRoutingModule } from './inspection-process-routing.mod
     MobilizationComponent,
     ExecutionComponent,
     ReportAndFollowupComponent,
+    InspectionMemberListComponent,
+    InspectionMemberDetailComponent,
+    InspectionMemberDeleteComponent,
   ],
   imports: [CommonModule, SharedModule, InspectionProcessRoutingModule],
 })
