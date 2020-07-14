@@ -64,6 +64,7 @@ mat-form-field {
 
   .mat-list-item {
     font-size: 14px;
+    padding-left: 20px;
   }
 
   div {
@@ -150,4 +151,8 @@ tr.data-row:hover {
   width: 170px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
+}
+
+.mat-tab-body {
+  padding: 16px;
 }

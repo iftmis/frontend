@@ -33,6 +33,13 @@
     </mat-nav-list>
   </div>
   <div fxFlex>
-    <router-outlet></router-outlet>
+    <mat-card>
+      {{ inspection.name }} - {{ inspection.organisationUnitName }} -{{
+        inspection.financialYearName
+      }}
+    </mat-card>
+    <mat-card>
+      <router-outlet></router-outlet>
+    </mat-card>
   </div>
 </div>

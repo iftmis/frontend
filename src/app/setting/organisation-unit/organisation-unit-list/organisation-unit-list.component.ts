@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -12,6 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ToastService } from '../../../shared/toast.service';
 import { Page } from '../../../shared/page';
 import { HttpHeaders } from '@angular/common/http';
+import { ITreeState, TreeComponent } from 'angular-tree-component';
 
 @Component({
   selector: 'app-organisation-unit-list',
@@ -19,7 +26,7 @@ import { HttpHeaders } from '@angular/common/http';
   styleUrls: ['./organisation-unit-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrganisationUnitListComponent implements OnInit {
+export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
   displayedColumns = ['code', 'name', 'level', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
@@ -38,7 +45,8 @@ export class OrganisationUnitListComponent implements OnInit {
   options = {
     getChildren: this.getChildren.bind(this),
   };
-  parent: OrganisationUnit;
+  parentId: any = 0;
+  @ViewChild('tree') tree: TreeComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,9 +65,13 @@ export class OrganisationUnitListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.parentId = this.state.focusedNodeId;
     this.organisationUnitService.getByUser().subscribe(resp => {
       this.nodes.next(this.mapToNode(resp));
-      this.parent = resp[0];
+      const ou = resp[0];
+      if (this.parentId === undefined && ou !== undefined) {
+        this.parentId = ou.id;
+      }
       this.loadPage(0);
     });
   }
@@ -70,7 +82,7 @@ export class OrganisationUnitListComponent implements OnInit {
         page,
         size: this.size,
         sort: ['name,asc'],
-        'parentId.equals': this.parent.id,
+        'parentId.equals': this.parentId,
       })
       .subscribe(
         resp => {
@@ -97,8 +109,15 @@ export class OrganisationUnitListComponent implements OnInit {
   }
 
   onOuChange($e: any) {
-    this.parent = $e.node.data;
+    this.parentId = $e.node.data.id;
     this.loadPage(0);
+  }
+
+  get state(): ITreeState {
+    return localStorage.treeState && JSON.parse(localStorage.treeState);
+  }
+  set state(state) {
+    localStorage.treeState = JSON.stringify(state);
   }
 
   private onSuccess(data: OrganisationUnit[] | null, headers: HttpHeaders) {
@@ -140,5 +159,14 @@ export class OrganisationUnitListComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    // if (parentId) {
+    //   console.log(parentId)
+    //   // @ts-ignore
+    //   this.parent = {id: parentId}
+    //   this.loadPage(0);
+    // }
   }
 }
