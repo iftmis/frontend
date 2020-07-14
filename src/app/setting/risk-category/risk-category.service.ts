@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { RiskCategory } from './risk-category';
@@ -12,8 +12,21 @@ export class RiskCategoryService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<RiskCategory[]> {
-    return this.http.get<RiskCategory[]>(this.resourceUrl);
+  getAllUnPaged(): Observable<RiskCategory[]> {
+    return this.http.get<any>(this.resourceUrl);
+  }
+
+  getAllPaged(
+    page: number,
+    size: number
+  ): Observable<HttpResponse<RiskCategory[]>> {
+    return this.http.get<RiskCategory[]>(this.resourceUrl + '/page', {
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+      },
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<RiskCategory> {
@@ -25,10 +38,7 @@ export class RiskCategoryService {
   }
 
   update(riskCategory: RiskCategory): Observable<RiskCategory> {
-    return this.http.put<RiskCategory>(
-      `${this.resourceUrl}/${riskCategory.id}`,
-      riskCategory
-    );
+    return this.http.put<RiskCategory>(`${this.resourceUrl}`, riskCategory);
   }
 
   delete(id: number) {

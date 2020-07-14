@@ -1,0 +1,94 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-card class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>RiskRegister</mat-card-title>
+    <mat-card-subtitle>{{
+      riskRegister?.id ? 'Update an existing Risk.' : 'Creates a new Risk.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content>
+      <div
+        class="container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="center"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"
+      >
+        <div fxFlex="15%">
+          <div class="ou-tree custom-ou-tree">
+            <mat-label>Council</mat-label>
+            <tree-root
+              [nodes]="nodes | async"
+              (activate)="onOuChange($event)"
+              [options]="options"
+            >
+            </tree-root>
+          </div>
+        </div>
+        <div fxFlex>
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              placeholder="Enter Risk name"
+              formControlName="name"
+              required
+            />
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('name')"
+                label="Name"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Financial Year</mat-label>
+            <mat-select formControlName="financialYear" required>
+              <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>
+              <mat-option
+                *ngFor="let financialYearIdOption of financialYears"
+                [value]="financialYearIdOption"
+                >{{ financialYearIdOption.name }}</mat-option
+              >
+            </mat-select>
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('financialYear')"
+                label="Financial Year"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div fxLayout="row">
+        <div fxFlexOffset="10" fxFlex="90" fxLayoutAlign="end">
+          <button mat-raised-button (click)="cancel()">
+            <mat-icon>cancel</mat-icon>
+            <span>Cancel</span>
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            [disabled]="form.invalid || isSaveOrUpdateInProgress"
+            type="submit"
+          >
+            <mat-icon>save</mat-icon>
+            <span>{{ riskRegister?.id ? 'Update' : 'Save' }} </span>
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>
