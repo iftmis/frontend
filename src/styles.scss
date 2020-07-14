@@ -45,7 +45,6 @@ mat-form-field {
 
   a.module-title {
     color: #1976d2;
-    /*padding-inline-start: 23px;*/
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
@@ -55,6 +54,10 @@ mat-form-field {
     min-height: 40px;
     position: relative;
     text-decoration: none;
+  }
+
+  .mat-list-item {
+    font-size: 14px;
   }
 
   div {

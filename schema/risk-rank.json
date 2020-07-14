@@ -1,0 +1,45 @@
+{
+  "name": "riskRank",
+  "pageTitle": "Risk Ranks",
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Minimum Value",
+      "name": "minValue",
+      "dataType": "number",
+      "controlType": "number",
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "label": "Maximum Value",
+      "name": "maxValue",
+      "dataType": "number",
+      "controlType": "number",
+      "validation": {
+        "required": true,
+        "max": 0
+      }
+    },
+    {
+      "label": "Hex Color",
+      "name": "hexColor",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 4,
+        "maxlength": 7
+      }
+    }
+  ]
+}

@@ -18,6 +18,27 @@
       {{ error ? error : '&nbsp;' }}
     </div>
     <mat-card-content class="content">
+      <mat-form-field appearance="outline" *ngIf="parent">
+        <mat-label>Parent Organisation</mat-label>
+        <input matInput placeholder="Parent" disabled [value]="parent?.name" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Organisation Unit Level</mat-label>
+        <mat-select formControlName="organisationUnitLevelId">
+          <mat-option
+            [value]="level.id"
+            *ngFor="let level of getLevels() | async"
+            >{{ level.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('organisationUnitLevelId')"
+            label="Organisation Unit Level"
+          >
+          </hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Code</mat-label>
         <input
@@ -102,57 +123,6 @@
             label="Background"
           ></hip-ngx-error>
         </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Organisation Unit Level</mat-label>
-        <mat-select formControlName="organisationUnitLevel">
-          <mat-option
-            *ngIf="!getLevel()"
-            [value]="null"
-            aria-selected="true"
-          ></mat-option>
-          <mat-option
-            [value]="
-              organisationUnitLevel.id === getLevelId()
-                ? getLevel()
-                : organisationUnitLevel
-            "
-            *ngFor="
-              let organisationUnitLevel of getLevels() | async;
-              trackBy: trackOrganisationUnitLevelId
-            "
-            value="organisationUnitLevel"
-          >
-            {{ organisationUnitLevel.code }} - {{ organisationUnitLevel.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('organisationUnitLevel')"
-            label="Organisation Unit Level"
-          >
-          </hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-icon matPrefix>search</mat-icon>
-        <mat-label>Parent</mat-label>
-        <input
-          matInput
-          placeholder="Parent"
-          (focusout)="checkParent()"
-          (keyup)="filterParent($event.target.value)"
-          [matAutocomplete]="auto"
-          formControlName="parent"
-        />
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option
-            *ngFor="let organisationUnit of organisationUnits"
-            [value]="organisationUnit"
-          >
-            {{ organisationUnit.name }}
-          </mat-option>
-        </mat-autocomplete>
       </mat-form-field>
       <div class="form-group">
         <label class="form-control-label" for="field_logo">Logo</label>

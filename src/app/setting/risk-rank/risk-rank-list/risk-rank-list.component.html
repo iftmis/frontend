@@ -1,11 +1,11 @@
 <mat-card *ngIf="routeData$ | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Risk Categories</span>
+    <span class="mat-card-title">Risk Ranks</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/risk-management/risk-categories', 'new']"
+        [routerLink]="['/settings/risk-ranks', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -21,23 +21,33 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!data.riskCategories?.length">
+    <div *ngIf="!data.riskRanks?.length">
       <span class="table-overlay">No records found</span>
     </div>
     <table
       mat-table
-      [dataSource]="data.riskCategories"
+      [dataSource]="data.riskRanks"
       matSort
-      *ngIf="!!data.riskCategories?.length"
+      *ngIf="!!data.riskRanks?.length"
     >
-      <ng-container matColumnDef="code">
-        <th mat-header-cell *matHeaderCellDef>Code</th>
-        <td mat-cell *matCellDef="let element">{{ element.code }}</td>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Description</th>
-        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+      <ng-container matColumnDef="minValue">
+        <th mat-header-cell *matHeaderCellDef>Minimum Value</th>
+        <td mat-cell *matCellDef="let element">{{ element.minValue }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="maxValue">
+        <th mat-header-cell *matHeaderCellDef>Maximum Value</th>
+        <td mat-cell *matCellDef="let element">{{ element.maxValue }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="hexColor">
+        <th mat-header-cell *matHeaderCellDef>Hex Color</th>
+        <td mat-cell *matCellDef="let element">{{ element.hexColor }}</td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
@@ -48,7 +58,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Risk Category form actions "
+            aria-label="RiskRank form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -68,15 +78,15 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit riskCategory"
-      [routerLink]="['/risk-management/risk-categories', id, 'edit']"
+      aria-label="Edit riskRank"
+      [routerLink]="['/settings/risk-ranks', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete riskCategory"
+      aria-label="Delete riskRank"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

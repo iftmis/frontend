@@ -45,37 +45,33 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #primaryMenu="matMenu">
-      <button mat-menu-item class="app-logout" routerLink="/risk-management">
-        <mat-icon>settings</mat-icon>
-        <span>Risk Management</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>menu</mat-icon>
-        <span>Inspection Planning</span>
-      </button>
-      <button mat-menu-item class="app-logout" routerLink="/inspection-process">
-        <mat-icon>settings</mat-icon>
-        <span>Inspection Process</span>
-      </button>
-      <button mat-menu-item class="app-logout" routerLink="/finding-management">
-        <mat-icon>settings</mat-icon>
-        <span>Finding Management</span>
-      </button>
-      <button mat-menu-item routerLink="/inspections">
-        <mat-icon>menu</mat-icon>
-        <span>Inspection</span>
+      <button mat-menu-item class="app-logout" routerLink="/user-management">
+        <mat-icon>people</mat-icon>
+        <span>User Management</span>
       </button>
       <button mat-menu-item class="app-logout" routerLink="/settings">
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </button>
-      <button mat-menu-item class="app-logout" routerLink="/report">
-        <mat-icon>settings</mat-icon>
-        <span>Report</span>
+      <button mat-menu-item class="app-logout" routerLink="/risk-management">
+        <mat-icon>error</mat-icon>
+        <span>Risk Management</span>
       </button>
-      <button mat-menu-item class="app-logout" routerLink="/user-management">
-        <mat-icon>people</mat-icon>
-        <span>User Management</span>
+      <button mat-menu-item>
+        <mat-icon>subject</mat-icon>
+        <span>Inspection Planning</span>
+      </button>
+      <button mat-menu-item routerLink="/inspections">
+        <mat-icon>visibility</mat-icon>
+        <span>Inspection</span>
+      </button>
+      <button mat-menu-item class="app-logout" routerLink="/finding-management">
+        <mat-icon>feedback</mat-icon>
+        <span>Finding Management</span>
+      </button>
+      <button mat-menu-item class="app-logout" routerLink="/report">
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>Report</span>
       </button>
     </mat-menu>
 

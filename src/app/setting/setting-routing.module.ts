@@ -71,6 +71,26 @@ const routes: Routes = [
     loadChildren: () =>
       import('./quarter/quarter.module').then(m => m.QuarterModule),
   },
+  {
+    path: 'risk-categories',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./risk-category/risk-category.module').then(
+        m => m.RiskCategoryModule
+      ),
+  },
+  {
+    path: 'objectives',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./objective/objective.module').then(m => m.ObjectiveModule),
+  },
+  {
+    path: 'risk-ranks',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./risk-rank/risk-rank.module').then(m => m.RiskRankModule),
+  },
 ];
 
 @NgModule({

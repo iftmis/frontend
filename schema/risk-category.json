@@ -12,8 +12,8 @@
       }
     },
     {
-      "label": "Description",
-      "name": "description",
+      "label": "Name",
+      "name": "name",
       "dataType": "string",
       "controlType": "text",
       "validation": {

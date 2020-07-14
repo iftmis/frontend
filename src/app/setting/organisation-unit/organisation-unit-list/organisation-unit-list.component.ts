@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { ToastService } from '../../../shared/toast.service';
 import { Page } from '../../../shared/page';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-organisation-unit-list',
@@ -19,7 +20,7 @@ import { Page } from '../../../shared/page';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrganisationUnitListComponent implements OnInit {
-  displayedColumns = ['code', 'name', 'level', 'parent', 'formActions'];
+  displayedColumns = ['code', 'name', 'level', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 
@@ -30,9 +31,14 @@ export class OrganisationUnitListComponent implements OnInit {
   sortBy: string;
   queryString: string;
 
-  private OrganisationUnitSubject: BehaviorSubject<
+  OrganisationUnitSubject: BehaviorSubject<
     OrganisationUnit[]
   > = new BehaviorSubject([]);
+  nodes: BehaviorSubject<any> = new BehaviorSubject([]);
+  options = {
+    getChildren: this.getChildren.bind(this),
+  };
+  parent: OrganisationUnit;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,15 +57,24 @@ export class OrganisationUnitListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadPage(this.page, this.size, this.sortBy, this.queryString);
+    this.organisationUnitService.getByUser().subscribe(resp => {
+      this.nodes.next(this.mapToNode(resp));
+      this.parent = resp[0];
+      this.loadPage(0);
+    });
   }
 
-  loadPage(page: number, size: number, sortBy: string, queryString: string) {
+  loadPage(page: number) {
     this.organisationUnitService
-      .getAllPaged(page, size, sortBy, queryString)
+      .getPage({
+        page,
+        size: this.size,
+        sort: ['name,asc'],
+        'parentId.equals': this.parent.id,
+      })
       .subscribe(
-        response => {
-          this.onSuccess(response);
+        resp => {
+          this.onSuccess(resp.body, resp.headers);
         },
         error => {
           this.onError();
@@ -67,9 +82,28 @@ export class OrganisationUnitListComponent implements OnInit {
       );
   }
 
-  private onSuccess(response: any) {
-    this.OrganisationUnitSubject.next(response.content);
-    this.totalItems = response.totalElements;
+  getChildren(node: any) {
+    return new Promise((resolve, reject) => {
+      this.organisationUnitService.getByParent(node.id).subscribe(resp => {
+        resolve(this.mapToNode(resp));
+      });
+    });
+  }
+
+  mapToNode(ous: OrganisationUnit[]) {
+    return ous.map(o => {
+      return { id: o.id, name: o.name, hasChildren: true };
+    });
+  }
+
+  onOuChange($e: any) {
+    this.parent = $e.node.data;
+    this.loadPage(0);
+  }
+
+  private onSuccess(data: OrganisationUnit[] | null, headers: HttpHeaders) {
+    this.OrganisationUnitSubject.next(data || []);
+    this.totalItems = parseInt(headers.get('x-total-count') || '0', 10);
   }
 
   getData(): Observable<OrganisationUnit[]> {
@@ -81,7 +115,7 @@ export class OrganisationUnitListComponent implements OnInit {
   pageChange($event: PageEvent) {
     this.size = $event.pageSize;
     this.page = $event.pageIndex;
-    this.loadPage(this.page, this.size, this.sortBy, this.queryString);
+    this.loadPage(this.page);
   }
 
   delete(id: number, organisationUnit: OrganisationUnit) {
@@ -94,7 +128,7 @@ export class OrganisationUnitListComponent implements OnInit {
         this.showLoader = true;
         this.organisationUnitService.delete(id).subscribe({
           next: () => {
-            this.loadPage(this.page, this.size, this.sortBy, this.queryString);
+            this.loadPage(this.page);
             this.toastService.success(
               'Success',
               'Organisation Unit Deleted Successfully!'

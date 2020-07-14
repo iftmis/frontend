@@ -31,6 +31,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   error: string | undefined = undefined;
   levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
   organisationUnits: OrganisationUnit[];
+  parent: OrganisationUnit;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,12 +49,20 @@ export class OrganisationUnitDetailComponent implements OnInit {
 
   ngOnInit() {
     this.loadLevels();
-    this.route.data.subscribe(({ organisationUnit }) => {
+    this.route.data.subscribe(({ organisationUnit, parent }) => {
       this.organisationUnit = organisationUnit;
+      this.parent = parent;
       this.form = this.formService.toFormGroup(organisationUnit);
+      this.setParent(parent);
     });
 
     this.error = undefined;
+  }
+  setParent(parent: OrganisationUnit) {
+    if (parent) {
+      this.parent = parent;
+      this.form.patchValue({ parentId: parent.id });
+    }
   }
 
   loadLevels() {
@@ -65,38 +74,6 @@ export class OrganisationUnitDetailComponent implements OnInit {
 
   getLevels(): Observable<OrganisationUnitLevel[]> {
     return this.levels.asObservable();
-  }
-
-  filterParent(value: string) {
-    if (value.length > 0) {
-      this.organisationUnitService.getAllUnPaged(value.toLowerCase()).subscribe(
-        response => {
-          this.organisationUnits = response;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    }
-  }
-
-  displayFn(item: OrganisationUnit) {
-    if (item) {
-      return item.name;
-    } else {
-      return '';
-    }
-  }
-
-  checkParent() {
-    const x = this.form.value.parent as OrganisationUnit;
-    if (x === null) {
-      this.form.value.parent.reset();
-    } else {
-      if (!x.id) {
-        this.form.value.parent.reset();
-      }
-    }
   }
 
   saveOrUpdate() {
@@ -178,10 +155,6 @@ export class OrganisationUnitDetailComponent implements OnInit {
     ) {
       this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
     }
-  }
-
-  trackOrganisationUnitLevelId(index: number, item: OrganisationUnitLevel) {
-    return item.id;
   }
 
   getLevelId(): number {

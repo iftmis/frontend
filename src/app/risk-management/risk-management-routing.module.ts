@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
-      import('./risk-category/risk-category.module').then(
+      import('../setting/risk-category/risk-category.module').then(
         m => m.RiskCategoryModule
       ),
   },
@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'risk-categories',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
-      import('./risk-category/risk-category.module').then(
+      import('../setting/risk-category/risk-category.module').then(
         m => m.RiskCategoryModule
       ),
   },
