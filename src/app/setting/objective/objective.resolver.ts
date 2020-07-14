@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
-import { RiskCategory } from './risk-category';
-import { riskCategorieservice } from './risk-category.service';
+import { Objective } from './objective';
+import { ObjectiveService } from './objective.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RiskCategoryResolver implements Resolve<RiskCategory | undefined> {
-  constructor(private service: riskCategorieservice) {}
+export class ObjectiveResolver implements Resolve<Objective | undefined> {
+  constructor(private service: ObjectiveService) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<RiskCategory | undefined> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Objective | undefined> {
     const idParam = 'id';
     const id = route.params[idParam];
     if (id) {

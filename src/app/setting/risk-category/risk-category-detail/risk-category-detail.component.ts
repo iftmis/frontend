@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { riskCategorieservice } from '../risk-category.service';
+import { RiskCategoryService } from '../risk-category.service';
 import { RiskCategoryFormService } from './risk-category-form.service';
 import { RiskCategory } from '../risk-category';
 
@@ -24,7 +24,7 @@ export class RiskCategoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: RiskCategoryFormService,
-    private riskCategoryService: riskCategorieservice
+    private riskCategoryService: RiskCategoryService
   ) {}
 
   ngOnInit() {
@@ -56,7 +56,7 @@ export class RiskCategoryDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<RiskCategory>) {
     result.subscribe({
-      next: () => this.router.navigate(['/risk-management/risk-categories']),
+      next: () => this.router.navigate(['/settings/risk-categories']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -70,7 +70,7 @@ export class RiskCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/risk-management/risk-categories']);
+    this.router.navigate(['/settings/risk-categories']);
     return false;
   }
 }

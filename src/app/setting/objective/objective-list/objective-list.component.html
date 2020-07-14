@@ -1,11 +1,11 @@
 <mat-card *ngIf="routeData$ | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Risk Categories</span>
+    <span class="mat-card-title">Objective</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/risk-management/risk-categories', 'new']"
+        [routerLink]="['/settings/objectives', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -21,14 +21,14 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!data.riskCategories?.length">
+    <div *ngIf="!data.objectives?.length">
       <span class="table-overlay">No records found</span>
     </div>
     <table
       mat-table
-      [dataSource]="data.riskCategories"
+      [dataSource]="data.objectives"
       matSort
-      *ngIf="!!data.riskCategories?.length"
+      *ngIf="!!data.objectives?.length"
     >
       <ng-container matColumnDef="code">
         <th mat-header-cell *matHeaderCellDef>Code</th>
@@ -48,7 +48,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Risk Category form actions "
+            aria-label="Objective form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -68,15 +68,15 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit riskCategory"
-      [routerLink]="['/risk-management/risk-categories', id, 'edit']"
+      aria-label="Edit objective"
+      [routerLink]="['/settings/objectives', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete riskCategory"
+      aria-label="Delete objective"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

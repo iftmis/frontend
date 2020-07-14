@@ -8,11 +8,11 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>RiskCategory</mat-card-title>
+    <mat-card-title>Objective</mat-card-title>
     <mat-card-subtitle>{{
-      riskCategory?.id
-        ? 'Update an existing riskCategory.'
-        : 'Creates a new riskCategory.'
+      objective?.id
+        ? 'Update an existing objective.'
+        : 'Creates a new objective.'
     }}</mat-card-subtitle>
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
@@ -22,9 +22,8 @@
         <mat-label>Code</mat-label>
         <input
           matInput
-          placeholder="Enter riskCategory code"
+          placeholder="Enter objective code"
           formControlName="code"
-          required
         />
         <mat-error
           ><hip-ngx-error
@@ -37,7 +36,7 @@
         <mat-label>Description</mat-label>
         <input
           matInput
-          placeholder="Enter riskCategory description"
+          placeholder="Enter objective description"
           formControlName="description"
           required
         />
@@ -61,7 +60,7 @@
         type="submit"
       >
         <mat-icon>save</mat-icon>
-        <span>{{ riskCategory?.id ? 'Update' : 'Save' }} </span>
+        <span>{{ objective?.id ? 'Update' : 'Save' }} </span>
       </button>
     </mat-card-actions>
   </mat-card>
