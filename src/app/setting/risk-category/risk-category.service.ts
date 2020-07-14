@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { RiskCategory } from './risk-category';
+import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,12 @@ export class RiskCategoryService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<RiskCategory[]> {
-    return this.http.get<RiskCategory[]>(this.resourceUrl);
+  query(req?: any): Observable<HttpResponse<RiskCategory[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<RiskCategory[]>(this.resourceUrl, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<RiskCategory> {
@@ -25,10 +30,7 @@ export class RiskCategoryService {
   }
 
   update(riskCategory: RiskCategory): Observable<RiskCategory> {
-    return this.http.put<RiskCategory>(
-      `${this.resourceUrl}/${riskCategory.id}`,
-      riskCategory
-    );
+    return this.http.put<RiskCategory>(`${this.resourceUrl}`, riskCategory);
   }
 
   delete(id: number) {
