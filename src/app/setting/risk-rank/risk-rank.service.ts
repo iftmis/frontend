@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { RiskRank } from './risk-rank';
@@ -12,8 +12,21 @@ export class RiskRankService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<RiskRank[]> {
-    return this.http.get<RiskRank[]>(this.resourceUrl);
+  getAllUnPaged(): Observable<RiskRank[]> {
+    return this.http.get<any>(this.resourceUrl);
+  }
+
+  getAllPaged(
+    page: number,
+    size: number
+  ): Observable<HttpResponse<RiskRank[]>> {
+    return this.http.get<RiskRank[]>(this.resourceUrl + '/page', {
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+      },
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<RiskRank> {
