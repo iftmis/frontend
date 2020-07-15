@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { createRequestOption } from '../../shared/pagination.constants';
 import { SubArea } from './sub-area';
-import { FinancialYear } from '../financial-year/financial-year';
 
 @Injectable({
   providedIn: 'root',

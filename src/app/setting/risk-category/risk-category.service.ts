@@ -3,7 +3,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { RiskCategory } from './risk-category';
-import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +12,19 @@ export class RiskCategoryService {
 
   constructor(private http: HttpClient) {}
 
-  query(req?: any): Observable<HttpResponse<RiskCategory[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<RiskCategory[]>(this.resourceUrl, {
-      params: options,
+  getAllUnPaged(): Observable<RiskCategory[]> {
+    return this.http.get<any>(this.resourceUrl);
+  }
+
+  getAllPaged(
+    page: number,
+    size: number
+  ): Observable<HttpResponse<RiskCategory[]>> {
+    return this.http.get<RiskCategory[]>(this.resourceUrl + '/page', {
+      params: {
+        page: `${page}`,
+        size: `${size}`,
+      },
       observe: 'response',
     });
   }

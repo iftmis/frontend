@@ -8,19 +8,23 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   //font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-family: Roboto, system-ui, sans-serif;
   font-size: 81.25%;
 }
+
 mat-icon.mat-icon {
   font-size: 1.2rem;
   margin-top: 6px;
 }
+
 mat-icon.mat-icon + span {
   padding-left: 0.2rem;
 }
+
 .primary-menu mat-icon.mat-icon,
 .primary-menu mat-icon.mat-icon + span {
   color: #787878;
@@ -33,9 +37,11 @@ $theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
 .content mat-card {
   margin: 16px;
 }
+
 mat-form-field {
   width: 100%;
 }
+
 .secondary-menu {
   width: 230px;
   display: flex;
@@ -131,6 +137,7 @@ div.ou-tree {
 table {
   width: 100%;
 }
+
 td.mat-column-formActions {
   width: 20px;
   padding-right: 8px !important;
@@ -138,6 +145,12 @@ td.mat-column-formActions {
 
 tr.data-row:hover {
   background: rgba(0, 0, 0, 0.1);
+}
+
+.custom-ou-tree {
+  width: 170px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
 }
 
 .mat-tab-body {

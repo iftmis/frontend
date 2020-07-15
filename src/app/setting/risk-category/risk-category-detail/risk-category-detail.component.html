@@ -8,7 +8,7 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>RiskCategory</mat-card-title>
+    <mat-card-title>Risk Category</mat-card-title>
     <mat-card-subtitle>{{
       riskCategory?.id
         ? 'Update an existing riskCategory.'
@@ -18,7 +18,7 @@
       {{ error ? error : '&nbsp;' }}
     </div>
     <mat-card-content class="content">
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Code</mat-label>
         <input
           matInput
@@ -33,7 +33,7 @@
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input
           matInput
