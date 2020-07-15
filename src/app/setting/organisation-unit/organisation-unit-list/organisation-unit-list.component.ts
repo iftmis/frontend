@@ -65,7 +65,7 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.parentId = this.state.focusedNodeId;
+    this.parentId = this.state?.focusedNodeId;
     this.organisationUnitService.getByUser().subscribe(resp => {
       this.nodes.next(this.mapToNode(resp));
       const ou = resp[0];
