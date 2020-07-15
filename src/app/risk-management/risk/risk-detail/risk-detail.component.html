@@ -1,0 +1,156 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-card class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>Risk</mat-card-title>
+    <mat-card-subtitle>{{
+      risk?.id ? 'Update an existing risk.' : 'Creates a new risk.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width">
+        <mat-label>Code</mat-label>
+        <input
+          matInput
+          placeholder="Enter risk code"
+          formControlName="code"
+          required
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('code')"
+            label="Code"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          placeholder="Enter risk description"
+          formControlName="description"
+          required
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('description')"
+            label="Description"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Risk Register</mat-label>
+        <input
+          matInput
+          placeholder="Enter risk risk register"
+          formControlName="riskRegisterName"
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('riskRegisterName')"
+            label="Risk Register"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Objective</mat-label>
+        <mat-select formControlName="objectiveId" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let objectiveIdOption of objectiveIdOptions"
+            [value]="objectiveIdOption.key"
+            >{{ objectiveIdOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('objectiveId')"
+            label="Objective"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Objective</mat-label>
+        <input
+          matInput
+          placeholder="Enter risk objective"
+          formControlName="objectiveDescription"
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('objectiveDescription')"
+            label="Objective"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Risk Category</mat-label>
+        <mat-select formControlName="riskCategoryId" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let riskCategoryIdOption of riskCategoryIdOptions"
+            [value]="riskCategoryIdOption.key"
+            >{{ riskCategoryIdOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('riskCategoryId')"
+            label="Risk Category"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Risk Category</mat-label>
+        <input
+          matInput
+          placeholder="Enter risk risk category"
+          formControlName="riskCategoryName"
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('riskCategoryName')"
+            label="Risk Category"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Owner</mat-label>
+        <input
+          matInput
+          placeholder="Enter risk owner"
+          formControlName="riskOwnerName"
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('riskOwnerName')"
+            label="Owner"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ risk?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

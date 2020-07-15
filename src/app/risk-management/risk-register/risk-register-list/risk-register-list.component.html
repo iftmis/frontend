@@ -1,6 +1,6 @@
 <mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Risks</span>
+    <span class="mat-card-title">Risk Register</span>
     <div>
       <button
         mat-raised-button
@@ -129,6 +129,14 @@
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
+    <button
+      mat-menu-item
+      aria-label="Risks"
+      [routerLink]="['/risk-management/risk-register', id, 'risks']"
+    >
+      <mat-icon>list</mat-icon>
+      <span>Risks</span>
+    </button>
     <button
       mat-menu-item
       aria-label="Edit Risk"
