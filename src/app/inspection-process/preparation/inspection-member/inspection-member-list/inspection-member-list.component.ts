@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { InspectionMemberService } from '../inspection-member.service';
 import { InspectionMemberDeleteComponent } from '../inspection-member-delete/inspection-member-delete.component';
@@ -43,7 +43,9 @@ export class InspectionMemberListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.inspectionId);
+    this.loadMembers();
+  }
+  loadMembers() {
     this.inspectionMemberService
       .getByInspection(this.inspectionId)
       .subscribe(res => {
@@ -64,7 +66,7 @@ export class InspectionMemberListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.inspectionMemberService.delete(id).subscribe({
-          next: () => this.router.navigate(['/inspection-members']),
+          next: () => this.loadMembers(),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
@@ -74,10 +76,11 @@ export class InspectionMemberListComponent implements OnInit {
 
   createOrEdit(inspectionMember?: InspectionMember) {
     const dialogRef = this.dialog.open(InspectionMemberDetailComponent, {
-      data: inspectionMember,
+      data: { inspectionMember, inspectionId: this.inspectionId },
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.loadMembers();
       if (result) {
         this.showLoader = true;
       }

@@ -7,12 +7,14 @@ import {
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { InspectionMemberService } from '../inspection-member.service';
 import { InspectionMemberFormService } from './inspection-member-form.service';
 import { InspectionMember } from '../inspection-member';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UserService } from '../../../../user-management/user/user.service';
+import { User } from '../../../../user-management/user/user';
 
 @Component({
   selector: 'app-inspection-member-detail',
@@ -24,6 +26,8 @@ export class InspectionMemberDetailComponent implements OnInit {
   inspectionMember: InspectionMember;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
+  users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  inspectionId: number;
   roleOptions: KeyValue<string, string>[] = [
     { key: 'TEAM_LEAD', value: 'Team Lead' },
     { key: 'MEMBER', value: 'Member' },
@@ -35,13 +39,32 @@ export class InspectionMemberDetailComponent implements OnInit {
     private router: Router,
     private formService: InspectionMemberFormService,
     private inspectionMemberService: InspectionMemberService,
-    @Inject(MAT_DIALOG_DATA) public data: InspectionMember
+    private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<InspectionMemberDetailComponent>
   ) {}
 
   ngOnInit() {
-    this.inspectionMember = this.data;
+    this.loadUsers();
+    this.inspectionMember = this.data.inspectionMember;
     this.form = this.formService.toFormGroup(this.inspectionMember);
+    this.inspectionId = this.data.inspectionId;
+    console.log(this.inspectionId);
+    if (this.inspectionMember === undefined) {
+      this.form.patchValue({
+        inspectionId: this.inspectionId,
+      });
+    }
     this.error = undefined;
+  }
+
+  loadUsers() {
+    this.userService.getAllUnPaged().subscribe(res => {
+      this.users.next(res);
+    });
+  }
+  getUsers(): Observable<User[]> {
+    return this.users.asObservable();
   }
 
   saveOrUpdate() {
@@ -64,7 +87,7 @@ export class InspectionMemberDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<InspectionMember>) {
     result.subscribe({
-      next: () => this.router.navigate(['/inspection-members']),
+      next: () => this.dialogRef.close(),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -78,7 +101,6 @@ export class InspectionMemberDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-members']);
-    return false;
+    this.dialogRef.close();
   }
 }

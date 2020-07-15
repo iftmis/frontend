@@ -43,7 +43,12 @@
       <ng-container matColumnDef="letterAttachmentPath">
         <th mat-header-cell *matHeaderCellDef>Letter</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.letterAttachmentPath }}
+          <span *ngIf="element.letterAttachmentId">
+            <button mat-icon-button><mat-icon>attachment</mat-icon></button>
+          </span>
+          <span *ngIf="!element.letterAttachmentId">
+            <button mat-icon-button><mat-icon>email</mat-icon></button>
+          </span>
         </td>
       </ng-container>
 
@@ -51,6 +56,12 @@
         <th mat-header-cell *matHeaderCellDef>Declaration</th>
         <td mat-cell *matCellDef="let element">
           {{ element.declarationAttachmentName }}
+          <span *ngIf="element.declarationAttachementId">
+            <button mat-icon-button><mat-icon>attachment</mat-icon></button>
+          </span>
+          <span *ngIf="!element.declarationAttachementId">
+            <button mat-icon-button><mat-icon>email</mat-icon></button>
+          </span>
         </td>
       </ng-container>
 
@@ -83,7 +94,7 @@
     <button
       mat-menu-item
       aria-label="Edit inspectionMember"
-      [routerLink]="['/inspection-members', id, 'edit']"
+      (click)="createOrEdit(element)"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
