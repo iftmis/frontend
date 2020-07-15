@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { OrganisationUnit } from './organisation-unit';
 import { createRequestOption } from '../../shared/pagination.constants';
-import { Indicator } from '../indicator/indicator';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +13,8 @@ export class OrganisationUnitService {
 
   constructor(private http: HttpClient) {}
 
-  getAllUnPaged(queryString = '_'): Observable<OrganisationUnit[]> {
-    return this.http.get<any>(this.resourceUrl, {
-      params: {
-        query: `${queryString}`,
-      },
-    });
+  getAllCouncils(queryString = '_'): Observable<OrganisationUnit[]> {
+    return this.http.get<any>(this.resourceUrl + '/councils');
   }
 
   getAllPaged(
