@@ -1,0 +1,65 @@
+<form (ngSubmit)="saveOrUpdate()" [formGroup]="form" novalidate>
+  <mat-dialog-content>
+    <h2 mat-dialog-title>Inspection Member</h2>
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      class="form-overlay"
+      color="accent"
+      diameter="50"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <div class="content">
+      <mat-form-field class="full-width">
+        <mat-label>User</mat-label>
+        <mat-select formControlName="userId" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option *ngFor="let user of getUsers() | async" [value]="user.id"
+            >{{ user.firstName }} {{ user.lastName }}</mat-option
+          >
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('userId')"
+            label="User"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Inspection Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let roleOption of roleOptions"
+            [value]="roleOption.key"
+            >{{ roleOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('role')"
+            label="Inspection Role"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>
+      <mat-icon>cancel</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button
+      [disabled]="form.invalid || isSaveOrUpdateInProgress"
+      color="accent"
+      mat-raised-button
+      type="submit"
+    >
+      <mat-icon>save</mat-icon>
+      <span>{{ inspectionMember?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </mat-dialog-actions>
+</form>

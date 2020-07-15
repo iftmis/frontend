@@ -37,4 +37,8 @@ export class SidenavPage {
     by.css('a[routerLink="/risk-categorys"]')
   );
   objectiveMenu = this.root.element(by.css('a[routerLink="/objectives"]'));
+  riskRankMenu = this.root.element(by.css('a[routerLink="/risk-ranks"]'));
+  riskRegisterMenu = this.root.element(
+    by.css('a[routerLink="/risk-registers"]')
+  );
 }

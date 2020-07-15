@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { RiskCategoryService } from '../risk-category.service';
 import { RiskCategoryFormService } from './risk-category-form.service';
 import { RiskCategory } from '../risk-category';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-risk-category-detail',
@@ -24,7 +25,8 @@ export class RiskCategoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: RiskCategoryFormService,
-    private riskCategoryService: RiskCategoryService
+    private riskCategoryService: RiskCategoryService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -43,20 +45,38 @@ export class RiskCategoryDetailComponent implements OnInit {
       this.subscribeToResponse(
         this.riskCategoryService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.riskCategoryService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<RiskCategory>) {
+  private subscribeToResponse(
+    result: Observable<RiskCategory>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/risk-categories']),
+      next: () => {
+        if (action === 'create') {
+          this.toastService.success(
+            'Success!',
+            'Risk Category Created Successfully!'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Risk Category Updated Successfully!'
+          );
+        }
+        this.router.navigate(['/settings/risk-categories']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
