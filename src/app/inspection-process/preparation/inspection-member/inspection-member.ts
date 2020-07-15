@@ -1,12 +1,11 @@
 export interface InspectionMember {
   id?: number;
-  fullName: string;
-  email?: string;
   role?: string;
   userId: number;
   userFullName?: string;
   letterAttachmentId?: number;
   letterAttachmentPath?: string;
-  declarationAttachementId?: number;
+  declarationAttachmentId?: number;
   declarationAttachmentName?: string;
+  inspectionId: number;
 }

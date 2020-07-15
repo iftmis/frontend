@@ -1,18 +1,11 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <h2 mat-dialog-title>Inspection Member</h2>
-  <mat-card-subtitle
-    >{{
-      inspectionMember?.id
-        ? 'Update an existing inspectionMember.'
-        : 'Creates a new inspectionMember.'
-    }}
-  </mat-card-subtitle>
+<form (ngSubmit)="saveOrUpdate()" [formGroup]="form" novalidate>
   <mat-dialog-content>
+    <h2 mat-dialog-title>Inspection Member</h2>
     <mat-progress-spinner
       *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
       class="form-overlay"
       color="accent"
+      diameter="50"
       mode="indeterminate"
     >
     </mat-progress-spinner>
@@ -21,33 +14,19 @@
     </div>
     <div class="content">
       <mat-form-field class="full-width">
-        <mat-label>Full Name</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspectionMember full name"
-          formControlName="fullName"
-          required
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('fullName')"
-            label="Full Name"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspectionMember email"
-          formControlName="email"
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('email')"
-            label="Email"
-          ></hip-ngx-error
-        ></mat-error>
+        <mat-label>User</mat-label>
+        <mat-select formControlName="userId" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option *ngFor="let user of getUsers() | async" [value]="user.id"
+            >{{ user.firstName }} {{ user.lastName }}</mat-option
+          >
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('userId')"
+            label="User"
+          ></hip-ngx-error>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Inspection Role</mat-label>
@@ -59,119 +38,24 @@
             >{{ roleOption.value }}</mat-option
           >
         </mat-select>
-        <mat-error
-          ><hip-ngx-error
+        <mat-error>
+          <hip-ngx-error
             [control]="form.get('role')"
             label="Inspection Role"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>User</mat-label>-->
-      <!--        <mat-select formControlName="userId" required>-->
-      <!--          <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>-->
-      <!--          <mat-option-->
-      <!--            *ngFor="let userIdOption of userIdOptions"-->
-      <!--            [value]="userIdOption.key"-->
-      <!--            >{{ userIdOption.value }}</mat-option-->
-      <!--          >-->
-      <!--        </mat-select>-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('userId')"-->
-      <!--            label="User"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>User</mat-label>-->
-      <!--        <input-->
-      <!--          matInput-->
-      <!--          placeholder="Enter inspectionMember user"-->
-      <!--          formControlName="userFullName"-->
-      <!--        />-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('userFullName')"-->
-      <!--            label="User"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>Letter</mat-label>-->
-      <!--        <mat-select formControlName="letterAttachmentId">-->
-      <!--          <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>-->
-      <!--          <mat-option-->
-      <!--            *ngFor="let letterAttachmentIdOption of letterAttachmentIdOptions"-->
-      <!--            [value]="letterAttachmentIdOption.key"-->
-      <!--            >{{ letterAttachmentIdOption.value }}</mat-option-->
-      <!--          >-->
-      <!--        </mat-select>-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('letterAttachmentId')"-->
-      <!--            label="Letter"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>Letter</mat-label>-->
-      <!--        <input-->
-      <!--          matInput-->
-      <!--          placeholder="Enter inspectionMember letter"-->
-      <!--          formControlName="letterAttachmentPath"-->
-      <!--        />-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('letterAttachmentPath')"-->
-      <!--            label="Letter"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>Declaration</mat-label>-->
-      <!--        <mat-select formControlName="declarationAttachementId">-->
-      <!--          <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>-->
-      <!--          <mat-option-->
-      <!--            *ngFor="-->
-      <!--              let declarationAttachementIdOption of declarationAttachementIdOptions-->
-      <!--            "-->
-      <!--            [value]="declarationAttachementIdOption.key"-->
-      <!--            >{{ declarationAttachementIdOption.value }}</mat-option-->
-      <!--          >-->
-      <!--        </mat-select>-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('declarationAttachementId')"-->
-      <!--            label="Declaration"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-      <mat-form-field class="full-width">
-        <mat-label>Declaration</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspectionMember declaration"
-          formControlName="declarationAttachmentName"
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('declarationAttachmentName')"
-            label="Declaration"
-          ></hip-ngx-error
-        ></mat-error>
+          ></hip-ngx-error>
+        </mat-error>
       </mat-form-field>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button mat-dialog-close>
+    <button mat-dialog-close mat-raised-button>
       <mat-icon>cancel</mat-icon>
       <span>Cancel</span>
     </button>
     <button
-      mat-raised-button
-      color="accent"
       [disabled]="form.invalid || isSaveOrUpdateInProgress"
+      color="accent"
+      mat-raised-button
       type="submit"
     >
       <mat-icon>save</mat-icon>
