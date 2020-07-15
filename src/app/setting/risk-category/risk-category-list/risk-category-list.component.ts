@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-
-import { RiskCategoryService } from '../risk-category.service';
-import { RiskCategoryDeleteComponent } from '../risk-category-delete/risk-category-delete.component';
-import { RiskCategory } from '../risk-category';
-import { ToastService } from '../../../shared/toast.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { GfsCode } from '../../gfs-code/gfs-code';
+import { Title } from '@angular/platform-browser';
+import { ToastService } from '../../../shared/toast.service';
+import { environment } from '../../../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
+import { RiskCategoryService } from '../risk-category.service';
+import { RiskCategory } from '../risk-category';
+import { RiskCategoryDeleteComponent } from '../risk-category-delete/risk-category-delete.component';
 
 @Component({
   selector: 'app-risk-category-list',
@@ -22,56 +22,46 @@ import { PageEvent } from '@angular/material/paginator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RiskCategoryListComponent implements OnInit {
-  displayedColumns = ['code', 'name', 'formActions'];
+  displayedColumns = ['id', 'code', 'name', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
-  page!: number;
+  riskCategorySubject: BehaviorSubject<RiskCategory[]> = new BehaviorSubject(
+    []
+  );
 
-  private RiskCategorySubject: BehaviorSubject<
-    RiskCategory[]
-  > = new BehaviorSubject([]);
+  totalItems = 0;
+  size: number;
+  pageSizeOptions: number[];
+  page: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private riskCategoryService: RiskCategoryService,
-    private toastService: ToastService
-  ) {}
+    private titleService: Title,
+    private toastService: ToastService,
+    private riskCategoryService: RiskCategoryService
+  ) {
+    this.page = 0;
+    this.size = ITEMS_PER_PAGE;
+    this.pageSizeOptions = PAGE_SIZE_OPTIONS;
+    this.titleService.setTitle('Risk Categories|' + environment.app);
+  }
 
   ngOnInit() {
-    this.loadPage();
+    this.loadPage(this.page, this.size);
   }
-  loadPage() {
-    const pageToLoad = this.page || 0;
-    this.riskCategoryService
-      .query({
-        page: pageToLoad,
-        size: this.itemsPerPage,
-      })
-      .subscribe(
-        resp => this.onSuccess(resp.body, resp.headers, this.page),
-        () => this.onError()
-      );
-  }
-  getData(): Observable<RiskCategory[]> {
-    return this.RiskCategorySubject.asObservable();
-  }
-  onSuccess(data: any, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.RiskCategorySubject.next(data);
-  }
-  onError(): void {}
 
-  pageChange($event: PageEvent) {
-    this.itemsPerPage = $event.pageSize;
-    this.page = $event.pageIndex;
-    this.loadPage();
+  loadPage(page: number, size: number) {
+    this.riskCategoryService.getAllPaged(page, size).subscribe(
+      resp => this.onSuccess(resp.body, resp.headers),
+      () => this.onError()
+    );
+  }
+
+  getData(): Observable<RiskCategory[]> {
+    return this.riskCategorySubject.asObservable();
   }
 
   delete(id: number, riskCategory: RiskCategory) {
@@ -84,7 +74,7 @@ export class RiskCategoryListComponent implements OnInit {
         this.showLoader = true;
         this.riskCategoryService.delete(id).subscribe({
           next: () => {
-            this.loadPage();
+            this.loadPage(this.page, this.size);
             this.toastService.success(
               'Success',
               'Risk Category Deleted Successfully!'
@@ -96,5 +86,18 @@ export class RiskCategoryListComponent implements OnInit {
         });
       }
     });
+  }
+
+  onSuccess(data: any, headers: HttpHeaders): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.riskCategorySubject.next(data);
+  }
+
+  onError(): void {}
+
+  pageChange($event: PageEvent) {
+    this.size = $event.pageSize;
+    this.page = $event.pageIndex;
+    this.loadPage(this.page, this.size);
   }
 }

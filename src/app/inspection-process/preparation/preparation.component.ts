@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-preparation',
@@ -6,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./preparation.component.scss'],
 })
 export class PreparationComponent implements OnInit {
-  constructor() {}
+  inspectionId: number;
+  constructor(private route: ActivatedRoute) {
+    this.inspectionId = route.snapshot.params['id'];
+  }
 
   ngOnInit(): void {}
 }

@@ -8,7 +8,6 @@ import { RiskCategoryService } from '../risk-category.service';
 import { RiskCategoryFormService } from './risk-category-form.service';
 import { RiskCategory } from '../risk-category';
 import { ToastService } from '../../../shared/toast.service';
-import { action } from 'angular-tree-component/dist/mobx-angular/mobx-proxy';
 
 @Component({
   selector: 'app-risk-category-detail',
@@ -65,15 +64,15 @@ export class RiskCategoryDetailComponent implements OnInit {
   ) {
     result.subscribe({
       next: () => {
-        if (action === 'update') {
+        if (action === 'create') {
           this.toastService.success(
             'Success!',
-            'Risk Category Updated Successfully'
+            'Risk Category Created Successfully!'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Risk Category Created Successfully'
+            'Risk Category Updated Successfully!'
           );
         }
         this.router.navigate(['/settings/risk-categories']);

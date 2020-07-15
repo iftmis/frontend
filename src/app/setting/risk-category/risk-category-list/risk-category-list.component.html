@@ -25,6 +25,11 @@
       <span class="table-overlay">No records found</span>
     </div>
     <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="code">
         <th mat-header-cell *matHeaderCellDef>Code</th>
         <td mat-cell *matCellDef="let element">{{ element.code }}</td>
@@ -43,7 +48,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Risk Category form actions "
+            aria-label="AuditableArea form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -59,7 +64,7 @@
     </table>
     <mat-paginator
       [length]="totalItems"
-      [pageSize]="itemsPerPage"
+      [pageSize]="size"
       [pageSizeOptions]="pageSizeOptions"
       (page)="pageChange($event)"
     >
@@ -70,7 +75,7 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit riskCategory"
+      aria-label="Edit Risk Category"
       [routerLink]="['/settings/risk-categories', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
@@ -78,7 +83,7 @@
     </button>
     <button
       mat-menu-item
-      aria-label="Delete riskCategory"
+      aria-label="Delete Risk Category"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

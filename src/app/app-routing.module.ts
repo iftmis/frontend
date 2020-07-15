@@ -12,6 +12,7 @@ import { RiskManagementComponent } from './risk-management/risk-management.compo
 import { ReportComponent } from './report/report.component';
 import { FindingManagementComponent } from './finding-management/finding-management.component';
 import { InspectionProcessComponent } from './inspection-process/inspection-process.component';
+import { InspectionResolver } from './inspection/inspection.resolver';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -36,8 +37,11 @@ const routes: Routes = [
       import('./inspection/inspection.module').then(m => m.InspectionModule),
   },
   {
-    path: 'inspection-process',
+    path: 'inspection-process/:id',
     component: InspectionProcessComponent,
+    resolve: {
+      inspection: InspectionResolver,
+    },
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./inspection-process/inspection-process.module').then(

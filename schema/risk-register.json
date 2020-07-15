@@ -1,0 +1,31 @@
+{
+  "name": "riskRegister",
+  "pageTitle": "Risk Register",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["name", "financialYear"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 500
+      }
+    },
+    {
+      "label": "Financial Year",
+      "name": "financialYearId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    }
+  ]
+}
