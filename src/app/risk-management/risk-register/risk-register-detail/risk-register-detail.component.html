@@ -8,7 +8,7 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>RiskRegister</mat-card-title>
+    <mat-card-title>Risk Registration</mat-card-title>
     <mat-card-subtitle>{{
       riskRegister?.id ? 'Update an existing Risk.' : 'Creates a new Risk.'
     }}</mat-card-subtitle>
@@ -24,23 +24,13 @@
         fxLayoutGap="10px"
         fxLayoutGap.xs="0"
       >
-        <div fxFlex="15%">
-          <div class="ou-tree custom-ou-tree">
-            <mat-label>Council</mat-label>
-            <tree-root
-              [nodes]="nodes | async"
-              (activate)="onOuChange($event)"
-              [options]="options"
-            >
-            </tree-root>
-          </div>
-        </div>
         <div fxFlex>
           <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
+            <mat-label>Risk</mat-label>
             <input
               matInput
-              placeholder="Enter Risk name"
+              autocomplete="off"
+              placeholder="Enter Risk"
               formControlName="name"
               required
             />
@@ -52,18 +42,35 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Financial Year</mat-label>
-            <mat-select formControlName="financialYear" required>
+            <mat-label>Council</mat-label>
+            <mat-select formControlName="organisationUnitId" required>
               <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>
               <mat-option
-                *ngFor="let financialYearIdOption of financialYears"
-                [value]="financialYearIdOption"
-                >{{ financialYearIdOption.name }}</mat-option
+                *ngFor="let organisationUnit of getCouncils() | async"
+                [value]="organisationUnit.id"
+                >{{ organisationUnit.name }}</mat-option
               >
             </mat-select>
             <mat-error>
               <hip-ngx-error
-                [control]="form.get('financialYear')"
+                [control]="form.get('organisationUnitId')"
+                label="Organisation Unit"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Financial Year</mat-label>
+            <mat-select formControlName="financialYearId" required>
+              <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>
+              <mat-option
+                *ngFor="let financialYear of getFinancialYear() | async"
+                [value]="financialYear.id"
+                >{{ financialYear.name }}</mat-option
+              >
+            </mat-select>
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('financialYearId')"
                 label="Financial Year"
               ></hip-ngx-error>
             </mat-error>

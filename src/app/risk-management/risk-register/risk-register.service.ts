@@ -7,7 +7,7 @@ import { RiskRegister } from './risk-register';
   providedIn: 'root',
 })
 export class RiskRegisterService {
-  private resourceUrl = 'api/risk-register';
+  private resourceUrl = 'api/risk-registers';
 
   constructor(private http: HttpClient) {}
 

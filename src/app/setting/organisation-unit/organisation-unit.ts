@@ -1,3 +1,5 @@
+import { OrganisationUnitLevel } from '../organisation-unit-level/organisation-unit-level';
+
 export interface OrganisationUnit {
   id?: number;
   code?: string;
@@ -10,6 +12,8 @@ export interface OrganisationUnit {
   logoContentType?: string;
   organisationUnitLevelId?: number;
   organisationUnitLevelName?: string;
+  organisationUnitLevel?: OrganisationUnitLevel;
   parentId?: number;
   parentName?: string;
+  parent?: OrganisationUnit;
 }

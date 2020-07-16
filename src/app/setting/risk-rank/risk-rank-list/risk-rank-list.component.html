@@ -1,4 +1,4 @@
-<mat-card *ngIf="routeData$ | async as data">
+<mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
     <span class="mat-card-title">Risk Ranks</span>
     <div>
@@ -12,7 +12,7 @@
       </button>
     </div>
   </div>
-  <mat-card-content class="table-container">
+  <mat-card-content>
     <mat-progress-spinner
       *ngIf="showLoader"
       diameter="50"
@@ -21,15 +21,15 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!data.riskRanks?.length">
+    <div *ngIf="!getData()">
       <span class="table-overlay">No records found</span>
     </div>
-    <table
-      mat-table
-      [dataSource]="data.riskRanks"
-      matSort
-      *ngIf="!!data.riskRanks?.length"
-    >
+    <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -46,7 +46,7 @@
       </ng-container>
 
       <ng-container matColumnDef="hexColor">
-        <th mat-header-cell *matHeaderCellDef>Hex Color</th>
+        <th mat-header-cell *matHeaderCellDef>Color</th>
         <td mat-cell *matCellDef="let element">{{ element.hexColor }}</td>
       </ng-container>
 
@@ -58,7 +58,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="RiskRank form actions "
+            aria-label="Risk Rank form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -72,13 +72,20 @@
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
     </table>
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="size"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit riskRank"
+      aria-label="Edit Risk Rank"
       [routerLink]="['/settings/risk-ranks', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
@@ -86,7 +93,7 @@
     </button>
     <button
       mat-menu-item
-      aria-label="Delete riskRank"
+      aria-label="Delete Risk Rank"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

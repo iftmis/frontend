@@ -17,11 +17,11 @@ export class RiskRegisterFormService {
         Validators.minLength(2),
         Validators.maxLength(500),
       ]),
-      financialYear: this.formBuilder.control(riskRegister.financialYear, [
+      financialYearId: this.formBuilder.control(riskRegister.financialYearId, [
         Validators.required,
       ]),
-      organisationUnit: this.formBuilder.control(
-        riskRegister.organisationUnit,
+      organisationUnitId: this.formBuilder.control(
+        riskRegister.organisationUnitId,
         [Validators.required]
       ),
     });
@@ -31,8 +31,8 @@ export class RiskRegisterFormService {
     return {
       id: formGroup.get('id')!.value,
       name: formGroup.get('name')!.value,
-      financialYear: formGroup.get('financialYear')!.value,
-      organisationUnit: formGroup.get('organisationUnit')!.value,
+      financialYearId: formGroup.get('financialYearId')!.value,
+      organisationUnitId: formGroup.get('organisationUnitId')!.value,
     };
   }
 }

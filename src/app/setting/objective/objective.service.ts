@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Objective } from './objective';
+import { AuditableArea } from '../auditable-area/auditable-area';
+import { createRequestOption } from '../../shared/pagination.constants';
+import { GfsCode } from '../gfs-code/gfs-code';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +15,16 @@ export class ObjectiveService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<Objective[]> {
-    return this.http.get<Objective[]>(this.resourceUrl);
+  getAllUnPaged(): Observable<Objective[]> {
+    return this.http.get<any>(this.resourceUrl);
+  }
+
+  getAllPaged(req?: any): Observable<HttpResponse<Objective[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<Objective[]>(this.resourceUrl + '/page', {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<Objective> {

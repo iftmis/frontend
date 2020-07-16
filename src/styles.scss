@@ -92,13 +92,12 @@ mat-form-field {
 }
 
 div.ou-tree {
-  margin-bottom: 10px;
-  margin-inline-start: 23px;
-  margin-top: 10px;
+  width: 170px;
+  margin: 0;
   padding: 16px;
-  // border: 1px solid rgba(0, 0, 0, 0.12);
-  // border-radius: 4px;
-  // background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background-color: #fff;
   min-height: 400px;
 }
 

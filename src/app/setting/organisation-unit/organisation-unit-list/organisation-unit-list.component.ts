@@ -65,7 +65,7 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.parentId = this.state.focusedNodeId;
+    this.parentId = this.state?.focusedNodeId;
     this.organisationUnitService.getByUser().subscribe(resp => {
       this.nodes.next(this.mapToNode(resp));
       const ou = resp[0];
@@ -125,11 +125,11 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
     this.totalItems = parseInt(headers.get('x-total-count') || '0', 10);
   }
 
+  onError(): void {}
+
   getData(): Observable<OrganisationUnit[]> {
     return this.OrganisationUnitSubject.asObservable();
   }
-
-  onError(): void {}
 
   pageChange($event: PageEvent) {
     this.size = $event.pageSize;

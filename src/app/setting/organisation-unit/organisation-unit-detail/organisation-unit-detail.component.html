@@ -20,7 +20,13 @@
     <mat-card-content class="content">
       <mat-form-field appearance="outline" *ngIf="parent">
         <mat-label>Parent Organisation</mat-label>
-        <input matInput placeholder="Parent" disabled [value]="parent?.name" />
+        <input
+          autocomplete="off"
+          matInput
+          placeholder="Parent"
+          disabled
+          [value]="parent?.name"
+        />
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Organisation Unit Level</mat-label>
@@ -42,6 +48,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Code</mat-label>
         <input
+          autocomplete="off"
           matInput
           placeholder="Enter organisationUnit code"
           formControlName="code"
@@ -56,6 +63,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input
+          autocomplete="off"
           matInput
           placeholder="Enter organisationUnit name"
           formControlName="name"
@@ -71,6 +79,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Address</mat-label>
         <input
+          autocomplete="off"
           matInput
           placeholder="Enter organisationUnit address"
           formControlName="address"
@@ -85,6 +94,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Phone Number</mat-label>
         <input
+          autocomplete="off"
           matInput
           placeholder="Enter organisationUnit phone number"
           formControlName="phoneNumber"
@@ -99,6 +109,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input
+          autocomplete="off"
           matInput
           placeholder="Enter organisationUnit email"
           formControlName="email"
@@ -155,6 +166,7 @@
             </button>
           </div>
           <input
+            autocomplete="off"
             type="file"
             id="file_photo"
             (change)="setFileData($event, 'logo', true)"
@@ -162,6 +174,7 @@
           />
         </div>
         <input
+          autocomplete="off"
           type="hidden"
           class="form-control"
           name="logo"
@@ -169,6 +182,7 @@
           formControlName="logo"
         />
         <input
+          autocomplete="off"
           type="hidden"
           class="form-control"
           name="logoContentType"

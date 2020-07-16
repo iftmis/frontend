@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -24,10 +23,13 @@ export class RiskRegisterDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  financialYears: FinancialYear[];
-  nodes: BehaviorSubject<any> = new BehaviorSubject([]);
-  options = { getChildren: this.getChildren.bind(this) };
-  currentOrganisationUnit: OrganisationUnit;
+  organisationUnitSubject: BehaviorSubject<
+    OrganisationUnit[]
+  > = new BehaviorSubject([]);
+
+  financialYearSubject: BehaviorSubject<FinancialYear[]> = new BehaviorSubject(
+    []
+  );
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +38,7 @@ export class RiskRegisterDetailComponent implements OnInit {
     private riskRegisterService: RiskRegisterService,
     private financialYearService: FinancialYearService,
     private toastService: ToastService,
-    private ouService: OrganisationUnitService
+    private organisationUnitService: OrganisationUnitService
   ) {}
 
   ngOnInit() {
@@ -45,36 +47,31 @@ export class RiskRegisterDetailComponent implements OnInit {
       this.form = this.formService.toFormGroup(riskRegister);
     });
     this.loadFinancialYears();
-    this.ouService.getByUser().subscribe(resp => {
-      this.nodes.next(this.mapToNode(resp));
-    });
+    this.loadCouncils();
     this.error = undefined;
-  }
-
-  getChildren(node: any) {
-    return new Promise((resolve, reject) => {
-      this.ouService.getByParent(node.id).subscribe(resp => {
-        resolve(this.mapToNode(resp));
-      });
-    });
-  }
-
-  mapToNode(ous: OrganisationUnit[]) {
-    return ous.map(o => {
-      return { id: o.id, name: o.name, hasChildren: true };
-    });
-  }
-
-  onOuChange($e: any) {
-    /*this.router.navigate(['/risk-management/risk-register', $e.node.data.id]);*/
-    this.currentOrganisationUnit = $e.node.data;
-    console.log(this.currentOrganisationUnit);
   }
 
   loadFinancialYears() {
     this.financialYearService.getAllUnPaged().subscribe(
       response => {
-        this.financialYears = response;
+        this.financialYearSubject.next(response);
+      },
+      error => {}
+    );
+  }
+
+  getCouncils(): Observable<OrganisationUnit[]> {
+    return this.organisationUnitSubject.asObservable();
+  }
+
+  getFinancialYear(): Observable<FinancialYear[]> {
+    return this.financialYearSubject.asObservable();
+  }
+
+  loadCouncils() {
+    this.organisationUnitService.getAllCouncils().subscribe(
+      response => {
+        this.organisationUnitSubject.next(response);
       },
       error => {}
     );
