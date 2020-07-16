@@ -1,99 +1,305 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <h1 mat-dialog-title>
-    Risk Register: {{ riskRegister.name }} | Owner: {{ organisationUnit.name }}
-  </h1>
-  <div mat-dialog-content>
-    <mat-progress-spinner
-      *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
-      class="form-overlay"
-      color="accent"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <div class="error mat-error">
-      {{ error ? error : '&nbsp;' }}
-    </div>
-    <mat-form-field appearance="outline">
-      <mat-label>Code</mat-label>
-      <input
-        matInput
-        autocomplete="off"
-        placeholder="Enter risk code"
-        formControlName="code"
-        required
-      />
-      <mat-error>
-        <hip-ngx-error
-          [control]="form.get('code')"
-          label="Code"
-        ></hip-ngx-error>
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Description</mat-label>
-      <input
-        matInput
-        autocomplete="off"
-        placeholder="Enter risk description"
-        formControlName="description"
-        required
-      />
-      <mat-error>
-        <hip-ngx-error
-          [control]="form.get('description')"
-          label="Description"
-        ></hip-ngx-error>
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Objective</mat-label>
-      <mat-select formControlName="objectiveId" required>
-        <mat-option>--Select--</mat-option>
-        <mat-option
-          *ngFor="let objective of getObjectives() | async"
-          [value]="objective.id"
-          >{{ objective.code }} - {{ objective.description }}</mat-option
-        >
-      </mat-select>
-      <mat-error>
-        <hip-ngx-error
-          [control]="form.get('objectiveId')"
-          label="Objective"
-        ></hip-ngx-error>
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Risk Category</mat-label>
-      <mat-select formControlName="riskCategoryId" required>
-        <mat-option>--Select--</mat-option>
-        <mat-option
-          *ngFor="let riskCategory of getRiskCategories() | async"
-          [value]="riskCategory.id"
-          >{{ riskCategory.name }}</mat-option
-        >
-      </mat-select>
-      <mat-error>
-        <hip-ngx-error
-          [control]="form.get('riskCategoryId')"
-          label="Risk Category"
-        ></hip-ngx-error>
-      </mat-error>
-    </mat-form-field>
+<h1 mat-dialog-title>
+  Risk Register: {{ riskRegister.name }} | Owner: {{ organisationUnit.name }}
+</h1>
+<div mat-dialog-content>
+  <mat-progress-spinner
+    *ngIf="isSaveOrUpdateInProgress"
+    diameter="50"
+    class="form-overlay"
+    color="accent"
+    mode="indeterminate"
+  >
+  </mat-progress-spinner>
+  <div class="error mat-error">
+    {{ error ? error : '&nbsp;' }}
   </div>
-  <div mat-dialog-actions>
-    <button mat-raised-button (click)="cancel()">
-      <mat-icon>cancel</mat-icon>
-      <span>Cancel</span>
-    </button>
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="form.invalid || isSaveOrUpdateInProgress"
-      type="submit"
-    >
-      <mat-icon>save</mat-icon>
-      <span>{{ risk?.id ? 'Update' : 'Save' }} </span>
-    </button>
-  </div>
-</form>
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="form">
+      <form [formGroup]="form">
+        <ng-template matStepLabel>Basic Information</ng-template>
+        <div
+          class="container"
+          fxLayout
+          fxLayout.xs="column"
+          fxLayoutAlign="center"
+          fxLayoutGap="10px"
+          fxLayoutGap.xs="0"
+        >
+          <div fxFlex="20%">
+            <mat-form-field appearance="outline">
+              <mat-label>Code</mat-label>
+              <input
+                matInput
+                autocomplete="off"
+                placeholder="Enter risk code"
+                formControlName="code"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('code')"
+                  label="Code"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="80%">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <input
+                matInput
+                autocomplete="off"
+                placeholder="Enter risk description"
+                formControlName="description"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('description')"
+                  label="Description"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div
+          class="container"
+          fxLayout
+          fxLayout.xs="column"
+          fxLayoutAlign="center"
+          fxLayoutGap="10px"
+          fxLayoutGap.xs="0"
+        >
+          <div fxFlex="50%">
+            <mat-form-field appearance="outline">
+              <mat-label>Objective</mat-label>
+              <mat-select formControlName="objectiveId" required>
+                <mat-option>--Select--</mat-option>
+                <mat-option
+                  *ngFor="let objective of getObjectives() | async"
+                  [value]="objective.id"
+                  >{{ objective.code }} -
+                  {{ objective.description }}</mat-option
+                >
+              </mat-select>
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('objectiveId')"
+                  label="Objective"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50%">
+            <mat-form-field appearance="outline">
+              <mat-label>Risk Category</mat-label>
+              <mat-select formControlName="riskCategoryId" required>
+                <mat-option>--Select--</mat-option>
+                <mat-option
+                  *ngFor="let riskCategory of getRiskCategories() | async"
+                  [value]="riskCategory.id"
+                  >{{ riskCategory.name }}</mat-option
+                >
+              </mat-select>
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('riskCategoryId')"
+                  label="Risk Category"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div>
+          <button
+            type="button"
+            [disabled]="form.invalid"
+            mat-raised-button
+            color="primary"
+            matStepperNext
+          >
+            <mat-icon>arrow_right</mat-icon>
+            <span>Next</span>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="ratingForm">
+      <ng-template matStepLabel>Rating</ng-template>
+      <div
+        class="container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"
+      >
+        <div fxFlex="18%">
+          <p>
+            <strong>Source:</strong>
+            <mat-button-toggle-group
+              [formControl]="sourceControl"
+              aria-label="Font Style"
+            >
+              <mat-button-toggle value="COUNCIL">COUNCIL</mat-button-toggle>
+              <mat-button-toggle value="INSPECTOR">INSPECTOR</mat-button-toggle>
+            </mat-button-toggle-group>
+          </p>
+        </div>
+        <div fxFlex="18%">
+          <p>
+            <strong>Impact:</strong>
+            <mat-form-field appearance="outline">
+              <mat-select [formControl]="impactControl">
+                <mat-option *ngFor="let impact of impacts" [value]="impact">
+                  {{ impact }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+        </div>
+        <div fxFlex="18%">
+          <p>
+            <strong>Likelihood:</strong>
+            <mat-form-field appearance="outline">
+              <mat-select [formControl]="likelihoodControl">
+                <mat-option
+                  *ngFor="let likelihood of likelihoods"
+                  [value]="likelihood"
+                >
+                  {{ likelihood }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+        </div>
+        <div fxFlex="41%">
+          <p>
+            <strong>Comment:</strong>
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                placeholder="Comment"
+                [formControl]="commentControl"
+              />
+            </mat-form-field>
+          </p>
+        </div>
+        <div fxFlex="5%">
+          <p>
+            <strong>Add:</strong>
+            <button
+              mat-button
+              type="button"
+              [disabled]="
+                sourceControl.invalid ||
+                likelihoodControl.invalid ||
+                impactControl.invalid ||
+                commentControl.invalid
+              "
+              (click)="addRating()"
+              color="primary"
+            >
+              <mat-icon svgIcon="add"></mat-icon>
+            </button>
+          </p>
+        </div>
+      </div>
+      <h4 *ngIf="ratingDataSource.data.length > 0">Ratings</h4>
+      <table
+        *ngIf="ratingDataSource.data.length > 0"
+        mat-table
+        [dataSource]="ratingDataSource"
+        class="mat-elevation-z0"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element; index as i">{{ 1 + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="source">
+          <th mat-header-cell *matHeaderCellDef>Source</th>
+          <td mat-cell *matCellDef="let element">{{ element.source }}</td>
+        </ng-container>
+        <ng-container matColumnDef="likelihood">
+          <th mat-header-cell *matHeaderCellDef>Likelihood</th>
+          <td mat-cell *matCellDef="let element">{{ element.likelihood }}</td>
+        </ng-container>
+        <ng-container matColumnDef="impact">
+          <th mat-header-cell *matHeaderCellDef>Impact</th>
+          <td mat-cell *matCellDef="let element">{{ element.impact }}</td>
+        </ng-container>
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef>Comment</th>
+          <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="manage">
+          <th mat-header-cell *matHeaderCellDef>Remove</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            <button mat-button color="primary" (click)="deleteRating(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data</td>
+        </tr>
+      </table>
+      <div>
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Back
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="ratingDataSource.data.length === 0"
+          style="margin: 5px;"
+          matStepperNext
+        >
+          Next
+        </button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Back
+        </button>
+        <button
+          mat-raised-button
+          style="margin: 5px;"
+          color="warn"
+          (click)="stepper.reset()"
+        >
+          Reset
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          style="margin: 5px;"
+          (click)="saveOrUpdate()"
+          [disabled]="
+            form.invalid ||
+            ratingDataSource.data.length === 0 ||
+            isSaveOrUpdateInProgress
+          "
+          type="button"
+        >
+          <mat-icon>save</mat-icon>
+          <span>{{ risk?.id ? 'Update' : 'Save' }} </span>
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="cancel()">
+    <mat-icon>cancel</mat-icon>
+    <span>Close</span>
+  </button>
+</div>

@@ -153,6 +153,7 @@ export class RiskListComponent implements OnInit {
   onSuccess(data: any, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.riskSubject.next(data);
+    console.log(data);
   }
 
   getData(): Observable<Risk[]> {
@@ -226,8 +227,8 @@ export class RiskListComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.height = '600px';
-    dialogConfig.width = '800px';
+    /*dialogConfig.height = '80%';*/
+    dialogConfig.width = '60%';
     dialogConfig.data = data;
     const dialog = this.dialog.open(RiskDetailComponent, dialogConfig);
 
@@ -255,8 +256,8 @@ export class RiskListComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.height = '600px';
-    dialogConfig.width = '800px';
+    /*dialogConfig.height = '80%';*/
+    dialogConfig.width = '60%';
     dialogConfig.data = data;
     const dialog = this.dialog.open(RiskDetailComponent, dialogConfig);
 

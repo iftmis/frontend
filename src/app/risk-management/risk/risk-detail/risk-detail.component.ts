@@ -4,13 +4,13 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { RiskService } from '../risk.service';
 import { RiskFormService } from './risk-form.service';
-import { Risk } from '../risk';
+import { Risk, RiskRating } from '../risk';
 import { RiskCategory } from '../../../setting/risk-category/risk-category';
 import { Objective } from '../../../setting/objective/objective';
 import { ObjectiveService } from '../../../setting/objective/objective.service';
@@ -19,6 +19,7 @@ import { RiskRegister } from '../../risk-register/risk-register';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastService } from '../../../shared/toast.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-risk-detail',
@@ -29,6 +30,8 @@ import { OrganisationUnit } from '../../../setting/organisation-unit/organisatio
 export class RiskDetailComponent implements OnInit {
   risk: Risk;
   form: FormGroup;
+  riskRatings: RiskRating[] = [];
+  ratingForm: FormGroup;
   riskRegister: RiskRegister;
   organisationUnit: OrganisationUnit;
   isSaveOrUpdateInProgress = false;
@@ -39,6 +42,23 @@ export class RiskDetailComponent implements OnInit {
   action: string;
 
   objectiveSubject: BehaviorSubject<Objective[]> = new BehaviorSubject([]);
+
+  sourceControl = new FormControl('COUNCIL');
+  impactControl = new FormControl(1);
+  likelihoodControl = new FormControl(1);
+  commentControl = new FormControl('No Comment');
+  impacts = [1, 2, 3, 4, 5];
+  likelihoods = [1, 2, 3, 4, 5];
+
+  displayedColumns: string[] = [
+    'id',
+    'source',
+    'likelihood',
+    'impact',
+    'comment',
+    'manage',
+  ];
+  ratingDataSource = new MatTableDataSource<RiskRating>();
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +74,8 @@ export class RiskDetailComponent implements OnInit {
     this.action = data.action;
     if (this.action === 'update') {
       this.risk = data.risk;
+      this.riskRatings = data.risk.riskRatings;
+      this.ratingDataSource.data = this.riskRatings;
     }
     this.riskRegister = data.riskRegister;
     this.organisationUnit = data.organisationUnit;
@@ -104,6 +126,7 @@ export class RiskDetailComponent implements OnInit {
         riskCategoryId: this.form.value.riskCategoryId,
         riskOwnerId: this.organisationUnit.id,
         riskRegisterId: this.riskRegister.id,
+        riskRatings: this.riskRatings,
       } as Risk;
       this.subscribeToResponse(this.riskService.update(payload));
     } else {
@@ -114,6 +137,7 @@ export class RiskDetailComponent implements OnInit {
         riskCategoryId: this.form.value.riskCategoryId,
         riskOwnerId: this.organisationUnit.id,
         riskRegisterId: this.riskRegister.id,
+        riskRatings: this.riskRatings,
       } as Risk;
       this.subscribeToResponse(this.riskService.create(payload));
     }
@@ -139,5 +163,25 @@ export class RiskDetailComponent implements OnInit {
   cancel() {
     this.dialogRef.close();
     return false;
+  }
+
+  addRating() {
+    const item = {
+      source: this.sourceControl.value,
+      comments: this.commentControl.value,
+      impact: this.impactControl.value,
+      likelihood: this.likelihoodControl.value,
+    } as RiskRating;
+    this.riskRatings.push(item);
+    this.ratingDataSource.data = this.riskRatings;
+    this.sourceControl.reset('');
+    this.impactControl.reset('');
+    this.likelihoodControl.reset('');
+    this.commentControl.reset('');
+  }
+
+  deleteRating(i: number) {
+    this.riskRatings.splice(i, 1);
+    this.ratingDataSource.data = this.riskRatings;
   }
 }
