@@ -58,6 +58,7 @@ export class RiskListComponent implements OnInit {
   pageSizeOptions: number[];
   page: number;
   riskSubject: BehaviorSubject<Risk[]> = new BehaviorSubject([]);
+  queryString: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,6 +75,7 @@ export class RiskListComponent implements OnInit {
     this.size = ITEMS_PER_PAGE;
     this.pageSizeOptions = PAGE_SIZE_OPTIONS;
     this.riskRegisterId = this.actRoute.snapshot.params.id;
+    this.queryString = '_';
   }
 
   ngOnInit() {
@@ -102,20 +104,37 @@ export class RiskListComponent implements OnInit {
     page: number,
     size: number,
     riskRegisterId: number,
-    riskOwnerId: number
+    riskOwnerId: number,
+    query: string
   ) {
-    this.riskService
-      .getAllPaged({
-        page,
-        size,
-        sort: ['code,asc'],
-        'riskRegisterId.equals': riskRegisterId,
-        'riskOwnerId.equals': riskOwnerId,
-      })
-      .subscribe(
-        resp => this.onSuccess(resp.body, resp.headers),
-        () => this.onError()
-      );
+    if (query === '_') {
+      this.riskService
+        .getAllPaged({
+          page,
+          size,
+          sort: ['code,asc'],
+          'riskRegisterId.equals': riskRegisterId,
+          'riskOwnerId.equals': riskOwnerId,
+        })
+        .subscribe(
+          resp => this.onSuccess(resp.body, resp.headers),
+          () => this.onError()
+        );
+    } else {
+      this.riskService
+        .getAllPaged({
+          page,
+          size,
+          sort: ['code,asc'],
+          'riskRegisterId.equals': riskRegisterId,
+          'riskOwnerId.equals': riskOwnerId,
+          'code.contains': query.toLowerCase(),
+        })
+        .subscribe(
+          resp => this.onSuccess(resp.body, resp.headers),
+          () => this.onError()
+        );
+    }
   }
 
   pageChange($event: PageEvent) {
@@ -126,7 +145,8 @@ export class RiskListComponent implements OnInit {
       this.page,
       this.size,
       Number(this.riskRegisterId),
-      riskOwnerId
+      riskOwnerId,
+      this.queryString
     );
   }
 
@@ -167,7 +187,8 @@ export class RiskListComponent implements OnInit {
       this.page,
       this.size,
       Number(this.riskRegisterId),
-      this.parentId
+      this.parentId,
+      this.queryString
     );
   }
 
@@ -216,7 +237,8 @@ export class RiskListComponent implements OnInit {
           this.page,
           this.size,
           Number(this.riskRegisterId),
-          this.parentId
+          this.parentId,
+          this.queryString
         );
         this.toastService.success('Success!', 'Risk Created Successfully!');
       }
@@ -244,10 +266,33 @@ export class RiskListComponent implements OnInit {
           this.page,
           this.size,
           Number(this.riskRegisterId),
-          this.parentId
+          this.parentId,
+          this.queryString
         );
         this.toastService.success('Success!', 'Risk Updated Successfully!');
       }
     });
+  }
+
+  filter(query: string) {
+    if (query.length > 2) {
+      this.queryString = query.toLowerCase();
+      this.loadRisk(
+        this.page,
+        this.size,
+        Number(this.riskRegisterId),
+        this.parentId,
+        this.queryString
+      );
+    } else {
+      this.queryString = '_';
+      this.loadRisk(
+        this.page,
+        this.size,
+        Number(this.riskRegisterId),
+        this.parentId,
+        this.queryString
+      );
+    }
   }
 }

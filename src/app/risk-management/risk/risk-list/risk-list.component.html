@@ -1,7 +1,7 @@
 <mat-card>
   <div class="page-heading">
     <span class="mat-card-title"
-      ><strong>Risk Register:</strong> {{ riskRegister.name }}</span
+      ><strong>Risk Register:</strong> {{ riskRegister?.name }}</span
     >
     <div>
       <button
@@ -40,6 +40,14 @@
         </div>
       </div>
       <div fxFlex="85%">
+        <mat-form-field appearance="outline">
+          <mat-label>Filter Risks</mat-label>
+          <input
+            matInput
+            (keyup)="filter($event.target.value)"
+            placeholder="Search ..."
+          />
+        </mat-form-field>
         <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>#</th>
