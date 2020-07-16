@@ -23,7 +23,6 @@ import {
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { PageEvent } from '@angular/material/paginator';
-import { ResetPasswordComponent } from '../../../user-management/user/reset-password/reset-password.component';
 import { RiskDetailComponent } from '../risk-detail/risk-detail.component';
 import { ToastService } from '../../../shared/toast.service';
 
@@ -34,7 +33,15 @@ import { ToastService } from '../../../shared/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RiskListComponent implements OnInit {
-  displayedColumns = ['id', 'code', 'description', 'formActions'];
+  displayedColumns = [
+    'id',
+    'code',
+    'description',
+    'objective',
+    'category',
+    'owner',
+    'formActions',
+  ];
   routeData$ = this.route.data;
   showLoader = false;
   riskRegisterId: string;
@@ -147,7 +154,7 @@ export class RiskListComponent implements OnInit {
       return {
         id: o.id,
         name: o.name,
-        organisationUnitLevelId: o.organisationUnitLevelId,
+        organisationUnitLevel: o.organisationUnitLevel,
         hasChildren: true,
       };
     });

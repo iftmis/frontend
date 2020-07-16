@@ -5,6 +5,7 @@ export interface Risk {
   riskRegisterId: number;
   riskRegisterName?: string;
   objectiveId: number;
+  objectiveCode?: string;
   objectiveDescription?: string;
   riskCategoryId: number;
   riskCategoryName?: string;
