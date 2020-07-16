@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Risk } from './risk';
+import { RiskRegister } from '../risk-register/risk-register';
+import { AuditableArea } from '../../setting/auditable-area/auditable-area';
+import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +19,14 @@ export class RiskService {
     return this.http.get<Risk[]>(this.resourceUrl);
   }
 
+  getAllPaged(req?: any): Observable<HttpResponse<Risk[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<Risk[]>(this.resourceUrl + '/page', {
+      params: options,
+      observe: 'response',
+    });
+  }
+
   getById(id: number): Observable<Risk> {
     return this.http.get<Risk>(`${this.resourceUrl}/${id}`);
   }
@@ -25,7 +36,7 @@ export class RiskService {
   }
 
   update(risk: Risk): Observable<Risk> {
-    return this.http.put<Risk>(`${this.resourceUrl}/${risk.id}`, risk);
+    return this.http.put<Risk>(`${this.resourceUrl}`, risk);
   }
 
   delete(id: number) {

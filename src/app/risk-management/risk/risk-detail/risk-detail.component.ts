@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -11,6 +15,10 @@ import { RiskCategory } from '../../../setting/risk-category/risk-category';
 import { Objective } from '../../../setting/objective/objective';
 import { ObjectiveService } from '../../../setting/objective/objective.service';
 import { RiskCategoryService } from '../../../setting/risk-category/risk-category.service';
+import { RiskRegister } from '../../risk-register/risk-register';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastService } from '../../../shared/toast.service';
+import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
 
 @Component({
   selector: 'app-risk-detail',
@@ -21,13 +29,16 @@ import { RiskCategoryService } from '../../../setting/risk-category/risk-categor
 export class RiskDetailComponent implements OnInit {
   risk: Risk;
   form: FormGroup;
+  riskRegister: RiskRegister;
+  organisationUnit: OrganisationUnit;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   riskCategorySubject: BehaviorSubject<RiskCategory[]> = new BehaviorSubject(
     []
   );
+  action: string;
 
-  riskObjectiveSubject: BehaviorSubject<Objective[]> = new BehaviorSubject([]);
+  objectiveSubject: BehaviorSubject<Objective[]> = new BehaviorSubject([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -35,37 +46,84 @@ export class RiskDetailComponent implements OnInit {
     private formService: RiskFormService,
     private riskService: RiskService,
     private objectiveService: ObjectiveService,
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private toastService: ToastService,
+    private dialogRef: MatDialogRef<RiskDetailComponent>,
     private riskCategoryService: RiskCategoryService
-  ) {}
+  ) {
+    this.action = data.action;
+    if (this.action === 'update') {
+      this.risk = data.risk;
+    }
+    this.riskRegister = data.riskRegister;
+    this.organisationUnit = data.organisationUnit;
+  }
 
   ngOnInit() {
-    this.route.data.subscribe(({ risk }) => {
-      this.risk = risk;
-      this.form = this.formService.toFormGroup(risk);
-    });
-
+    this.form = this.formService.toFormGroup(this.risk);
+    this.loadObjectives();
+    this.loadRiskCategories();
     this.error = undefined;
   }
 
-  loadObjectives() {}
+  loadObjectives() {
+    this.objectiveService.getAllUnPaged().subscribe(
+      response => {
+        this.objectiveSubject.next(response);
+      },
+      error => {}
+    );
+  }
+
+  loadRiskCategories() {
+    this.riskCategoryService.getAllUnPaged().subscribe(
+      response => {
+        this.riskCategorySubject.next(response);
+      },
+      error => {}
+    );
+  }
+
+  getRiskCategories(): Observable<RiskCategory[]> {
+    return this.riskCategorySubject.asObservable();
+  }
+
+  getObjectives(): Observable<Objective[]> {
+    return this.objectiveSubject.asObservable();
+  }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
-      this.subscribeToResponse(
-        this.riskService.update(this.formService.fromFormGroup(this.form))
-      );
+      const payload = {
+        id: this.form.value.id,
+        code: this.form.value.code,
+        description: this.form.value.description,
+        objectiveId: this.form.value.objectiveId,
+        riskCategoryId: this.form.value.riskCategoryId,
+        riskOwnerId: this.organisationUnit.id,
+        riskRegisterId: this.riskRegister.id,
+      } as Risk;
+      this.subscribeToResponse(this.riskService.update(payload));
     } else {
-      this.subscribeToResponse(
-        this.riskService.create(this.formService.fromFormGroup(this.form))
-      );
+      const payload = {
+        code: this.form.value.code,
+        description: this.form.value.description,
+        objectiveId: this.form.value.objectiveId,
+        riskCategoryId: this.form.value.riskCategoryId,
+        riskOwnerId: this.organisationUnit.id,
+        riskRegisterId: this.riskRegister.id,
+      } as Risk;
+      this.subscribeToResponse(this.riskService.create(payload));
     }
   }
 
   private subscribeToResponse(result: Observable<Risk>) {
     result.subscribe({
-      next: () => this.router.navigate(['/risk-management/risks']),
+      next: () => {
+        this.dialogRef.close({ success: true });
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -79,7 +137,7 @@ export class RiskDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/risk-management/risks']);
+    this.dialogRef.close();
     return false;
   }
 }

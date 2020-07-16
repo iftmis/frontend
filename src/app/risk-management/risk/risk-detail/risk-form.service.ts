@@ -16,25 +16,15 @@ export class RiskFormService {
       description: this.formBuilder.control(risk.description, [
         Validators.required,
       ]),
-      riskRegisterId: this.formBuilder.control(risk.riskRegisterId, [
-        Validators.required,
-      ]),
-      riskRegisterName: this.formBuilder.control(risk.riskRegisterName, []),
       objectiveId: this.formBuilder.control(risk.objectiveId, [
         Validators.required,
       ]),
-      objectiveDescription: this.formBuilder.control(
-        risk.objectiveDescription,
-        []
-      ),
       riskCategoryId: this.formBuilder.control(risk.riskCategoryId, [
         Validators.required,
       ]),
-      riskCategoryName: this.formBuilder.control(risk.riskCategoryName, []),
-      riskOwnerId: this.formBuilder.control(risk.riskOwnerId, [
+      /*riskOwnerId: this.formBuilder.control(risk.riskOwnerId, [
         Validators.required,
-      ]),
-      riskOwnerName: this.formBuilder.control(risk.riskOwnerName, []),
+      ])*/
     });
   }
 
@@ -43,14 +33,10 @@ export class RiskFormService {
       id: formGroup.get('id')!.value,
       code: formGroup.get('code')!.value,
       description: formGroup.get('description')!.value,
-      riskRegisterId: formGroup.get('riskRegisterId')!.value,
-      riskRegisterName: formGroup.get('riskRegisterName')!.value,
+      /*riskRegisterId: formGroup.get('riskRegisterId')!.value,*/
       objectiveId: formGroup.get('objectiveId')!.value,
-      objectiveDescription: formGroup.get('objectiveDescription')!.value,
       riskCategoryId: formGroup.get('riskCategoryId')!.value,
-      riskCategoryName: formGroup.get('riskCategoryName')!.value,
-      riskOwnerId: formGroup.get('riskOwnerId')!.value,
-      riskOwnerName: formGroup.get('riskOwnerName')!.value,
+      /*riskOwnerId: formGroup.get('riskOwnerId')!.value,*/
     };
   }
 }

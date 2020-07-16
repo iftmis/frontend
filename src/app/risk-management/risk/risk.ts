@@ -2,12 +2,12 @@ export interface Risk {
   id?: number;
   code: string;
   description: string;
-  riskRegisterId: string;
+  riskRegisterId: number;
   riskRegisterName?: string;
-  objectiveId: string;
+  objectiveId: number;
   objectiveDescription?: string;
-  riskCategoryId: string;
+  riskCategoryId: number;
   riskCategoryName?: string;
-  riskOwnerId: string;
+  riskOwnerId: number;
   riskOwnerName?: string;
 }
