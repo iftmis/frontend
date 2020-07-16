@@ -125,11 +125,11 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
     this.totalItems = parseInt(headers.get('x-total-count') || '0', 10);
   }
 
+  onError(): void {}
+
   getData(): Observable<OrganisationUnit[]> {
     return this.OrganisationUnitSubject.asObservable();
   }
-
-  onError(): void {}
 
   pageChange($event: PageEvent) {
     this.size = $event.pageSize;

@@ -67,10 +67,10 @@ export class RiskRegisterListComponent implements OnInit {
     private organisationUnitService: OrganisationUnitService
   ) {
     this.page = 0;
-    this.financialYearId = 0;
-    this.organisationUnitId = 0;
     this.size = ITEMS_PER_PAGE;
     this.pageSizeOptions = PAGE_SIZE_OPTIONS;
+    this.financialYearId = 0;
+    this.organisationUnitId = 0;
     this.titleService.setTitle('Risk Register|' + environment.app);
   }
 

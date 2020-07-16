@@ -15,6 +15,6 @@ export class ObjectiveListResolver
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<HttpResponse<Objective[]>> {
-    return this.service.query();
+    return this.service.getAllPaged();
   }
 }

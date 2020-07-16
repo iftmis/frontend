@@ -15,14 +15,6 @@ export class ObjectiveService {
 
   constructor(private http: HttpClient) {}
 
-  query(req?: any): Observable<HttpResponse<Objective[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<Objective[]>(this.resourceUrl, {
-      params: options,
-      observe: 'response',
-    });
-  }
-
   getAllUnPaged(): Observable<Objective[]> {
     return this.http.get<any>(this.resourceUrl);
   }

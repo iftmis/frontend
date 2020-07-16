@@ -5,11 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveService } from '../objective.service';
 import { ObjectiveDeleteComponent } from '../objective-delete/objective-delete.component';
 import { Objective } from '../objective';
-import { FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Indicator } from '../../indicator/indicator';
-import { SubArea } from '../../sub-area/sub-area';
-import { AuditableArea } from '../../auditable-area/auditable-area';
+
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
@@ -83,7 +80,7 @@ export class ObjectiveListComponent implements OnInit {
   loadPage() {
     const pageToLoad = this.page || 0;
     this.objectiveService
-      .query({
+      .getAllPaged({
         page: pageToLoad,
         size: this.itemsPerPage,
       })

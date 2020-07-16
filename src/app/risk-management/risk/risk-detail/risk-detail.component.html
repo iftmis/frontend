@@ -1,0 +1,99 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <h1 mat-dialog-title>
+    Risk Register: {{ riskRegister.name }} | Owner: {{ organisationUnit.name }}
+  </h1>
+  <div mat-dialog-content>
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Code</mat-label>
+      <input
+        matInput
+        autocomplete="off"
+        placeholder="Enter risk code"
+        formControlName="code"
+        required
+      />
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('code')"
+          label="Code"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        autocomplete="off"
+        placeholder="Enter risk description"
+        formControlName="description"
+        required
+      />
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('description')"
+          label="Description"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Objective</mat-label>
+      <mat-select formControlName="objectiveId" required>
+        <mat-option>--Select--</mat-option>
+        <mat-option
+          *ngFor="let objective of getObjectives() | async"
+          [value]="objective.id"
+          >{{ objective.code }} - {{ objective.description }}</mat-option
+        >
+      </mat-select>
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('objectiveId')"
+          label="Objective"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Risk Category</mat-label>
+      <mat-select formControlName="riskCategoryId" required>
+        <mat-option>--Select--</mat-option>
+        <mat-option
+          *ngFor="let riskCategory of getRiskCategories() | async"
+          [value]="riskCategory.id"
+          >{{ riskCategory.name }}</mat-option
+        >
+      </mat-select>
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('riskCategoryId')"
+          label="Risk Category"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">
+      <mat-icon>cancel</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="form.invalid || isSaveOrUpdateInProgress"
+      type="submit"
+    >
+      <mat-icon>save</mat-icon>
+      <span>{{ risk?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </div>
+</form>

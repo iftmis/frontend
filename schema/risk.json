@@ -1,0 +1,93 @@
+{
+  "name": "risk",
+  "pageTitle": "Risks",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["name"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Risk Register",
+      "name": "riskRegisterId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Risk Register",
+      "name": "riskRegisterName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Objective",
+      "name": "objectiveId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Objective",
+      "name": "objectiveDescription",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Risk Category",
+      "name": "riskCategoryId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Risk Category",
+      "name": "riskCategoryName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Owner",
+      "name": "riskOwnerId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Owner",
+      "name": "riskOwnerName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

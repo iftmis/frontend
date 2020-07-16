@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { RiskRankService } from '../risk-rank.service';
 import { RiskRankFormService } from './risk-rank-form.service';
 import { RiskRank } from '../risk-rank';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-risk-rank-detail',
@@ -24,7 +25,8 @@ export class RiskRankDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formService: RiskRankFormService,
-    private riskRankService: RiskRankService
+    private riskRankService: RiskRankService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -41,18 +43,33 @@ export class RiskRankDetailComponent implements OnInit {
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.riskRankService.update(this.formService.fromFormGroup(this.form))
+        this.riskRankService.update(this.formService.fromFormGroup(this.form)),
+        'update'
       );
     } else {
       this.subscribeToResponse(
-        this.riskRankService.create(this.formService.fromFormGroup(this.form))
+        this.riskRankService.create(this.formService.fromFormGroup(this.form)),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<RiskRank>) {
+  private subscribeToResponse(result: Observable<RiskRank>, action: string) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/risk-ranks']),
+      next: () => {
+        if (action === 'create') {
+          this.toastService.success(
+            'Success!',
+            'Risk Rank Created Successfully!'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Risk Rank Updated Successfully!'
+          );
+        }
+        this.router.navigate(['/settings/risk-ranks']);
+      },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
