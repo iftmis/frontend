@@ -9,11 +9,12 @@ import { ReportAndFollowupComponent } from './report-and-followup/report-and-fol
 const routes: Routes = [
   {
     path: '',
-    component: PreparationComponent,
+    redirectTo: 'preparation',
   },
   {
     path: 'preparation',
-    component: PreparationComponent,
+    loadChildren: () =>
+      import('./preparation/preparation.module').then(m => m.PreparationModule),
   },
   {
     path: 'mobilization',
