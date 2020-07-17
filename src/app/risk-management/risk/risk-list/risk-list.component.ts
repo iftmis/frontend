@@ -33,16 +33,17 @@ import { ToastService } from '../../../shared/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RiskListComponent implements OnInit {
-  displayedColumns = [
+  /*displayedColumns = [
     'id',
     'code',
     'description',
     'objective',
     'category',
     'owner',
-    /*'rating',*/
+    /!*'rating',*!/
     'formActions',
-  ];
+  ];*/
+  displayedColumns: string[] = ['position', 'name', 'weight'];
   routeData$ = this.route.data;
   showLoader = false;
   riskRegisterId: string;
