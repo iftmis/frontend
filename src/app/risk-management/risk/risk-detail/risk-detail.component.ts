@@ -49,6 +49,7 @@ export class RiskDetailComponent implements OnInit {
   commentControl = new FormControl('No Comment');
   impacts = [1, 2, 3, 4, 5];
   likelihoods = [1, 2, 3, 4, 5];
+  parentId: number;
 
   displayedColumns: string[] = [
     'id',
@@ -79,6 +80,7 @@ export class RiskDetailComponent implements OnInit {
     }
     this.riskRegister = data.riskRegister;
     this.organisationUnit = data.organisationUnit;
+    this.parentId = data.parentId;
   }
 
   ngOnInit() {
@@ -124,10 +126,11 @@ export class RiskDetailComponent implements OnInit {
         description: this.form.value.description,
         objectiveId: this.form.value.objectiveId,
         riskCategoryId: this.form.value.riskCategoryId,
-        riskOwnerId: this.organisationUnit.id,
+        riskOwnerId: this.parentId,
         riskRegisterId: this.riskRegister.id,
         riskRatings: this.riskRatings,
       } as Risk;
+      console.log(payload);
       this.subscribeToResponse(this.riskService.update(payload));
     } else {
       const payload = {
@@ -135,10 +138,11 @@ export class RiskDetailComponent implements OnInit {
         description: this.form.value.description,
         objectiveId: this.form.value.objectiveId,
         riskCategoryId: this.form.value.riskCategoryId,
-        riskOwnerId: this.organisationUnit.id,
+        riskOwnerId: this.parentId,
         riskRegisterId: this.riskRegister.id,
         riskRatings: this.riskRatings,
       } as Risk;
+      console.log(payload);
       this.subscribeToResponse(this.riskService.create(payload));
     }
   }

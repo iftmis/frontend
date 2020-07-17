@@ -40,6 +40,7 @@ export class RiskListComponent implements OnInit {
     'objective',
     'category',
     'owner',
+    /*'rating',*/
     'formActions',
   ];
   routeData$ = this.route.data;
@@ -81,6 +82,19 @@ export class RiskListComponent implements OnInit {
   ngOnInit() {
     this.loadRiskRegister();
     this.parentId = this.state?.focusedNodeId;
+
+    this.loadOrganisationUnits();
+
+    this.loadRisk(
+      this.page,
+      this.size,
+      Number(this.riskRegisterId),
+      this.parentId,
+      this.queryString
+    );
+  }
+
+  loadOrganisationUnits() {
     this.organisationUnitService.getByUser().subscribe(resp => {
       this.nodes.next(this.mapToNode(resp));
       const ou = resp[0];
@@ -153,7 +167,6 @@ export class RiskListComponent implements OnInit {
   onSuccess(data: any, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.riskSubject.next(data);
-    console.log(data);
   }
 
   getData(): Observable<Risk[]> {
@@ -210,7 +223,14 @@ export class RiskListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.riskService.delete(id).subscribe({
-          next: () => this.router.navigate(['/risk-management/risks']),
+          next: () => {
+            this.toastService.success('Success!', 'Risk Deleted Successfully!');
+            this.router.navigate([
+              '/risk-management/risk-register',
+              this.riskRegisterId,
+              'risks',
+            ]);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
@@ -223,6 +243,7 @@ export class RiskListComponent implements OnInit {
       riskRegister: this.riskRegister,
       organisationUnit: this.selectedOrganisationUnit,
       action: 'create',
+      parentId: this.parentId,
     };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -252,6 +273,7 @@ export class RiskListComponent implements OnInit {
       organisationUnit: this.selectedOrganisationUnit,
       action: 'update',
       risk: row,
+      parentId: this.parentId,
     };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
