@@ -1,0 +1,68 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-dialog-content>
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>InspectionObjective</mat-card-title>
+    <mat-card-subtitle>{{
+      inspectionObjective?.id
+        ? 'Update an existing inspectionObjective.'
+        : 'Creates a new inspectionObjective.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <div class="content">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Inspection Area</mat-label>
+        <mat-select formControlName="inspectionAreaId">
+          <mat-option>--Select--</mat-option>
+          <mat-option *ngFor="let area of inspectionAreas" [value]="area.id">{{
+            area.name
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('inspectionAreaId')"
+            label="Inspection Area"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter inspectionObjective name"
+          formControlName="name"
+          required
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('name')"
+            label="Name"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+    </div>
+    <mat-dialog-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ inspectionObjective?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-dialog-actions>
+  </mat-dialog-content>
+</form>
