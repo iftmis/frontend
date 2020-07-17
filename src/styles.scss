@@ -56,7 +56,6 @@ mat-form-field {
     cursor: pointer;
     display: flex;
     font-weight: bold;
-    margin: 0 4px;
     min-height: 40px;
     position: relative;
     text-decoration: none;
@@ -64,7 +63,8 @@ mat-form-field {
 
   .mat-list-item {
     font-size: 14px;
-    padding-left: 20px;
+    padding-left: 48px;
+    border-radius: 0 48px 48px 0;
   }
 
   div {

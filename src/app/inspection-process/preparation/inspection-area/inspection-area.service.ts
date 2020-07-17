@@ -37,7 +37,7 @@ export class InspectionAreaService {
   create(inspectionArea: InspectionArea): Observable<InspectionArea> {
     return this.http.post<InspectionArea>(this.resourceUrl, inspectionArea);
   }
-  saveAll(inspectionAreasToAdd: InspectionArea[]): Observable<any> {
+  saveAll(inspectionAreasToAdd: any): Observable<any> {
     return this.http.post<InspectionArea[]>(
       `${this.resourceUrl}/add`,
       inspectionAreasToAdd

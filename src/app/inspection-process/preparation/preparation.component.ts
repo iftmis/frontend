@@ -77,8 +77,8 @@ export class PreparationComponent implements OnInit {
     this.selectedInspectionAreas = [];
   }
 
-  filterAreas(inspectionAreas: InspectionArea[]) {
-    const ids = inspectionAreas.map(a => a.auditableAreaId);
+  filterAreas(inspectionAreas: any) {
+    const ids = inspectionAreas.map((a: any) => a.auditableAreaId || 0);
     // @ts-ignore
     const filtered = this.allAreasAuditableAreas.filter(
       a => ids.indexOf(a.id) === -1

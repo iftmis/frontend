@@ -76,7 +76,7 @@ export class InspectionObjectiveListComponent implements OnInit {
 
   createOrUpdate(
     inspectionAreaId: number,
-    inspectionObjective: InspectionObjective
+    inspectionObjective: InspectionObjective | null
   ) {
     const dialogRef = this.dialog.open(InspectionObjectiveDetailComponent, {
       data: {
