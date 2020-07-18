@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { InspectionPlanService } from './../inspection-plan.service';
+import { InspectionPlanService } from '../inspection-plan.service';
 import { InspectionPlanDeleteComponent } from '../inspection-plan-delete/inspection-plan-delete.component';
 import { InspectionPlan } from '../inspection-plan';
 

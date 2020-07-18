@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MaterialModule } from '../../material/material.module';
+import { MaterialModule } from '../../../material/material.module';
 import { InspectionPlanListComponent } from './inspection-plan-list.component';
 
 describe('InspectionPlanListComponent', () => {

@@ -93,9 +93,9 @@ const routes: Routes = [
     path: 'inspection-plans',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
-      import('./inspection-plan/inspection-plan.module').then(
-        m => m.InspectionPlanModule
-      ),
+      import(
+        './inspection-planning/inspection-plan/inspection-plan.module'
+      ).then(m => m.InspectionPlanModule),
   },
   {
     path: '**',
