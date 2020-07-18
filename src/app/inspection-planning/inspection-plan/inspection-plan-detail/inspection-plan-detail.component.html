@@ -22,11 +22,11 @@
         <mat-label>Financial Year</mat-label>
         <mat-select formControlName="FinancialYearID" required>
           <mat-option>--Select--</mat-option>
-          <mat-option
+          <!--<mat-option
             *ngFor="let financialYearIDOption of financialYearIDOptions"
             [value]="financialYearIDOption.key"
             >{{ financialYearIDOption.value }}</mat-option
-          >
+          >-->
         </mat-select>
         <mat-error
           ><hip-ngx-error
