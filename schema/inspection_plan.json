@@ -1,0 +1,55 @@
+{
+  "name": "InspectionPlan",
+  "pageTitle": "Inspection Plan",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["financialYearName", "OrganizationUnitName"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Financial Year",
+      "name": "FinancialYearID",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Financial Year",
+      "name": "financialYearName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Organization Unit",
+      "name": "OrganizationUnitID",
+      "dataType": "number",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Organization Unit",
+      "name": "OrganizationUnitName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    }
+  ]
+}
