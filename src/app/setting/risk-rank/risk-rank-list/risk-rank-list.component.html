@@ -47,7 +47,9 @@
 
       <ng-container matColumnDef="hexColor">
         <th mat-header-cell *matHeaderCellDef>Color</th>
-        <td mat-cell *matCellDef="let element">{{ element.hexColor }}</td>
+        <td mat-cell [style.color]="element.hexColor" *matCellDef="let element">
+          {{ element.hexColor }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
