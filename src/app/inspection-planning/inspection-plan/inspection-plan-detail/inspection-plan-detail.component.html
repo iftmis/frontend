@@ -1,0 +1,108 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-card class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>InspectionPlan</mat-card-title>
+    <mat-card-subtitle>{{
+      inspectionPlan?.id
+        ? 'Update an existing InspectionPlan.'
+        : 'Creates a new InspectionPlan.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width">
+        <mat-label>Financial Year</mat-label>
+        <mat-select formControlName="FinancialYearID" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let financialYearIDOption of financialYearIDOptions"
+            [value]="financialYearIDOption.key"
+            >{{ financialYearIDOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('FinancialYearID')"
+            label="Financial Year"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Financial Year</mat-label>
+        <mat-select formControlName="financialYearName" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let financialYearNameOption of financialYearNameOptions"
+            [value]="financialYearNameOption.key"
+            >{{ financialYearNameOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('financialYearName')"
+            label="Financial Year"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Organization Unit</mat-label>
+        <mat-select formControlName="OrganizationUnitID" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="let organizationUnitIDOption of organizationUnitIDOptions"
+            [value]="organizationUnitIDOption.key"
+            >{{ organizationUnitIDOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('OrganizationUnitID')"
+            label="Organization Unit"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Organization Unit</mat-label>
+        <mat-select formControlName="OrganizationUnitName" required>
+          <mat-option>--Select--</mat-option>
+          <mat-option
+            *ngFor="
+              let organizationUnitNameOption of organizationUnitNameOptions
+            "
+            [value]="organizationUnitNameOption.key"
+            >{{ organizationUnitNameOption.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('OrganizationUnitName')"
+            label="Organization Unit"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ inspectionPlan?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
