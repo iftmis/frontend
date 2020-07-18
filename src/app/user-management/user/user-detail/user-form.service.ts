@@ -27,7 +27,9 @@ export class UserFormService {
         Validators.required,
       ]),
       langKey: this.formBuilder.control(user.langKey, [Validators.required]),
-      authorities: this.formBuilder.control(user.authorities, []),
+      authorities: this.formBuilder.control(user.authorities, [
+        Validators.required,
+      ]),
     });
   }
 
