@@ -27,6 +27,7 @@ import { RiskDetailComponent } from '../risk-detail/risk-detail.component';
 import { ToastService } from '../../../shared/toast.service';
 import { RiskRankService } from '../../../setting/risk-rank/risk-rank.service';
 import { RiskRank } from '../../../setting/risk-rank/risk-rank';
+import { RiskRegisterApproveComponent } from '../../risk-register/risk-register-approve/risk-register-approve.component';
 
 @Component({
   selector: 'app-risk-list',
@@ -175,6 +176,10 @@ export class RiskListComponent implements OnInit {
 
   getData(): Observable<Risk[]> {
     return this.riskSubject.asObservable();
+  }
+
+  countRisks(): number {
+    return this.riskSubject.getValue().length;
   }
 
   onError(): void {}
@@ -373,5 +378,26 @@ export class RiskListComponent implements OnInit {
     return color;
   }
 
-  approve() {}
+  approve() {
+    const dialogRef = this.dialog.open(RiskRegisterApproveComponent, {
+      data: this.riskRegister,
+    });
+    const id = Number(this.riskRegisterId);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showLoader = true;
+        this.riskRegisterService.approve(id).subscribe({
+          next: () => {
+            this.toastService.success(
+              'Success',
+              'Risk Register Approved Successfully!'
+            );
+            this.router.navigate(['/risk-management/risk-register']);
+          },
+          error: () => (this.showLoader = false),
+          complete: () => (this.showLoader = false),
+        });
+      }
+    });
+  }
 }

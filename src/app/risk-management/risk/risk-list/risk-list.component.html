@@ -1,25 +1,28 @@
 <mat-card>
   <div class="page-heading">
     <span class="mat-card-title"
-      ><strong>Risk Register:</strong> {{ riskRegister?.name }}</span
+      ><strong>Risk Register:</strong> {{ riskRegister?.name }}
+      <mat-icon color="primary">done_all</mat-icon></span
     >
-    <mat-icon>check</mat-icon> Approved >
     <div>
       <button
         mat-raised-button
         type="button"
         color="accent"
-        [disabled]="riskRegister?.isApproved"
+        [disabled]="riskRegister?.isApproved || countRisks() === 0"
         (click)="approve()"
       >
-        <mat-icon>check</mat-icon>
+        <mat-icon>done_all</mat-icon>
         <span>Approve</span>
       </button>
       <button
         mat-raised-button
         type="button"
         class="button-spacing"
-        [disabled]="!selectedOrganisationUnit || riskRegister?.isApproved"
+        [disabled]="
+          !selectedOrganisationUnit ||
+          (selectedOrganisationUnit && riskRegister?.isApproved)
+        "
         color="primary"
         (click)="create()"
       >
