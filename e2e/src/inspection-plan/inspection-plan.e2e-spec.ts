@@ -109,27 +109,17 @@ describe('InspectionPlan tests', () => {
     expect(await detailPage.financialYearNameLabel.getText()).toEqual(
       'Financial Year'
     );
-    await detailPage.financialYearName.click();
-
-    await detailPage.selectAnOption(detailPage.financialYearNameOptions.last());
+    await detailPage.financialYearName.sendKeys('Lorem Ipsum');
 
     expect(await detailPage.OrganizationUnitIDLabel.getText()).toEqual(
       'Organization Unit'
     );
-    await detailPage.OrganizationUnitID.click();
-
-    await detailPage.selectAnOption(
-      detailPage.OrganizationUnitIDOptions.last()
-    );
+    await detailPage.OrganizationUnitID.sendKeys('');
 
     expect(await detailPage.OrganizationUnitNameLabel.getText()).toEqual(
       'Organization Unit'
     );
-    await detailPage.OrganizationUnitName.click();
-
-    await detailPage.selectAnOption(
-      detailPage.OrganizationUnitNameOptions.last()
-    );
+    await detailPage.OrganizationUnitName.sendKeys('Lorem Ipsum');
 
     expect(await detailPage.saveBtn.isEnabled()).toBeTruthy();
     await detailPage.saveBtn.click();
@@ -164,27 +154,29 @@ describe('InspectionPlan tests', () => {
     expect(await detailPage.financialYearNameLabel.getText()).toEqual(
       'Financial Year'
     );
-    await detailPage.financialYearName.click();
-
-    await detailPage.selectAnOption(detailPage.financialYearNameOptions.last());
+    expect(await detailPage.financialYearName.getAttribute('value')).toEqual(
+      'Lorem Ipsum'
+    );
+    await detailPage.financialYearName.clear();
+    await detailPage.financialYearName.sendKeys('Ipsum Lorem');
 
     expect(await detailPage.OrganizationUnitIDLabel.getText()).toEqual(
       'Organization Unit'
     );
-    await detailPage.OrganizationUnitID.click();
-
-    await detailPage.selectAnOption(
-      detailPage.OrganizationUnitIDOptions.last()
+    expect(await detailPage.OrganizationUnitID.getAttribute('value')).toEqual(
+      ''
     );
+    await detailPage.OrganizationUnitID.clear();
+    await detailPage.OrganizationUnitID.sendKeys('');
 
     expect(await detailPage.OrganizationUnitNameLabel.getText()).toEqual(
       'Organization Unit'
     );
-    await detailPage.OrganizationUnitName.click();
-
-    await detailPage.selectAnOption(
-      detailPage.OrganizationUnitNameOptions.last()
+    expect(await detailPage.OrganizationUnitName.getAttribute('value')).toEqual(
+      'Lorem Ipsum'
     );
+    await detailPage.OrganizationUnitName.clear();
+    await detailPage.OrganizationUnitName.sendKeys('Ipsum Lorem');
 
     expect(await detailPage.saveBtn.isEnabled()).toBeTruthy();
     await detailPage.saveBtn.click();

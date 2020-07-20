@@ -25,6 +25,9 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { RiskDetailComponent } from '../risk-detail/risk-detail.component';
 import { ToastService } from '../../../shared/toast.service';
+import { RiskRankService } from '../../../setting/risk-rank/risk-rank.service';
+import { RiskRank } from '../../../setting/risk-rank/risk-rank';
+import { RiskRegisterApproveComponent } from '../../risk-register/risk-register-approve/risk-register-approve.component';
 
 @Component({
   selector: 'app-risk-list',
@@ -33,16 +36,6 @@ import { ToastService } from '../../../shared/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RiskListComponent implements OnInit {
-  displayedColumns = [
-    'id',
-    'code',
-    'description',
-    'objective',
-    'category',
-    'owner',
-    /*'rating',*/
-    'formActions',
-  ];
   routeData$ = this.route.data;
   showLoader = false;
   riskRegisterId: string;
@@ -60,6 +53,7 @@ export class RiskListComponent implements OnInit {
   page: number;
   riskSubject: BehaviorSubject<Risk[]> = new BehaviorSubject([]);
   queryString: string;
+  ranks: RiskRank[];
 
   constructor(
     private route: ActivatedRoute,
@@ -69,7 +63,8 @@ export class RiskListComponent implements OnInit {
     private riskRegisterService: RiskRegisterService,
     private actRoute: ActivatedRoute,
     private organisationUnitService: OrganisationUnitService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private riskRankService: RiskRankService
   ) {
     this.totalItems = 0;
     this.page = 0;
@@ -91,6 +86,16 @@ export class RiskListComponent implements OnInit {
       Number(this.riskRegisterId),
       this.parentId,
       this.queryString
+    );
+    this.loadRanks();
+  }
+
+  loadRanks() {
+    this.riskRankService.getAllUnPaged().subscribe(
+      response => {
+        this.ranks = response;
+      },
+      error => {}
     );
   }
 
@@ -171,6 +176,10 @@ export class RiskListComponent implements OnInit {
 
   getData(): Observable<Risk[]> {
     return this.riskSubject.asObservable();
+  }
+
+  countRisks(): number {
+    return this.riskSubject.getValue().length;
   }
 
   onError(): void {}
@@ -317,5 +326,78 @@ export class RiskListComponent implements OnInit {
         this.queryString
       );
     }
+  }
+
+  likelihood(risk: Risk, source: string) {
+    let likelihood = 0;
+    if (risk.riskRatings) {
+      risk.riskRatings.forEach(row => {
+        if (row.source.toString() === source) {
+          likelihood = row.likelihood;
+        }
+      });
+    }
+    return likelihood;
+  }
+
+  impact(risk: Risk, source: string) {
+    let impact = 0;
+    if (risk.riskRatings) {
+      risk.riskRatings.forEach(row => {
+        if (row.source.toString() === source) {
+          impact = row.impact;
+        }
+      });
+    }
+    return impact;
+  }
+
+  status(risk: Risk, source: string) {
+    let status = 0;
+    if (risk.riskRatings) {
+      risk.riskRatings.forEach(row => {
+        if (row.source.toString() === source) {
+          const likelihood = row.likelihood;
+          const impact = row.impact;
+          status = likelihood * impact;
+        }
+      });
+    }
+    return status;
+  }
+
+  resolveColor(status: number) {
+    let color = '#43A047';
+    this.ranks.forEach(row => {
+      const min = row.minValue;
+      const max = row.maxValue;
+      if (status >= min && status <= max) {
+        color = row.hexColor;
+      }
+    });
+    return color;
+  }
+
+  approve() {
+    const dialogRef = this.dialog.open(RiskRegisterApproveComponent, {
+      data: this.riskRegister,
+    });
+    const id = Number(this.riskRegisterId);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showLoader = true;
+        this.riskRegisterService.approve(id).subscribe({
+          next: () => {
+            this.toastService.success(
+              'Success',
+              'Risk Register Approved Successfully!'
+            );
+            this.router.navigate(['/risk-management/risk-register']);
+          },
+          error: () => (this.showLoader = false),
+          complete: () => (this.showLoader = false),
+        });
+      }
+    });
   }
 }

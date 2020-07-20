@@ -7,12 +7,14 @@ import { RiskRegisterListComponent } from './risk-register-list/risk-register-li
 import { RiskRegisterDetailComponent } from './risk-register-detail/risk-register-detail.component';
 import { RiskRegisterDeleteComponent } from './risk-register-delete/risk-register-delete.component';
 import { TreeModule } from 'angular-tree-component';
+import { RiskRegisterApproveComponent } from './risk-register-approve/risk-register-approve.component';
 
 @NgModule({
   declarations: [
     RiskRegisterListComponent,
     RiskRegisterDetailComponent,
     RiskRegisterDeleteComponent,
+    RiskRegisterApproveComponent,
   ],
   imports: [
     SharedModule,

@@ -47,4 +47,8 @@ export class RiskRegisterService {
   delete(id: number) {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`);
   }
+
+  approve(id: number): Observable<RiskRegister> {
+    return this.http.get<RiskRegister>(`${this.resourceUrl}/approve/${id}`);
+  }
 }

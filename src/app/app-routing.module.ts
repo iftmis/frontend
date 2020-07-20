@@ -36,6 +36,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./inspection/inspection.module').then(m => m.InspectionModule),
   },
+  // {
+  //   path: 'inspection-planning',
+  //   component: PlanningComponent,
+  //   canActivateChild: [AuthenticatedUserGuard],
+  //   loadChildren: () =>
+  //     import('./inspection/inspection.module').then(m => m.InspectionModule),
+  // },
   {
     path: 'inspection-process/:id',
     component: InspectionProcessComponent,
@@ -81,6 +88,22 @@ const routes: Routes = [
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./report/report.module').then(m => m.ReportModule),
+  },
+  {
+    path: 'inspection-plans',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import(
+        './inspection-planning/inspection-plan/inspection-plan.module'
+      ).then(m => m.InspectionPlanModule),
+  },
+  {
+    path: 'inspection-activities',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-activities/inspection-activities.module').then(
+        m => m.InspectionActivitiesModule
+      ),
   },
   {
     path: 'inspection-plans',
