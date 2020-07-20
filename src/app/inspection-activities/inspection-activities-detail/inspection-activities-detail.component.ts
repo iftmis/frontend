@@ -10,6 +10,9 @@ import { InspectionActivities } from '../inspection-activities';
 import { ObjectiveService } from '../../setting/objective/objective.service';
 import { AuditableAreaService } from '../../setting/auditable-area/auditable-area.service';
 import { SubAreaService } from '../../setting/sub-area/sub-area.service';
+import { Objective } from '../../setting/objective/objective';
+import { SubArea } from '../../setting/sub-area/sub-area';
+import { AuditableArea } from '../../setting/auditable-area/auditable-area';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -22,9 +25,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
-  subAreas: [];
-  objectives: [];
-  auditableAreas: [];
+  subAreas: SubArea[];
+  objectives: Objective[];
+  auditableAreas: AuditableArea[];
 
   constructor(
     private route: ActivatedRoute,
