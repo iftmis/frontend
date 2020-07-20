@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from './shared/shared.module';
 import { TreeModule } from 'angular-tree-component';
+import { InpectionPlanningComponent } from './inspection-planning/inpection-planning.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { TreeModule } from 'angular-tree-component';
     HomeComponent,
     AppComponent,
     PageNotFoundComponent,
+    InpectionPlanningComponent,
   ],
   imports: [
     BrowserModule,
