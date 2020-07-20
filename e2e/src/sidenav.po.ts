@@ -49,3 +49,6 @@ export class SidenavPage {
 inspectionActivitiesMenu = this.root.element(
   by.css('a[routerLink="/inspection-activities"]')
 );
+inspectionPlanMenu = this.root.element(
+  by.css('a[routerLink="/inspection-plans"]')
+);

@@ -3,5 +3,5 @@ export interface RiskRank {
   name: string;
   minValue: number;
   maxValue: number;
-  hexColor?: string;
+  hexColor: string;
 }

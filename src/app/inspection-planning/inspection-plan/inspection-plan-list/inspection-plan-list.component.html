@@ -1,11 +1,11 @@
-<mat-card *ngIf="getData() | async as data">
+<mat-card *ngIf="routeData$ | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Procedures</span>
+    <span class="mat-card-title">Inspection Plan</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/settings/procedures', 'new']"
+        [routerLink]="['/inspection-plans', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -21,22 +21,27 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!getData()">
+    <div *ngIf="!data.inspectionPlans?.length">
       <span class="table-overlay">No records found</span>
     </div>
-    <table mat-table [dataSource]="getData()" matSort>
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
-      </ng-container>
-      <ng-container matColumnDef="procedure">
-        <th mat-header-cell *matHeaderCellDef>Procedure</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    <table
+      mat-table
+      [dataSource]="data.inspectionPlans"
+      matSort
+      *ngIf="!!data.inspectionPlans?.length"
+    >
+      <ng-container matColumnDef="financialYearName">
+        <th mat-header-cell *matHeaderCellDef>Financial Year</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.financialYearName }}
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="indicator">
-        <th mat-header-cell *matHeaderCellDef>Indicator</th>
-        <td mat-cell *matCellDef="let element">{{ element.indicatorName }}</td>
+      <ng-container matColumnDef="OrganizationUnitName">
+        <th mat-header-cell *matHeaderCellDef>Organization Unit</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.OrganizationUnitName }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
@@ -47,7 +52,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Procedure form actions "
+            aria-label="InspectionPlan form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -61,28 +66,21 @@
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
     </table>
-    <mat-paginator
-      [length]="totalItems"
-      [pageSize]="itemsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="pageChange($event)"
-    >
-    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit Procedure"
-      [routerLink]="['/settings/procedures', id, 'edit']"
+      aria-label="Edit InspectionPlan"
+      [routerLink]="['/inspection-plans', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete Procedure"
+      aria-label="Delete InspectionPlan"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>
