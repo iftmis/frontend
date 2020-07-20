@@ -15,26 +15,17 @@ export class InspectionActivitiesFormService {
       objectiveId: this.formBuilder.control(inspectionActivities.objectiveId, [
         Validators.required,
       ]),
-      objectiveName: this.formBuilder.control(
-        inspectionActivities.objectiveName,
-        []
-      ),
       auditableAreaId: this.formBuilder.control(
         inspectionActivities.auditableAreaId,
         [Validators.required]
       ),
-      auditableAreaName: this.formBuilder.control(
-        inspectionActivities.auditableAreaName,
-        []
-      ),
       subAreaId: this.formBuilder.control(inspectionActivities.subAreaId, [
         Validators.required,
       ]),
-      subAreaName: this.formBuilder.control(
-        inspectionActivities.subAreaName,
-        []
-      ),
       activity: this.formBuilder.control(inspectionActivities.activity, [
+        Validators.required,
+      ]),
+      days: this.formBuilder.control(inspectionActivities.days, [
         Validators.required,
       ]),
       quarter1: this.formBuilder.control(inspectionActivities.quarter1, [
@@ -56,12 +47,10 @@ export class InspectionActivitiesFormService {
     return {
       id: formGroup.get('id')!.value,
       objectiveId: formGroup.get('objectiveId')!.value,
-      objectiveName: formGroup.get('objectiveName')!.value,
       auditableAreaId: formGroup.get('auditableAreaId')!.value,
-      auditableAreaName: formGroup.get('auditableAreaName')!.value,
       subAreaId: formGroup.get('subAreaId')!.value,
-      subAreaName: formGroup.get('subAreaName')!.value,
       activity: formGroup.get('activity')!.value,
+      days: formGroup.get('days')!.value,
       quarter1: formGroup.get('quarter1')!.value,
       quarter2: formGroup.get('quarter2')!.value,
       quarter3: formGroup.get('quarter3')!.value,

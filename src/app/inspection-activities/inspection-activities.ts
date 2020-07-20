@@ -7,6 +7,7 @@ export interface InspectionActivities {
   subAreaId: string;
   subAreaName?: string;
   activity: string;
+  days: string;
   quarter1: string;
   quarter2: string;
   quarter3: string;

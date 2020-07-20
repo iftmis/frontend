@@ -23,9 +23,9 @@
         <mat-select formControlName="objectiveId" required>
           <mat-option>--Select--</mat-option>
           <mat-option
-            *ngFor="let objectiveIdOption of objectiveIdOptions"
-            [value]="objectiveIdOption.key"
-            >{{ objectiveIdOption.value }}</mat-option
+            *ngFor="let objective of objectives"
+            [value]="objective.id"
+            >{{ objective.description }}</mat-option
           >
         </mat-select>
         <mat-error
@@ -36,27 +36,13 @@
         ></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>Objective</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspectionActivities objective"
-          formControlName="objectiveName"
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('objectiveName')"
-            label="Objective"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
         <mat-label>Auditable Area</mat-label>
         <mat-select formControlName="auditableAreaId" required>
           <mat-option>--Select--</mat-option>
           <mat-option
-            *ngFor="let auditableAreaIdOption of auditableAreaIdOptions"
-            [value]="auditableAreaIdOption.key"
-            >{{ auditableAreaIdOption.value }}</mat-option
+            *ngFor="let auditableArea of auditableAreas"
+            [value]="auditableArea.id"
+            >{{ auditableArea.name }}</mat-option
           >
         </mat-select>
         <mat-error
@@ -67,28 +53,12 @@
         ></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>Auditable Area</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspectionActivities auditable area"
-          formControlName="auditableAreaName"
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('auditableAreaName')"
-            label="Auditable Area"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
         <mat-label>Sub Area</mat-label>
         <mat-select formControlName="subAreaId" required>
           <mat-option>--Select--</mat-option>
-          <mat-option
-            *ngFor="let subAreaIdOption of subAreaIdOptions"
-            [value]="subAreaIdOption.key"
-            >{{ subAreaIdOption.value }}</mat-option
-          >
+          <mat-option *ngFor="let subArea of subAreas" [value]="subArea.id">{{
+            subArea.name
+          }}</mat-option>
         </mat-select>
         <mat-error
           ><hip-ngx-error
@@ -98,24 +68,10 @@
         ></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>Sub Area</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspectionActivities sub area"
-          formControlName="subAreaName"
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('subAreaName')"
-            label="Sub Area"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
         <mat-label>Activity</mat-label>
         <input
           matInput
-          placeholder="Enter inspectionActivities activity"
+          placeholder="Enter inspection activity"
           formControlName="activity"
           required
         />
@@ -127,10 +83,27 @@
         ></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
+        <mat-label>Days</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          placeholder="Enter Days"
+          formControlName="days"
+          required
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('days')"
+            label="Days"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
         <mat-label>Quarter 1</mat-label>
         <input
           matInput
-          placeholder="Enter inspectionActivities quarter 1"
+          placeholder="Enter inspection quarter 1"
           formControlName="quarter1"
           required
         />
@@ -145,7 +118,7 @@
         <mat-label>Quarter 2</mat-label>
         <input
           matInput
-          placeholder="Enter inspectionActivities quarter 2"
+          placeholder="Enter inspection quarter 2"
           formControlName="quarter2"
           required
         />
@@ -160,7 +133,7 @@
         <mat-label>Quarter 3</mat-label>
         <input
           matInput
-          placeholder="Enter inspectionActivities quarter 3"
+          placeholder="Enter inspection quarter 3"
           formControlName="quarter3"
           required
         />
@@ -175,7 +148,7 @@
         <mat-label>Quarter 4</mat-label>
         <input
           matInput
-          placeholder="Enter inspectionActivities quarter 4"
+          placeholder="Enter inspection quarter 4"
           formControlName="quarter4"
           required
         />
