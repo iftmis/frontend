@@ -83,6 +83,14 @@ const routes: Routes = [
       import('./report/report.module').then(m => m.ReportModule),
   },
   {
+    path: 'inspection-activities',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-activities/inspection-activities.module').then(
+        m => m.InspectionActivitiesModule
+      ),
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
   },
