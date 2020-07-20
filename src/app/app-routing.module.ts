@@ -13,6 +13,7 @@ import { ReportComponent } from './report/report.component';
 import { FindingManagementComponent } from './finding-management/finding-management.component';
 import { InspectionProcessComponent } from './inspection-process/inspection-process.component';
 import { InspectionResolver } from './inspection/inspection.resolver';
+import { InspectionPlanningComponent } from './inspection-planning/inspection-planning.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -36,13 +37,15 @@ const routes: Routes = [
     loadChildren: () =>
       import('./inspection/inspection.module').then(m => m.InspectionModule),
   },
-  // {
-  //   path: 'inspection-planning',
-  //   component: PlanningComponent,
-  //   canActivateChild: [AuthenticatedUserGuard],
-  //   loadChildren: () =>
-  //     import('./inspection/inspection.module').then(m => m.InspectionModule),
-  // },
+  {
+    path: 'inspection-planning',
+    component: InspectionPlanningComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-planning/inspection-planning.module').then(
+        m => m.InspectionPlanningModule
+      ),
+  },
   {
     path: 'inspection-process/:id',
     component: InspectionProcessComponent,
@@ -105,14 +108,7 @@ const routes: Routes = [
         m => m.InspectionActivitiesModule
       ),
   },
-  {
-    path: 'inspection-plans',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import(
-        './inspection-planning/inspection-plan/inspection-plan.module'
-      ).then(m => m.InspectionPlanModule),
-  },
+
   {
     path: '**',
     component: PageNotFoundComponent,
