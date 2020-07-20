@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Quarter } from './quarter';
 import { createRequestOption } from '../../shared/pagination.constants';
-import { FinancialYear } from '../financial-year/financial-year';
 
 // @ts-ignore
 @Injectable({
