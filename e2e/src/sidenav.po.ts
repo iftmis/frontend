@@ -45,10 +45,11 @@ export class SidenavPage {
     by.css('a[routerLink="/inspection-objectives"]')
   );
   riskMenu = this.root.element(by.css('a[routerLink="/risks"]'));
+  inspectionActivitiesMenu = this.root.element(
+    by.css('a[routerLink="/inspection-activities"]')
+  );
+
+  inspectionPlanMenu = this.root.element(
+    by.css('a[routerLink="/inspection-plans"]')
+  );
 }
-inspectionActivitiesMenu = this.root.element(
-  by.css('a[routerLink="/inspection-activities"]')
-);
-inspectionPlanMenu = this.root.element(
-  by.css('a[routerLink="/inspection-plans"]')
-);
