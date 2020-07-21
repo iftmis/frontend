@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesFormService } from './inspection-activities-form.service';
 import { InspectionActivities } from '../inspection-activities';
-import { ObjectiveService } from '../../setting/objective/objective.service';
-import { AuditableAreaService } from '../../setting/auditable-area/auditable-area.service';
-import { SubAreaService } from '../../setting/sub-area/sub-area.service';
-import { Objective } from '../../setting/objective/objective';
-import { SubArea } from '../../setting/sub-area/sub-area';
-import { AuditableArea } from '../../setting/auditable-area/auditable-area';
+import { ObjectiveService } from '../../../setting/objective/objective.service';
+import { AuditableAreaService } from '../../../setting/auditable-area/auditable-area.service';
+import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
+import { Objective } from '../../../setting/objective/objective';
+import { SubArea } from '../../../setting/sub-area/sub-area';
+import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -92,7 +92,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     action: string
   ) {
     result.subscribe({
-      next: () => this.router.navigate(['/inspection-activities']),
+      next: () =>
+        this.router.navigate(['/inspection-planning/inspection-activities']),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -106,7 +107,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-activities']);
+    this.router.navigate(['/inspection-planning/inspection-activities']);
     return false;
   }
 }

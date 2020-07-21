@@ -19,6 +19,14 @@ const routes: Routes = [
         m => m.InspectionPlanModule
       ),
   },
+  {
+    path: 'inspection-activities',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-activities/inspection-activities.module').then(
+        m => m.InspectionActivitiesModule
+      ),
+  },
 ];
 
 // @ts-ignore

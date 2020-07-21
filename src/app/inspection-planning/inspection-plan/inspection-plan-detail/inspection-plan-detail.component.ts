@@ -109,7 +109,7 @@ export class InspectionPlanDetailComponent implements OnInit {
         } else {
           this.toastService.success('Success!', 'Risk Updated Successfully!');
         }
-        this.router.navigate(['/inspection-plans']);
+        this.router.navigate(['/inspection-planning']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -124,7 +124,7 @@ export class InspectionPlanDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-plans']);
+    this.router.navigate(['/inspection-planning']);
     return false;
   }
 }

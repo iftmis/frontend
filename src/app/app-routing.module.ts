@@ -92,22 +92,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./report/report.module').then(m => m.ReportModule),
   },
-  {
-    path: 'inspection-plans',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import(
-        './inspection-planning/inspection-plan/inspection-plan.module'
-      ).then(m => m.InspectionPlanModule),
-  },
-  {
-    path: 'inspection-activities',
-    canActivateChild: [AuthenticatedUserGuard],
-    loadChildren: () =>
-      import('./inspection-activities/inspection-activities.module').then(
-        m => m.InspectionActivitiesModule
-      ),
-  },
 
   {
     path: '**',

@@ -39,7 +39,8 @@ export class InspectionPlanListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.inspectionPlanService.delete(id).subscribe({
-          next: () => this.router.navigate(['/inspection-plans']),
+          next: () =>
+            this.router.navigate(['inspection-planning/inspection-planning']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
