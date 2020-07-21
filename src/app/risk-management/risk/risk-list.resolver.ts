@@ -11,6 +11,6 @@ import { RiskService } from './risk.service';
 export class RiskListResolver implements Resolve<Risk[]> {
   constructor(private service: RiskService) {}
   resolve(route: ActivatedRouteSnapshot): Observable<Risk[]> {
-    return this.service.query();
+    return this.service.getAll();
   }
 }

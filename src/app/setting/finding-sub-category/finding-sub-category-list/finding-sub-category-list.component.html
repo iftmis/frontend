@@ -1,11 +1,11 @@
 <mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Finding Categories</span>
+    <span class="mat-card-title">Finding Sub-Categories</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/finding-management/finding-categories', 'new']"
+        [routerLink]="['/settings/finding-sub-categories', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
@@ -43,7 +43,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Category of Finding form actions "
+            aria-label="Finding Sub-Category form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -59,27 +59,26 @@
     </table>
     <mat-paginator
       [length]="totalItems"
-      (page)="pageChanged($event)"
-      [pageSizeOptions]="perPageOptions"
-      [pageIndex]="page"
-      showFirstLastButtons
-      [pageSize]="size"
-    ></mat-paginator>
+      [pageSize]="itemsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit Finding Category"
-      [routerLink]="['/finding-management/finding-categories', id, 'edit']"
+      aria-label="Edit Finding Sub-Category"
+      [routerLink]="['/settings/finding-sub-categories', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete Finding Category"
+      aria-label="Delete Finding Sub-Category"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>

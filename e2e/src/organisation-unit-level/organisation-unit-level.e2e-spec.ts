@@ -8,7 +8,7 @@ import { SidenavPage } from '../sidenav.po';
 import { OrganisationUnitLevelDetailPage } from './organisation-unit-level-detail.po';
 import { OrganisationUnitLevelDeletePage } from './organisation-unit-level-delete.po';
 
-describe('OrganisationUnitLevel tests', () => {
+describe('Finding tests', () => {
   let headerPage: HeaderPage;
   let loginPage: LoginPage;
   let sidenavPage: SidenavPage;
@@ -92,9 +92,7 @@ describe('OrganisationUnitLevel tests', () => {
   it('should create a new organisation-unit-level', async () => {
     await listPage.createBtn.click();
 
-    expect(await detailPage.pageTitle.getText()).toEqual(
-      'OrganisationUnitLevel'
-    );
+    expect(await detailPage.pageTitle.getText()).toEqual('Finding');
     expect(await detailPage.pageSubTitle.getText()).toEqual(
       'Creates a new organisationUnitLevel.'
     );
@@ -123,9 +121,7 @@ describe('OrganisationUnitLevel tests', () => {
     expect(await listPage.editBtn.isEnabled()).toBeTruthy();
     await listPage.editBtn.click();
 
-    expect(await detailPage.pageTitle.getText()).toEqual(
-      'OrganisationUnitLevel'
-    );
+    expect(await detailPage.pageTitle.getText()).toEqual('Finding');
     expect(await detailPage.pageSubTitle.getText()).toEqual(
       'Update an existing organisationUnitLevel.'
     );

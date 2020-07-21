@@ -36,13 +36,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./inspection/inspection.module').then(m => m.InspectionModule),
   },
-  // {
-  //   path: 'inspection-planning',
-  //   component: PlanningComponent,
-  //   canActivateChild: [AuthenticatedUserGuard],
-  //   loadChildren: () =>
-  //     import('./inspection/inspection.module').then(m => m.InspectionModule),
-  // },
   {
     path: 'inspection-process/:id',
     component: InspectionProcessComponent,

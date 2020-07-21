@@ -1,23 +1,22 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { FindingCategoryService } from '../finding-category.service';
-import { FindingCategoryFormService } from './finding-category-form.service';
-import { FindingCategory } from '../finding-category';
-import { environment } from '../../../../environments/environment';
-import { Title } from '@angular/platform-browser';
+import { FindingSubCategoryService } from '../finding-sub-category.service';
+import { FindingSubCategoryFormService } from './finding-sub-category-form.service';
+import { FindingSubCategory } from '../finding-sub-category';
 import { ToastService } from '../../../shared/toast.service';
 
 @Component({
-  selector: 'app-finding-category-detail',
-  templateUrl: './finding-category-detail.component.html',
-  styleUrls: ['./finding-category-detail.component.scss'],
+  selector: 'app-finding-sub-category-detail',
+  templateUrl: './finding-sub-category-detail.component.html',
+  styleUrls: ['./finding-sub-category-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FindingCategoryDetailComponent implements OnInit {
-  findingCategory: FindingCategory;
+export class FindingSubCategoryDetailComponent implements OnInit {
+  findingSubCategory: FindingSubCategory;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
@@ -25,18 +24,15 @@ export class FindingCategoryDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private formService: FindingCategoryFormService,
-    private findingCategoryService: FindingCategoryService,
-    private titleService: Title,
+    private formService: FindingSubCategoryFormService,
+    private findingSubCategoryService: FindingSubCategoryService,
     private toastService: ToastService
-  ) {
-    this.titleService.setTitle('Finding Category Details|' + environment.app);
-  }
+  ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ findingCategory }) => {
-      this.findingCategory = findingCategory;
-      this.form = this.formService.toFormGroup(findingCategory);
+    this.route.data.subscribe(({ findingSubCategory }) => {
+      this.findingSubCategory = findingSubCategory;
+      this.form = this.formService.toFormGroup(findingSubCategory);
     });
 
     this.error = undefined;
@@ -47,14 +43,14 @@ export class FindingCategoryDetailComponent implements OnInit {
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.findingCategoryService.update(
+        this.findingSubCategoryService.update(
           this.formService.fromFormGroup(this.form)
         ),
         'update'
       );
     } else {
       this.subscribeToResponse(
-        this.findingCategoryService.create(
+        this.findingSubCategoryService.create(
           this.formService.fromFormGroup(this.form)
         ),
         'create'
@@ -63,7 +59,7 @@ export class FindingCategoryDetailComponent implements OnInit {
   }
 
   private subscribeToResponse(
-    result: Observable<FindingCategory>,
+    result: Observable<FindingSubCategory>,
     action: string
   ) {
     result.subscribe({
@@ -71,15 +67,15 @@ export class FindingCategoryDetailComponent implements OnInit {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Finding Category Updated Successfully'
+            'Finding Sub-Category Updated Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Finding Category Created Successfully'
+            'Finding Sub-Category Created Successfully'
           );
         }
-        this.router.navigate(['/finding-management/finding-categories']);
+        this.router.navigate(['/settings/finding-sub-categories']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -94,7 +90,7 @@ export class FindingCategoryDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/finding-management/finding-categories']);
+    this.router.navigate(['/settings/finding-sub-categories']);
     return false;
   }
 }
