@@ -25,25 +25,31 @@ export class InspectionPlanDetailPage {
   FinancialYearIDOptions = this.overlayPage.options;
 
   financialYearName = this.root.element(
-    by.css('input[formcontrolname="financialYearName"]')
+    by.css('mat-select[formcontrolname="financialYearName"]')
   );
   financialYearNameLabel = this.root.element(
-    by.css('input[formcontrolname="financialYearName"]+span mat-label')
+    by.css('mat-select[formcontrolname="financialYearName"]+span mat-label')
   );
+
+  financialYearNameOptions = this.overlayPage.options;
 
   OrganizationUnitID = this.root.element(
-    by.css('input[formcontrolname="OrganizationUnitID"]')
+    by.css('mat-select[formcontrolname="OrganizationUnitID"]')
   );
   OrganizationUnitIDLabel = this.root.element(
-    by.css('input[formcontrolname="OrganizationUnitID"]+span mat-label')
+    by.css('mat-select[formcontrolname="OrganizationUnitID"]+span mat-label')
   );
 
+  OrganizationUnitIDOptions = this.overlayPage.options;
+
   OrganizationUnitName = this.root.element(
-    by.css('input[formcontrolname="OrganizationUnitName"]')
+    by.css('mat-select[formcontrolname="OrganizationUnitName"]')
   );
   OrganizationUnitNameLabel = this.root.element(
-    by.css('input[formcontrolname="OrganizationUnitName"]+span mat-label')
+    by.css('mat-select[formcontrolname="OrganizationUnitName"]+span mat-label')
   );
+
+  OrganizationUnitNameOptions = this.overlayPage.options;
 
   async selectAnOption(selector: ElementFinder) {
     await this.overlayPage.selectAnOption(selector);
