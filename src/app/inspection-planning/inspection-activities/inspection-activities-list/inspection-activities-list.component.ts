@@ -15,11 +15,13 @@ import {
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Quarter } from '../../../setting/quarter/quarter';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { ToastService } from '../../../shared/toast.service';
 import { HttpHeaders } from '@angular/common/http';
+import { SubArea } from '../../../setting/sub-area/sub-area';
+import { Objective } from '../../../setting/objective/objective';
+import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-inspection-activities-list',
@@ -42,11 +44,16 @@ export class InspectionActivitiesListComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
+  size: number;
   private InspectionActivityBehaviorSubject: BehaviorSubject<
     InspectionActivities[]
   > = new BehaviorSubject([]);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
+
+  subAreas: SubArea[];
+  objectives: Objective[];
+  auditableAreas: AuditableArea[];
 
   constructor(
     private route: ActivatedRoute,
@@ -75,6 +82,8 @@ export class InspectionActivitiesListComponent implements OnInit {
   getData(): Observable<InspectionActivities[]> {
     return this.InspectionActivityBehaviorSubject.asObservable();
   }
+
+  filterByObjectiveId() {}
 
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
