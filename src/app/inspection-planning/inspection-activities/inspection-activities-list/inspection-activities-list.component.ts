@@ -7,17 +7,18 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { InspectionActivitiesService } from './../inspection-activities.service';
+import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesDeleteComponent } from '../inspection-activities-delete/inspection-activities-delete.component';
 import { InspectionActivities } from '../inspection-activities';
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
-} from '../../shared/pagination.constants';
+} from '../../../shared/pagination.constants';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Quarter } from '../../../setting/quarter/quarter';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ToastService } from '../../shared/toast.service';
+import { ToastService } from '../../../shared/toast.service';
 import { HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -103,7 +104,9 @@ export class InspectionActivitiesListComponent implements OnInit {
               'Success',
               'Inspection Activity Deleted Successfully!'
             );
-            this.router.navigate(['/inspection-activities']);
+            this.router.navigate([
+              '/inspection-planning/inspection-activities',
+            ]);
           },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),

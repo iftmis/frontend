@@ -2,9 +2,7 @@ import { by, element, ElementFinder } from 'protractor';
 import { OverlayPage } from '../overlay.po';
 
 export class OrganisationUnitLevelDetailPage {
-  private root: ElementFinder = element(
-    by.css('.body app-organisation-unit-level-detail')
-  );
+  private root: ElementFinder = element(by.css('.body app-finding-detail'));
   private actions: ElementFinder = this.root.element(
     by.css('mat-card-actions')
   );

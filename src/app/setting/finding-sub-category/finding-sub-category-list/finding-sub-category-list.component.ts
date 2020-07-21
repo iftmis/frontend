@@ -85,9 +85,7 @@ export class FindingSubCategoryListComponent implements OnInit {
               'Success',
               'Finding Sub-Category Deleted Successfully!'
             );
-            this.router.navigate([
-              '/finding-management/finding-sub-categories',
-            ]);
+            this.router.navigate(['/settings/finding-sub-categories']);
           },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),

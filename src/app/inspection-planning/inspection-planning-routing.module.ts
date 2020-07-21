@@ -11,15 +11,22 @@ const routes: Routes = [
         m => m.InspectionPlanModule
       ),
   },
-  // {
-  //   path: 'risk-register',
-  //   canActivateChild: [AuthenticatedUserGuard],
-  //   loadChildren: () =>
-  //     import('./inspection-plan/risk-register.module').then(
-  //       m => m.RiskRegisterModule
-  //     ),
-  // },
-  //
+  {
+    path: 'inspection-planning',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-plan/inspection-plan.module').then(
+        m => m.InspectionPlanModule
+      ),
+  },
+  {
+    path: 'inspection-activities',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-activities/inspection-activities.module').then(
+        m => m.InspectionActivitiesModule
+      ),
+  },
 ];
 
 // @ts-ignore

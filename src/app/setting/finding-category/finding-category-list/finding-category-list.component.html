@@ -1,18 +1,18 @@
 <mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
-    <span class="mat-card-title">Finding Sub-Categories</span>
+    <span class="mat-card-title">Finding Categories</span>
     <div>
       <button
         mat-raised-button
         color="accent"
-        [routerLink]="['/finding-management/finding-sub-categories', 'new']"
+        [routerLink]="['/settings/finding-categories', 'new']"
       >
         <mat-icon>add</mat-icon>
         <span>Create</span>
       </button>
     </div>
   </div>
-  <mat-card-content class="table-container">
+  <mat-card-content>
     <mat-progress-spinner
       *ngIf="showLoader"
       diameter="50"
@@ -43,7 +43,7 @@
             color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Finding Sub-Category form actions "
+            aria-label="Category of Finding form actions "
           >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -59,26 +59,27 @@
     </table>
     <mat-paginator
       [length]="totalItems"
-      [pageSize]="itemsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="pageChange($event)"
-    >
-    </mat-paginator>
+      (page)="pageChanged($event)"
+      [pageSizeOptions]="perPageOptions"
+      [pageIndex]="page"
+      showFirstLastButtons
+      [pageSize]="size"
+    ></mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
-      aria-label="Edit Finding Sub-Category"
-      [routerLink]="['/finding-management/finding-sub-categories', id, 'edit']"
+      aria-label="Edit Finding Category"
+      [routerLink]="['/settings/finding-categories', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
     <button
       mat-menu-item
-      aria-label="Delete Finding Sub-Category"
+      aria-label="Delete Finding Category"
       (click)="delete(id, element)"
     >
       <mat-icon>delete</mat-icon>
