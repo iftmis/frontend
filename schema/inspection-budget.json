@@ -1,0 +1,57 @@
+{
+  "name": "inspectionBudget",
+  "pageTitle": "Inspection Budget",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["gfsCodeName", "unitPrice", "quantity", "frequency"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Gfs Code",
+      "name": "gfsCodeId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Gfs Code",
+      "name": "gfsCodeName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Quantity",
+      "name": "quantity",
+      "dataType": "number",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "label": "Frequency",
+      "name": "frequency",
+      "dataType": "number",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "label": "Unit Proce",
+      "name": "unitPrice",
+      "dataType": "number",
+      "controlType": "number",
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    }
+  ]
+}

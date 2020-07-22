@@ -2,7 +2,11 @@
   <mat-tab label="Inspection Budget">
     Budget
   </mat-tab>
-  <mat-tab label="Inspection Program"> </mat-tab>
+  <mat-tab label="Inspection Program">
+    <app-inspection-indicator-list
+      [inspectionId]="inspectionId"
+    ></app-inspection-indicator-list>
+  </mat-tab>
   <mat-tab label="Familiarization">
     Familiarization
   </mat-tab>

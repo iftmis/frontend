@@ -43,7 +43,7 @@ mat-form-field {
 }
 
 .secondary-menu {
-  width: 230px;
+  width: 200px;
   display: flex;
   flex-direction: column;
   margin-top: 1.25em;
@@ -113,6 +113,10 @@ div.ou-tree {
   font-weight: 400;
   letter-spacing: 0.25px;
   color: rgb(95, 99, 104);
+}
+
+.mat-expansion-panel-header {
+  font-size: 13px;
 }
 
 .page-heading {

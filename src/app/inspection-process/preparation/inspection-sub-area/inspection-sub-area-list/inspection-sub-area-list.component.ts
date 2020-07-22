@@ -62,7 +62,9 @@ export class InspectionSubAreaListComponent implements OnInit {
       // @ts-ignore
       return {
         ...o,
-        selectedSubAreaIds: o.inspectionSubAreas.map(s => s.subAreaId),
+        selectedSubAreaIds: o.inspectionSubAreas.map(
+          (s: InspectionSubArea) => s.subAreaId
+        ),
       };
     });
     this.inspectionAreaWithSubAreas.next(x);

@@ -10,7 +10,6 @@ export class MobilizationComponent implements OnInit {
   inspectionId: any;
   constructor(private route: ActivatedRoute) {
     this.inspectionId = route.snapshot.parent?.parent?.params['id'];
-    console.log(this.inspectionId);
   }
 
   ngOnInit(): void {}
