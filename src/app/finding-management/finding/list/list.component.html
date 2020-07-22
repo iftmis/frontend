@@ -76,8 +76,12 @@
             </button>
             <button
               mat-menu-item
+              [routerLink]="[
+                '/finding-management/findings',
+                id,
+                'recommendations'
+              ]"
               aria-label="Recommendations"
-              (click)="recommendations(element)"
             >
               <mat-icon>list</mat-icon>
               <span>Recommendations</span>

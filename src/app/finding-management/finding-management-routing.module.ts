@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FindingManagementComponent } from './finding-management.component';
+import { RecommendationComponent } from './finding/recommendation/recommendation.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: 'findings',
     component: FindingManagementComponent,
+  },
+  {
+    path: 'findings/:id/recommendations',
+    component: RecommendationComponent,
   },
 ];
 
