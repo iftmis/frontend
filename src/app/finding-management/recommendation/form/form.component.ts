@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
   initFormGroup(): FormGroup {
     if (this.action === 'create') {
       return this.formBuilder.group({
-        source: ['AUDITOR', Validators.required],
+        source: ['', Validators.required],
         description: ['', Validators.required],
       });
     } else {

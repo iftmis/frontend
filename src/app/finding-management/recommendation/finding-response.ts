@@ -6,6 +6,7 @@ export interface FindingResponse {
   recommendationDescription?: string;
   createdDate?: string;
   createdBy?: string;
+  lastModifiedDate?: string;
 }
 
 export enum ResponseType {

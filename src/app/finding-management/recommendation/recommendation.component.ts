@@ -126,7 +126,7 @@ export class RecommendationComponent implements OnInit {
 
   onError(): void {}
 
-  delete(id: number, row: FindingResponse) {}
+  delete(row: FindingResponse) {}
 
   getResponseData(): Observable<FindingResponse[]> {
     return this.findingResponseSubject.asObservable();
