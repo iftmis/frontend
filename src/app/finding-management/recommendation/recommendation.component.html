@@ -45,10 +45,15 @@
         <mat-card class="mat-elevation-z0">
           <div class="page-heading">
             <span class="mat-card-title"
-              >{{ selectedRecommendation.description }} Responses</span
+              >{{ selectedRecommendation?.description }} Responses</span
             >
             <div>
-              <button mat-raised-button color="accent" (click)="create()">
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="finding?.isClosed"
+                (click)="create()"
+              >
                 <mat-icon>add</mat-icon>
                 <span>Create</span>
               </button>
@@ -70,11 +75,19 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="update(response)">
+                  <button
+                    mat-menu-item
+                    [disabled]="finding?.isClosed"
+                    (click)="update(response)"
+                  >
                     <mat-icon color="accent">edit</mat-icon>
                     <span>Edit</span>
                   </button>
-                  <button mat-menu-item (click)="delete(response)">
+                  <button
+                    mat-menu-item
+                    [disabled]="finding?.isClosed"
+                    (click)="delete(response)"
+                  >
                     <mat-icon color="warn">close</mat-icon>
                     <span>Delete</span>
                   </button>
