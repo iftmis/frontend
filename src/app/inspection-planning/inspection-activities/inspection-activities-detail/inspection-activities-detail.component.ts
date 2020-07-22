@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesFormService } from './inspection-activities-form.service';
@@ -13,8 +12,6 @@ import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
 import { Objective } from '../../../setting/objective/objective';
 import { SubArea } from '../../../setting/sub-area/sub-area';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
-import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
-import { Risk } from '../../../risk-management/risk/risk';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -30,14 +27,13 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   subAreas: SubArea[];
   objectives: Objective[];
   auditableAreas: AuditableArea[];
+  isLinear: true;
 
-  //
-  riskId: number;
-  selectedRisks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
-
-  allRisk: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
-
-  allAreasAuditableAreas: AuditableArea[] = [];
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  xxxxxFormGroup: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,7 +42,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private objectiveService: ObjectiveService,
     private auditAreasService: AuditableAreaService,
     private subAreasService: SubAreaService,
-    private inspectionActivitiesService: InspectionActivitiesService
+    private inspectionActivitiesService: InspectionActivitiesService,
+    // tslint:disable-next-line:variable-name
+    private _formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -56,6 +54,20 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
+    });
+
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required],
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required],
+    });
+    this.thirdFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required],
+    });
+
+    this.fourthFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required],
     });
 
     this.error = undefined;
