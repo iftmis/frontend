@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesFormService } from './inspection-activities-form.service';
@@ -13,6 +13,8 @@ import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
 import { Objective } from '../../../setting/objective/objective';
 import { SubArea } from '../../../setting/sub-area/sub-area';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
+import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
+import { Risk } from '../../../risk-management/risk/risk';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -28,6 +30,14 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   subAreas: SubArea[];
   objectives: Objective[];
   auditableAreas: AuditableArea[];
+
+  //
+  riskId: number;
+  selectedRisks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
+
+  allRisk: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
+
+  allAreasAuditableAreas: AuditableArea[] = [];
 
   constructor(
     private route: ActivatedRoute,
