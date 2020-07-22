@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -28,6 +27,13 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   subAreas: SubArea[];
   objectives: Objective[];
   auditableAreas: AuditableArea[];
+  isLinear: true;
+
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  xxxxxFormGroup: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +42,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private objectiveService: ObjectiveService,
     private auditAreasService: AuditableAreaService,
     private subAreasService: SubAreaService,
-    private inspectionActivitiesService: InspectionActivitiesService
+    private inspectionActivitiesService: InspectionActivitiesService,
+    // tslint:disable-next-line:variable-name
+    private _formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -46,6 +54,20 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
+    });
+
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required],
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required],
+    });
+    this.thirdFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required],
+    });
+
+    this.fourthFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required],
     });
 
     this.error = undefined;
