@@ -10,4 +10,6 @@ export interface FindingRecommendation {
   description: string;
   implementationStatus: ImplementationStatus;
   findingId: number;
+  findingCode?: string;
+  findingDescription?: string;
 }

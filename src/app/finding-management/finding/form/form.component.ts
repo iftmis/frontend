@@ -19,11 +19,11 @@ export class FormComponent implements OnInit {
   action: string;
   finding: Finding;
   form: FormGroup;
+  error: string | undefined = undefined;
   organisationUnit: OrganisationUnit;
   source: string;
   findingRecommendations: FindingRecommendation[] = [];
   findingRecommendationForm: FormGroup;
-  error: string | undefined = undefined;
   descriptionControl = new FormControl('');
   implementationStatusControl = new FormControl('');
   isSaveOrUpdateInProgress = false;

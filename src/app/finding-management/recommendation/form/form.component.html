@@ -1,0 +1,42 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <h2 mat-dialog-title>
+    <span>{{ action.toUpperCase() }} Response</span>
+  </h2>
+  <mat-dialog-content class="mat-typography">
+    <div fxLayout="column" fxLayoutGap="20px">
+      <mat-radio-group formGroupName="source" aria-label="Select an option">
+        <mat-radio-button value="AUDITOR">AUDITOR</mat-radio-button>
+        <mat-radio-button value="INSPECTOR">INSPECTOR</mat-radio-button>
+        <mat-radio-button value="CLIENT">CLIENT</mat-radio-button>
+      </mat-radio-group>
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          autocomplete="off"
+          placeholder="Enter description"
+          formControlName="description"
+          required
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('description')"
+            label="Description"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="form.invalid || isSaveOrUpdateInProgress"
+      type="submit"
+    >
+      <mat-icon>save</mat-icon>
+      <span>{{ findingResponse?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </mat-dialog-actions>
+</form>

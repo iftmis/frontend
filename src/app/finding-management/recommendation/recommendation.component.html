@@ -14,7 +14,7 @@
       <div fxFlex="30%">
         <mat-card class="mat-elevation-z0">
           <div class="page-heading">
-            <span class="mat-card-title">Recommendations</span>
+            <span class="mat-card-title">Recommendation List</span>
           </div>
           <mat-card-content>
             <mat-selection-list
@@ -29,6 +29,16 @@
               </mat-list-option>
             </mat-selection-list>
           </mat-card-content>
+          <mat-card-actions>
+            <button
+              mat-raised-button
+              color="primary"
+              [routerLink]="['/finding-management/findings']"
+            >
+              <mat-icon>arrow_back</mat-icon>
+              <span>Back to Findings</span>
+            </button>
+          </mat-card-actions>
         </mat-card>
       </div>
       <div fxFlex="70%">
@@ -58,7 +68,7 @@
               <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.createdDate | date: 'mediumDate' }}
+                  {{ element.createdDate | date: 'medium' }}
                 </td>
               </ng-container>
 
@@ -73,7 +83,12 @@
                 <th mat-header-cell *matHeaderCellDef>Source</th>
                 <td mat-cell *matCellDef="let element">{{ element.source }}</td>
               </ng-container>
-
+              <ng-container matColumnDef="createdBy">
+                <th mat-header-cell *matHeaderCellDef>User</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.createdBy }}
+                </td>
+              </ng-container>
               <ng-container matColumnDef="formActions">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
@@ -131,14 +146,4 @@
       </div>
     </div>
   </mat-card-content>
-  <mat-card-actions>
-    <button
-      mat-raised-button
-      color="primary"
-      [routerLink]="['/finding-management/findings']"
-    >
-      <mat-icon>arrow_back</mat-icon>
-      <span>Back to Findings</span>
-    </button>
-  </mat-card-actions>
 </mat-card>

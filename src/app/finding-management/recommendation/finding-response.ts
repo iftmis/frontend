@@ -1,10 +1,11 @@
 export interface FindingResponse {
-  id: number;
+  id?: number;
   source: string;
   description: string;
-  recommendationId: number;
+  recommendationId?: number;
   recommendationDescription?: string;
   createdDate?: string;
+  createdBy?: string;
 }
 
 export enum ResponseType {
