@@ -198,7 +198,7 @@ describe('AuditProgramEngagement tests', () => {
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
-  it('should delete a audit-program-engagement', async () => {
+  it('should confirmation a audit-program-engagement', async () => {
     const lastRecordIndex = (await listPage.table.records.count()) - 1;
     const actionsMenu = listPage.table.getActionsBtn(lastRecordIndex);
 

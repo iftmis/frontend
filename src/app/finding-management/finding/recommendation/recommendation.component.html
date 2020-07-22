@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Finding: {{ finding.description }}</h2>
+<mat-dialog-content>
+  <div fxLayout="row">
+    <h3>Recommendations</h3>
+  </div>
+  <div
+    class="container"
+    fxLayout
+    fxLayout.xs="column"
+    fxLayoutAlign="center"
+    fxLayoutGap="10px"
+    fxLayoutGap.xs="0"
+  >
+    <div fxFlex="40%">
+      <mat-selection-list
+        (selectionChange)="loadResponses($event)"
+        [multiple]="false"
+      >
+        <mat-list-option
+          *ngFor="let recommendation of getData() | async"
+          [value]="recommendation"
+        >
+          {{ recommendation.description }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div fxFlex="60%">
+      <app-response-log
+        [recommendation]="selectedRecommendation"
+      ></app-response-log>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>
+    <mat-icon>cancel</mat-icon>
+    <span>Close</span>
+  </button>
+</mat-dialog-actions>

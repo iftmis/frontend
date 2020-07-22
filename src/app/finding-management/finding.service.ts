@@ -58,4 +58,8 @@ export class FindingService {
   delete(id: number) {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`);
   }
+
+  close(id: number) {
+    return this.http.get(`${this.resourceUrl}/close/${id}`);
+  }
 }

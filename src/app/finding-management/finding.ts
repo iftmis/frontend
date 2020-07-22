@@ -1,12 +1,15 @@
+import { FindingRecommendation } from './finding/recommendation/recommendation';
+
 export interface Finding {
   id?: number;
   code: string;
-  source: FindingSource;
+  source?: string;
   description: string;
-  actionPlanCategory: ActionPlanCategory;
-  isClosed: boolean;
-  organisationUnitId: number;
+  actionPlanCategory: string;
+  isClosed?: boolean;
+  organisationUnitId?: number;
   organisationUnitName?: string;
+  findingRecommendations?: FindingRecommendation[];
 }
 
 export enum FindingSource {
