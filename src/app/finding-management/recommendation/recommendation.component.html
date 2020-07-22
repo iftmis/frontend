@@ -25,7 +25,17 @@
                 *ngFor="let recommendation of getData() | async"
                 [value]="recommendation"
               >
-                {{ recommendation.description }}
+                <div mat-line>{{ recommendation.description }}</div>
+                <div
+                  [style.background]="
+                    color(recommendation.implementationStatus)
+                  "
+                  [style.color]="'#ffffff'"
+                  style="padding: 5px;"
+                  mat-line
+                >
+                  {{ recommendation.implementationStatus }}
+                </div>
               </mat-list-option>
             </mat-selection-list>
           </mat-card-content>

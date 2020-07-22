@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Finding } from '../finding/finding';
-import { FindingRecommendation } from './recommendation';
+import { FindingRecommendation, ImplementationStatus } from './recommendation';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FindingResponse } from './finding-response';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -182,5 +182,19 @@ export class RecommendationComponent implements OnInit {
         this.toastService.success('Success!', 'Response Updated Successfully!');
       }
     });
+  }
+
+  color(implementationStatus: ImplementationStatus) {
+    if (implementationStatus.toString() === 'NOT_IMPLEMENTED') {
+      return '#FF1744';
+    } else if (implementationStatus.toString() === 'PARTIAL_IMPLEMENTED') {
+      return '#900C3F';
+    } else if (implementationStatus.toString() === 'IMPLEMENTED') {
+      return '#43A047';
+    } else if (implementationStatus.toString() === 'TAKEN_BY_EVENT') {
+      return '#00ffff';
+    } else {
+      return '#FF1744';
+    }
   }
 }
