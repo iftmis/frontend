@@ -1,0 +1,93 @@
+<div *ngIf="getInspectionAreas() | async as data">
+  <div class="page-heading">
+    <span class="mat-card-title">Inspection Sub Areas</span>
+  </div>
+  <mat-card-content class="table-container">
+    <mat-progress-spinner
+      *ngIf="showLoader"
+      diameter="50"
+      class="table-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div fxFlex style="padding: 10px 20px;" fxLayout="row">
+      <mat-accordion fxFlex>
+        <mat-expansion-panel
+          *ngFor="let a of data"
+          (opened)="openedId = a.id"
+          [expanded]="openedId === a.id"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ a.name }} ({{ a?.inspectionSubAreas?.length || 0 }})
+            </mat-panel-title>
+            <button
+              mat-icon-button
+              (click)="$event.stopPropagation(); createOrUpdate(a, null)"
+            >
+              <mat-icon color="primary">add_circle</mat-icon>
+            </button>
+          </mat-expansion-panel-header>
+          <div *ngIf="!a?.inspectionSubAreas?.length">
+            <span class="table-overlay">No sub area selected</span>
+          </div>
+          <table
+            mat-table
+            [dataSource]="a.inspectionSubAreas"
+            matSort
+            *ngIf="!!a.inspectionSubAreas?.length"
+          >
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Sub Area</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.subAreaName }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="generalObjective">
+              <th mat-header-cell *matHeaderCellDef>General Objective</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.generalObjective }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="formActions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <div fxLayout="row">
+                  <button
+                    (click)="delete(element.id, element)"
+                    mat-icon-button
+                    color="accent"
+                    aria-label="Edit "
+                  >
+                    <mat-icon color="warn">delete</mat-icon>
+                  </button>
+                  <button
+                    (click)="createOrUpdate(a, element)"
+                    mat-icon-button
+                    color="accent"
+                    aria-label="Edit "
+                  >
+                    <mat-icon color="primary">edit</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+            ></tr>
+            <tr
+              mat-row
+              class="data-row"
+              *matRowDef="let row; columns: displayedColumns"
+            ></tr>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </mat-card-content>
+</div>

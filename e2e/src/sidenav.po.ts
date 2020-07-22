@@ -45,4 +45,7 @@ export class SidenavPage {
     by.css('a[routerLink="/inspection-objectives"]')
   );
   riskMenu = this.root.element(by.css('a[routerLink="/risks"]'));
+  inspectionSubAreaMenu = this.root.element(
+    by.css('a[routerLink="/inspection-sub-areas"]')
+  );
 }

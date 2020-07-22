@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
-import { InspectionObjectiveResolver } from './inspection-objective.resolver';
+import { InspectionSubAreaResolver } from './inspection-sub-area.resolver';
 
-describe('InspectionObjectiveResolveService', () => {
+describe('InspectionSubAreaResolveService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -11,8 +11,8 @@ describe('InspectionObjectiveResolveService', () => {
   );
 
   it('should be created', () => {
-    const service: InspectionObjectiveResolver = TestBed.inject(
-      InspectionObjectiveResolver
+    const service: InspectionSubAreaResolver = TestBed.inject(
+      InspectionSubAreaResolver
     );
     expect(service).toBeTruthy();
   });

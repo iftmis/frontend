@@ -50,6 +50,16 @@
     </div>
   </mat-tab>
   <mat-tab
+    label="Inspection Sub Areas"
+    [disabled]="(getInspectionAreas() | async)?.length === 0"
+  >
+    <ng-template matTabContent>
+      <app-inspection-sub-area-list
+        [inspectionId]="inspectionId"
+      ></app-inspection-sub-area-list>
+    </ng-template>
+  </mat-tab>
+  <mat-tab
     label="Team Members"
     [disabled]="(getInspectionAreas() | async)?.length === 0"
   >
@@ -59,15 +69,6 @@
       ></app-inspection-member-list>
     </ng-template>
   </mat-tab>
-  <mat-tab
-    label="Inspection Objectives"
-    [disabled]="(getInspectionAreas() | async)?.length === 0"
-  >
-    <ng-template matTabContent>
-      <app-inspection-objective-list
-        [inspectionId]="inspectionId"
-      ></app-inspection-objective-list>
-    </ng-template>
-  </mat-tab>
+
   <mat-tab label="Notify Client">Content 3</mat-tab>
 </mat-tab-group>

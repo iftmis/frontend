@@ -1,0 +1,81 @@
+<form (ngSubmit)="saveOrUpdate()" [formGroup]="form" novalidate>
+  <mat-dialog-content class="card">
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      class="form-overlay"
+      color="accent"
+      diameter="50"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>InspectionSubArea</mat-card-title>
+    <mat-card-subtitle>{{
+      inspectionSubArea?.id
+        ? 'Update an existing inspectionSubArea.'
+        : 'Creates a new inspectionSubArea.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Inspection Area</mat-label>
+        <mat-select formControlName="inspectionAreaId" required>
+          <mat-option *ngFor="let obj of inspectionAreas" [value]="obj.id">{{
+            obj.name
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('inspectionAreaId')"
+            label="Inspection Objective"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Sub Area</mat-label>
+        <mat-select formControlName="subAreaId" required>
+          <mat-option
+            *ngFor="let sub of getSubAreas() | async"
+            [value]="sub.id"
+            >{{ sub.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('subAreaId')"
+            label="Sub Area"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>General Objective</mat-label>
+        <input
+          formControlName="generalObjective"
+          matInput
+          placeholder="Enter inspectionSubArea name"
+          required
+        />
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('generalObjective')"
+            label="Name"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions align="right">
+      <button (click)="cancel()" mat-button color="warn">
+        <span>Cancel</span>
+      </button>
+      <button
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        color="primary"
+        mat-raised-button
+        type="submit"
+      >
+        <span>{{ inspectionSubArea?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-dialog-content>
+</form>

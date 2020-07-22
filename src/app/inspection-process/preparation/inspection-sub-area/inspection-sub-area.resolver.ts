@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
-import { InspectionObjective } from './inspection-objective';
-import { InspectionObjectiveService } from './inspection-objective.service';
+import { InspectionSubArea } from './inspection-sub-area';
+import { InspectionSubAreaService } from './inspection-sub-area.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class InspectionObjectiveResolver
-  implements Resolve<InspectionObjective | undefined> {
-  constructor(private service: InspectionObjectiveService) {}
+export class InspectionSubAreaResolver
+  implements Resolve<InspectionSubArea | undefined> {
+  constructor(private service: InspectionSubAreaService) {}
 
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<InspectionObjective | undefined> {
+  ): Observable<InspectionSubArea | undefined> {
     const idParam = 'id';
     const id = route.params[idParam];
     if (id) {

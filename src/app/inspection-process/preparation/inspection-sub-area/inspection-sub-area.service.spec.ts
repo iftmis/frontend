@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
-import { InspectionObjectiveService } from './inspection-objective.service';
+import { InspectionSubAreaService } from './inspection-sub-area.service';
 
-describe('InspectionObjectiveService', () => {
+describe('InspectionSubAreaService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -11,8 +11,8 @@ describe('InspectionObjectiveService', () => {
   );
 
   it('should be created', () => {
-    const service: InspectionObjectiveService = TestBed.inject(
-      InspectionObjectiveService
+    const service: InspectionSubAreaService = TestBed.inject(
+      InspectionSubAreaService
     );
     expect(service).toBeTruthy();
   });

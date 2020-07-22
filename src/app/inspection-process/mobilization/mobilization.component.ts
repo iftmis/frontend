@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-mobilization',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mobilization.component.scss'],
 })
 export class MobilizationComponent implements OnInit {
-  constructor() {}
+  inspectionId: any;
+  constructor(private route: ActivatedRoute) {
+    this.inspectionId = route.snapshot.parent?.parent?.params['id'];
+    console.log(this.inspectionId);
+  }
 
   ngOnInit(): void {}
 }

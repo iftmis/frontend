@@ -30,6 +30,12 @@ export class SubAreaService {
     });
   }
 
+  getByArea(auditAreaId: number): Observable<SubArea[]> {
+    return this.http.get<SubArea[]>(
+      `${this.resourceUrl}/by-area/${auditAreaId}`
+    );
+  }
+
   getById(id: number): Observable<SubArea> {
     return this.http.get<SubArea>(`${this.resourceUrl}/${id}`);
   }

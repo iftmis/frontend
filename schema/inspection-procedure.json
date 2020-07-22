@@ -1,0 +1,52 @@
+{
+  "name": "inspectionProcedure",
+  "pageTitle": "Inspection Procedure",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["name"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 1000
+      }
+    },
+    {
+      "label": "Inspection Indicator",
+      "name": "inspectionIndicatorId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Inspection Indicator",
+      "name": "inspectionIndicatorName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Indicator",
+      "name": "indicatorId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Indicator",
+      "name": "indicatorName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

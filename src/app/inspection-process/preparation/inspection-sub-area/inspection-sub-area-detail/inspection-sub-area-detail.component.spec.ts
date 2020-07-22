@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from 'src/app/material/material.module';
-import { InspectionObjectiveDetailComponent } from './inspection-objective-detail.component';
+import { InspectionSubAreaDetailComponent } from './inspection-sub-area-detail.component';
 
 // tslint:disable-next-line
 @Component({ selector: 'hip-ngx-error', template: '' })
@@ -15,13 +15,13 @@ class NgxErrorStubComponent {
   @Input() control: FormControl;
 }
 
-describe('InspectionObjectiveDetailComponent', () => {
-  let component: InspectionObjectiveDetailComponent;
-  let fixture: ComponentFixture<InspectionObjectiveDetailComponent>;
+describe('InspectionSubAreaDetailComponent', () => {
+  let component: InspectionSubAreaDetailComponent;
+  let fixture: ComponentFixture<InspectionSubAreaDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InspectionObjectiveDetailComponent, NgxErrorStubComponent],
+      declarations: [InspectionSubAreaDetailComponent, NgxErrorStubComponent],
       imports: [
         NoopAnimationsModule,
         RouterTestingModule,
@@ -33,7 +33,7 @@ describe('InspectionObjectiveDetailComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InspectionObjectiveDetailComponent);
+    fixture = TestBed.createComponent(InspectionSubAreaDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

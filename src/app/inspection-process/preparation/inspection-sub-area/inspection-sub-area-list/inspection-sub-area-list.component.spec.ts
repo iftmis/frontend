@@ -4,15 +4,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { MaterialModule } from '../../../../material/material.module';
-import { InspectionObjectiveListComponent } from './inspection-objective-list.component';
+import { InspectionSubAreaListComponent } from './inspection-sub-area-list.component';
 
-describe('InspectionObjectiveListComponent', () => {
-  let component: InspectionObjectiveListComponent;
-  let fixture: ComponentFixture<InspectionObjectiveListComponent>;
+describe('InspectionSubAreaListComponent', () => {
+  let component: InspectionSubAreaListComponent;
+  let fixture: ComponentFixture<InspectionSubAreaListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InspectionObjectiveListComponent],
+      declarations: [InspectionSubAreaListComponent],
       imports: [
         MaterialModule,
         NoopAnimationsModule,
@@ -23,7 +23,7 @@ describe('InspectionObjectiveListComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InspectionObjectiveListComponent);
+    fixture = TestBed.createComponent(InspectionSubAreaListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

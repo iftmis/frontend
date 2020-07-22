@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
-import { InspectionObjectiveFormService } from './inspection-objective-form.service';
+import { InspectionSubAreaFormService } from './inspection-sub-area-form.service';
 
-describe('InspectionObjectiveFormService', () => {
+describe('InspectionSubAreaFormService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [FormBuilder],
@@ -11,8 +11,8 @@ describe('InspectionObjectiveFormService', () => {
   );
 
   it('should be created', () => {
-    const service: InspectionObjectiveFormService = TestBed.inject(
-      InspectionObjectiveFormService
+    const service: InspectionSubAreaFormService = TestBed.inject(
+      InspectionSubAreaFormService
     );
     expect(service).toBeTruthy();
   });

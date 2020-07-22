@@ -3,22 +3,22 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { MaterialModule } from 'src/app/material/material.module';
-import { InspectionObjectiveDeleteComponent } from './inspection-objective-delete.component';
+import { InspectionSubAreaDeleteComponent } from './inspection-sub-area-delete.component';
 
-describe('InspectionObjectiveDeleteComponent', () => {
-  let component: InspectionObjectiveDeleteComponent;
-  let fixture: ComponentFixture<InspectionObjectiveDeleteComponent>;
+describe('InspectionSubAreaDeleteComponent', () => {
+  let component: InspectionSubAreaDeleteComponent;
+  let fixture: ComponentFixture<InspectionSubAreaDeleteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InspectionObjectiveDeleteComponent],
+      declarations: [InspectionSubAreaDeleteComponent],
       imports: [NoopAnimationsModule, MaterialModule],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InspectionObjectiveDeleteComponent);
+    fixture = TestBed.createComponent(InspectionSubAreaDeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

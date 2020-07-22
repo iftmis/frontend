@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Delete Inspection SubArea</h2>
+<mat-dialog-content>
+  <div class="content">
+    Are you sure you want to delete Inspection Sub Area
+    <strong>{{ data.id }}</strong> ?
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="primary">
+    <span>No</span>
+  </button>
+  <button mat-button color="accent" [mat-dialog-close]="true">
+    <span>Yes</span>
+  </button>
+</mat-dialog-actions>

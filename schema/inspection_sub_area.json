@@ -1,0 +1,54 @@
+{
+  "name": "inspectionSubArea",
+  "pageTitle": "Inspection Sub Areas",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["name"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Inspection Objective",
+      "name": "inspectionObjectiveId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Inspection Objective",
+      "name": "inspectionObjectiveName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Sub Area",
+      "name": "subAreaId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Sub Area",
+      "name": "subAreaName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

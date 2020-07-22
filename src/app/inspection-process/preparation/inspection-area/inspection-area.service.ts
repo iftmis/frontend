@@ -23,9 +23,9 @@ export class InspectionAreaService {
     );
   }
 
-  getWithObjectives(id: number): Observable<any> {
+  getWithSubAreas(id: number): Observable<any> {
     return this.http.get<any>(
-      `${this.resourceUrl}/by-inspection/${id}/with-objectives`,
+      `${this.resourceUrl}/by-inspection/${id}/with-sub-areas`,
       {}
     );
   }
