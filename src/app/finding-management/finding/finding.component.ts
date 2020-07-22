@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ITreeState, TreeComponent } from 'angular-tree-component';
-import { OrganisationUnit } from '../setting/organisation-unit/organisation-unit';
+import { OrganisationUnit } from '../../setting/organisation-unit/organisation-unit';
 import { BehaviorSubject } from 'rxjs';
-import { OrganisationUnitService } from '../setting/organisation-unit/organisation-unit.service';
-import { FindingSource } from './finding';
+import { ITreeState, TreeComponent } from 'angular-tree-component';
+import { OrganisationUnitService } from '../../setting/organisation-unit/organisation-unit.service';
 
 @Component({
-  selector: 'app-finding-management',
-  templateUrl: './finding-management.component.html',
-  styleUrls: ['./finding-management.component.scss'],
+  selector: 'app-finding',
+  templateUrl: './finding.component.html',
+  styleUrls: ['./finding.component.scss'],
 })
-export class FindingManagementComponent implements OnInit {
+export class FindingComponent implements OnInit {
   selectedOrganisationUnit: OrganisationUnit;
   nodes: BehaviorSubject<any> = new BehaviorSubject([]);
   options = {

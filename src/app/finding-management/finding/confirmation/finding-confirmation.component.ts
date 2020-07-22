@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Finding } from '../../finding';
+import { Finding } from '../finding';
 
 @Component({
   selector: 'app-finding-confirmation',

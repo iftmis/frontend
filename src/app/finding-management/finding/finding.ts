@@ -1,4 +1,4 @@
-import { FindingRecommendation } from './finding/recommendation/recommendation';
+import { FindingRecommendation } from '../recommendation/recommendation';
 
 export interface Finding {
   id?: number;

@@ -1,30 +1,25 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  OnInit,
-} from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Finding } from '../../finding';
+import { Component, OnInit } from '@angular/core';
+import { Finding } from '../finding/finding';
 import { FindingRecommendation } from './recommendation';
-import { RecommendationService } from './recommendation.service';
-import { ToastService } from '../../../shared/toast.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MatSelectionListChange } from '@angular/material/list';
-import { FindingResponseService } from './finding-response.service';
 import { FindingResponse } from './finding-response';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from '../../shared/toast.service';
+import { RecommendationService } from './recommendation.service';
+import { FindingResponseService } from './finding-response.service';
+import { FindingService } from '../finding/finding.service';
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
-} from '../../../shared/pagination.constants';
-import { HttpHeaders } from '@angular/common/http';
+} from '../../shared/pagination.constants';
+import { MatSelectionListChange } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-finding-recommendation',
+  selector: 'app-recommendation',
   templateUrl: './recommendation.component.html',
   styleUrls: ['./recommendation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecommendationComponent implements OnInit {
   finding: Finding;
@@ -45,13 +40,14 @@ export class RecommendationComponent implements OnInit {
   page: number;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    private route: ActivatedRoute,
+    private router: Router,
     private toastService: ToastService,
     private findingRecommendationService: RecommendationService,
-    private findingResponseService: FindingResponseService
+    private findingResponseService: FindingResponseService,
+    private findingService: FindingService
   ) {
-    this.finding = data.finding;
-    this.findingId = 0;
+    this.findingId = this.route.snapshot.params.id;
     this.totalItems = 0;
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
@@ -59,10 +55,14 @@ export class RecommendationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.finding) {
-      this.findingId = this.finding?.id as number;
-    }
     this.loadData(this.findingId);
+    this.loadFinding(this.findingId);
+  }
+
+  loadFinding(id: number) {
+    this.findingService.getById(id).subscribe(response => {
+      this.finding = response;
+    });
   }
 
   loadData(findingId: number) {

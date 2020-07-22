@@ -3,8 +3,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Finding, FindingSource } from './finding';
-import { createRequestOption } from '../shared/pagination.constants';
-import { Risk } from '../risk-management/risk/risk';
 
 @Injectable({
   providedIn: 'root',

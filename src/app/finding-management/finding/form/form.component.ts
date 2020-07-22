@@ -2,14 +2,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastService } from '../../../shared/toast.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Finding } from '../../finding';
 import { MatTableDataSource } from '@angular/material/table';
 import { FindingFormService } from './finding-form.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
-import { Risk, RiskRating } from '../../../risk-management/risk/risk';
 import { Observable } from 'rxjs';
-import { FindingService } from '../../finding.service';
-import { FindingRecommendation } from '../recommendation/recommendation';
+import { FindingService } from '../finding.service';
+import { Finding } from '../finding';
+import { FindingRecommendation } from '../../recommendation/recommendation';
 
 @Component({
   selector: 'app-finding-form',

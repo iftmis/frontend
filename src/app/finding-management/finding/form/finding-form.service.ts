@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-
-import { Finding } from '../../finding';
+import { Finding } from '../finding';
 
 @Injectable({
   providedIn: 'root',

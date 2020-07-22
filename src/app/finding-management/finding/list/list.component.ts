@@ -6,9 +6,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
-import { FindingService } from '../../finding.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Finding } from '../../finding';
+
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
@@ -19,7 +18,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToastService } from '../../../shared/toast.service';
 import { FormComponent as FindingFormComponent } from '../form/form.component';
 import { FindingConfirmationComponent } from '../confirmation/finding-confirmation.component';
-import { RecommendationComponent } from '../recommendation/recommendation.component';
+import { FindingService } from '../finding.service';
+import { Finding } from '../finding';
 
 @Component({
   selector: 'app-finding-list',
@@ -225,16 +225,5 @@ export class ListComponent implements OnInit, OnChanges {
         });
       }
     });
-  }
-
-  recommendations(row: Finding) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    dialogConfig.data = {
-      finding: row,
-    };
-    this.dialog.open(RecommendationComponent, dialogConfig);
   }
 }

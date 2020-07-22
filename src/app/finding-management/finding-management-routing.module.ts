@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FindingManagementComponent } from './finding-management.component';
-import { RecommendationComponent } from './finding/recommendation/recommendation.component';
+import { FindingComponent } from './finding/finding.component';
+import { RecommendationComponent } from './recommendation/recommendation.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: FindingManagementComponent,
+    component: FindingComponent,
   },
   {
     path: 'findings',
-    component: FindingManagementComponent,
+    component: FindingComponent,
   },
   {
     path: 'findings/:id/recommendations',
