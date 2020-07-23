@@ -17,6 +17,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { HttpHeaders } from '@angular/common/http';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormComponent as ResponseFormComponent } from '../recommendation/form/form.component';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 @Component({
   selector: 'app-recommendation',
@@ -126,8 +127,6 @@ export class RecommendationComponent implements OnInit {
 
   onError(): void {}
 
-  delete(row: FindingResponse) {}
-
   getResponseData(): Observable<FindingResponse[]> {
     return this.findingResponseSubject.asObservable();
   }
@@ -192,9 +191,41 @@ export class RecommendationComponent implements OnInit {
     } else if (implementationStatus.toString() === 'IMPLEMENTED') {
       return '#43A047';
     } else if (implementationStatus.toString() === 'TAKEN_BY_EVENT') {
-      return '#00ffff';
+      return '#0039cb';
     } else {
       return '#FF1744';
     }
+  }
+
+  delete(findingResponse: FindingResponse) {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      data: {
+        action: 'delete',
+        findingResponse,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showLoader = true;
+        this.findingResponseService
+          .delete(findingResponse.id as number)
+          .subscribe({
+            next: () => {
+              this.loadResponseEntries(
+                this.page,
+                this.size,
+                this.selectedRecommendation?.id as number
+              );
+              this.toastService.success(
+                'Success',
+                'Response Deleted Successfully!'
+              );
+            },
+            error: () => (this.showLoader = false),
+            complete: () => (this.showLoader = false),
+          });
+      }
+    });
   }
 }
