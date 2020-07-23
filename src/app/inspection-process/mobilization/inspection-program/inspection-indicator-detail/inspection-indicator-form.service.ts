@@ -13,7 +13,6 @@ export class InspectionIndicatorFormService {
     return this.formBuilder.group({
       id: this.formBuilder.control(inspectionIndicator.id, []),
       name: this.formBuilder.control(inspectionIndicator.name, [
-        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(1000),
       ]),

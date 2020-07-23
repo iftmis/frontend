@@ -1,14 +1,14 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <mat-card class="card">
+<form (ngSubmit)="saveOrUpdate()" [formGroup]="form" novalidate>
+  <mat-dialog-content>
     <mat-progress-spinner
       *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
       class="form-overlay"
       color="accent"
+      diameter="50"
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <mat-card-title>InspectionProcedure</mat-card-title>
+    <mat-card-title>Inspection Procedure</mat-card-title>
     <mat-card-subtitle>{{
       inspectionProcedure?.id
         ? 'Update an existing inspectionProcedure.'
@@ -17,13 +17,53 @@
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
     </div>
-    <mat-card-content class="content">
-      <mat-form-field class="full-width">
+    <div class="content">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Inspection Indicator</mat-label>
+        <mat-select formControlName="inspectionIndicatorId" required>
+          <mat-option
+            *ngFor="let ind of inspectionIndicators"
+            [value]="ind.id"
+            >{{ ind.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('inspectionIndicatorId')"
+            label="Inspection Indicator"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field
+        class="full-width"
+        appearance="outline"
+        *ngIf="inspectionProcedure?.id"
+      >
+        <mat-label>Indicator</mat-label>
+        <mat-select formControlName="indicatorId">
+          <mat-option
+            *ngFor="let proc of getProcedures() | async"
+            [value]="proc.id"
+            >{{ proc.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          ><hip-ngx-error
+            [control]="form.get('indicatorId')"
+            label="Indicator"
+          ></hip-ngx-error
+        ></mat-error>
+      </mat-form-field>
+      <mat-form-field
+        class="full-width"
+        appearance="outline"
+        *ngIf="!form.get('procedureId')?.value || inspectionProcedure?.id"
+      >
         <mat-label>Name</mat-label>
         <input
+          formControlName="name"
           matInput
           placeholder="Enter inspectionProcedure name"
-          formControlName="name"
           required
         />
         <mat-error
@@ -33,57 +73,21 @@
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>Inspection Indicator</mat-label>-->
-      <!--        <mat-select formControlName="inspectionIndicatorId" required>-->
-      <!--          <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>-->
-      <!--          <mat-option-->
-      <!--            *ngFor="-->
-      <!--              let inspectionIndicatorIdOption of inspectionIndicatorIdOptions-->
-      <!--            "-->
-      <!--            [value]="inspectionIndicatorIdOption.key"-->
-      <!--            >{{ inspectionIndicatorIdOption.value }}</mat-option-->
-      <!--          >-->
-      <!--        </mat-select>-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('inspectionIndicatorId')"-->
-      <!--            label="Inspection Indicator"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-      <!--      <mat-form-field class="full-width">-->
-      <!--        <mat-label>Indicator</mat-label>-->
-      <!--        <mat-select formControlName="indicatorId">-->
-      <!--          <mat-option>&#45;&#45;Select&#45;&#45;</mat-option>-->
-      <!--          <mat-option-->
-      <!--            *ngFor="let indicatorIdOption of indicatorIdOptions"-->
-      <!--            [value]="indicatorIdOption.key"-->
-      <!--            >{{ indicatorIdOption.value }}</mat-option-->
-      <!--          >-->
-      <!--        </mat-select>-->
-      <!--        <mat-error-->
-      <!--          ><hip-ngx-error-->
-      <!--            [control]="form.get('indicatorId')"-->
-      <!--            label="Indicator"-->
-      <!--          ></hip-ngx-error-->
-      <!--        ></mat-error>-->
-      <!--      </mat-form-field>-->
-    </mat-card-content>
+    </div>
     <mat-card-actions>
-      <button mat-raised-button (click)="cancel()">
+      <button (click)="cancel()" mat-raised-button>
         <mat-icon>cancel</mat-icon>
         <span>Cancel</span>
       </button>
       <button
-        mat-raised-button
-        color="accent"
         [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        color="accent"
+        mat-raised-button
         type="submit"
       >
         <mat-icon>save</mat-icon>
         <span>{{ inspectionProcedure?.id ? 'Update' : 'Save' }} </span>
       </button>
     </mat-card-actions>
-  </mat-card>
+  </mat-dialog-content>
 </form>

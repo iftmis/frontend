@@ -1,12 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { InspectionProcedureService } from '../inspection-procedure.service';
 import { InspectionProcedureFormService } from './inspection-procedure-form.service';
 import { InspectionProcedure } from '../inspection-procedure';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Procedure } from '../../../../setting/procedure/procedure';
+import { ProcedureService } from '../../../../setting/procedure/procedure.service';
 
 @Component({
   selector: 'app-inspection-procedure-detail',
@@ -19,21 +26,58 @@ export class InspectionProcedureDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
+  procedures: BehaviorSubject<Procedure[]> = new BehaviorSubject<Procedure[]>(
+    []
+  );
+  inspectionIndicators: any = [];
+  existingProcedures: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: InspectionProcedureFormService,
-    private inspectionProcedureService: InspectionProcedureService
+    private inspectionProcedureService: InspectionProcedureService,
+    private procedureService: ProcedureService,
+    private dialogRef: MatDialogRef<InspectionProcedureDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ inspectionProcedure }) => {
-      this.inspectionProcedure = inspectionProcedure;
-      this.form = this.formService.toFormGroup(inspectionProcedure);
-    });
-
+    this.inspectionIndicators = this.data.inspectionIndicators || []; // Selected indicator as array of single value for display purpose
+    this.existingProcedures = this.data.existingProcedures || []; // Ids of already added to be removed from selection to avoid duplicates
+    this.inspectionProcedure = this.data.inspectionProcedure; // Procedure to be created or modified
+    this.form = this.formService.toFormGroup(this.inspectionProcedure);
     this.error = undefined;
+    this.loadProcedures();
+  }
+
+  /**
+   * Pre configure/setup procures to be used as templates to be added to inspection
+   * loaded by ind
+   */
+  loadProcedures() {
+    const selectedInspectionIndicator =
+      this.inspectionIndicators[0] || undefined;
+    if (
+      selectedInspectionIndicator &&
+      selectedInspectionIndicator.indicatorId
+    ) {
+      this.procedureService
+        .getByIndicator(selectedInspectionIndicator.indicatorId)
+        .subscribe(res => this.filterProcedures(res));
+    }
+  }
+
+  filterProcedures(procedures: Procedure[]) {
+    this.procedures.next(
+      procedures.filter(
+        (p: any) => this.existingProcedures.indexOf(p.id) === -1
+      )
+    );
+  }
+
+  getProcedures(): Observable<Procedure[]> {
+    return this.procedures.asObservable();
   }
 
   saveOrUpdate() {
@@ -56,7 +100,7 @@ export class InspectionProcedureDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<InspectionProcedure>) {
     result.subscribe({
-      next: () => this.router.navigate(['/inspection-procedures']),
+      next: () => this.dialogRef.close('success'),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -70,7 +114,7 @@ export class InspectionProcedureDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-procedures']);
+    this.dialogRef.close();
     return false;
   }
 }

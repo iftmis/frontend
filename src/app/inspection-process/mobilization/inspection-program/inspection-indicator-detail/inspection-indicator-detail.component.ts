@@ -1,12 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { InspectionIndicatorService } from '../inspection-indicator.service';
 import { InspectionIndicatorFormService } from './inspection-indicator-form.service';
 import { InspectionIndicator } from '../inspection-indicator';
+import { Indicator } from '../../../../setting/indicator/indicator';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { IndicatorService } from '../../../../setting/indicator/indicator.service';
 
 @Component({
   selector: 'app-inspection-indicator-detail',
@@ -19,21 +26,50 @@ export class InspectionIndicatorDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
+  indicators: BehaviorSubject<Indicator[]> = new BehaviorSubject<Indicator[]>(
+    []
+  );
+  inspectionSubAreas: any = [];
+  existingIndicators: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: InspectionIndicatorFormService,
-    private inspectionIndicatorService: InspectionIndicatorService
+    private inspectionIndicatorService: InspectionIndicatorService,
+    private indicatorService: IndicatorService,
+    private dialogRef: MatDialogRef<InspectionIndicatorDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ inspectionIndicator }) => {
-      this.inspectionIndicator = inspectionIndicator;
-      this.form = this.formService.toFormGroup(inspectionIndicator);
-    });
-
+    this.inspectionSubAreas = this.data.inspectionSubAreas || [];
+    this.inspectionIndicator = this.data.inspectionIndicator;
+    this.existingIndicators = this.data.existingIndicators || [];
+    this.form = this.formService.toFormGroup(this.inspectionIndicator);
     this.error = undefined;
+    this.loadIndicators();
+  }
+
+  loadIndicators() {
+    const selectedInspectionSubArea = this.inspectionSubAreas[0] || undefined;
+    if (selectedInspectionSubArea && selectedInspectionSubArea.subAreaId) {
+      this.indicatorService
+        .getBySubArea(selectedInspectionSubArea.subAreaId)
+        .subscribe(res => this.filterIndicator(res));
+    }
+  }
+
+  getIndicators(): Observable<Indicator[]> {
+    return this.indicators.asObservable();
+  }
+
+  filterIndicator(indicators: Indicator[]) {
+    this.indicators.next(
+      indicators.filter(
+        (i: any) => this.existingIndicators.indexOf(i.id) === -1
+      )
+    );
   }
 
   saveOrUpdate() {
@@ -56,7 +92,7 @@ export class InspectionIndicatorDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<InspectionIndicator>) {
     result.subscribe({
-      next: () => this.router.navigate(['/inspection-indicators']),
+      next: () => this.dialogRef.close('success'),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -70,7 +106,7 @@ export class InspectionIndicatorDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-indicators']);
+    this.dialogRef.close();
     return false;
   }
 }
