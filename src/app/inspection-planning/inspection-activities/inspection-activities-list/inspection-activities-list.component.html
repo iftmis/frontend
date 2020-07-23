@@ -2,11 +2,9 @@
   <div class="page-heading">
     <span class="mat-card-title">Inspection Activities</span>
     <div>
-      <button
-        mat-raised-button
-        color="accent"
-        [routerLink]="['/inspection-planning/inspection-activities', 'new']"
-      >
+      <button mat-raised-button color="accent" (click)="create()">
+        <!--        [routerLink]="['/inspection-planning/inspection-activities', 'new']"-->
+
         <mat-icon>add</mat-icon>
         <span>Create</span>
       </button>

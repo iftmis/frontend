@@ -27,13 +27,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   subAreas: SubArea[];
   objectives: Objective[];
   auditableAreas: AuditableArea[];
-  isLinear: true;
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
-  fourthFormGroup: FormGroup;
-  xxxxxFormGroup: FormGroup;
+  riskForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,20 +49,6 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
-    });
-
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required],
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
-    });
-
-    this.fourthFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
     });
 
     this.error = undefined;
