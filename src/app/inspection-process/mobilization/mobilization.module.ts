@@ -12,6 +12,9 @@ import { InspectionProcedureListComponent } from './inspection-program/inspectio
 import { InspectionProcedureDetailComponent } from './inspection-program/inspection-procedure-detail/inspection-procedure-detail.component';
 import { InspectionProcedureDeleteComponent } from './inspection-program/inspection-procedure-delete/inspection-procedure-delete.component';
 import { TreeModule } from 'angular-tree-component';
+import { InspectionBudgetDeleteComponent } from './inspection-budget/inspection-budget-delete/inspection-budget-delete.component';
+import { InspectionBudgetDetailComponent } from './inspection-budget/inspection-budget-detail/inspection-budget-detail.component';
+import { InspectionBudgetListComponent } from './inspection-budget/inspection-budget-list/inspection-budget-list.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { TreeModule } from 'angular-tree-component';
     InspectionProcedureListComponent,
     InspectionProcedureDetailComponent,
     InspectionProcedureDeleteComponent,
+    InspectionBudgetDeleteComponent,
+    InspectionBudgetDetailComponent,
+    InspectionBudgetListComponent,
   ],
   imports: [
     CommonModule,

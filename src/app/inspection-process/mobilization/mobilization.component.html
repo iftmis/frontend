@@ -1,11 +1,17 @@
 <mat-tab-group mat-align-tabs="start">
   <mat-tab label="Inspection Budget">
-    Budget
+    <ng-template matTabContent>
+      <app-inspection-budget-list
+        [inspectionId]="inspectionId"
+      ></app-inspection-budget-list>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Inspection Program">
-    <app-inspection-indicator-list
-      [inspectionId]="inspectionId"
-    ></app-inspection-indicator-list>
+    <ng-template matTabContent>
+      <app-inspection-indicator-list
+        [inspectionId]="inspectionId"
+      ></app-inspection-indicator-list>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Familiarization">
     Familiarization
