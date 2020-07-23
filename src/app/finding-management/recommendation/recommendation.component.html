@@ -1,0 +1,129 @@
+<mat-card class="mat-elevation-z0">
+  <div class="page-heading">
+    <span class="mat-card-title">Finding: {{ finding?.description }}</span>
+  </div>
+  <mat-card-content>
+    <div
+      class="container"
+      fxLayout
+      fxLayout.xs="column"
+      fxLayoutAlign="center"
+      fxLayoutGap="10px"
+      fxLayoutGap.xs="0"
+    >
+      <div fxFlex="30%">
+        <mat-card class="mat-elevation-z0">
+          <div class="page-heading">
+            <span class="mat-card-title">Recommendation List</span>
+          </div>
+          <mat-card-content>
+            <mat-selection-list
+              (selectionChange)="loadFindingResponses($event)"
+              [multiple]="false"
+            >
+              <mat-list-option
+                *ngFor="let recommendation of getData() | async"
+                [value]="recommendation"
+              >
+                {{ recommendation.description }}
+              </mat-list-option>
+            </mat-selection-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button
+              mat-raised-button
+              color="primary"
+              [routerLink]="['/finding-management/findings']"
+            >
+              <mat-icon>arrow_back</mat-icon>
+              <span>Back to Findings</span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div fxFlex="70%">
+        <mat-card class="mat-elevation-z0">
+          <div class="page-heading">
+            <span class="mat-card-title"
+              >{{ selectedRecommendation?.description }} Responses</span
+            >
+            <div>
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="finding?.isClosed"
+                (click)="create()"
+              >
+                <mat-icon>add</mat-icon>
+                <span>Create</span>
+              </button>
+            </div>
+          </div>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item *ngFor="let response of getResponseData() | async">
+                <mat-icon mat-list-icon>note</mat-icon>
+                <div mat-line>Response: {{ response.description }}</div>
+                <div mat-line>Source: {{ response.source }}</div>
+                <div mat-line>Date: {{ response.lastModifiedDate | date }}</div>
+                <div mat-line>User: {{ response.createdBy }}</div>
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  aria-label="Response icon-button with a menu"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button
+                    mat-menu-item
+                    [disabled]="finding?.isClosed"
+                    (click)="update(response)"
+                  >
+                    <mat-icon color="accent">edit</mat-icon>
+                    <span>Edit</span>
+                  </button>
+                  <button
+                    mat-menu-item
+                    [disabled]="finding?.isClosed"
+                    (click)="delete(response)"
+                  >
+                    <mat-icon color="warn">close</mat-icon>
+                    <span>Delete</span>
+                  </button>
+                </mat-menu>
+              </mat-list-item>
+            </mat-list>
+            <mat-paginator
+              [length]="totalItems"
+              [pageSize]="size"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="pageChange($event)"
+            >
+            </mat-paginator>
+            <mat-menu #menu="matMenu">
+              <ng-template matMenuContent let-id="id" let-element="element">
+                <button
+                  mat-menu-item
+                  aria-label="Edit Finding"
+                  (click)="update(element)"
+                >
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button
+                  mat-menu-item
+                  aria-label="Delete Finding"
+                  (click)="delete(id, element)"
+                >
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </ng-template>
+            </mat-menu>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class RiskRankDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-risk-rank-delete')
+    by.css('.mat-dialog-container app-risk-rank-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

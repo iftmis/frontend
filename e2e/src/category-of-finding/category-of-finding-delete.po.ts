@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class CategoryOfFindingDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-category-of-finding-delete')
+    by.css('.mat-dialog-container app-category-of-finding-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class IndicatorDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-indicator-delete')
+    by.css('.mat-dialog-container app-indicator-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class InspectionMemberDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-inspection-member-delete')
+    by.css('.mat-dialog-container app-inspection-member-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

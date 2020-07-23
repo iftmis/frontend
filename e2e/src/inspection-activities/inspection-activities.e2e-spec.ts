@@ -252,7 +252,7 @@ describe('InspectionActivities tests', () => {
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
-  it('should delete a inspection-activities', async () => {
+  it('should confirmation a inspection-activities', async () => {
     const lastRecordIndex = (await listPage.table.records.count()) - 1;
     const actionsMenu = listPage.table.getActionsBtn(lastRecordIndex);
 

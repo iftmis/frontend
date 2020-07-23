@@ -152,7 +152,7 @@ describe('RiskRegister tests', () => {
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
-  it('should delete a risk-register', async () => {
+  it('should confirmation a risk-register', async () => {
     const lastRecordIndex = (await listPage.table.records.count()) - 1;
     const actionsMenu = listPage.table.getActionsBtn(lastRecordIndex);
 

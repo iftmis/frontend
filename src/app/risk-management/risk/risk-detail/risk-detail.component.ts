@@ -85,9 +85,9 @@ export class RiskDetailComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formService.toFormGroup(this.risk);
+    this.error = undefined;
     this.loadObjectives();
     this.loadRiskCategories();
-    this.error = undefined;
   }
 
   loadObjectives() {

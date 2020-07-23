@@ -244,7 +244,7 @@ describe('OrganisationUnit tests', () => {
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
-  it('should delete a organisation-unit', async () => {
+  it('should confirmation a organisation-unit', async () => {
     const lastRecordIndex = (await listPage.table.records.count()) - 1;
     const actionsMenu = listPage.table.getActionsBtn(lastRecordIndex);
 

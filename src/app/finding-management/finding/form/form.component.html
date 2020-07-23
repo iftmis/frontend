@@ -1,1 +1,260 @@
-<p>form works!</p>
+<h1 mat-dialog-title>
+  Finding Registration: | Organisation: {{ organisationUnit?.name }} | Source:
+  {{ source }}
+</h1>
+<div mat-dialog-content>
+  <mat-progress-spinner
+    *ngIf="isSaveOrUpdateInProgress"
+    diameter="50"
+    class="form-overlay"
+    color="accent"
+    mode="indeterminate"
+  >
+  </mat-progress-spinner>
+  <div class="error mat-error">
+    {{ error ? error : '&nbsp;' }}
+  </div>
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="form">
+      <form [formGroup]="form">
+        <ng-template matStepLabel>Basic Information</ng-template>
+        <div
+          class="container"
+          fxLayout
+          fxLayout.xs="column"
+          fxLayoutAlign="center"
+          fxLayoutGap="10px"
+          fxLayoutGap.xs="0"
+        >
+          <div fxFlex="20%">
+            <mat-form-field appearance="outline">
+              <mat-label>Code</mat-label>
+              <input
+                matInput
+                autocomplete="off"
+                placeholder="Enter risk code"
+                formControlName="code"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('code')"
+                  label="Code"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="80%">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <input
+                matInput
+                autocomplete="off"
+                placeholder="Enter risk description"
+                formControlName="description"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('description')"
+                  label="Description"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div
+          class="container"
+          fxLayout
+          fxLayout.xs="column"
+          fxLayoutAlign="center"
+          fxLayoutGap="10px"
+          fxLayoutGap.xs="0"
+        >
+          <div fxFlex="50%">
+            <label id="action-category-radio-group-label"
+              >Action Plan Category</label
+            >
+            <mat-radio-group
+              formControlName="actionPlanCategory"
+              aria-labelledby="action-category-radio-group-label"
+              class="form-radio-group"
+            >
+              <mat-radio-button
+                class="form-radio-button"
+                *ngFor="let actionCategory of actionCategories"
+                [value]="actionCategory"
+              >
+                {{ actionCategory }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div fxFlex="50%"></div>
+        </div>
+        <div>
+          <button
+            type="button"
+            [disabled]="form.invalid"
+            mat-raised-button
+            style="margin: 10px 10px 10px 0;"
+            color="primary"
+            matStepperNext
+          >
+            <mat-icon>arrow_right</mat-icon>
+            <span>Next</span>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="findingRecommendationForm">
+      <ng-template matStepLabel>Recommendations</ng-template>
+      <div
+        class="container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"
+      >
+        <div fxFlex="35%">
+          <label id="implementation-status-radio-group-label"
+            >Implementation Status</label
+          >
+          <mat-radio-group
+            [formControl]="implementationStatusControl"
+            aria-labelledby="implementation-status-radio-group-label"
+            class="form-radio-group"
+          >
+            <mat-radio-button
+              class="form-radio-button"
+              *ngFor="let implementationStatus of implementationStatusList"
+              [value]="implementationStatus"
+            >
+              {{ implementationStatus }}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div fxFlex="60%">
+          <label id="description-label">Description</label>
+          <mat-form-field
+            appearance="outline"
+            aria-labelledby="description-label"
+          >
+            <input
+              matInput
+              placeholder="Description"
+              [formControl]="descriptionControl"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlex="5%">
+          <label id="add-label">Add</label>
+          <button
+            mat-button
+            aria-labelledby="add-label"
+            type="button"
+            [disabled]="
+              implementationStatusControl.invalid || descriptionControl.invalid
+            "
+            (click)="addRecommendation()"
+            color="primary"
+          >
+            <mat-icon svgIcon="add"></mat-icon>
+          </button>
+        </div>
+      </div>
+      <h4 *ngIf="findingRecommendationDataSource.data.length > 0">Ratings</h4>
+      <table
+        *ngIf="findingRecommendationDataSource.data.length > 0"
+        mat-table
+        [dataSource]="findingRecommendationDataSource"
+        class="mat-elevation-z0"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element; index as i">{{ 1 + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="implementationStatus">
+          <th mat-header-cell *matHeaderCellDef>Implementation Status</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.implementationStatus }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        </ng-container>
+        <ng-container matColumnDef="manage">
+          <th mat-header-cell *matHeaderCellDef>Remove</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            <button
+              mat-button
+              color="primary"
+              (click)="deleteRecommendation(i)"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data</td>
+        </tr>
+      </table>
+      <div>
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Back
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="findingRecommendationDataSource.data.length === 0"
+          style="margin: 5px;"
+          matStepperNext
+        >
+          Next
+        </button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Back
+        </button>
+        <button
+          mat-raised-button
+          style="margin: 5px;"
+          color="warn"
+          (click)="stepper.reset()"
+        >
+          Reset
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          style="margin: 5px;"
+          (click)="saveOrUpdate()"
+          [disabled]="
+            form.invalid ||
+            findingRecommendationDataSource.data.length === 0 ||
+            isSaveOrUpdateInProgress
+          "
+          type="button"
+        >
+          <mat-icon>save</mat-icon>
+          <span>{{ finding?.id ? 'Update' : 'Save' }} </span>
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="cancel()">
+    <mat-icon>cancel</mat-icon>
+    <span>Close</span>
+  </button>
+</div>
