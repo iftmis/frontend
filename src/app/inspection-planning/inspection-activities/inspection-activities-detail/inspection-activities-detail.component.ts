@@ -42,7 +42,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   ngOnInit() {
     this.loadObjectives();
     this.loadAuditableAreas();
-    this.loadSubAreas();
+    // this.loadSubAreas();
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
@@ -61,11 +61,11 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.auditableAreas = res;
     });
   }
-  loadSubAreas() {
-    this.subAreasService.getAllUnPaged().subscribe(res => {
-      this.subAreas = res;
-    });
-  }
+  // loadSubAreas() {
+  //   this.subAreasService.getAllUnPaged().subscribe(res => {
+  //     this.subAreas = res;
+  //   });
+  // }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;

@@ -9,9 +9,10 @@ import { SubArea } from './sub-area';
 export class SubAreaService {
   private resourceUrl = 'api/sub-areas';
 
+  auditableAreaId: number;
   constructor(private http: HttpClient) {}
 
-  getAllUnPaged(): Observable<SubArea[]> {
+  getAllUnPaged(): Observable<HttpResponse<SubArea[]>> {
     return this.http.get<any>(this.resourceUrl);
   }
 
