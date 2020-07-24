@@ -196,8 +196,51 @@
     </mat-step>
     <mat-step [stepControl]="riskForm">
       <ng-template matStepLabel>Select Risks</ng-template>
+      <div fxLayout="row">
+        <div fxFlex fxLayout="column">
+          <div>Available Risks</div>
+          <!--          <select-->
+          <!--            (dblclick)="saveAll(selectedRisks)"-->
+          <!--            multiple-->
+          <!--            class="full-width mult-select"-->
+          <!--            [(ngModel)]="selectedRisks"-->
+          <!--          >-->
+          <!--            <option *ngFor="let a of getAllRisks() | async" [value]="a">-->
+          <!--              {{ a.description }}-->
+          <!--            </option>-->
+          <!--          </select>-->
+        </div>
+        <div
+          style="width: 200px; padding: 0 10px;"
+          fxLayout="column"
+          fxFlexAlign="space-around center"
+        >
+          <button
+            (click)="saveAll(selectedRisks)"
+            [disabled]="selectedRisks.length === 0"
+            mat-raised-button
+          ></button>
+          <!--          <button-->
+          <!--            (click)="removeAll(chosenRisks)"-->
+          <!--            [disabled]="chosenRisks.length === 0"-->
+          <!--            mat-raised-button-->
+          <!--          ></button>-->
+        </div>
 
-      STEP TWO
+        <div fxFlex fxLayout="column">
+          <div>Selected Auditable Areas</div>
+          <!--          <select-->
+          <!--            (dblclick)="removeAll(chosenRisks)"-->
+          <!--            multiple-->
+          <!--            class="full-width mult-select"-->
+          <!--            [(ngModel)]="chosenRisks"-->
+          <!--          >-->
+          <!--            <option *ngFor="let ia of getSelectedRisks() | async" [value]="ia">-->
+          <!--              {{ ia.description }}-->
+          <!--            </option>-->
+          <!--          </select>-->
+        </div>
+      </div>
     </mat-step>
   </mat-horizontal-stepper>
 </div>
