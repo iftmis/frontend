@@ -3,8 +3,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Risk } from './risk';
-import { RiskRegister } from '../risk-register/risk-register';
-import { AuditableArea } from '../../setting/auditable-area/auditable-area';
 import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
@@ -15,7 +13,7 @@ export class RiskService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<Risk[]> {
+  getAll(): Observable<Risk[]> {
     return this.http.get<Risk[]>(this.resourceUrl);
   }
 

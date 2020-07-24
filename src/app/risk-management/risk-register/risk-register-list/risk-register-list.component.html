@@ -139,6 +139,7 @@
     </button>
     <button
       mat-menu-item
+      *ngIf="!element.isApproved"
       aria-label="Edit Risk"
       [routerLink]="['/risk-management/risk-register', id, 'edit']"
     >
@@ -147,6 +148,16 @@
     </button>
     <button
       mat-menu-item
+      *ngIf="!element.isApproved"
+      aria-label="Approve Risk Register"
+      (click)="approve(id, element)"
+    >
+      <mat-icon>done_all</mat-icon>
+      <span>Approve</span>
+    </button>
+    <button
+      mat-menu-item
+      *ngIf="!element.isApproved"
       aria-label="Delete Risk"
       (click)="delete(id, element)"
     >

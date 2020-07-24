@@ -146,7 +146,7 @@ describe('AuditableArea tests', () => {
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
-  it('should delete a auditable-area', async () => {
+  it('should confirmation a auditable-area', async () => {
     const lastRecordIndex = (await listPage.table.records.count()) - 1;
     const actionsMenu = listPage.table.getActionsBtn(lastRecordIndex);
 

@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class AuditProgramEngagementDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-audit-program-engagement-delete')
+    by.css('.mat-dialog-container app-audit-program-engagement-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

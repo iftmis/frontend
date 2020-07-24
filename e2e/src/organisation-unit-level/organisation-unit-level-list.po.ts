@@ -3,9 +3,7 @@ import { OverlayPage } from '../overlay.po';
 import { TablePage } from '../table.po';
 
 export class OrganisationUnitLevelListPage {
-  private root: ElementFinder = element(
-    by.css('.body app-organisation-unit-level-list')
-  );
+  private root: ElementFinder = element(by.css('.body app-finding-list'));
   private overlayPage = new OverlayPage();
 
   table: TablePage = new TablePage(this.root);

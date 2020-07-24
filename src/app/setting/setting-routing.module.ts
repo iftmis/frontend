@@ -86,6 +86,22 @@ const routes: Routes = [
       import('./objective/objective.module').then(m => m.ObjectiveModule),
   },
   {
+    path: 'finding-sub-categories',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./finding-sub-category/finding-sub-category.module').then(
+        m => m.FindingSubCategoryModule
+      ),
+  },
+  {
+    path: 'finding-categories',
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./finding-category/finding-category.module').then(
+        m => m.FindingCategoryModule
+      ),
+  },
+  {
     path: 'risk-ranks',
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>

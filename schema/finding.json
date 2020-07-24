@@ -1,0 +1,113 @@
+{
+  "name": "finding",
+  "pageTitle": "Findings",
+  "pageOptions": {
+    "list": {
+      "displayFields": [
+        "code",
+        "description",
+        "source",
+        "actionPlanCategory",
+        "isClosed",
+        "organisationUnitName"
+      ]
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Organisation Unit",
+      "name": "organisationUnitId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Organisation Unit",
+      "name": "organisationUnitName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Source",
+      "name": "source",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "name": "CAIG",
+          "label": "CAIG"
+        },
+        {
+          "name": "PPRA",
+          "label": "PPRA"
+        },
+        {
+          "name": "LAAC",
+          "label": "LAAC"
+        },
+        {
+          "name": "INSPECTION",
+          "label": "INSPECTION"
+        },
+        {
+          "name": "IA",
+          "label": "IA"
+        }
+      ]
+    },
+    {
+      "label": "Action Plan Category",
+      "name": "actionPlanCategory",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      },
+      "options": [
+        {
+          "name": "LOW",
+          "label": "LOW"
+        },
+        {
+          "name": "MEDIUM",
+          "label": "MEDIUM"
+        },
+        {
+          "name": "HIGH",
+          "label": "HIGH"
+        }
+      ]
+    },
+    {
+      "label": "Closed",
+      "name": "isClosed",
+      "dataType": "boolean",
+      "controlType": "checkbox",
+      "validation": {}
+    }
+  ]
+}

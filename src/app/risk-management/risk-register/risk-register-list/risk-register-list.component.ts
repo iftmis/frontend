@@ -21,6 +21,7 @@ import { FinancialYear } from '../../../setting/financial-year/financial-year';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
+import { RiskRegisterApproveComponent } from '../risk-register-approve/risk-register-approve.component';
 
 @Component({
   selector: 'app-risk-register-list',
@@ -203,5 +204,31 @@ export class RiskRegisterListComponent implements OnInit {
         this.organisationUnitId
       );
     }
+  }
+
+  approve(id: number, element: RiskRegister) {
+    const dialogRef = this.dialog.open(RiskRegisterApproveComponent, {
+      data: element,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showLoader = true;
+        this.riskRegisterService.approve(id).subscribe({
+          next: () => {
+            this.loadPage(
+              this.page,
+              this.size,
+              this.financialYearId,
+              this.organisationUnitId
+            );
+            this.toastService.success('Success', 'Risk Approved Successfully!');
+            this.router.navigate(['/risk-management/risk-register']);
+          },
+          error: () => (this.showLoader = false),
+          complete: () => (this.showLoader = false),
+        });
+      }
+    });
   }
 }

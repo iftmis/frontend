@@ -85,9 +85,9 @@ export class RiskDetailComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formService.toFormGroup(this.risk);
+    this.error = undefined;
     this.loadObjectives();
     this.loadRiskCategories();
-    this.error = undefined;
   }
 
   loadObjectives() {
@@ -170,18 +170,29 @@ export class RiskDetailComponent implements OnInit {
   }
 
   addRating() {
-    const item = {
-      source: this.sourceControl.value,
-      comments: this.commentControl.value,
-      impact: this.impactControl.value,
-      likelihood: this.likelihoodControl.value,
-    } as RiskRating;
-    this.riskRatings.push(item);
-    this.ratingDataSource.data = this.riskRatings;
-    this.sourceControl.reset('');
-    this.impactControl.reset('');
-    this.likelihoodControl.reset('');
-    this.commentControl.reset('');
+    let exits = false;
+    this.riskRatings.map(row => {
+      if (row.source === this.sourceControl.value) {
+        exits = true;
+      }
+    });
+    if (exits) {
+      this.toastService.error('Duplicate!', 'Risk Source Already Added!');
+    } else {
+      const item = {
+        source: this.sourceControl.value,
+        comments: this.commentControl.value,
+        impact: this.impactControl.value,
+        likelihood: this.likelihoodControl.value,
+      } as RiskRating;
+
+      this.riskRatings.push(item);
+      this.ratingDataSource.data = this.riskRatings;
+      this.sourceControl.reset('');
+      this.impactControl.reset('');
+      this.likelihoodControl.reset('');
+      this.commentControl.reset('');
+    }
   }
 
   deleteRating(i: number) {

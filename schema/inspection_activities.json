@@ -1,0 +1,105 @@
+{
+  "name": "inspectionActivities",
+  "pageTitle": "Inspection Activities",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["objective", "auditableArea", "subArea", "activity"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Objective",
+      "name": "objectiveId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Objective",
+      "name": "objectiveName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Auditable Area",
+      "name": "auditableAreaId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Auditable Area",
+      "name": "auditableAreaName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Sub Area",
+      "name": "subAreaId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Sub Area",
+      "name": "subAreaName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+
+    {
+      "label": "Activity",
+      "name": "activity",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Quarter 1",
+      "name": "quarter1",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Quarter 2",
+      "name": "quarter2",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Quarter 3",
+      "name": "quarter3",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "label": "Quarter 4",
+      "name": "quarter4",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true
+      }
+    }
+  ]
+}

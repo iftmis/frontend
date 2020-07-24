@@ -10,9 +10,9 @@ import { InspectionComponent } from './inspection/inspection.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { RiskManagementComponent } from './risk-management/risk-management.component';
 import { ReportComponent } from './report/report.component';
-import { FindingManagementComponent } from './finding-management/finding-management.component';
 import { InspectionProcessComponent } from './inspection-process/inspection-process.component';
 import { InspectionResolver } from './inspection/inspection.resolver';
+import { InspectionPlanningComponent } from './inspection-planning/inspection-planning.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -35,6 +35,15 @@ const routes: Routes = [
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./inspection/inspection.module').then(m => m.InspectionModule),
+  },
+  {
+    path: 'inspection-planning',
+    component: InspectionPlanningComponent,
+    canActivateChild: [AuthenticatedUserGuard],
+    loadChildren: () =>
+      import('./inspection-planning/inspection-planning.module').then(
+        m => m.InspectionPlanningModule
+      ),
   },
   {
     path: 'inspection-process/:id',
@@ -68,7 +77,6 @@ const routes: Routes = [
   },
   {
     path: 'finding-management',
-    component: FindingManagementComponent,
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./finding-management/finding-management.module').then(
@@ -82,6 +90,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./report/report.module').then(m => m.ReportModule),
   },
+
   {
     path: '**',
     component: PageNotFoundComponent,

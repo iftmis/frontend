@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class GfsCodeDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-gfs-code-delete')
+    by.css('.mat-dialog-container app-gfs-code-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

@@ -4,7 +4,7 @@ import { OverlayPage } from '../overlay.po';
 export class SubAreaDeletePage {
   private overlayPage = new OverlayPage();
   private root: ElementFinder = this.overlayPage.overlay.element(
-    by.css('.mat-dialog-container app-sub-area-delete')
+    by.css('.mat-dialog-container app-sub-area-confirmation')
   );
   private actions: ElementFinder = this.root.element(
     by.css('mat-dialog-actions')

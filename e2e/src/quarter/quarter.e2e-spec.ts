@@ -186,7 +186,7 @@ describe('Quarter tests', () => {
     expect(actualRecordsCount).toEqual(initialCount + 1);
   });
 
-  it('should delete a quarter', async () => {
+  it('should confirmation a quarter', async () => {
     const lastRecordIndex = (await listPage.table.records.count()) - 1;
     const actionsMenu = listPage.table.getActionsBtn(lastRecordIndex);
 
