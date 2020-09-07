@@ -35,6 +35,12 @@ export class SubAreaService {
     return this.http.get<SubArea>(`${this.resourceUrl}/${id}`);
   }
 
+  getAllSubAreaByAreaId(id: number): Observable<SubArea[]> {
+    return this.http.get<SubArea[]>(
+      `${this.resourceUrl}/getAllSubAreaByAreaId/${id}`
+    );
+  }
+
   create(subArea: SubArea): Observable<SubArea> {
     return this.http.post<SubArea>(this.resourceUrl, subArea);
   }

@@ -1,6 +1,16 @@
 <mat-card class="mat-elevation-z0">
   <div class="page-heading">
-    <span class="mat-card-title">Finding: {{ finding?.description }}</span>
+    <span class="mat-card-title"> Finding: {{ finding?.description }} </span>
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/finding-management/findings']"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to Findings</span>
+      </button>
+    </div>
   </div>
   <mat-card-content>
     <div
@@ -11,8 +21,8 @@
       fxLayoutGap="10px"
       fxLayoutGap.xs="0"
     >
-      <div fxFlex="30%">
-        <mat-card class="mat-elevation-z0">
+      <div fxFlex="50%">
+        <mat-card>
           <div class="page-heading">
             <span class="mat-card-title">Recommendation List</span>
           </div>
@@ -25,28 +35,23 @@
                 *ngFor="let recommendation of getData() | async"
                 [value]="recommendation"
               >
-                {{ recommendation.description }}
+                <div mat-line>{{ recommendation.description }}</div>
+                <div
+                  [style.color]="color(recommendation.implementationStatus)"
+                  style="padding: 5px;"
+                  mat-line
+                >
+                  {{ recommendation.implementationStatus }}
+                </div>
               </mat-list-option>
             </mat-selection-list>
           </mat-card-content>
-          <mat-card-actions>
-            <button
-              mat-raised-button
-              color="primary"
-              [routerLink]="['/finding-management/findings']"
-            >
-              <mat-icon>arrow_back</mat-icon>
-              <span>Back to Findings</span>
-            </button>
-          </mat-card-actions>
         </mat-card>
       </div>
-      <div fxFlex="70%">
-        <mat-card class="mat-elevation-z0">
+      <div fxFlex="50%">
+        <mat-card>
           <div class="page-heading">
-            <span class="mat-card-title"
-              >{{ selectedRecommendation?.description }} Responses</span
-            >
+            <span class="mat-card-title">Responses</span>
             <div>
               <button
                 mat-raised-button
@@ -114,7 +119,7 @@
                 <button
                   mat-menu-item
                   aria-label="Delete Finding"
-                  (click)="delete(id, element)"
+                  (click)="delete(element)"
                 >
                   <mat-icon>delete</mat-icon>
                   <span>Delete</span>

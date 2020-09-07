@@ -22,10 +22,10 @@ import { SubArea } from '../../../setting/sub-area/sub-area';
 import { Objective } from '../../../setting/objective/objective';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { MatSort } from '@angular/material/sort';
+import { FormControl } from '@angular/forms';
 import { ObjectiveService } from '../../../setting/objective/objective.service';
 import { AuditableAreaService } from '../../../setting/auditable-area/auditable-area.service';
 import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-inspection-activities-list',
@@ -70,9 +70,9 @@ export class InspectionActivitiesListComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private toastService: ToastService,
-    private subAreaService: SubAreaService,
     private objectiveService: ObjectiveService,
     private auditableAreaService: AuditableAreaService,
+    private subAreaService: SubAreaService,
     private inspectionActivitiesService: InspectionActivitiesService
   ) {
     this.areaId = 0;
@@ -82,6 +82,7 @@ export class InspectionActivitiesListComponent implements OnInit {
     this.loadPage(this.areaId);
     this.loadObjeectives();
     this.loadAuditableAreas();
+    // this.loadSubAreas();
   }
   loadPage(auditableAreaId: number) {
     const pageToLoad = this.page || 0;
@@ -107,6 +108,12 @@ export class InspectionActivitiesListComponent implements OnInit {
     });
   }
 
+  // loadSubAreas() {
+  //   this.subAreaService.getAllUnPaged().subscribe(res => {
+  //     this.subAreas = res;
+  //   });
+  // }
+
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
@@ -118,15 +125,6 @@ export class InspectionActivitiesListComponent implements OnInit {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;
     this.loadPage(this.areaId);
-  }
-  filterSubAreaByArea(auditableArea: AuditableArea) {
-    if (auditableArea) {
-      this.areaId = auditableArea.id as number;
-      this.loadPage(this.areaId);
-    } else {
-      this.areaId = 0 as number;
-      this.loadPage(0);
-    }
   }
 
   delete(id: number, inspectionActivities: InspectionActivities) {
@@ -153,5 +151,18 @@ export class InspectionActivitiesListComponent implements OnInit {
         });
       }
     });
+  }
+
+  loadSubAreas(auditableAreaId: number) {
+    this.subAreaService
+      .getAllSubAreaByAreaId(auditableAreaId)
+      .subscribe(response => {
+        this.subAreas = response;
+      });
+  }
+
+  filterSubAreaByArea(auditableArea: AuditableArea) {
+    this.areaId = auditableArea.id as number;
+    this.loadSubAreas(this.areaId);
   }
 }
