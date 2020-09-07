@@ -12,7 +12,7 @@ export class SubAreaService {
   auditableAreaId: number;
   constructor(private http: HttpClient) {}
 
-  getAllUnPaged(): Observable<HttpResponse<SubArea[]>> {
+  getAllUnPaged(): Observable<SubArea[]> {
     return this.http.get<any>(this.resourceUrl);
   }
 
