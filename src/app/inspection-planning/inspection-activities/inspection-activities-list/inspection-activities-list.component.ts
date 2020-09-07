@@ -25,6 +25,10 @@ import { MatSort } from '@angular/material/sort';
 import { RiskDetailComponent } from '../../../risk-management/risk/risk-detail/risk-detail.component';
 import { InspectionDetailComponent } from '../../../inspection/inspection-detail/inspection-detail.component';
 import { InspectionActivitiesDetailComponent } from '../inspection-activities-detail/inspection-activities-detail.component';
+import { FormControl } from '@angular/forms';
+import { ObjectiveService } from '../../../setting/objective/objective.service';
+import { AuditableAreaService } from '../../../setting/auditable-area/auditable-area.service';
+import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
 
 @Component({
   selector: 'app-inspection-activities-list',
@@ -54,28 +58,37 @@ export class InspectionActivitiesListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
+  subAreaId = new FormControl(null);
   subAreas: SubArea[];
+  objectiveId = new FormControl(null);
   objectives: Objective[];
+  auditableAreaId = new FormControl(null);
   auditableAreas: AuditableArea[];
+  areaId: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
     private toastService: ToastService,
+    private objectiveService: ObjectiveService,
+    private auditableAreaService: AuditableAreaService,
+    private subAreaService: SubAreaService,
     private inspectionActivitiesService: InspectionActivitiesService
-  ) {}
+  ) {
+    this.areaId = 0;
+  }
 
   ngOnInit() {
-    this.loadPage();
+    this.loadPage(this.areaId);
+    this.loadObjeectives();
+    this.loadAuditableAreas();
+    // this.loadSubAreas();
   }
-  loadPage() {
+  loadPage(auditableAreaId: number) {
     const pageToLoad = this.page || 0;
-    this.inspectionActivitiesService
-      .query({
-        page: pageToLoad,
-        size: this.itemsPerPage,
-      })
+    this.subAreaService
+      .getAllPaged(pageToLoad, this.itemsPerPage, auditableAreaId)
       .subscribe(
         resp => this.onSuccess(resp.body, resp.headers, this.page),
         () => this.onError()
@@ -85,8 +98,22 @@ export class InspectionActivitiesListComponent implements OnInit {
   getData(): Observable<InspectionActivities[]> {
     return this.InspectionActivityBehaviorSubject.asObservable();
   }
+  loadObjeectives() {
+    this.objectiveService.getAllUnPaged().subscribe(res => {
+      this.objectives = res;
+    });
+  }
+  loadAuditableAreas() {
+    this.auditableAreaService.getAllUnPaged().subscribe(res => {
+      this.auditableAreas = res;
+    });
+  }
 
-  filterByObjectiveId() {}
+  // loadSubAreas() {
+  //   this.subAreaService.getAllUnPaged().subscribe(res => {
+  //     this.subAreas = res;
+  //   });
+  // }
 
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
@@ -98,7 +125,7 @@ export class InspectionActivitiesListComponent implements OnInit {
   pageChange($event: PageEvent) {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;
-    this.loadPage();
+    this.loadPage(this.areaId);
   }
 
   create() {
@@ -145,7 +172,7 @@ export class InspectionActivitiesListComponent implements OnInit {
         this.showLoader = true;
         this.inspectionActivitiesService.delete(id).subscribe({
           next: () => {
-            this.loadPage();
+            this.loadPage(this.areaId);
             this.toastService.success(
               'Success',
               'Inspection Activity Deleted Successfully!'
@@ -159,5 +186,18 @@ export class InspectionActivitiesListComponent implements OnInit {
         });
       }
     });
+  }
+
+  loadSubAreas(auditableAreaId: number) {
+    this.subAreaService
+      .getAllSubAreaByAreaId(auditableAreaId)
+      .subscribe(response => {
+        this.subAreas = response;
+      });
+  }
+
+  filterSubAreaByArea(auditableArea: AuditableArea) {
+    this.areaId = auditableArea.id as number;
+    this.loadSubAreas(this.areaId);
   }
 }
