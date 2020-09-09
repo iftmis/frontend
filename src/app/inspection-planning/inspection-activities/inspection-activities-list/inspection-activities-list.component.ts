@@ -196,4 +196,8 @@ export class InspectionActivitiesListComponent implements OnInit {
     this.areaId = auditableArea.id as number;
     this.loadSubAreas(this.areaId);
   }
+
+  filterActivityFromSelection() {
+    // Filter activity by selection
+  }
 }

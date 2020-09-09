@@ -203,7 +203,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/inspection-planning/inspection-activities']);
-    return false;
+    return true;
   }
 
   filterSubAreaByArea(auditableArea: AuditableArea) {
