@@ -31,7 +31,7 @@
       fxLayoutGap="10px"
       fxLayoutGap.xs="0"
     >
-      <div fxFlex="33%">
+      <div fxFlex="100%">
         <mat-form-field appearance="outline">
           <mat-label>Objective</mat-label>
           <mat-select
@@ -48,7 +48,16 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="33%">
+    </div>
+    <div
+      class="container"
+      fxLayout
+      fxLayout.xs="row"
+      fxLayoutAlign="center"
+      fxLayoutGap="10px"
+      fxLayoutGap.xs="0"
+    >
+      <div fxFlex="50%">
         <mat-form-field appearance="outline">
           <mat-label>Auditable Area</mat-label>
           <mat-select
@@ -66,10 +75,14 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="33%">
+      <div fxFlex="50%">
         <mat-form-field appearance="outline">
           <mat-label>Sub Area</mat-label>
-          <mat-select [formControl]="subAreaId" placeholder="Select Sub Area">
+          <mat-select
+            [formControl]="subAreaId"
+            placeholder="Select Sub Area"
+            (ngModelChange)="filterActivityFromSelection()"
+          >
             <mat-option value="null">-All-</mat-option>
             <mat-option *ngFor="let subArea of subAreas" [value]="subArea">
               {{ subArea.name }}
