@@ -31,7 +31,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   objectives: Objective[];
   auditableAreas: AuditableArea[];
   riskForm: FormGroup;
-
+  areaId: number;
   activityId: number;
   risks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
   chosen: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
@@ -54,11 +54,12 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   ) {
     // this.activityId = route.snapshot.parent?.parent?.params['id'];
   }
+  chaguliwaRisks = new Array();
 
   ngOnInit() {
     this.loadObjectives();
     this.loadAuditableAreas();
-    this.loadSubAreas();
+    // this.loadSubAreas();
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
@@ -89,7 +90,14 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     }
 
     const risksToAdd = risk.map(a => {
-      console.log(a);
+      console.log(a.description + ' this is being saved');
+
+      // storing select risks in an array
+      this.chaguliwaRisks.push(a.id);
+      for (const i of this.chaguliwaRisks) {
+        console.log('array has ' + i);
+      }
+
       return {
         name: a.description,
         riskId: a.id,
@@ -139,10 +147,19 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.auditableAreas = res;
     });
   }
-  loadSubAreas() {
-    this.subAreasService.getAllUnPaged().subscribe(res => {
-      this.subAreas = res;
-    });
+  // loadSubAreas() {
+  //   this.subAreasService.getAllUnPaged().subscribe(res => {
+  //     this.subAreas = res;
+  //   });
+  // }
+
+  loadSubAreas(auditableAreaId: number) {
+    console.log('The id is' + auditableAreaId);
+    this.subAreasService
+      .getAllSubAreaByAreaId(auditableAreaId)
+      .subscribe(res => {
+        this.subAreas = res;
+      });
   }
 
   saveOrUpdate() {
@@ -187,5 +204,10 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   cancel() {
     this.router.navigate(['/inspection-planning/inspection-activities']);
     return false;
+  }
+
+  filterSubAreaByArea(auditableArea: AuditableArea) {
+    this.areaId = auditableArea.id as number;
+    this.loadSubAreas(this.areaId);
   }
 }

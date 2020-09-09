@@ -39,7 +39,7 @@ export class RiskService {
   }
 
   saveAll(risksToAdd: any): Observable<any> {
-    return this.http.post<Risk[]>(`${this.resourceUrl}/add`, risksToAdd);
+    return this.http.post<Risk[]>(`${this.resourceUrl}`, risksToAdd);
   }
 
   getByActivityId(id: number): Observable<Risk[]> {
