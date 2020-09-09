@@ -32,11 +32,12 @@
                 <mat-select
                   formControlName="auditableAreaId"
                   placeholder="Select Auditable Area"
+                  (ngModelChange)="filterSubAreaByArea($event)"
                 >
                   <mat-option value="null">-All-</mat-option>
                   <mat-option
                     *ngFor="let auditableArea of auditableAreas"
-                    [value]="auditableArea.id"
+                    [value]="auditableArea"
                   >
                     {{ auditableArea.name }}
                   </mat-option>
