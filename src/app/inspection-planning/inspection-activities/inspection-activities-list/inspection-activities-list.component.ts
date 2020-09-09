@@ -37,13 +37,7 @@ import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectionActivitiesListComponent implements OnInit {
-  displayedColumns = [
-    'objectiveName',
-    'auditableAreaName',
-    'subAreaName',
-    'activity',
-    'formActions',
-  ];
+  displayedColumns = ['No', 'activity', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 

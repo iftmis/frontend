@@ -23,6 +23,20 @@
       <span class="table-overlay">No records found</span>
     </div>
 
+    <div fxFlex="100%">
+      <mat-form-field appearance="outline">
+        <mat-label>Objective</mat-label>
+        <mat-select [formControl]="objectiveId" placeholder="Select Objective">
+          <mat-option value="null">-All-</mat-option>
+          <mat-option
+            *ngFor="let objective of objectives"
+            [value]="objective.id"
+          >
+            {{ objective.description }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div
       class="container"
       fxLayout
@@ -31,24 +45,7 @@
       fxLayoutGap="10px"
       fxLayoutGap.xs="0"
     >
-      <div fxFlex="33%">
-        <mat-form-field appearance="outline">
-          <mat-label>Objective</mat-label>
-          <mat-select
-            [formControl]="objectiveId"
-            placeholder="Select Objective"
-          >
-            <mat-option value="null">-All-</mat-option>
-            <mat-option
-              *ngFor="let objective of objectives"
-              [value]="objective.id"
-            >
-              {{ objective.description }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxFlex="33%">
+      <div fxFlex="48%">
         <mat-form-field appearance="outline">
           <mat-label>Auditable Area</mat-label>
           <mat-select
@@ -66,7 +63,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="33%">
+      <div fxFlex="48%">
         <mat-form-field appearance="outline">
           <mat-label>Sub Area</mat-label>
           <mat-select [formControl]="subAreaId" placeholder="Select Sub Area">
@@ -79,30 +76,16 @@
       </div>
     </div>
 
+    <div *ngIf="!getData()">
+      <span class="table-overlay">No records found</span>
+    </div>
+
     <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
+      <ng-container matColumnDef="No">
+        <th mat-header-cell *matHeaderCellDef>No</th>
         <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="objectiveName">
-        <th mat-header-cell *matHeaderCellDef>Objective</th>
-        <td mat-cell *matCellDef="let element">{{ element.objectiveName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="auditableAreaName">
-        <th mat-header-cell *matHeaderCellDef>Auditable Area</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.auditableAreaName }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="subAreaName">
-        <th mat-header-cell *matHeaderCellDef>Sub Area</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.subAreaName }}
-        </td>
-      </ng-container>
       <ng-container matColumnDef="activity">
         <th mat-header-cell *matHeaderCellDef>Activity</th>
         <td mat-cell *matCellDef="let element">
