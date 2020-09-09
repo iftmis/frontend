@@ -6,6 +6,7 @@ import { inspectionActivitiesRoutes } from './inspection-activities.route';
 import { InspectionActivitiesListComponent } from './inspection-activities-list/inspection-activities-list.component';
 import { InspectionActivitiesDetailComponent } from './inspection-activities-detail/inspection-activities-detail.component';
 import { InspectionActivitiesDeleteComponent } from './inspection-activities-delete/inspection-activities-delete.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,11 @@ import { InspectionActivitiesDeleteComponent } from './inspection-activities-del
     InspectionActivitiesDetailComponent,
     InspectionActivitiesDeleteComponent,
   ],
-  imports: [SharedModule, RouterModule.forChild(inspectionActivitiesRoutes)],
+  imports: [
+    SharedModule,
+    RouterModule.forChild(inspectionActivitiesRoutes),
+    FormsModule,
+  ],
   exports: [],
 })
 export class InspectionActivitiesModule {}

@@ -153,7 +153,7 @@ export class InspectionActivitiesListComponent implements OnInit {
         //   this.parentId,
         //   this.queryString
         // );
-        this.loadPage();
+        this.loadPage(this.areaId);
         this.toastService.success(
           'Success!',
           'Inspection Activity Created Successfully!'

@@ -26,28 +26,11 @@
             fxLayoutGap="10px"
             fxLayoutGap.xs="0"
           >
-            <div fxFlex="33%">
-              <mat-form-field appearance="outline">
-                <mat-label>Objective</mat-label>
-                <mat-select
-                  formControlName="form.get('objectiveId')"
-                  placeholder="Select Objective"
-                >
-                  <mat-option value="null">-All-</mat-option>
-                  <mat-option
-                    *ngFor="let objective of objectives"
-                    [value]="objective.id"
-                  >
-                    {{ objective.description }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div fxFlex="33%">
+            <div fxFlex="50%">
               <mat-form-field appearance="outline">
                 <mat-label>Auditable Area</mat-label>
                 <mat-select
-                  formControlName="form.get('auditableAreaId')"
+                  formControlName="auditableAreaId"
                   placeholder="Select Auditable Area"
                 >
                   <mat-option value="null">-All-</mat-option>
@@ -60,11 +43,12 @@
                 </mat-select>
               </mat-form-field>
             </div>
-            <div fxFlex="33%">
+
+            <div fxFlex="50%">
               <mat-form-field appearance="outline">
                 <mat-label>Sub Area</mat-label>
                 <mat-select
-                  formControlName="form.get('subAreaId')"
+                  formControlName="subAreaId"
                   placeholder="Select Sub Area"
                 >
                   <mat-option value="null">-All-</mat-option>
@@ -78,6 +62,26 @@
               </mat-form-field>
             </div>
           </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Objective</mat-label>
+
+            <div fxFlex="100%">
+              <mat-select
+                formControlName="objectiveId"
+                placeholder="Select Objective"
+              >
+                <mat-option value="null">-All-</mat-option>
+                <mat-option
+                  *ngFor="let objective of objectives"
+                  [value]="objective.id"
+                >
+                  {{ objective.description }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </mat-form-field>
+
           <mat-form-field class="full-width">
             <mat-label>Activity</mat-label>
             <input
@@ -93,6 +97,7 @@
               ></hip-ngx-error
             ></mat-error>
           </mat-form-field>
+
           <mat-form-field class="full-width">
             <mat-label>Days</mat-label>
             <input
@@ -199,16 +204,16 @@
       <div fxLayout="row">
         <div fxFlex fxLayout="column">
           <div>Available Risks</div>
-          <!--          <select-->
-          <!--            (dblclick)="saveAll(selectedRisks)"-->
-          <!--            multiple-->
-          <!--            class="full-width mult-select"-->
-          <!--            [(ngModel)]="selectedRisks"-->
-          <!--          >-->
-          <!--            <option *ngFor="let a of getAllRisks() | async" [value]="a">-->
-          <!--              {{ a.description }}-->
-          <!--            </option>-->
-          <!--          </select>-->
+          <select
+            (dblclick)="saveAll(selectedRisks)"
+            multiple
+            class="full-width mult-select"
+            [(ngModel)]="selectedRisks"
+          >
+            <option *ngFor="let a of getAllRisks() | async" [value]="a">
+              {{ a.description }}
+            </option>
+          </select>
         </div>
         <div
           style="width: 200px; padding: 0 10px;"
@@ -220,25 +225,25 @@
             [disabled]="selectedRisks.length === 0"
             mat-raised-button
           ></button>
-          <!--          <button-->
-          <!--            (click)="removeAll(chosenRisks)"-->
-          <!--            [disabled]="chosenRisks.length === 0"-->
-          <!--            mat-raised-button-->
-          <!--          ></button>-->
+          <button
+            (click)="removeAll(chosenRisks)"
+            [disabled]="chosenRisks.length === 0"
+            mat-raised-button
+          ></button>
         </div>
 
         <div fxFlex fxLayout="column">
           <div>Selected Auditable Areas</div>
-          <!--          <select-->
-          <!--            (dblclick)="removeAll(chosenRisks)"-->
-          <!--            multiple-->
-          <!--            class="full-width mult-select"-->
-          <!--            [(ngModel)]="chosenRisks"-->
-          <!--          >-->
-          <!--            <option *ngFor="let ia of getSelectedRisks() | async" [value]="ia">-->
-          <!--              {{ ia.description }}-->
-          <!--            </option>-->
-          <!--          </select>-->
+          <select
+            (dblclick)="removeAll(chosenRisks)"
+            multiple
+            class="full-width mult-select"
+            [(ngModel)]="chosenRisks"
+          >
+            <option *ngFor="let ia of getSelectedRisks() | async" [value]="ia">
+              {{ ia.description }}
+            </option>
+          </select>
         </div>
       </div>
     </mat-step>

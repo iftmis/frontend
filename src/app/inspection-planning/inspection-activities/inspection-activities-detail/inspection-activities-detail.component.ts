@@ -63,12 +63,20 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
     });
+    this.loadRisks();
 
     this.error = undefined;
   }
 
-  getAllRisks(): Observable<Risk[]> {
-    return this.risks.asObservable();
+  loadRisks() {
+    this.riskService.getAll().subscribe(response => {
+      this.risks.next(response);
+      this.loadAllSelectedRisks();
+    });
+  }
+
+  removeAll(risks: Risk[]) {
+    this.riskService.removeAll(risks).subscribe(res => this.onSuccess());
   }
 
   getSelectedRisks(): Observable<Risk[]> {
@@ -89,30 +97,29 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       };
     });
 
-    // this.riskService.saveAll(risksToAdd).subscribe(res=>{
-    //   this.onSuccess();
-    // })
+    this.riskService.saveAll(risksToAdd).subscribe(res => {
+      this.onSuccess();
+    });
   }
-  // loadAllSelectedRisks() {
-  //   this.riskService
-  //     .getByActivityId(this.activityId)
-  //     .subscribe(res => {
-  //       this.risks.next(res);
-  //       this.filterAreas(res);
-  //     });
-  // }
-  // filterAreas(risk: any) {
-  //   const ids = risk.map((a: any) => a.riskId || 0);
-  //   // @ts-ignore
-  //   const filtered = this.allAreasAuditableAreas.filter(
-  //     a => {
-  //       return ids.indexOf(a.id) === -1;
-  //     }
-  //   );
-  // this.auditableAreas.next(filtered); }
+
+  loadAllSelectedRisks() {
+    this.riskService.getByActivityId(this.activityId).subscribe(res => {
+      this.risks.next(res);
+      this.filterAreas(res);
+    });
+  }
+
+  filterAreas(risk: any) {
+    const ids = risk.map((a: any) => a.riskId || 0);
+    // @ts-ignore
+    const filtered = this.allAreasAuditableAreas.filter((a: { id: any }) => {
+      return ids.indexOf(a.id) === -1;
+    });
+    this.risks.next(filtered);
+  }
 
   onSuccess() {
-    //  this.loadAllRisks();
+    this.loadAllSelectedRisks();
     this.selectedRisks = [];
     this.allRisks = [];
   }
@@ -122,6 +129,11 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.objectives = res;
     });
   }
+
+  getAllRisks(): Observable<Risk[]> {
+    return this.risks.asObservable();
+  }
+
   loadAuditableAreas() {
     this.auditAreasService.getAllUnPaged().subscribe(res => {
       this.auditableAreas = res;
