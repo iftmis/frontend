@@ -24,7 +24,7 @@
           <mat-option>--Select--</mat-option>
           <mat-option
             *ngFor="let financialYear of getFinancialYear() | async"
-            [value]="financialYear.id"
+            [value]="financialYear"
             >{{ financialYear.name }}</mat-option
           >
         </mat-select>
@@ -41,7 +41,7 @@
           <mat-option>--Select--</mat-option>
           <mat-option
             *ngFor="let organisationUnit of getCouncils() | async"
-            [value]="organisationUnit.id"
+            [value]="organisationUnit"
             >{{ organisationUnit.name }}</mat-option
           >
         </mat-select>
