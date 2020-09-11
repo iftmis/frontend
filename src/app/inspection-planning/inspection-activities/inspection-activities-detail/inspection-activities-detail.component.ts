@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesFormService } from './inspection-activities-form.service';
@@ -12,6 +12,10 @@ import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
 import { Objective } from '../../../setting/objective/objective';
 import { SubArea } from '../../../setting/sub-area/sub-area';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
+import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
+import { Risk } from '../../../risk-management/risk/risk';
+import { RiskService } from '../../../risk-management/risk/risk.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -27,13 +31,15 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   subAreas: SubArea[];
   objectives: Objective[];
   auditableAreas: AuditableArea[];
-  isLinear: true;
+  riskForm: FormGroup;
+  areaId: number;
+  activityId: number;
+  risks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
+  chosen: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
-  fourthFormGroup: FormGroup;
-  xxxxxFormGroup: FormGroup;
+  allRisks: Risk[] = [];
+  selectedRisks: Risk[] = [];
+  chosenRisks: Risk[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -42,35 +48,90 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private objectiveService: ObjectiveService,
     private auditAreasService: AuditableAreaService,
     private subAreasService: SubAreaService,
+    private riskService: RiskService,
+    private dialogRef: MatDialogRef<InspectionActivitiesDetailComponent>,
     private inspectionActivitiesService: InspectionActivitiesService,
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder
-  ) {}
+  ) {
+    // this.activityId = route.snapshot.parent?.parent?.params['id'];
+  }
+  chaguliwaRisks = new Array();
 
   ngOnInit() {
     this.loadObjectives();
     this.loadAuditableAreas();
-    this.loadSubAreas();
+    // this.loadSubAreas();
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
     });
-
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required],
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
-    });
-
-    this.fourthFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
-    });
+    this.loadRisks();
 
     this.error = undefined;
+  }
+
+  loadRisks() {
+    this.riskService.getAll().subscribe(response => {
+      this.risks.next(response);
+      this.loadAllSelectedRisks();
+    });
+  }
+
+  removeAll(risks: Risk[]) {
+    this.riskService.removeAll(risks).subscribe(res => this.onSuccess());
+  }
+
+  getSelectedRisks(): Observable<Risk[]> {
+    return this.chosen.asObservable();
+  }
+
+  saveAll(risk: Risk[]) {
+    if (risk === undefined || risk.length === 0) {
+      return;
+    }
+
+    const risksToAdd = risk.map(a => {
+      console.log(a.description + ' this is being saved');
+
+      // storing select risks in an array
+      this.chaguliwaRisks.push(a.id);
+      for (const i of this.chaguliwaRisks) {
+        console.log('array has ' + i);
+      }
+
+      return {
+        name: a.description,
+        riskId: a.id,
+        activityId: this.activityId,
+      };
+    });
+
+    this.riskService.saveAll(risksToAdd).subscribe(res => {
+      this.onSuccess();
+    });
+  }
+
+  loadAllSelectedRisks() {
+    this.riskService.getByActivityId(this.activityId).subscribe(res => {
+      this.risks.next(res);
+      this.filterAreas(res);
+    });
+  }
+
+  filterAreas(risk: any) {
+    const ids = risk.map((a: any) => a.riskId || 0);
+    // @ts-ignore
+    const filtered = this.allAreasAuditableAreas.filter((a: { id: any }) => {
+      return ids.indexOf(a.id) === -1;
+    });
+    this.risks.next(filtered);
+  }
+
+  onSuccess() {
+    this.loadAllSelectedRisks();
+    this.selectedRisks = [];
+    this.allRisks = [];
   }
 
   loadObjectives() {
@@ -78,15 +139,29 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.objectives = res;
     });
   }
+
+  getAllRisks(): Observable<Risk[]> {
+    return this.risks.asObservable();
+  }
+
   loadAuditableAreas() {
     this.auditAreasService.getAllUnPaged().subscribe(res => {
       this.auditableAreas = res;
     });
   }
-  loadSubAreas() {
-    this.subAreasService.getAllUnPaged().subscribe(res => {
-      this.subAreas = res;
-    });
+  // loadSubAreas() {
+  //   this.subAreasService.getAllUnPaged().subscribe(res => {
+  //     this.subAreas = res;
+  //   });
+  // }
+
+  loadSubAreas(auditableAreaId: number) {
+    console.log('The id is' + auditableAreaId);
+    this.subAreasService
+      .getAllSubAreaByAreaId(auditableAreaId)
+      .subscribe(res => {
+        this.subAreas = res;
+      });
   }
 
   saveOrUpdate() {
@@ -129,7 +204,11 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-planning/inspection-activities']);
-    return false;
+    this.dialogRef.close();
+  }
+
+  filterSubAreaByArea(auditableArea: AuditableArea) {
+    this.areaId = auditableArea.id as number;
+    this.loadSubAreas(this.areaId);
   }
 }

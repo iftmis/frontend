@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesDeleteComponent } from '../inspection-activities-delete/inspection-activities-delete.component';
@@ -22,6 +22,9 @@ import { SubArea } from '../../../setting/sub-area/sub-area';
 import { Objective } from '../../../setting/objective/objective';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { MatSort } from '@angular/material/sort';
+import { RiskDetailComponent } from '../../../risk-management/risk/risk-detail/risk-detail.component';
+import { InspectionDetailComponent } from '../../../inspection/inspection-detail/inspection-detail.component';
+import { InspectionActivitiesDetailComponent } from '../inspection-activities-detail/inspection-activities-detail.component';
 import { FormControl } from '@angular/forms';
 import { ObjectiveService } from '../../../setting/objective/objective.service';
 import { AuditableAreaService } from '../../../setting/auditable-area/auditable-area.service';
@@ -34,13 +37,7 @@ import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectionActivitiesListComponent implements OnInit {
-  displayedColumns = [
-    'objectiveName',
-    'auditableAreaName',
-    'subAreaName',
-    'activity',
-    'formActions',
-  ];
+  displayedColumns = ['No', 'activity', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
 
@@ -52,7 +49,9 @@ export class InspectionActivitiesListComponent implements OnInit {
   private InspectionActivityBehaviorSubject: BehaviorSubject<
     InspectionActivities[]
   > = new BehaviorSubject([]);
+  // @ts-ignore
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  // @ts-ignore
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   subAreaId = new FormControl(null);
@@ -125,6 +124,40 @@ export class InspectionActivitiesListComponent implements OnInit {
     this.loadPage(this.areaId);
   }
 
+  create() {
+    const data = {
+      title: 'Create',
+      action: 'create',
+    };
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    /*dialogConfig.height = '80%';*/
+    dialogConfig.width = '60%';
+    dialogConfig.data = data;
+    const dialog = this.dialog.open(
+      InspectionActivitiesDetailComponent,
+      dialogConfig
+    );
+
+    dialog.afterClosed().subscribe((response: any) => {
+      if (response) {
+        // this.loadRisk(
+        //   this.page,
+        //   this.size,
+        //   Number(this.riskRegisterId),
+        //   this.parentId,
+        //   this.queryString
+        // );
+        this.loadPage(this.areaId);
+        this.toastService.success(
+          'Success!',
+          'Inspection Activity Created Successfully!'
+        );
+      }
+    });
+  }
+
   delete(id: number, inspectionActivities: InspectionActivities) {
     const dialogRef = this.dialog.open(InspectionActivitiesDeleteComponent, {
       data: inspectionActivities,
@@ -162,5 +195,9 @@ export class InspectionActivitiesListComponent implements OnInit {
   filterSubAreaByArea(auditableArea: AuditableArea) {
     this.areaId = auditableArea.id as number;
     this.loadSubAreas(this.areaId);
+  }
+
+  filterActivityFromSelection() {
+    // Filter activity by selection
   }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Risk } from './risk';
 import { createRequestOption } from '../../shared/pagination.constants';
+import { InspectionArea } from '../../inspection-process/preparation/inspection-area/inspection-area';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,18 @@ export class RiskService {
 
   update(risk: Risk): Observable<Risk> {
     return this.http.put<Risk>(`${this.resourceUrl}`, risk);
+  }
+
+  saveAll(risksToAdd: any): Observable<any> {
+    return this.http.post<Risk[]>(`${this.resourceUrl}`, risksToAdd);
+  }
+
+  getByActivityId(id: number): Observable<Risk[]> {
+    return this.http.get<Risk[]>(`${this.resourceUrl}/by-activity/${id}`, {});
+  }
+
+  removeAll(risks: Risk[]) {
+    return this.http.post<Risk[]>(`${this.resourceUrl}/remove`, risks);
   }
 
   delete(id: number) {

@@ -14,35 +14,19 @@ export class InspectionPlanFormService {
       id: this.formBuilder.control(inspectionPlan.id, []),
       FinancialYearID: this.formBuilder.control(
         inspectionPlan.FinancialYearID,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
+        [Validators.required]
       ),
       financialYearName: this.formBuilder.control(
         inspectionPlan.financialYearName,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
+        [Validators.required]
       ),
       OrganizationUnitID: this.formBuilder.control(
         inspectionPlan.OrganizationUnitID,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
+        [Validators.required]
       ),
       OrganizationUnitName: this.formBuilder.control(
         inspectionPlan.OrganizationUnitName,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
+        [Validators.required]
       ),
     });
   }

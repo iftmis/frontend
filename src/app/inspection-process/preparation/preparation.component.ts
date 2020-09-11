@@ -47,6 +47,7 @@ export class PreparationComponent implements OnInit {
         this.filterAreas(res);
       });
   }
+
   saveAll(areas: AuditableArea[]) {
     if (areas === undefined || areas.length === 0) {
       return;
@@ -91,6 +92,7 @@ export class PreparationComponent implements OnInit {
   }
 
   getAuditableAreas(): Observable<AuditableArea[]> {
+    console.log(this.auditableAreas.asObservable());
     return this.auditableAreas.asObservable();
   }
 

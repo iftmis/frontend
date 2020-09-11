@@ -1,194 +1,258 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <mat-card class="card">
-    <mat-progress-spinner
-      *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
-      class="form-overlay"
-      color="accent"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <mat-card-title>Inspection Activities</mat-card-title>
-    <mat-card-subtitle>{{
-      inspectionActivities?.id
-        ? 'Update an existing inspection activity.'
-        : 'Create a new inspection activity.'
-    }}</mat-card-subtitle>
-    <div class="error mat-error">
-      {{ error ? error : '&nbsp;' }}
-    </div>
-    <mat-card-content class="content">
-      <div
-        class="container"
-        fxLayout
-        fxLayout.xs="column"
-        fxLayoutAlign="center"
-        fxLayoutGap="10px"
-        fxLayoutGap.xs="0"
-      >
-        <div fxFlex="33%">
+<h1 mat-dialog-title>
+  Create Inspection Activity
+</h1>
+<div mat-dialog-content>
+  <mat-progress-spinner
+    *ngIf="isSaveOrUpdateInProgress"
+    diameter="50"
+    class="form-overlay"
+    color="accent"
+    mode="indeterminate"
+  >
+  </mat-progress-spinner>
+  <div class="error mat-error">
+    {{ error ? error : '&nbsp;' }}
+  </div>
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="form">
+      <form [formGroup]="form">
+        <ng-template matStepLabel>Create Inspection Activity</ng-template>
+        <mat-card-content class="content">
+          <div
+            class="container"
+            fxLayout
+            fxLayout.xs="column"
+            fxLayoutAlign="center"
+            fxLayoutGap="10px"
+            fxLayoutGap.xs="0"
+          >
+            <div fxFlex="50%">
+              <mat-form-field appearance="outline">
+                <mat-label>Auditable Area</mat-label>
+                <mat-select
+                  formControlName="auditableAreaId"
+                  placeholder="Select Auditable Area"
+                  (ngModelChange)="filterSubAreaByArea($event)"
+                >
+                  <mat-option value="null">-All-</mat-option>
+                  <mat-option
+                    *ngFor="let auditableArea of auditableAreas"
+                    [value]="auditableArea"
+                  >
+                    {{ auditableArea.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="50%">
+              <mat-form-field appearance="outline">
+                <mat-label>Sub Area</mat-label>
+                <mat-select
+                  formControlName="subAreaId"
+                  placeholder="Select Sub Area"
+                >
+                  <mat-option value="null">-All-</mat-option>
+                  <mat-option
+                    *ngFor="let subArea of subAreas"
+                    [value]="subArea.id"
+                  >
+                    {{ subArea.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
           <mat-form-field appearance="outline">
             <mat-label>Objective</mat-label>
-            <mat-select
-              formControlName="form.get('objectiveId')"
-              placeholder="Select Objective"
-            >
-              <mat-option value="null">-All-</mat-option>
-              <mat-option
-                *ngFor="let objective of objectives"
-                [value]="objective.id"
+
+            <div fxFlex="100%">
+              <mat-select
+                formControlName="objectiveId"
+                placeholder="Select Objective"
               >
-                {{ objective.description }}
-              </mat-option>
-            </mat-select>
+                <mat-option value="null">-All-</mat-option>
+                <mat-option
+                  *ngFor="let objective of objectives"
+                  [value]="objective.id"
+                >
+                  {{ objective.description }}
+                </mat-option>
+              </mat-select>
+            </div>
           </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Activity</mat-label>
+            <input
+              matInput
+              placeholder="Enter inspection activity"
+              formControlName="activity"
+              required
+            />
+            <mat-error
+              ><hip-ngx-error
+                [control]="form.get('activity')"
+                label="Activity"
+              ></hip-ngx-error
+            ></mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Days</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              placeholder="Enter Days"
+              formControlName="days"
+              required
+            />
+            <mat-error
+              ><hip-ngx-error
+                [control]="form.get('days')"
+                label="Days"
+              ></hip-ngx-error
+            ></mat-error>
+          </mat-form-field>
+          <div
+            class="container"
+            fxLayout
+            fxLayout.xs="column"
+            fxLayoutAlign="center"
+            fxLayoutGap="10px"
+            fxLayoutGap.xs="0"
+          >
+            <mat-form-field class="full-width">
+              <mat-label>Quarter 1</mat-label>
+              <input
+                matInput
+                placeholder="Enter inspection quarter 1"
+                formControlName="quarter1"
+                required
+              />
+              <mat-error
+                ><hip-ngx-error
+                  [control]="form.get('quarter1')"
+                  label="Quarter 1"
+                ></hip-ngx-error
+              ></mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>Quarter 2</mat-label>
+              <input
+                matInput
+                placeholder="Enter inspection quarter 2"
+                formControlName="quarter2"
+                required
+              />
+              <mat-error
+                ><hip-ngx-error
+                  [control]="form.get('quarter2')"
+                  label="Quarter 2"
+                ></hip-ngx-error
+              ></mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>Quarter 3</mat-label>
+              <input
+                matInput
+                placeholder="Enter inspection quarter 3"
+                formControlName="quarter3"
+                required
+              />
+              <mat-error
+                ><hip-ngx-error
+                  [control]="form.get('quarter3')"
+                  label="Quarter 3"
+                ></hip-ngx-error
+              ></mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>Quarter 4</mat-label>
+              <input
+                matInput
+                placeholder="Enter inspection quarter 4"
+                formControlName="quarter4"
+                required
+              />
+              <mat-error
+                ><hip-ngx-error
+                  [control]="form.get('quarter4')"
+                  label="Quarter 4"
+                ></hip-ngx-error
+              ></mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+        <div>
+          <button
+            type="button"
+            [disabled]="form.invalid"
+            mat-raised-button
+            color="primary"
+            matStepperNext
+          >
+            <mat-icon>arrow_right</mat-icon>
+            <span>Next</span>
+          </button>
         </div>
-        <div fxFlex="33%">
-          <mat-form-field appearance="outline">
-            <mat-label>Auditable Area</mat-label>
-            <mat-select
-              formControlName="form.get('auditableAreaId')"
-              placeholder="Select Auditable Area"
-            >
-              <mat-option value="null">-All-</mat-option>
-              <mat-option
-                *ngFor="let auditableArea of auditableAreas"
-                [value]="auditableArea.id"
-              >
-                {{ auditableArea.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="riskForm">
+      <ng-template matStepLabel>Select Risks</ng-template>
+      <div fxLayout="row">
+        <div fxFlex fxLayout="column">
+          <div>Available Risks</div>
+          <select
+            (dblclick)="saveAll(selectedRisks)"
+            multiple
+            class="full-width mult-select"
+            [(ngModel)]="selectedRisks"
+          >
+            <option *ngFor="let a of getAllRisks() | async" [value]="a">
+              {{ a.description }}
+            </option>
+          </select>
         </div>
-        <div fxFlex="33%">
-          <mat-form-field appearance="outline">
-            <mat-label>Sub Area</mat-label>
-            <mat-select
-              formControlName="form.get('subAreaId')"
-              placeholder="Select Sub Area"
-            >
-              <mat-option value="null">-All-</mat-option>
-              <mat-option *ngFor="let subArea of subAreas" [value]="subArea.id">
-                {{ subArea.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div
+          style="width: 200px; padding: 0 10px;"
+          fxLayout="column"
+          fxFlexAlign="space-around center"
+        >
+          <button
+            (click)="saveAll(selectedRisks)"
+            [disabled]="selectedRisks.length === 0"
+            mat-raised-button
+          ></button>
+          <button
+            (click)="removeAll(chosenRisks)"
+            [disabled]="chosenRisks.length === 0"
+            mat-raised-button
+          ></button>
+        </div>
+
+        <div fxFlex fxLayout="column">
+          <div>Selected Auditable Areas</div>
+          <select
+            (dblclick)="removeAll(chosenRisks)"
+            multiple
+            class="full-width mult-select"
+            [(ngModel)]="chosenRisks"
+          >
+            <option *ngFor="let ia of getSelectedRisks() | async" [value]="ia">
+              {{ ia.description }}
+            </option>
+          </select>
         </div>
       </div>
-      <mat-form-field class="full-width">
-        <mat-label>Activity</mat-label>
-        <input
-          matInput
-          placeholder="Enter inspection activity"
-          formControlName="activity"
-          required
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('activity')"
-            label="Activity"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <div
-        class="container"
-        fxLayout
-        fxLayout.xs="column"
-        fxLayoutAlign="center"
-        fxLayoutGap="10px"
-        fxLayoutGap.xs="0"
-      >
-        <mat-form-field class="full-width">
-          <mat-label>Days</mat-label>
-          <input
-            matInput
-            type="number"
-            min="0"
-            placeholder="Enter Days"
-            formControlName="days"
-            required
-          />
-          <mat-error
-            ><hip-ngx-error
-              [control]="form.get('days')"
-              label="Days"
-            ></hip-ngx-error
-          ></mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Quarter 1</mat-label>
-          <input
-            matInput
-            placeholder="Enter inspection quarter 1"
-            formControlName="quarter1"
-            required
-          />
-          <mat-error
-            ><hip-ngx-error
-              [control]="form.get('quarter1')"
-              label="Quarter 1"
-            ></hip-ngx-error
-          ></mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Quarter 2</mat-label>
-          <input
-            matInput
-            placeholder="Enter inspection quarter 2"
-            formControlName="quarter2"
-            required
-          />
-          <mat-error
-            ><hip-ngx-error
-              [control]="form.get('quarter2')"
-              label="Quarter 2"
-            ></hip-ngx-error
-          ></mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Quarter 3</mat-label>
-          <input
-            matInput
-            placeholder="Enter inspection quarter 3"
-            formControlName="quarter3"
-            required
-          />
-          <mat-error
-            ><hip-ngx-error
-              [control]="form.get('quarter3')"
-              label="Quarter 3"
-            ></hip-ngx-error
-          ></mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Quarter 4</mat-label>
-          <input
-            matInput
-            placeholder="Enter inspection quarter 4"
-            formControlName="quarter4"
-            required
-          />
-          <mat-error
-            ><hip-ngx-error
-              [control]="form.get('quarter4')"
-              label="Quarter 4"
-            ></hip-ngx-error
-          ></mat-error>
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-  </mat-card>
-  <button style="margin-left: 15px;" mat-raised-button (click)="cancel()">
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="cancel()">
     <mat-icon>cancel</mat-icon>
-    <span>Cancel</span>
+    <span>Close</span>
   </button>
-  <button
-    mat-raised-button
-    color="accent"
-    [disabled]="form.invalid || isSaveOrUpdateInProgress"
-    type="submit"
-  >
-    <mat-icon>save</mat-icon>
-    <span>{{ inspectionActivities?.id ? 'Update' : 'Save' }} </span>
-  </button>
-</form>
+</div>

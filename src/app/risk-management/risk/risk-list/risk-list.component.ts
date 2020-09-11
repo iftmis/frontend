@@ -372,6 +372,7 @@ export class RiskListComponent implements OnInit {
       const min = row.minValue;
       const max = row.maxValue;
       if (status >= min && status <= max) {
+        // @ts-ignore
         color = row.hexColor;
       }
     });
