@@ -24,7 +24,7 @@ export class InspectionPlanDetailPage {
 
   FinancialYearIDOptions = this.overlayPage.options;
 
-  financialYearName = this.root.element(
+  FinancialYearName = this.root.element(
     by.css('mat-select[formcontrolname="financialYearName"]')
   );
   financialYearNameLabel = this.root.element(

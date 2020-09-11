@@ -16,17 +16,15 @@ export class InspectionPlanFormService {
         inspectionPlan.FinancialYearID,
         [Validators.required]
       ),
-      financialYearName: this.formBuilder.control(
-        inspectionPlan.financialYearName,
-        [Validators.required]
+      FinancialYearName: this.formBuilder.control(
+        inspectionPlan.FinancialYearName
       ),
       OrganizationUnitID: this.formBuilder.control(
         inspectionPlan.OrganizationUnitID,
         [Validators.required]
       ),
       OrganizationUnitName: this.formBuilder.control(
-        inspectionPlan.OrganizationUnitName,
-        [Validators.required]
+        inspectionPlan.OrganizationUnitName
       ),
     });
   }
@@ -35,7 +33,7 @@ export class InspectionPlanFormService {
     return {
       id: formGroup.get('id')!.value,
       FinancialYearID: formGroup.get('FinancialYearID')!.value,
-      financialYearName: formGroup.get('financialYearName')!.value,
+      FinancialYearName: formGroup.get('FinancialYearName')!.value,
       OrganizationUnitID: formGroup.get('OrganizationUnitID')!.value,
       OrganizationUnitName: formGroup.get('OrganizationUnitName')!.value,
     };
