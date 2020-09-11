@@ -124,6 +124,12 @@ export class InspectionPlanDetailComponent implements OnInit {
   }
 
   cancel() {
+    console.log(
+      'this is ' +
+        this.formService.fromFormGroup(this.form).FinancialYearID +
+        'now ' +
+        this.formService.fromFormGroup(this.form).FinancialYearName
+    );
     this.router.navigate(['/inspection-planning']);
     return false;
   }

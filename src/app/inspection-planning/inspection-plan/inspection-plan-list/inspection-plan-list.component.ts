@@ -14,7 +14,7 @@ import { InspectionPlan } from '../inspection-plan';
 })
 export class InspectionPlanListComponent implements OnInit {
   displayedColumns = [
-    'financialYearName',
+    'FinancialYearName',
     'OrganizationUnitName',
     'formActions',
   ];
