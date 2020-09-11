@@ -20,34 +20,34 @@
     <mat-card-content class="content">
       <mat-form-field class="full-width">
         <mat-label>Financial Year</mat-label>
-        <mat-select formControlName="financialYearName" required>
+        <mat-select formControlName="FinancialYearID" required>
           <mat-option>--Select--</mat-option>
           <mat-option
             *ngFor="let financialYear of getFinancialYear() | async"
-            [value]="financialYear"
+            [value]="financialYear.id"
             >{{ financialYear.name }}</mat-option
           >
         </mat-select>
         <mat-error
           ><hip-ngx-error
-            [control]="form.get('financialYearName')"
+            [control]="form.get('FinancialYearID')"
             label="Financial Year"
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Organization Unit</mat-label>
-        <mat-select formControlName="OrganizationUnitName" required>
+        <mat-select formControlName="OrganizationUnitID" required>
           <mat-option>--Select--</mat-option>
           <mat-option
             *ngFor="let organisationUnit of getCouncils() | async"
-            [value]="organisationUnit"
+            [value]="organisationUnit.id"
             >{{ organisationUnit.name }}</mat-option
           >
         </mat-select>
         <mat-error
           ><hip-ngx-error
-            [control]="form.get('OrganizationUnitName')"
+            [control]="form.get('OrganizationUnitID')"
             label="Organization Unit"
           ></hip-ngx-error
         ></mat-error>

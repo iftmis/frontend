@@ -15,6 +15,7 @@ import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
 import { Risk } from '../../../risk-management/risk/risk';
 import { RiskService } from '../../../risk-management/risk/risk.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -48,6 +49,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private auditAreasService: AuditableAreaService,
     private subAreasService: SubAreaService,
     private riskService: RiskService,
+    private dialogRef: MatDialogRef<InspectionActivitiesDetailComponent>,
     private inspectionActivitiesService: InspectionActivitiesService,
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder
@@ -202,8 +204,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-planning/inspection-activities']);
-    return true;
+    this.dialogRef.close();
   }
 
   filterSubAreaByArea(auditableArea: AuditableArea) {
