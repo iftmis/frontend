@@ -12,6 +12,12 @@ export class InspectionPlanFormService {
   toFormGroup(inspectionPlan: Partial<InspectionPlan> = {}) {
     return this.formBuilder.group({
       id: this.formBuilder.control(inspectionPlan.id, []),
+
+      name: this.formBuilder.control(inspectionPlan.name, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(2000),
+      ]),
       FinancialYearID: this.formBuilder.control(
         inspectionPlan.FinancialYearID,
         [Validators.required]
@@ -32,6 +38,7 @@ export class InspectionPlanFormService {
   fromFormGroup(formGroup: FormGroup) {
     return {
       id: formGroup.get('id')!.value,
+      name: formGroup.get('name')!.value,
       FinancialYearID: formGroup.get('FinancialYearID')!.value,
       FinancialYearName: formGroup.get('FinancialYearName')!.value,
       OrganizationUnitID: formGroup.get('OrganizationUnitID')!.value,
