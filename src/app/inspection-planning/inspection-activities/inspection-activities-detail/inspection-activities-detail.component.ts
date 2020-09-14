@@ -72,9 +72,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   loadRisks() {
-    // TODO get  by finacial year
+    // TODO get  by financial year
     this.riskService.getAll().subscribe(response => {
-      //  this.risks.next(response);
+      this.risks.next(response);
       this.allRisks = response;
       console.log('all risk');
       console.log(this.allRisks);
@@ -93,7 +93,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
       const filteredRisks = this.chosenRisks.filter(item => item.id !== a.id);
 
-      console.log('Filtered list is');
+      console.log('Filtered list is' + filteredRisks);
     });
   }
 
@@ -140,7 +140,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     const ids = risk.map((a: any) => a.id || 0);
     console.log('ids', ids);
     // @ts-ignore
-    const filtered = this.allRisks.filter((a: { id: any }) => {
+    const filtered = this.risks.filter((a: { id: any }) => {
       return ids.indexOf(a.id) === -1;
     });
     console.log(filtered);
@@ -161,7 +161,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   getAllRisks(): Observable<Risk[]> {
-    //  return this.allRisks.asObservable();
+    return this.risks.asObservable();
   }
 
   loadAuditableAreas() {
