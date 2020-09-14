@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesFormService } from './inspection-activities-form.service';
@@ -15,6 +15,7 @@ import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
 import { Risk } from '../../../risk-management/risk/risk';
 import { RiskService } from '../../../risk-management/risk/risk.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -48,13 +49,14 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private auditAreasService: AuditableAreaService,
     private subAreasService: SubAreaService,
     private riskService: RiskService,
+    private dialogRef: MatDialogRef<InspectionActivitiesDetailComponent>,
     private inspectionActivitiesService: InspectionActivitiesService,
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder
   ) {
     // this.activityId = route.snapshot.parent?.parent?.params['id'];
   }
-  chaguliwaRisks = new Array();
+  // chaguliwaRisks = new Array();
 
   ngOnInit() {
     this.loadObjectives();
@@ -70,18 +72,33 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   loadRisks() {
+    // TODO get  by finacial year
     this.riskService.getAll().subscribe(response => {
-      this.risks.next(response);
+      //  this.risks.next(response);
+      this.allRisks = response;
+      console.log('all risk');
+      console.log(this.allRisks);
       this.loadAllSelectedRisks();
     });
   }
 
   removeAll(risks: Risk[]) {
-    this.riskService.removeAll(risks).subscribe(res => this.onSuccess());
+    // var pulled = _.pullAt(this.chosenRisks, [1, 3]);
+    // console.log( Object.keys(risks));
+    // this.chosenRisks.pop();
+    // this.riskService.removeAll(risks).subscribe(res => this.onSuccess());
+
+    const risksToAdd = risks.map(a => {
+      console.log(a.description + ' this is being removed');
+
+      const filteredRisks = this.chosenRisks.filter(item => item.id !== a.id);
+
+      console.log('Filtered list is');
+    });
   }
 
   getSelectedRisks(): Observable<Risk[]> {
-    return this.chosen.asObservable();
+    return of(this.chosenRisks);
   }
 
   saveAll(risk: Risk[]) {
@@ -93,8 +110,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       console.log(a.description + ' this is being saved');
 
       // storing select risks in an array
-      this.chaguliwaRisks.push(a.id);
-      for (const i of this.chaguliwaRisks) {
+      this.chosenRisks.push(a);
+      for (const i of this.chosenRisks) {
         console.log('array has ' + i);
       }
 
@@ -112,17 +129,22 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
   loadAllSelectedRisks() {
     this.riskService.getByActivityId(this.activityId).subscribe(res => {
-      this.risks.next(res);
+      this.chosenRisks = res;
+      console.log('chosen risk');
+      console.log(this.chosenRisks);
       this.filterAreas(res);
     });
   }
 
   filterAreas(risk: any) {
-    const ids = risk.map((a: any) => a.riskId || 0);
+    const ids = risk.map((a: any) => a.id || 0);
+    console.log('ids', ids);
     // @ts-ignore
-    const filtered = this.allAreasAuditableAreas.filter((a: { id: any }) => {
+    const filtered = this.allRisks.filter((a: { id: any }) => {
       return ids.indexOf(a.id) === -1;
     });
+    console.log(filtered);
+
     this.risks.next(filtered);
   }
 
@@ -139,7 +161,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   getAllRisks(): Observable<Risk[]> {
-    return this.risks.asObservable();
+    //  return this.allRisks.asObservable();
   }
 
   loadAuditableAreas() {
@@ -202,8 +224,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspection-planning/inspection-activities']);
-    return true;
+    this.dialogRef.close();
   }
 
   filterSubAreaByArea(auditableArea: AuditableArea) {

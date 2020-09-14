@@ -17,37 +17,53 @@
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
     </div>
+    <mat-form-field appearance="outline" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input
+        autocomplete="off"
+        matInput
+        placeholder="Inspection Plan name"
+        formControlName="name"
+        required
+      />
+      <mat-error
+        ><hip-ngx-error
+          [control]="form.get('name')"
+          label="Name"
+        ></hip-ngx-error
+      ></mat-error>
+    </mat-form-field>
     <mat-card-content class="content">
       <mat-form-field class="full-width">
         <mat-label>Financial Year</mat-label>
-        <mat-select formControlName="financialYearName" required>
+        <mat-select formControlName="financialYearId" required>
           <mat-option>--Select--</mat-option>
           <mat-option
             *ngFor="let financialYear of getFinancialYear() | async"
-            [value]="financialYear"
+            [value]="financialYear.id"
             >{{ financialYear.name }}</mat-option
           >
         </mat-select>
         <mat-error
           ><hip-ngx-error
-            [control]="form.get('financialYearName')"
+            [control]="form.get('financialYearId')"
             label="Financial Year"
-          ></hip-ngx-error
-        ></mat-error>
+          ></hip-ngx-error>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Organization Unit</mat-label>
-        <mat-select formControlName="OrganizationUnitName" required>
+        <mat-select formControlName="organisationUnitId" required>
           <mat-option>--Select--</mat-option>
           <mat-option
             *ngFor="let organisationUnit of getCouncils() | async"
-            [value]="organisationUnit"
+            [value]="organisationUnit.id"
             >{{ organisationUnit.name }}</mat-option
           >
         </mat-select>
         <mat-error
           ><hip-ngx-error
-            [control]="form.get('OrganizationUnitName')"
+            [control]="form.get('organisationUnitId')"
             label="Organization Unit"
           ></hip-ngx-error
         ></mat-error>

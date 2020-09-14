@@ -12,48 +12,37 @@ export class InspectionPlanFormService {
   toFormGroup(inspectionPlan: Partial<InspectionPlan> = {}) {
     return this.formBuilder.group({
       id: this.formBuilder.control(inspectionPlan.id, []),
-      FinancialYearID: this.formBuilder.control(
-        inspectionPlan.FinancialYearID,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
+
+      name: this.formBuilder.control(inspectionPlan.name, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(2000),
+      ]),
+      financialYearId: this.formBuilder.control(
+        inspectionPlan.financialYearId,
+        [Validators.required]
       ),
-      financialYearName: this.formBuilder.control(
-        inspectionPlan.financialYearName,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
+      // financialYearName: this.formBuilder.control(
+      //   inspectionPlan.financialYearName
+      // ),
+      organisationUnitId: this.formBuilder.control(
+        inspectionPlan.organisationUnitId,
+        [Validators.required]
       ),
-      OrganizationUnitID: this.formBuilder.control(
-        inspectionPlan.OrganizationUnitID,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
-      ),
-      OrganizationUnitName: this.formBuilder.control(
-        inspectionPlan.OrganizationUnitName,
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(200),
-        ]
-      ),
+      // organisationUnitName: this.formBuilder.control(
+      //   inspectionPlan.organisationUnitName
+      // ),
     });
   }
 
   fromFormGroup(formGroup: FormGroup) {
     return {
       id: formGroup.get('id')!.value,
-      FinancialYearID: formGroup.get('FinancialYearID')!.value,
-      financialYearName: formGroup.get('financialYearName')!.value,
-      OrganizationUnitID: formGroup.get('OrganizationUnitID')!.value,
-      OrganizationUnitName: formGroup.get('OrganizationUnitName')!.value,
+      name: formGroup.get('name')!.value,
+      financialYearId: formGroup.get('financialYearId')!.value,
+      //   financialYearName: formGroup.get('financialYearName')!.value,
+      organisationUnitId: formGroup.get('organisationUnitId')!.value,
+      // organisationUnitName: formGroup.get('organisationUnitName')!.value,
     };
   }
 }

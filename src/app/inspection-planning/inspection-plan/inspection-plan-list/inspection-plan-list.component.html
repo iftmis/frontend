@@ -30,10 +30,17 @@
       matSort
       *ngIf="!!data.inspectionPlans?.length"
     >
-      <ng-container matColumnDef="financialYearName">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="FinancialYearName">
         <th mat-header-cell *matHeaderCellDef>Financial Year</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.financialYearName }}
+          {{ element.FinancialYearName }}
         </td>
       </ng-container>
 
