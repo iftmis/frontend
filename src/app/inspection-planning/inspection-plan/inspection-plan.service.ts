@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { InspectionPlan } from './inspection-plan';
+import { createRequestOption } from '../../shared/pagination.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,14 @@ export class InspectionPlanService {
 
   query(): Observable<InspectionPlan[]> {
     return this.http.get<InspectionPlan[]>(this.resourceUrl);
+  }
+
+  getAllPaged(req?: any): Observable<HttpResponse<InspectionPlan[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<InspectionPlan[]>(this.resourceUrl + '/page', {
+      params: options,
+      observe: 'response',
+    });
   }
 
   getById(id: number): Observable<InspectionPlan> {
