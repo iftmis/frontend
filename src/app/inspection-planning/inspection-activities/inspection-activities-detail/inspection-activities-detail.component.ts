@@ -161,7 +161,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   getAllRisks(): Observable<Risk[]> {
-    //  return this.allRisks.asObservable();
+    return this.risks.asObservable();
   }
 
   loadAuditableAreas() {
