@@ -18,20 +18,20 @@ export class InspectionPlanFormService {
         Validators.minLength(2),
         Validators.maxLength(2000),
       ]),
-      FinancialYearID: this.formBuilder.control(
-        inspectionPlan.FinancialYearID,
+      financialYearId: this.formBuilder.control(
+        inspectionPlan.financialYearId,
         [Validators.required]
       ),
-      FinancialYearName: this.formBuilder.control(
-        inspectionPlan.FinancialYearName
-      ),
-      OrganizationUnitID: this.formBuilder.control(
-        inspectionPlan.OrganizationUnitID,
+      // financialYearName: this.formBuilder.control(
+      //   inspectionPlan.financialYearName
+      // ),
+      organisationUnitId: this.formBuilder.control(
+        inspectionPlan.organisationUnitId,
         [Validators.required]
       ),
-      OrganizationUnitName: this.formBuilder.control(
-        inspectionPlan.OrganizationUnitName
-      ),
+      // organisationUnitName: this.formBuilder.control(
+      //   inspectionPlan.organisationUnitName
+      // ),
     });
   }
 
@@ -39,10 +39,10 @@ export class InspectionPlanFormService {
     return {
       id: formGroup.get('id')!.value,
       name: formGroup.get('name')!.value,
-      FinancialYearID: formGroup.get('FinancialYearID')!.value,
-      FinancialYearName: formGroup.get('FinancialYearName')!.value,
-      OrganizationUnitID: formGroup.get('OrganizationUnitID')!.value,
-      OrganizationUnitName: formGroup.get('OrganizationUnitName')!.value,
+      financialYearId: formGroup.get('financialYearId')!.value,
+      //   financialYearName: formGroup.get('financialYearName')!.value,
+      organisationUnitId: formGroup.get('organisationUnitId')!.value,
+      // organisationUnitName: formGroup.get('organisationUnitName')!.value,
     };
   }
 }
