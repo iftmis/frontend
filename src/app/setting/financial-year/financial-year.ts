@@ -4,4 +4,5 @@ export interface FinancialYear {
   startDate: Date;
   endDate: Date;
   isOpened: boolean;
+  closed: boolean;
 }

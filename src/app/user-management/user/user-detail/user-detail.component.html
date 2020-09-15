@@ -16,106 +16,123 @@
       {{ error ? error : '&nbsp;' }}
     </div>
     <mat-card-content class="content">
-      <mat-form-field appearance="outline">
-        <mat-label>Username</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter user username"
-          formControlName="login"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('login')"
-            label="Username"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>First Name</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter user first name"
-          formControlName="firstName"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('firstName')"
-            label="First Name"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter user last name"
-          formControlName="lastName"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('lastName')"
-            label="Last Name"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter user email"
-          formControlName="email"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('email')"
-            label="Email"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Language</mat-label>
-        <mat-select formControlName="langKey">
-          <mat-option
-            *ngFor="let language of langKeyOptions"
-            [value]="language.key"
+      <div fxLayout fxLayout.xs="column" fxLayoutGap.xs="0">
+        <div fxFlex="15%">
+          <div class="ou-tree">
+            <h3>Organisation Unit</h3>
+            <tree-root
+              #tree
+              [(state)]="state"
+              [nodes]="nodes | async"
+              (activate)="onOuChange($event)"
+              [options]="options"
+            >
+            </tree-root>
+          </div>
+        </div>
+        <div fxFlex="85%">
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input
+              autocomplete="off"
+              matInput
+              placeholder="Enter user username"
+              formControlName="login"
+              required
+            />
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('login')"
+                label="Username"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input
+              autocomplete="off"
+              matInput
+              placeholder="Enter user first name"
+              formControlName="firstName"
+              required
+            />
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('firstName')"
+                label="First Name"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input
+              autocomplete="off"
+              matInput
+              placeholder="Enter user last name"
+              formControlName="lastName"
+              required
+            />
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('lastName')"
+                label="Last Name"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              autocomplete="off"
+              matInput
+              placeholder="Enter user email"
+              formControlName="email"
+              required
+            />
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('email')"
+                label="Email"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Language</mat-label>
+            <mat-select formControlName="langKey">
+              <mat-option
+                *ngFor="let language of langKeyOptions"
+                [value]="language.key"
+              >
+                {{ language.value }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('langKey')"
+                label="Language"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Roles</mat-label>
+            <mat-select formControlName="authorities" multiple required>
+              <mat-option
+                *ngFor="let authority of authorities"
+                [value]="authority"
+                >{{ authority }}</mat-option
+              >
+            </mat-select>
+            <mat-error>
+              <hip-ngx-error
+                [control]="form.get('authorities')"
+                label="Roles"
+              ></hip-ngx-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-checkbox color="primary" formControlName="activated"
+            >Activated</mat-checkbox
           >
-            {{ language.value }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('langKey')"
-            label="Language"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Roles</mat-label>
-        <mat-select formControlName="authorities" multiple required>
-          <mat-option
-            *ngFor="let authority of authorities"
-            [value]="authority"
-            >{{ authority }}</mat-option
-          >
-        </mat-select>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('authorities')"
-            label="Roles"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-checkbox color="primary" formControlName="activated"
-        >Activated</mat-checkbox
-      >
+        </div>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button (click)="cancel()">
@@ -125,7 +142,9 @@
       <button
         mat-raised-button
         color="accent"
-        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        [disabled]="
+          form.invalid || isSaveOrUpdateInProgress || !selectedOrganisationUnit
+        "
         type="submit"
       >
         <mat-icon>save</mat-icon>

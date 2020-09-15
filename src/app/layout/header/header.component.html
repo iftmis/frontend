@@ -11,31 +11,54 @@
   color="primary"
   *ngIf="{ details: user$ | async } as user"
 >
-  <button
-    mat-icon-button
-    class="app-menu"
-    *ngIf="!!user.details"
-    (click)="toggleSidenav.emit()"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
-  <a class="logo" href="#" routerLink="/">
-    <img alt="IFT-MIS" class="logo-img" src="assets/img/logo2.png" />
-  </a>
-  <span>IFT-MIS</span>
-  <span class="spacer"></span>
-  <mat-nav-list class="nav-links">
-    <a
-      mat-list-item
-      class="app-login nav-links__item"
-      *ngIf="!user.details"
-      href="#"
-      routerLink="/login"
-      routerLinkActive="nav-links__item--active"
+  <mat-toolbar-row>
+    <button
+      mat-icon-button
+      class="app-menu"
+      *ngIf="!!user.details"
+      (click)="toggleSidenav.emit()"
     >
-      <mat-icon>exit_to_app</mat-icon>
-      <span>Sign In</span>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a class="logo" href="#" routerLink="/">
+      <img alt="IFT-MIS" class="logo-img" src="assets/img/logo2.png" />
     </a>
+    <span>IFT-MIS</span>
+    <span class="spacer"></span>
+    <mat-nav-list class="nav-links">
+      <a
+        mat-list-item
+        class="app-login nav-links__item"
+        *ngIf="!user.details"
+        href="#"
+        routerLink="/login"
+        routerLinkActive="nav-links__item--active"
+      >
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Sign In</span>
+      </a>
+      <button
+        *ngIf="!!user.details"
+        mat-icon-button
+        class="app-account nav-links__item"
+        [matMenuTriggerFor]="userMenu"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item class="app-logout" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Sign Out</span>
+        </button>
+      </mat-menu>
+    </mat-nav-list>
+  </mat-toolbar-row>
+
+  <mat-toolbar-row>
+    <span *ngIf="currentUser"
+      >Organisation Unit: {{ currentUser.organisationUnit?.name }}</span
+    >
+    <span class="spacer"></span>
     <button
       *ngIf="!!user.details"
       mat-icon-button
@@ -78,20 +101,5 @@
         <span>Report</span>
       </button>
     </mat-menu>
-
-    <button
-      *ngIf="!!user.details"
-      mat-icon-button
-      class="app-account nav-links__item"
-      [matMenuTriggerFor]="userMenu"
-    >
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item class="app-logout" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Sign Out</span>
-      </button>
-    </mat-menu>
-  </mat-nav-list>
+  </mat-toolbar-row>
 </mat-toolbar>
