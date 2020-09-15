@@ -1,4 +1,4 @@
-<mat-card *ngIf="routeData$ | async as data">
+<mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
     <span class="mat-card-title">Inspection Plan</span>
     <div>
@@ -21,15 +21,10 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!data.inspectionPlans?.length">
+    <div *ngIf="!getData()">
       <span class="table-overlay">No records found</span>
     </div>
-    <table
-      mat-table
-      [dataSource]="data.inspectionPlans"
-      matSort
-      *ngIf="!!data.inspectionPlans?.length"
-    >
+    <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let element">

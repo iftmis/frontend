@@ -11,8 +11,9 @@ import {
 } from '../../../shared/pagination.constants';
 import { PageEvent } from '@angular/material/paginator';
 import { HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from '../../../shared/toast.service';
+import { GfsCode } from '../../../setting/gfs-code/gfs-code';
 
 @Component({
   selector: 'app-inspection-plan-list',
@@ -54,7 +55,7 @@ export class InspectionPlanListComponent implements OnInit {
   loadPage() {
     const pageToLoad = this.page || 0;
     this.inspectionPlanService
-      .getAllPaged({
+      .query({
         page: pageToLoad,
         size: this.itemsPerPage,
       })
@@ -62,6 +63,23 @@ export class InspectionPlanListComponent implements OnInit {
         resp => this.onSuccess(resp.body, resp.headers, this.page),
         () => this.onError()
       );
+  }
+  getData(): Observable<InspectionPlan[]> {
+    return this.inspectionPlanSubject.asObservable();
+  }
+
+  onSuccess(data: any, headers: HttpHeaders, page: number): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.inspectionPlanSubject.next(data);
+  }
+
+  onError(): void {}
+
+  pageChange($event: PageEvent) {
+    this.itemsPerPage = $event.pageSize;
+    this.page = $event.pageIndex;
+    this.loadPage();
   }
 
   delete(id: number, inspectionPlan: InspectionPlan) {
@@ -86,18 +104,5 @@ export class InspectionPlanListComponent implements OnInit {
         });
       }
     });
-  }
-  onSuccess(data: any, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.inspectionPlanSubject.next(data);
-  }
-
-  onError(): void {}
-
-  pageChange($event: PageEvent) {
-    this.itemsPerPage = $event.pageSize;
-    this.page = $event.pageIndex;
-    this.loadPage();
   }
 }
