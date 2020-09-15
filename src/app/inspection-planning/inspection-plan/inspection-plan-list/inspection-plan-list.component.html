@@ -86,6 +86,14 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
+      aria-label="View InspectionPlan"
+      [routerLink]="['/inspection-planning/inspection-planning', id, 'edit']"
+    >
+      <mat-icon>folder_open</mat-icon>
+      <span>Open</span>
+    </button>
+    <button
+      mat-menu-item
       aria-label="Edit InspectionPlan"
       [routerLink]="['/inspection-planning/inspection-planning', id, 'edit']"
     >

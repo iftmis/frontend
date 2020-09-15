@@ -10,9 +10,9 @@ import {
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { PageEvent } from '@angular/material/paginator';
-import { HttpClient, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-inspection-plan-list',
@@ -43,10 +43,13 @@ export class InspectionPlanListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private inspectionPlanService: InspectionPlanService
+    private inspectionPlanService: InspectionPlanService,
+    private toastService: ToastService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadPage();
+  }
 
   loadPage() {
     const pageToLoad = this.page || 0;
@@ -70,8 +73,14 @@ export class InspectionPlanListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.inspectionPlanService.delete(id).subscribe({
-          next: () =>
-            this.router.navigate(['inspection-planning/inspection-planning']),
+          next: () => {
+            this.loadPage();
+            this.toastService.success(
+              'Success',
+              'Inspection Plan Deleted Successfully!'
+            );
+            this.router.navigate(['inspection-planning/inspection-planning']);
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
@@ -85,6 +94,7 @@ export class InspectionPlanListComponent implements OnInit {
   }
 
   onError(): void {}
+
   pageChange($event: PageEvent) {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;

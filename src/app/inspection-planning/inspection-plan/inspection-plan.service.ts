@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { InspectionPlan } from './inspection-plan';
 import { createRequestOption } from '../../shared/pagination.constants';
+import { GfsCode } from '../../setting/gfs-code/gfs-code';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class InspectionPlanService {
 
   getAllPaged(req?: any): Observable<HttpResponse<InspectionPlan[]>> {
     const options = createRequestOption(req);
-    return this.http.get<InspectionPlan[]>(this.resourceUrl + '/page', {
+    return this.http.get<InspectionPlan[]>(this.resourceUrl, {
       params: options,
       observe: 'response',
     });
@@ -34,10 +35,7 @@ export class InspectionPlanService {
   }
 
   update(inspectionPlan: InspectionPlan): Observable<InspectionPlan> {
-    return this.http.put<InspectionPlan>(
-      `${this.resourceUrl}/${inspectionPlan.id}`,
-      inspectionPlan
-    );
+    return this.http.put<InspectionPlan>(`${this.resourceUrl}`, inspectionPlan);
   }
 
   delete(id: number) {
