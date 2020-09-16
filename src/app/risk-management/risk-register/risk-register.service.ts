@@ -18,15 +18,13 @@ export class RiskRegisterService {
   getAllPaged(
     page: number,
     size: number,
-    financialYearId?: number,
-    organisationUnitId?: number
+    financialYearId?: number
   ): Observable<HttpResponse<RiskRegister[]>> {
     return this.http.get<RiskRegister[]>(this.resourceUrl + '/page', {
       params: {
         page: `${page}`,
         size: `${size}`,
         financialYearId: `${financialYearId}`,
-        organisationUnitId: `${organisationUnitId}`,
       },
       observe: 'response',
     });

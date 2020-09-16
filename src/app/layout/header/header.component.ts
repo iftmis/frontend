@@ -3,6 +3,7 @@ import {
   Component,
   Output,
   EventEmitter,
+  OnInit,
 } from '@angular/core';
 import { AuthenticationService } from 'src/app/security/authentication.service';
 import {
@@ -13,6 +14,9 @@ import {
   NavigationError,
 } from '@angular/router';
 import { map, filter } from 'rxjs/operators';
+import { AccountService } from '../../user-management/user/account.service';
+import { User } from '../../user-management/user/user';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -20,9 +24,10 @@ import { map, filter } from 'rxjs/operators';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter();
   user$ = this.authenticationService.user$;
+  currentUser: User;
   loading$ = this.router.events.pipe(
     filter(
       event =>
@@ -36,13 +41,24 @@ export class HeaderComponent {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private accountService: AccountService,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.loadCurrentUser();
+  }
 
   logout() {
     this.authenticationService.logout().subscribe(() => {
       this.router.navigate(['/']);
     });
     return false;
+  }
+
+  loadCurrentUser() {
+    this.accountService.account().subscribe(response => {
+      this.currentUser = response;
+    });
   }
 }

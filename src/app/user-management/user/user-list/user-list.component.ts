@@ -32,6 +32,7 @@ export class UserListComponent implements OnInit {
     'activated',
     'langKey',
     'authorities',
+    'organisationUnit',
     'formActions',
   ];
   routeData$ = this.route.data;

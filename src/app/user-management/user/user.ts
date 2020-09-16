@@ -1,3 +1,5 @@
+import { OrganisationUnit } from '../../setting/organisation-unit/organisation-unit';
+
 export interface IUser {
   id?: any;
   login?: string;
@@ -11,6 +13,7 @@ export interface IUser {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
+  organisationUnit?: OrganisationUnit;
 }
 
 export class User implements IUser {
@@ -26,7 +29,8 @@ export class User implements IUser {
     public createdBy?: string,
     public createdDate?: Date,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: Date
+    public lastModifiedDate?: Date,
+    public organisationUnit?: OrganisationUnit
   ) {}
 }
 
