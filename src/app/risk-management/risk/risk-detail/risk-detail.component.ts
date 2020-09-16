@@ -79,8 +79,6 @@ export class RiskDetailComponent implements OnInit {
       this.ratingDataSource.data = this.riskRatings;
     }
     this.riskRegister = data.riskRegister;
-    this.organisationUnit = data.organisationUnit;
-    this.parentId = data.parentId;
   }
 
   ngOnInit() {
@@ -126,7 +124,6 @@ export class RiskDetailComponent implements OnInit {
         description: this.form.value.description,
         objectiveId: this.form.value.objectiveId,
         riskCategoryId: this.form.value.riskCategoryId,
-        riskOwnerId: this.parentId,
         riskRegisterId: this.riskRegister.id,
         riskRatings: this.riskRatings,
       } as Risk;
@@ -138,7 +135,6 @@ export class RiskDetailComponent implements OnInit {
         description: this.form.value.description,
         objectiveId: this.form.value.objectiveId,
         riskCategoryId: this.form.value.riskCategoryId,
-        riskOwnerId: this.parentId,
         riskRegisterId: this.riskRegister.id,
         riskRatings: this.riskRatings,
       } as Risk;

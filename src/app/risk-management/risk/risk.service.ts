@@ -14,14 +14,25 @@ export class RiskService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Risk[]> {
-    return this.http.get<Risk[]>(this.resourceUrl);
+  getAll(riskRegisterId: number): Observable<Risk[]> {
+    return this.http.get<Risk[]>(this.resourceUrl, {
+      params: {
+        riskRegisterId: `${riskRegisterId}`,
+      },
+    });
   }
 
-  getAllPaged(req?: any): Observable<HttpResponse<Risk[]>> {
-    const options = createRequestOption(req);
+  getAllPaged(
+    riskRegisterId: number,
+    page: number,
+    size: number
+  ): Observable<HttpResponse<Risk[]>> {
     return this.http.get<Risk[]>(this.resourceUrl + '/page', {
-      params: options,
+      params: {
+        riskRegisterId: `${riskRegisterId}`,
+        page: `${page}`,
+        size: `${size}`,
+      },
       observe: 'response',
     });
   }

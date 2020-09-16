@@ -1,6 +1,4 @@
-<h1 mat-dialog-title>
-  Risk Register: {{ riskRegister?.name }} | Owner: {{ organisationUnit?.name }}
-</h1>
+<h1 mat-dialog-title>Risk Register: {{ riskRegister?.name }}</h1>
 <div mat-dialog-content>
   <mat-progress-spinner
     *ngIf="isSaveOrUpdateInProgress"
@@ -135,16 +133,19 @@
         fxLayoutGap.xs="0"
       >
         <div fxFlex="18%">
-          <p>
-            <strong>Source:</strong>
-            <mat-button-toggle-group
-              [formControl]="sourceControl"
-              aria-label="Font Style"
+          <strong>Source:</strong>
+          <mat-radio-group
+            class="vertical-radio-group"
+            [formControl]="sourceControl"
+            aria-label="Source"
+          >
+            <mat-radio-button class="vertical-radio-button" value="COUNCIL"
+              >Council</mat-radio-button
             >
-              <mat-button-toggle value="COUNCIL">COUNCIL</mat-button-toggle>
-              <mat-button-toggle value="INSPECTOR">INSPECTOR</mat-button-toggle>
-            </mat-button-toggle-group>
-          </p>
+            <mat-radio-button class="vertical-radio-button" value="INSPECTOR"
+              >Inspector</mat-radio-button
+            >
+          </mat-radio-group>
         </div>
         <div fxFlex="18%">
           <p>

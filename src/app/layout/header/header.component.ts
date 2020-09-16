@@ -16,7 +16,9 @@ import {
 import { map, filter } from 'rxjs/operators';
 import { AccountService } from '../../user-management/user/account.service';
 import { User } from '../../user-management/user/user';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Risk } from '../../risk-management/risk/risk';
+import { Finding } from '../../finding-management/finding/finding';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +29,6 @@ import { Observable } from 'rxjs';
 export class HeaderComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter();
   user$ = this.authenticationService.user$;
-  currentUser: User;
   loading$ = this.router.events.pipe(
     filter(
       event =>
@@ -45,20 +46,12 @@ export class HeaderComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.loadCurrentUser();
-  }
+  ngOnInit(): void {}
 
   logout() {
     this.authenticationService.logout().subscribe(() => {
       this.router.navigate(['/']);
     });
     return false;
-  }
-
-  loadCurrentUser() {
-    this.accountService.account().subscribe(response => {
-      this.currentUser = response;
-    });
   }
 }

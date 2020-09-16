@@ -19,7 +19,8 @@ import { FinancialYearService } from '../../../setting/financial-year/financial-
 import { FinancialYear } from '../../../setting/financial-year/financial-year';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { RiskRegisterApproveComponent } from '../risk-register-approve/risk-register-approve.component';
-import { MatSelectionListChange } from '@angular/material/list';
+import { MatListOption, MatSelectionListChange } from '@angular/material/list';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-risk-register-list',
@@ -129,6 +130,14 @@ export class RiskRegisterListComponent implements OnInit {
 
   onSuccessFinancialYears(data: any): void {
     this.financialYearSubject.next(data);
+    const items = data as FinancialYear[];
+    items.forEach(row => {
+      if (row.isOpened) {
+        this.financialYear = row;
+        this.financialYearId = row.id as number;
+        this.loadData(this.page, this.size, this.financialYearId);
+      }
+    });
   }
 
   onError(): void {}

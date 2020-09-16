@@ -22,11 +22,15 @@
             [value]="financialYear"
           >
             <div mat-line>{{ financialYear.name }}</div>
-            <div mat-line *ngIf="financialYear.isOpened">(Current)</div>
+            <div mat-line *ngIf="financialYear?.isOpened">(Current)</div>
           </mat-list-option>
         </mat-selection-list>
       </div>
       <div fxFlex="85%">
+        <span class="mat-card-title"
+          >Year: {{ financialYear?.name }}
+          <span *ngIf="financialYear?.isOpened">(Current)</span></span
+        >
         <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>#</th>
@@ -34,7 +38,7 @@
           </ng-container>
 
           <ng-container matColumnDef="risk">
-            <th mat-header-cell *matHeaderCellDef>Risk</th>
+            <th mat-header-cell *matHeaderCellDef>Register</th>
             <td mat-cell *matCellDef="let element">{{ element.name }}</td>
           </ng-container>
 

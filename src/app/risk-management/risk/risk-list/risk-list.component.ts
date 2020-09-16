@@ -10,7 +10,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RiskService } from '../risk.service';
 import { RiskDeleteComponent } from '../risk-delete/risk-delete.component';
 import { Risk } from '../risk';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FinancialYear } from '../../../setting/financial-year/financial-year';
 import { RiskRegister } from '../../risk-register/risk-register';
 import { RiskRegisterService } from '../../risk-register/risk-register.service';
@@ -28,6 +28,7 @@ import { ToastService } from '../../../shared/toast.service';
 import { RiskRankService } from '../../../setting/risk-rank/risk-rank.service';
 import { RiskRank } from '../../../setting/risk-rank/risk-rank';
 import { RiskRegisterApproveComponent } from '../../risk-register/risk-register-approve/risk-register-approve.component';
+import { User } from '../../../security/user';
 
 @Component({
   selector: 'app-risk-list',
@@ -36,22 +37,15 @@ import { RiskRegisterApproveComponent } from '../../risk-register/risk-register-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RiskListComponent implements OnInit {
-  routeData$ = this.route.data;
   showLoader = false;
   riskRegisterId: string;
   riskRegister: RiskRegister;
-  selectedOrganisationUnit: OrganisationUnit;
-  nodes: BehaviorSubject<any> = new BehaviorSubject([]);
-  options = {
-    getChildren: this.getChildren.bind(this),
-  };
-  parentId: any = 0;
-  @ViewChild('tree') tree: TreeComponent;
   totalItems: number;
   size: number;
   pageSizeOptions: number[];
   page: number;
   riskSubject: BehaviorSubject<Risk[]> = new BehaviorSubject([]);
+  riskRegisterSubject$: ReplaySubject<RiskRegister> = new ReplaySubject(1);
   queryString: string;
   ranks: RiskRank[];
 
@@ -75,18 +69,9 @@ export class RiskListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadRiskRegister();
-    this.parentId = this.state?.focusedNodeId;
+    this.loadRiskRegister(Number(this.riskRegisterId));
 
-    this.loadOrganisationUnits();
-
-    this.loadRisk(
-      this.page,
-      this.size,
-      Number(this.riskRegisterId),
-      this.parentId,
-      this.queryString
-    );
+    this.loadRisk(this.page, this.size, Number(this.riskRegisterId));
     this.loadRanks();
   }
 
@@ -99,74 +84,31 @@ export class RiskListComponent implements OnInit {
     );
   }
 
-  loadOrganisationUnits() {
-    this.organisationUnitService.getByUser().subscribe(resp => {
-      this.nodes.next(this.mapToNode(resp));
-      const ou = resp[0];
-      if (this.parentId === undefined && ou !== undefined) {
-        this.parentId = ou.id;
-      }
-    });
-  }
-
-  loadRiskRegister() {
-    const id = Number(this.riskRegisterId);
+  loadRiskRegister(id: number) {
     this.riskRegisterService.getById(id).subscribe(
       response => {
         this.riskRegister = response;
+        this.riskRegisterSubject$.next(response);
       },
       error => {}
     );
   }
 
-  loadRisk(
-    page: number,
-    size: number,
-    riskRegisterId: number,
-    riskOwnerId: number,
-    query: string
-  ) {
-    if (query === '_') {
-      this.riskService
-        .getAllPaged({
-          page,
-          size,
-          sort: ['code,asc'],
-          'riskRegisterId.equals': riskRegisterId,
-          'riskOwnerId.equals': riskOwnerId,
-        })
-        .subscribe(
-          resp => this.onSuccess(resp.body, resp.headers),
-          () => this.onError()
-        );
-    } else {
-      this.riskService
-        .getAllPaged({
-          page,
-          size,
-          sort: ['code,asc'],
-          'riskRegisterId.equals': riskRegisterId,
-          'riskOwnerId.equals': riskOwnerId,
-          'code.contains': query.toLowerCase(),
-        })
-        .subscribe(
-          resp => this.onSuccess(resp.body, resp.headers),
-          () => this.onError()
-        );
-    }
+  get riskRegister$(): Observable<RiskRegister> {
+    return this.riskRegisterSubject$.asObservable();
   }
 
-  pageChange($event: PageEvent) {
-    const riskOwnerId = this.selectedOrganisationUnit.id as number;
-    this.size = $event.pageSize;
-    this.page = $event.pageIndex;
-    this.loadRisk(
-      this.page,
-      this.size,
-      Number(this.riskRegisterId),
-      riskOwnerId,
-      this.queryString
+  loadRisk(page: number, size: number, riskRegisterId: number) {
+    this.riskService.getAllPaged(riskRegisterId, page, size).subscribe(
+      resp => this.onSuccess(resp.body, resp.headers),
+      () => this.onError()
     );
+  }
+
+  pageChange(event: PageEvent) {
+    this.size = event.pageSize;
+    this.page = event.pageIndex;
+    this.loadRisk(this.page, this.size, Number(this.riskRegisterId));
   }
 
   onSuccess(data: any, headers: HttpHeaders): void {
@@ -183,45 +125,6 @@ export class RiskListComponent implements OnInit {
   }
 
   onError(): void {}
-
-  getChildren(node: any) {
-    return new Promise((resolve, reject) => {
-      this.organisationUnitService.getByParent(node.id).subscribe(resp => {
-        resolve(this.mapToNode(resp));
-      });
-    });
-  }
-
-  mapToNode(ous: OrganisationUnit[]) {
-    return ous.map(o => {
-      return {
-        id: o.id,
-        name: o.name,
-        organisationUnitLevel: o.organisationUnitLevel,
-        hasChildren: true,
-      };
-    });
-  }
-
-  onOuChange($e: any) {
-    this.parentId = $e.node.data.id;
-    this.selectedOrganisationUnit = $e.node.data;
-    this.loadRisk(
-      this.page,
-      this.size,
-      Number(this.riskRegisterId),
-      this.parentId,
-      this.queryString
-    );
-  }
-
-  get state(): ITreeState {
-    return localStorage.treeState && JSON.parse(localStorage.treeState);
-  }
-
-  set state(state) {
-    localStorage.treeState = JSON.stringify(state);
-  }
 
   delete(id: number, risk: Risk) {
     const dialogRef = this.dialog.open(RiskDeleteComponent, {
@@ -250,27 +153,18 @@ export class RiskListComponent implements OnInit {
   create() {
     const data = {
       riskRegister: this.riskRegister,
-      organisationUnit: this.selectedOrganisationUnit,
       action: 'create',
-      parentId: this.parentId,
     };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    /*dialogConfig.height = '80%';*/
     dialogConfig.width = '60%';
     dialogConfig.data = data;
     const dialog = this.dialog.open(RiskDetailComponent, dialogConfig);
 
     dialog.afterClosed().subscribe((response: any) => {
       if (response) {
-        this.loadRisk(
-          this.page,
-          this.size,
-          Number(this.riskRegisterId),
-          this.parentId,
-          this.queryString
-        );
+        this.loadRisk(this.page, this.size, Number(this.riskRegisterId));
         this.toastService.success('Success!', 'Risk Created Successfully!');
       }
     });
@@ -279,53 +173,22 @@ export class RiskListComponent implements OnInit {
   edit(row: Risk) {
     const data = {
       riskRegister: this.riskRegister,
-      organisationUnit: this.selectedOrganisationUnit,
       action: 'update',
       risk: row,
-      parentId: this.parentId,
     };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    /*dialogConfig.height = '80%';*/
     dialogConfig.width = '60%';
     dialogConfig.data = data;
     const dialog = this.dialog.open(RiskDetailComponent, dialogConfig);
 
     dialog.afterClosed().subscribe((response: any) => {
       if (response) {
-        this.loadRisk(
-          this.page,
-          this.size,
-          Number(this.riskRegisterId),
-          this.parentId,
-          this.queryString
-        );
+        this.loadRisk(this.page, this.size, Number(this.riskRegisterId));
         this.toastService.success('Success!', 'Risk Updated Successfully!');
       }
     });
-  }
-
-  filter(query: string) {
-    if (query.length > 2) {
-      this.queryString = query.toLowerCase();
-      this.loadRisk(
-        this.page,
-        this.size,
-        Number(this.riskRegisterId),
-        this.parentId,
-        this.queryString
-      );
-    } else {
-      this.queryString = '_';
-      this.loadRisk(
-        this.page,
-        this.size,
-        Number(this.riskRegisterId),
-        this.parentId,
-        this.queryString
-      );
-    }
   }
 
   likelihood(risk: Risk, source: string) {
@@ -343,7 +206,7 @@ export class RiskListComponent implements OnInit {
   impact(risk: Risk, source: string) {
     let impact = 0;
     if (risk.riskRatings) {
-      risk.riskRatings.forEach(row => {
+      risk.riskRatings?.forEach(row => {
         if (row.source.toString() === source) {
           impact = row.impact;
         }
@@ -355,7 +218,7 @@ export class RiskListComponent implements OnInit {
   status(risk: Risk, source: string) {
     let status = 0;
     if (risk.riskRatings) {
-      risk.riskRatings.forEach(row => {
+      risk.riskRatings?.forEach(row => {
         if (row.source.toString() === source) {
           const likelihood = row.likelihood;
           const impact = row.impact;
@@ -368,7 +231,7 @@ export class RiskListComponent implements OnInit {
 
   resolveColor(status: number) {
     let color = '#43A047';
-    this.ranks.forEach(row => {
+    this.ranks?.forEach(row => {
       const min = row.minValue;
       const max = row.maxValue;
       if (status >= min && status <= max) {
