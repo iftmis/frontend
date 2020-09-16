@@ -112,18 +112,16 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
   loadRisks() {
     // TODO get  by financial year
-    this.riskService
-      .getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId()
-      .subscribe(response => {
-        this.risks.next(response);
-        // this.allRisks = response;
+    this.riskService.getAllByCurrentFinancialYearId().subscribe(response => {
+      this.risks.next(response);
+      // this.allRisks = response;
 
-        console.log('all risk');
+      console.log('all risk');
 
-        console.log(this.allRisks);
+      console.log(this.allRisks);
 
-        this.loadAllSelectedRisks();
-      });
+      this.loadAllSelectedRisks();
+    });
   }
 
   removeAll(risks: Risk[]) {
