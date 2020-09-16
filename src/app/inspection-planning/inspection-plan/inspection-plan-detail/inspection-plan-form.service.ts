@@ -22,16 +22,10 @@ export class InspectionPlanFormService {
         inspectionPlan.financialYearId,
         [Validators.required]
       ),
-      // financialYearName: this.formBuilder.control(
-      //   inspectionPlan.financialYearName
-      // ),
       organisationUnitId: this.formBuilder.control(
         inspectionPlan.organisationUnitId,
         [Validators.required]
       ),
-      // organisationUnitName: this.formBuilder.control(
-      //   inspectionPlan.organisationUnitName
-      // ),
     });
   }
 
@@ -40,9 +34,7 @@ export class InspectionPlanFormService {
       id: formGroup.get('id')!.value,
       name: formGroup.get('name')!.value,
       financialYearId: formGroup.get('financialYearId')!.value,
-      //   financialYearName: formGroup.get('financialYearName')!.value,
       organisationUnitId: formGroup.get('organisationUnitId')!.value,
-      // organisationUnitName: formGroup.get('organisationUnitName')!.value,
     };
   }
 }
