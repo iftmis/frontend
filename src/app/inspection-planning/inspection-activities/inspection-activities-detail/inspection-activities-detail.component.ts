@@ -97,6 +97,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
     });
+
     this.loadRisks();
 
     this.error = undefined;
@@ -177,12 +178,14 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   loadAllSelectedRisks() {
-    this.riskService.getByActivityId(this.activityId).subscribe(res => {
-      this.risks.next(res);
-      console.log('chosen risk');
-      console.log(this.chosenRisks);
-      this.filterAreas(res);
-    });
+    this.riskService
+      .getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId()
+      .subscribe(res => {
+        this.risks.next(res);
+        console.log('chosen risk');
+        console.log(this.chosenRisks);
+        this.filterAreas(res);
+      });
   }
 
   filterAreas(risk: any) {
