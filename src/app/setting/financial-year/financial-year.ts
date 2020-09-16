@@ -3,6 +3,6 @@ export interface FinancialYear {
   name: string;
   startDate: Date;
   endDate: Date;
-  isOpened: boolean;
-  closed: boolean;
+  isOpened?: boolean;
+  closed?: boolean;
 }

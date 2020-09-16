@@ -22,6 +22,31 @@ export class RiskService {
     });
   }
 
+  getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId(): Observable<
+    Risk[]
+  > {
+    return this.http.get<Risk[]>(
+      this.resourceUrl +
+        '/getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId'
+    );
+  }
+
+  getAllPagedByCurrentFinancialYearIdAndCurrentOrganisationUnitId(
+    page: number,
+    size: number
+  ): Observable<Risk[]> {
+    return this.http.get<Risk[]>(
+      this.resourceUrl +
+        '/getAllPagedByCurrentFinancialYearIdAndCurrentOrganisationUnitId',
+      {
+        params: {
+          page: `${page}`,
+          size: `${size}`,
+        },
+      }
+    );
+  }
+
   getAllPaged(
     riskRegisterId: number,
     page: number,
