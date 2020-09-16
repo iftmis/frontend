@@ -119,7 +119,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         this.risks.next(response);
         // this.allRisks = response;
 
-        console.log('all risk');
+        console.log('all risk  ' + response);
 
         console.log(this.allRisks);
 
@@ -184,7 +184,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         this.risks.next(res);
         console.log('chosen risk');
         console.log(this.chosenRisks);
-        this.filterAreas(res);
+        //    this.filterAreas(res);
       });
   }
 
