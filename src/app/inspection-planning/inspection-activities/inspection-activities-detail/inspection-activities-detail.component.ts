@@ -97,7 +97,6 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
     });
-
     this.loadRisks();
 
     this.error = undefined;
@@ -113,18 +112,16 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
   loadRisks() {
     // TODO get  by financial year
-    this.riskService
-      .getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId()
-      .subscribe(response => {
-        this.risks.next(response);
-        // this.allRisks = response;
+    this.riskService.getAllByCurrentFinancialYearId().subscribe(response => {
+      this.risks.next(response);
+      // this.allRisks = response;
 
-        console.log('all risk  ' + response);
+      console.log('all risk');
 
-        console.log(this.allRisks);
+      console.log(this.allRisks);
 
-        this.loadAllSelectedRisks();
-      });
+      this.loadAllSelectedRisks();
+    });
   }
 
   removeAll(risks: Risk[]) {
@@ -178,14 +175,12 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   loadAllSelectedRisks() {
-    this.riskService
-      .getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId()
-      .subscribe(res => {
-        this.risks.next(res);
-        console.log('chosen risk');
-        console.log(this.chosenRisks);
-        //    this.filterAreas(res);
-      });
+    this.riskService.getByActivityId(this.activityId).subscribe(res => {
+      this.risks.next(res);
+      console.log('chosen risk');
+      console.log(this.chosenRisks);
+      this.filterAreas(res);
+    });
   }
 
   filterAreas(risk: any) {

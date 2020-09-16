@@ -22,22 +22,18 @@ export class RiskService {
     });
   }
 
-  getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId(): Observable<
-    Risk[]
-  > {
+  getAllByCurrentFinancialYearId(): Observable<Risk[]> {
     return this.http.get<Risk[]>(
-      this.resourceUrl +
-        '/getAllByCurrentFinancialYearIdAndCurrentOrganisationUnitId'
+      this.resourceUrl + '/getAllByCurrentFinancialYearId'
     );
   }
 
-  getAllPagedByCurrentFinancialYearIdAndCurrentOrganisationUnitId(
+  getAllPagedByCurrentFinancialYearId(
     page: number,
     size: number
   ): Observable<Risk[]> {
     return this.http.get<Risk[]>(
-      this.resourceUrl +
-        '/getAllPagedByCurrentFinancialYearIdAndCurrentOrganisationUnitId',
+      this.resourceUrl + '/getAllPagedByCurrentFinancialYearId',
       {
         params: {
           page: `${page}`,
