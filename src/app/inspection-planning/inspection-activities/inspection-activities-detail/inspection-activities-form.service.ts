@@ -55,6 +55,8 @@ export class InspectionActivitiesFormService {
       quarter2: formGroup.get('quarter2')!.value,
       quarter3: formGroup.get('quarter3')!.value,
       quarter4: formGroup.get('quarter4')!.value,
+      risk: formGroup.get('risk')!.value,
+      organisationUnit: formGroup.get('organisation')!.value,
     };
   }
 }

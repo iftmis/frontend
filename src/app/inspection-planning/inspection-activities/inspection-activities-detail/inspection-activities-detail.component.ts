@@ -25,6 +25,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ThemePalette } from '@angular/material/core';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
+import * as _ from 'lodash';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../../../user-management/user/user';
 export interface Task {
   name: string;
   completed: boolean;
@@ -79,7 +82,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private dialogRef: MatDialogRef<InspectionActivitiesDetailComponent>,
     private inspectionActivitiesService: InspectionActivitiesService,
     // tslint:disable-next-line:variable-name
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    // tslint:disable-next-line:variable-name
+    private _snackBar: MatSnackBar
   ) {
     this.form = this._formBuilder.group({
       checkArray: this._formBuilder.array([], [Validators.required]),
@@ -308,12 +313,54 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     }
   }
 
-  submit() {
-    console.log(this.interestFormGroup.value);
-    console.log(this.organisationUnitFormGroup.value);
-  }
+  submit() {}
 
   save() {
+    console.log(this.interestFormGroup.value);
+    const selectedOrganisationUnits = this.organisationUnitFormGroup.value
+      .organisationUnit;
+    const selectedRisks = this.interestFormGroup.value.risks;
+    //
+    // if (_.size(selectedOrganisationUnits) < 1) {
+    //   // throw error in the radio button
+    //   this.openSnackBar("Please place your selected Organisation Unit", "OK");
+    //
+    //
+    // } else if (_.size(selectedRisks) < 1) {
+    //   // throw error in radio button
+    //   this.openSnackBar("Please place your selected Risks", "OK");
+    //
+    // }
+    //
+
+    {
+      // if they are filled then upload
+      console.log('' + this.organisationUnitFormGroup.value);
+
+      this.inspectionActivities = {
+        activity: this.form.value.activity,
+        auditableAreaId: this.form.value.auditableAreaId,
+        days: this.form.value.days,
+        objectiveId: this.form.value.objectiveId,
+        organisationUnit: selectedOrganisationUnits,
+        quarter1: this.form.value.quarter1,
+        quarter2: this.form.value.quarter2,
+        quarter3: this.form.value.quarter3,
+        quarter4: this.form.value.quarter4,
+        risk: selectedRisks,
+        subAreaId: this.form.value.subAreaId,
+      };
+      this.inspectionActivitiesService
+        .create(this.inspectionActivities)
+        .subscribe(res => {
+          // show the results
+          console.log('Inspection activity : ' + res);
+
+          this.subscribeToResponseAfterCreating(
+            this.inspectionActivitiesService.create(this.inspectionActivities)
+          );
+        });
+    }
     console.log('save');
   }
 
@@ -327,6 +374,30 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.organisationUnit.next(response);
 
       this.loadAllSelectedRisks();
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+  private subscribeToResponseAfterCreating(
+    result: Observable<InspectionActivities>
+  ) {
+    result.subscribe({
+      next: () =>
+        this.router.navigate(['inspection-planning/inspection-activities']),
+      error: response => {
+        this.isSaveOrUpdateInProgress = false;
+        this.error = response.error
+          ? response.error.detail ||
+            response.error.title ||
+            'Internal Server Error'
+          : 'Internal Server Error';
+      },
+      complete: () => (this.isSaveOrUpdateInProgress = false),
     });
   }
 }

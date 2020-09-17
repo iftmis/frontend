@@ -1,3 +1,6 @@
+import { Risk } from '../../risk-management/risk/risk';
+import { OrganisationUnit } from '../../setting/organisation-unit/organisation-unit';
+
 export interface InspectionActivities {
   id?: number;
   objectiveId: string;
@@ -12,4 +15,6 @@ export interface InspectionActivities {
   quarter2: string;
   quarter3: string;
   quarter4: string;
+  risk: Risk[];
+  organisationUnit: OrganisationUnit[];
 }
