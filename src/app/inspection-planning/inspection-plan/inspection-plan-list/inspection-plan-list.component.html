@@ -47,17 +47,31 @@
       </ng-container>
 
       <ng-container matColumnDef="formActions">
-        <th mat-header-cell *matHeaderCellDef></th>
+        <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let element">
-          <button
-            mat-icon-button
-            color="accent"
-            [matMenuTriggerFor]="menu"
-            [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="InspectionPlan form actions "
-          >
-            <mat-icon>more_vert</mat-icon>
-          </button>
+          <div fxLayout="row">
+            <button
+              [routerLink]="[
+                '/inspection-planning/inspection-planning/new',
+                element.id
+              ]"
+              color="primary"
+              aria-label="Open Inspection"
+              mat-icon-button
+            >
+              <mat-icon>launch</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              color="accent"
+              [matMenuTriggerFor]="menu"
+              [matMenuTriggerData]="{ id: element.id, element: element }"
+              aria-label="InspectionPlan form actions "
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
         </td>
       </ng-container>
 

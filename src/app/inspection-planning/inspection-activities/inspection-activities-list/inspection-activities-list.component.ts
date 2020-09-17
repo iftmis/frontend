@@ -77,10 +77,14 @@ export class InspectionActivitiesListComponent implements OnInit {
 
   ngOnInit() {
     this.loadPage(this.areaId);
+
     this.loadObjeectives();
+
     this.loadAuditableAreas();
+
     // this.loadSubAreas();
   }
+
   loadPage(auditableAreaId: number) {
     const pageToLoad = this.page || 0;
     this.subAreaService
