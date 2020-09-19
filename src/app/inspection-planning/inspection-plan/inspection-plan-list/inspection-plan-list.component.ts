@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { InspectionPlanService } from '../inspection-plan.service';
 import { InspectionPlanDeleteComponent } from '../inspection-plan-delete/inspection-plan-delete.component';
@@ -14,6 +14,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from '../../../shared/toast.service';
 import { GfsCode } from '../../../setting/gfs-code/gfs-code';
+import { InspectionActivitiesDetailComponent } from '../../inspection-activities/inspection-activities-detail/inspection-activities-detail.component';
 
 @Component({
   selector: 'app-inspection-plan-list',
@@ -102,6 +103,43 @@ export class InspectionPlanListComponent implements OnInit {
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
+      }
+    });
+  }
+
+  create(id: number) {
+    const data = {
+      title: 'Create',
+      action: 'create',
+      inspectionPlanId: id,
+    };
+    console.log('THE ID IS' + id);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    /*dialogConfig.height = '80%';*/
+    dialogConfig.width = '60%';
+    dialogConfig.data = data;
+    const dialog = this.dialog.open(
+      InspectionActivitiesDetailComponent,
+      dialogConfig
+    );
+
+    dialog.afterClosed().subscribe((response: any) => {
+      if (response) {
+        // this.loadRisk(
+        //   this.page,
+        //   this.size,
+        //   Number(this.riskRegisterId),
+        //   this.parentId,
+        //   this.queryString
+        // );
+        this.loadPage();
+        this.toastService.success(
+          'Success!',
+          'Inspection Activity Created Successfully!'
+        );
       }
     });
   }

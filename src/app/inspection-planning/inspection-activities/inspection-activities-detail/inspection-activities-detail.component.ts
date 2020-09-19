@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -21,7 +26,7 @@ import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
 import { Risk } from '../../../risk-management/risk/risk';
 import { RiskService } from '../../../risk-management/risk/risk.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThemePalette } from '@angular/material/core';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
@@ -56,6 +61,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   riskForm: FormGroup;
   areaId: number;
   activityId: number;
+  inspectionPlanId: number;
   risks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
   chosen: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
   organisationUnit: BehaviorSubject<OrganisationUnit[]> = new BehaviorSubject<
@@ -70,6 +76,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   selectedRisks: Risk[] = [];
   chosenRisks: Risk[] = [];
 
+  // @ts-ignore
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -80,12 +87,15 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private riskService: RiskService,
     private organisationUnitService: OrganisationUnitService,
     private dialogRef: MatDialogRef<InspectionActivitiesDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) data: any,
     private inspectionActivitiesService: InspectionActivitiesService,
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder,
     // tslint:disable-next-line:variable-name
     private _snackBar: MatSnackBar
   ) {
+    this.inspectionPlanId = data.inspectionPlanId;
+
     this.form = this._formBuilder.group({
       checkArray: this._formBuilder.array([], [Validators.required]),
     });
@@ -339,7 +349,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
       this.inspectionActivities = {
         activity: this.form.value.activity,
-        auditableAreaId: this.form.value.auditableAreaId,
+        auditableAreaId: this.form.value.auditableAreaId.id,
         days: this.form.value.days,
         objectiveId: this.form.value.objectiveId,
         organisationUnit: selectedOrganisationUnits,
@@ -347,6 +357,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         quarter2: this.form.value.quarter2,
         quarter3: this.form.value.quarter3,
         quarter4: this.form.value.quarter4,
+        inspectionPlanId: this.inspectionPlanId,
         risk: selectedRisks,
         subAreaId: this.form.value.subAreaId,
       };

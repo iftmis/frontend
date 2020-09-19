@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { InspectionService } from './../inspection.service';
 import { InspectionDeleteComponent } from '../inspection-delete/inspection-delete.component';
 import { Inspection } from '../inspection';
 import { OrganisationUnit } from 'src/app/setting/organisation-unit/organisation-unit';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { InspectionActivitiesDetailComponent } from '../../inspection-planning/inspection-activities/inspection-activities-detail/inspection-activities-detail.component';
 
 @Component({
   selector: 'app-inspection-list',

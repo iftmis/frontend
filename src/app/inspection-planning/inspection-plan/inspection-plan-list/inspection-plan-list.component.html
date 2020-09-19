@@ -51,10 +51,7 @@
         <td mat-cell *matCellDef="let element">
           <div fxLayout="row">
             <button
-              [routerLink]="[
-                '/inspection-planning/inspection-planning/new',
-                element.id
-              ]"
+              (click)="create(element.id)"
               color="primary"
               aria-label="Open Inspection"
               mat-icon-button

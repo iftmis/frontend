@@ -5,8 +5,9 @@ export interface InspectionActivities {
   id?: number;
   objectiveId: string;
   objectiveName?: string;
-  auditableAreaId: string;
+  auditableAreaId: number;
   auditableAreaName?: string;
+  inspectionPlanId: number;
   subAreaId: string;
   subAreaName?: string;
   activity: string;
