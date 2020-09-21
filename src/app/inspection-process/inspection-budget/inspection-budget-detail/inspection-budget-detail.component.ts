@@ -13,8 +13,8 @@ import { InspectionBudgetService } from '../inspection-budget.service';
 import { InspectionBudgetFormService } from './inspection-budget-form.service';
 import { InspectionBudget } from '../inspection-budget';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GfsCodeService } from '../../../../setting/gfs-code/gfs-code.service';
-import { GfsCode } from '../../../../setting/gfs-code/gfs-code';
+import { GfsCodeService } from '../../../setting/gfs-code/gfs-code.service';
+import { GfsCode } from '../../../setting/gfs-code/gfs-code';
 
 @Component({
   selector: 'app-inspection-budget-detail',

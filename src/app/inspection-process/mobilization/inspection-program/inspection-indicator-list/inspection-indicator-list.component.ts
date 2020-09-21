@@ -20,6 +20,10 @@ import { InspectionProcedureDetailComponent } from '../inspection-procedure-deta
 import { InspectionProcedureDeleteComponent } from '../inspection-procedure-delete/inspection-procedure-delete.component';
 import { InspectionProcedureService } from '../inspection-procedure.service';
 import { ITreeState } from 'angular-tree-component';
+import { InspectionProcedure } from '../inspection-procedure';
+import { InspectionWorkDoneDetailComponent } from '../../../inspection-work-done/inspection-work-done-detail/inspection-work-done-detail.component';
+import { InspectionWorkDone } from 'src/app/inspection-process/inspection-work-done/inspection-work-done';
+import { InspectionWorkDoneService } from 'src/app/inspection-process/inspection-work-done/inspection-work-done.service';
 
 @Component({
   selector: 'app-inspection-indicator-list',
@@ -28,23 +32,30 @@ import { ITreeState } from 'angular-tree-component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'formActions'];
+  displayedColumns = ['name', 'result', 'isOk', 'finding', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
+
   @Input() inspectionId: number;
   nodes: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   treeOptions: {};
-  inspectionIndicators: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  inspectionIndicators: BehaviorSubject<
+    InspectionIndicator[]
+  > = new BehaviorSubject<InspectionIndicator[]>([]);
+  inspectionProcedures: BehaviorSubject<
+    InspectionProcedure[]
+  > = new BehaviorSubject<InspectionProcedure[]>([]);
+  selectedIndicator: any;
   selectedSubArea: any;
   openedId: number;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private dialog: MatDialog,
     private inspectionIndicatorService: InspectionIndicatorService,
     private inspectionAreaService: InspectionAreaService,
-    private inspectionProcedureService: InspectionProcedureService
+    private inspectionProcedureService: InspectionProcedureService,
+    private workDoneService: InspectionWorkDoneService
   ) {}
 
   ngOnInit() {
@@ -57,6 +68,35 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
   set state(state) {
     localStorage.areaState = JSON.stringify(state);
   }
+  compareWith(o1: any, o2: any) {
+    return o1.id === o2.id;
+  }
+
+  loadWorkDone(p: InspectionProcedure) {
+    if (p.workDoneLoaded) {
+      return;
+    }
+    this.workDoneService.getByProcedure(p.id!).subscribe(res => {
+      p.inspectionWorkDone = res;
+      p.workDoneLoaded = true;
+    });
+  }
+
+  addWorkDone(p: InspectionProcedure, workDone?: InspectionWorkDone): void {
+    const data = workDone ? workDone : { procedureId: p.id };
+    const dialogRef = this.dialog.open(InspectionWorkDoneDetailComponent, {
+      width: '400px',
+      data: data,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        p.workDoneLoaded = false;
+        this.loadWorkDone(p);
+      }
+    });
+  }
+
+  createOrEditFinding(w: InspectionWorkDone, finding?: any): void {}
 
   loadInspectionAreasWithSubAreas() {
     this.inspectionAreaService
@@ -84,22 +124,48 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
       });
   }
 
-  loadIndicatorsWithProcedure(inspectionSubAreaId: number) {
+  loadIndicators(inspectionSubAreaId: number) {
+    this.inspectionIndicators.next([]);
+    this.inspectionProcedures.next([]);
+    this.showLoader = true;
+
     this.inspectionIndicatorService
       .getByInspectionSubArea(inspectionSubAreaId)
+      .subscribe(
+        res => {
+          this.inspectionIndicators.next(res);
+          this.showLoader = false;
+        },
+        error => {
+          this.showLoader = false;
+        }
+      );
+  }
+
+  loadProcedures(inspectionIndicatorId: number) {
+    this.inspectionProcedures.next([]);
+    if (!inspectionIndicatorId) {
+      return;
+    }
+    this.inspectionProcedureService
+      .getByInspectionProcedure(inspectionIndicatorId)
       .subscribe(res => {
-        this.inspectionIndicators.next(res);
+        this.inspectionProcedures.next(res);
       });
   }
 
-  getInspectionIndicators(): Observable<any> {
+  getInspectionIndicators(): Observable<InspectionIndicator[]> {
     return this.inspectionIndicators.asObservable();
+  }
+
+  getInspectionProcedures(): Observable<InspectionProcedure[]> {
+    return this.inspectionProcedures.asObservable();
   }
 
   onSubAreaSelected(node: ITreeNode) {
     this.selectedSubArea = node.data;
     if (this.selectedSubArea?.isSubArea) {
-      this.loadIndicatorsWithProcedure(this.selectedSubArea.id);
+      this.loadIndicators(this.selectedSubArea.id);
     } else {
       node.toggleExpanded();
     }
@@ -115,7 +181,7 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
       if (result) {
         this.showLoader = true;
         this.inspectionIndicatorService.delete(id).subscribe({
-          next: () => this.loadIndicatorsWithProcedure(this.selectedSubArea.id),
+          next: () => this.loadIndicators(this.selectedSubArea.id),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
@@ -123,16 +189,19 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  addProcedure(indicator: any, procedure: any) {
+  addProcedure(
+    indicator: InspectionIndicator,
+    procedure?: InspectionProcedure
+  ) {
     const dialogRef = this.dialog.open(InspectionProcedureDetailComponent, {
       data: {
         inspectionProcedure: procedure || {
           inspectionIndicatorId: indicator.id,
         },
         inspectionIndicators: [indicator],
-        existingProcedures: indicator.inspectionProcedures.map(
-          (i: any) => i.id
-        ),
+        existingProcedures: this.inspectionProcedures
+          .getValue()
+          .map((i: any) => i.id),
       },
       width: '600px',
     });
@@ -140,7 +209,7 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.showLoader = true;
-        this.loadIndicatorsWithProcedure(this.selectedSubArea.id);
+        this.loadProcedures(indicator.id!);
       }
     });
   }
@@ -162,12 +231,12 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.showLoader = true;
-        this.loadIndicatorsWithProcedure(this.selectedSubArea.id);
+        this.loadIndicators(this.selectedSubArea.id);
       }
     });
   }
 
-  deleteProcedure(id: any, inspectionProcedure: any) {
+  deleteProcedure(id: any, inspectionProcedure: InspectionProcedure) {
     const dialogRef = this.dialog.open(InspectionProcedureDeleteComponent, {
       data: inspectionProcedure,
     });
@@ -176,7 +245,8 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
       if (result) {
         this.showLoader = true;
         this.inspectionProcedureService.delete(id).subscribe({
-          next: () => this.loadIndicatorsWithProcedure(this.selectedSubArea.id),
+          next: () =>
+            this.loadProcedures(inspectionProcedure.inspectionIndicatorId!),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
@@ -189,7 +259,7 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
     if (this.state && this.state.focusedNodeId) {
       this.selectedSubArea = { id: this.state.focusedNodeId, isSubArea: true };
       // @ts-ignore
-      this.loadIndicatorsWithProcedure(this.state.focusedNodeId);
+      this.loadIndicators(this.state.focusedNodeId);
     }
   }
 }

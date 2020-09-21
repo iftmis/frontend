@@ -1,0 +1,93 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-progress-spinner
+    *ngIf="isSaveOrUpdateInProgress"
+    diameter="50"
+    class="form-overlay"
+    color="accent"
+    mode="indeterminate"
+  >
+  </mat-progress-spinner>
+  <mat-card-title>TeamMeetingTimeline</mat-card-title>
+  <mat-card-subtitle>{{
+    teamMeetingTimeline?.id
+      ? 'Update an existing teamMeetingTimeline.'
+      : 'Creates a new teamMeetingTimeline.'
+  }}</mat-card-subtitle>
+  <div class="error mat-error">
+    {{ error ? error : '&nbsp;' }}
+  </div>
+  <mat-dialog-content class="content">
+    <mat-form-field class="full-width">
+      <mat-label>Activity</mat-label>
+      <input
+        matInput
+        placeholder="Enter teamMeetingTimeline activity"
+        formControlName="activity"
+      />
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('activity')"
+          label="Activity"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>User</mat-label>
+      <mat-select formControlName="userId">
+        <mat-option>--Select--</mat-option>
+        <mat-option *ngFor="let user of users" [value]="user.id">
+          {{ (user.firstName || '') + (user.lastName || '') }}</mat-option
+        >
+      </mat-select>
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('userId')"
+          label="User"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Comments</mat-label>
+      <input
+        matInput
+        placeholder="Enter teamMeetingTimeline comments"
+        formControlName="comments"
+      />
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('comments')"
+          label="Comments"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Days</mat-label>
+      <input
+        matInput
+        placeholder="Enter teamMeetingTimeline days"
+        formControlName="days"
+      />
+      <mat-error>
+        <hip-ngx-error
+          [control]="form.get('days')"
+          label="Days"
+        ></hip-ngx-error>
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">
+      <mat-icon>cancel</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="form.invalid || isSaveOrUpdateInProgress"
+      type="submit"
+    >
+      <mat-icon>save</mat-icon>
+      <span>{{ teamMeetingTimeline?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </mat-dialog-actions>
+</form>

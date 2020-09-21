@@ -16,7 +16,8 @@ export class FinancialYearResolver
     route: ActivatedRouteSnapshot
   ): Observable<FinancialYear | undefined> {
     const idParam = 'id';
-    const id = route.params[idParam];
+    const id = route.params[idParam] || route.params['fyId'];
+    console.log(id);
     if (id) {
       return this.service.getById(id);
     }

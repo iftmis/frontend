@@ -1,0 +1,91 @@
+<div *ngIf="getTimelines() | async as data">
+  <div class="page-heading">
+    <span class="mat-card-title">Team Meeting Timeline</span>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="createOrUpdate({ teamMeetingId: teamMeetingId })"
+      >
+        <mat-icon>add</mat-icon>
+        <span>Create</span>
+      </button>
+    </div>
+  </div>
+  <mat-card-content class="table-container">
+    <mat-progress-spinner
+      *ngIf="showLoader"
+      diameter="50"
+      class="table-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div *ngIf="!data?.length">
+      <span class="table-overlay">No records found</span>
+    </div>
+    <table mat-table [dataSource]="data" matSort *ngIf="!!data?.length">
+      <ng-container matColumnDef="activity">
+        <th mat-header-cell *matHeaderCellDef>Activity</th>
+        <td mat-cell *matCellDef="let element">{{ element.activity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef>Comments</th>
+        <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="userFullName">
+        <th mat-header-cell *matHeaderCellDef>Responsible</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="days">
+        <th mat-header-cell *matHeaderCellDef>Days</th>
+        <td mat-cell *matCellDef="let element">{{ element.days }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="formActions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            color="primary"
+            [matMenuTriggerFor]="menu"
+            [matMenuTriggerData]="{ id: element.id, element: element }"
+            aria-label="TeamMeetingTimeline form actions "
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        class="data-row"
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
+  </mat-card-content>
+</div>
+<mat-menu #menu="matMenu">
+  <ng-template matMenuContent let-id="id" let-element="element">
+    <button
+      mat-menu-item
+      aria-label="Edit teamMeetingTimeline"
+      (click)="createOrUpdate(element)"
+    >
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button
+      mat-menu-item
+      aria-label="Delete teamMeetingTimeline"
+      (click)="delete(id, element)"
+    >
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>

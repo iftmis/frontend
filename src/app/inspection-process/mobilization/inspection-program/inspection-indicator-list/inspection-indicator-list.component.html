@@ -9,79 +9,108 @@
     </tree-root>
   </div>
   <div fxFlex fxLayout="column" style="margin: 10px;">
-    <div class="page-heading">
-      <span class="mat-card-title">Inspection Indicators</span>
+    <div fxLayout="column" fxLayoutGap="10px">
       <button
         *ngIf="selectedSubArea?.isSubArea"
         (click)="addIndicator(undefined)"
-        mat-raised-button
+        mat-button
         color="primary"
       >
         <mat-icon>add</mat-icon>
-        <span>Add Indicator</span>
+        <span>New Indicator</span>
       </button>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-progress-bar *ngIf="showLoader"></mat-progress-bar>
+        <mat-label>Select Indicator</mat-label>
+        <mat-select
+          [(ngModel)]="selectedIndicator"
+          (ngModelChange)="loadProcedures(selectedIndicator.id)"
+        >
+          <mat-option
+            [value]="i"
+            *ngFor="let i of getInspectionIndicators() | async"
+          >
+            {{ i.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div fxFlex style="margin-top: 10px;">
+    <div
+      fxFlex
+      fxLayout="column"
+      fxLayoutGap="10px"
+      style="margin-top: 10px;"
+      *ngIf="selectedIndicator"
+    >
       <mat-accordion>
         <mat-expansion-panel
-          *ngFor="let i of getInspectionIndicators() | async"
-          [expanded]="i === openedId"
-          (opened)="openedId = i.id"
+          (opened)="loadWorkDone(p)"
+          *ngFor="let p of getInspectionProcedures() | async"
+          (opened)="openedId = p.id"
         >
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <span>{{ i.name }}</span>
+              <span><i>Procedure: </i>{{ p.name }}</span>
             </mat-panel-title>
-            <button
-              mat-icon-button
-              (click)="delete(i.id, i); $event.stopPropagation()"
-            >
-              <mat-icon color="warn">delete</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              (click)="addIndicator(i); $event.stopPropagation()"
-            >
-              <mat-icon color="primary">edit</mat-icon>
-            </button>
           </mat-expansion-panel-header>
           <div>
+            <button mat-button color="primary" (click)="addWorkDone(p)">
+              <mat-icon>add</mat-icon>
+              Add Work Done
+            </button>
+            <div *ngIf="!p.inspectionWorkDone?.length">
+              <span class="table-overlay">No records found</span>
+            </div>
             <table
               mat-table
-              [dataSource]="i.inspectionProcedures"
+              [dataSource]="p.inspectionWorkDone"
               matSort
-              *ngIf="!!i.inspectionProcedures?.length"
+              *ngIf="!!p.inspectionWorkDone?.length"
             >
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Procedure</th>
-                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let e">{{ e.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="result">
+                <th mat-header-cell *matHeaderCellDef>Results</th>
+                <td mat-cell *matCellDef="let e">{{ e.result }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="isOk">
+                <th mat-header-cell *matHeaderCellDef class="fit">Is Ok</th>
+                <td mat-cell *matCellDef="let e">
+                  <mat-icon *ngIf="e.isOk" style="color: green;">done</mat-icon>
+                  <mat-icon *ngIf="!e.isOk" style="color: red;"
+                    >report_problem</mat-icon
+                  >
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fileResourceContentId">
+                <th mat-header-cell *matHeaderCellDef>Attachment</th>
+                <td mat-cell *matCellDef="let e">
+                  {{ e.fileResourceContentId }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="finding">
+                <th mat-header-cell *matHeaderCellDef>Finding</th>
+                <td mat-cell *matCellDef="let e">
+                  <button
+                    mat-button
+                    color="warn"
+                    *ngIf="!e.isOk"
+                    (click)="createOrEditFinding(e)"
+                  >
+                    FA
+                  </button>
+                </td>
               </ng-container>
 
               <ng-container matColumnDef="formActions">
-                <th mat-header-cell *matHeaderCellDef>
-                  <button
-                    mat-icon-button
-                    color="primary"
-                    (click)="
-                      $event.stopPropagation(); addProcedure(i, undefined)
-                    "
-                  >
-                    <mat-icon color="primary">add_circle</mat-icon>
-                  </button>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div fxLayout="row">
-                    <button
-                      mat-icon-button
-                      (click)="deleteProcedure(element.id, element)"
-                    >
-                      <mat-icon color="warn">delete</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="addProcedure(i, element)">
-                      <mat-icon color="primary">edit</mat-icon>
-                    </button>
-                  </div>
-                </td>
+                <th mat-header-cell *matHeaderCellDef class="fit"></th>
+                <td mat-cell *matCellDef="let e"></td>
               </ng-container>
 
               <tr
@@ -95,8 +124,24 @@
               ></tr>
             </table>
           </div>
+          <mat-action-row>
+            <button
+              mat-icon-button
+              (click)="deleteProcedure(p.id, p); $event.stopPropagation()"
+            >
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </mat-action-row>
         </mat-expansion-panel>
       </mat-accordion>
+      <button
+        mat-button
+        color="primary"
+        (click)="addProcedure(selectedIndicator)"
+      >
+        <mat-icon>add</mat-icon>
+        <span>Add Procedure</span>
+      </button>
     </div>
   </div>
 </div>

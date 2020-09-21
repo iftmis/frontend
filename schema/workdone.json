@@ -1,0 +1,50 @@
+{
+  "name": "inspectionWorkDone",
+  "pageTitle": "Inspection Work Done",
+  "pageOptions": {
+    "list": {
+      "displayFields": []
+    }
+  },
+  "fields": [
+    {
+      "label": "Name",
+      "name": "name",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "required": true,
+        "minlength": 2,
+        "maxlength": 200
+      }
+    },
+    {
+      "label": "Results",
+      "name": "result",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {}
+    },
+    {
+      "label": "Attachment",
+      "name": "fileResourceId",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Attachment",
+      "name": "fileResourceContentId",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Is Okay?",
+      "name": "isOk",
+      "dataType": "boolean",
+      "controlType": "checkbox",
+      "validation": {}
+    }
+  ]
+}

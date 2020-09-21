@@ -28,6 +28,7 @@ export class InspectionSubAreaListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   @Input() inspectionId: number;
+  @Input() stage: any;
   inspectionAreaWithSubAreas: BehaviorSubject<any> = new BehaviorSubject<any>(
     []
   );

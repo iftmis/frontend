@@ -1,6 +1,29 @@
 <div fxLayout="row">
-  <div class="secondary-menu" fxLayout="column">
+  <div class="secondary-menu" fxLayout="column" style="margin-left: 20px;">
     <a class="module-title">Inspections</a>
+    <div fxLayout="column">
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Select Financial Years</mat-label>
+        <mat-select
+          [(ngModel)]="selectedFinancialYear"
+          (selectionChange)="onFyChange()"
+        >
+          <mat-option *ngFor="let fy of financialYears" [value]="fy">{{
+            fy.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Select Inspection Type</mat-label>
+        <mat-select
+          [(ngModel)]="inspectionType"
+          (selectionChange)="onTypeChange()"
+        >
+          <mat-option [value]="'PLANNED'">Planned Inspection</mat-option>
+          <mat-option [value]="'SPECIAL'">Special Inspection</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="ou-tree">
       <tree-root
         [nodes]="nodes | async"

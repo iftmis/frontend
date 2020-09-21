@@ -4,6 +4,7 @@
       <div fxFlex fxLayout="column">
         <div>Available Auditable Areas</div>
         <select
+          [disabled]="stage?.isApproved!"
           (dblclick)="saveAll(selectedAreas)"
           multiple
           class="full-width mult-select"
@@ -33,6 +34,7 @@
       <div fxFlex fxLayout="column">
         <div>Selected Auditable Areas</div>
         <select
+          [disabled]="stage?.isApproved!"
           (dblclick)="removeAll(selectedInspectionAreas)"
           multiple
           class="full-width mult-select"
@@ -51,6 +53,7 @@
   >
     <ng-template matTabContent>
       <app-inspection-sub-area-list
+        [stage]="stage"
         [inspectionId]="inspectionId"
       ></app-inspection-sub-area-list>
     </ng-template>
@@ -62,9 +65,29 @@
     <ng-template matTabContent>
       <app-inspection-member-list
         [inspectionId]="inspectionId"
+        [stage]="stage"
       ></app-inspection-member-list>
     </ng-template>
   </mat-tab>
 
-  <mat-tab label="Notify Client">Content 3</mat-tab>
+  <mat-tab label="Team Meeting">
+    <ng-template matTabContent>
+      <app-team-meeting [inspectionId]="inspectionId"></app-team-meeting>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Client Communication">
+    <ng-template matTabContent>
+      <app-client-letter
+        [stage]="stage"
+        [inspectionId]="inspectionId"
+      ></app-client-letter>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab [label]="stage?.isApproved ? 'Approved' : 'Approve'">
+    <app-approve
+      (stageChange)="stageChange($event)"
+      [stage]="stage"
+    ></app-approve>
+  </mat-tab>
 </mat-tab-group>

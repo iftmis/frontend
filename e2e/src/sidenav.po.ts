@@ -58,4 +58,10 @@ export class SidenavPage {
   inspectionPlanMenu = this.root.element(
     by.css('a[routerLink="/inspection-plans"]')
   );
+  teamMeetingTimelineMenu = this.root.element(
+    by.css('a[routerLink="/team-meeting-timelines"]')
+  );
+  inspectionWorkDoneMenu = this.root.element(
+    by.css('a[routerLink="/inspection-work-dones"]')
+  );
 }

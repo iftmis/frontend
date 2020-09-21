@@ -90,7 +90,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./report/report.module').then(m => m.ReportModule),
   },
-
   {
     path: '**',
     component: PageNotFoundComponent,

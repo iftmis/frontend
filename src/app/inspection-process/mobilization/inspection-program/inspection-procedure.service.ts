@@ -20,6 +20,14 @@ export class InspectionProcedureService {
     return this.http.get<InspectionProcedure>(`${this.resourceUrl}/${id}`);
   }
 
+  getByInspectionProcedure(
+    inspectionIndicatorId: number
+  ): Observable<InspectionProcedure[]> {
+    return this.http.get<InspectionProcedure[]>(
+      `${this.resourceUrl}/by-inspection-indicator/${inspectionIndicatorId}`
+    );
+  }
+
   create(
     inspectionProcedure: InspectionProcedure
   ): Observable<InspectionProcedure> {

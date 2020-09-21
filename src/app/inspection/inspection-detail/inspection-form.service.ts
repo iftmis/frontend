@@ -23,22 +23,19 @@ export class InspectionFormService {
       endDate: this.formBuilder.control(inspection.endDate, [
         Validators.required,
       ]),
-      inspectionType: this.formBuilder.control(inspection.inspectionType, [
-        Validators.required,
-      ]),
+      inspectionType: this.formBuilder.control(
+        { value: inspection.inspectionType, disabled: true },
+        [Validators.required]
+      ),
       financialYearId: this.formBuilder.control(inspection.financialYearId, [
         Validators.required,
       ]),
-      financialYearName: this.formBuilder.control(
-        inspection.financialYearName,
-        []
-      ),
       organisationUnitId: this.formBuilder.control(
         inspection.organisationUnitId,
         [Validators.required]
       ),
-      organisationUnitName: this.formBuilder.control(
-        inspection.organisationUnitName,
+      termsOfReference: this.formBuilder.control(
+        inspection.termsOfReference,
         []
       ),
     });
@@ -52,9 +49,8 @@ export class InspectionFormService {
       endDate: formGroup.get('endDate')!.value,
       inspectionType: formGroup.get('inspectionType')!.value,
       financialYearId: formGroup.get('financialYearId')!.value,
-      financialYearName: formGroup.get('financialYearName')!.value,
       organisationUnitId: formGroup.get('organisationUnitId')!.value,
-      organisationUnitName: formGroup.get('organisationUnitName')!.value,
+      termsOfReference: formGroup.get('termsOfReference')!.value,
     };
   }
 }

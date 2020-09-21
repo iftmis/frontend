@@ -3,4 +3,5 @@ export interface SubArea {
   name: string;
   areaId: string;
   areaName?: string;
+  generalObjective?: string;
 }
