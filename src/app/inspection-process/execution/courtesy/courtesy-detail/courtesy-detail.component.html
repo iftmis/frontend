@@ -1,0 +1,50 @@
+<form (ngSubmit)="saveOrUpdate()" [formGroup]="form">
+  <mat-dialog-content>
+    <h2 mat-dialog-title>Courtesy Members</h2>
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      class="form-overlay"
+      color="accent"
+      diameter="50"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-form-field appearance="fill" style="width: 800px;">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        cols="40"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+
+    <div class="row">
+      <div class="col-sm-8 text-center">
+        <div class="custom-file">
+          <input
+            type="file"
+            class="custom-file-input"
+            id="customFile"
+            name="myfile"
+            (change)="onFileSelect($event)"
+            #UploadFileInput
+          />
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>
+      <mat-icon>cancel</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button color="accent" mat-raised-button type="submit">
+      <mat-icon>save</mat-icon>
+      <span>{{ inspectionMember?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </mat-dialog-actions>
+</form>
