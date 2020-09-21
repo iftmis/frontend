@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Courtesy } from '../courtesy';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Briefying } from '../Briefying';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CourtesyFormService {
+export class BriefyingFormService {
   constructor(private formBuilder: FormBuilder) {}
   // tslint:disable-next-line:no-shadowed-variable
-  toFormGroup(Courtesy: Partial<Courtesy> = {}) {
+  toFormGroup(Briefying: Partial<Briefying> = {}) {
     return this.formBuilder.group({
-      id: this.formBuilder.control(Courtesy.id, []),
-      myfile: this.formBuilder.control(Courtesy.myfile),
-      description: this.formBuilder.control(Courtesy.description),
+      id: this.formBuilder.control(Briefying.id, []),
+      myfile: this.formBuilder.control(Briefying.myfile),
+      description: this.formBuilder.control(Briefying.description),
     });
   }
   fromFormGroup(formGroup: FormGroup) {

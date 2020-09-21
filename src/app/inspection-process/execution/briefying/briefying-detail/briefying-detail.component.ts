@@ -1,20 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { User } from '../../../../user-management/user/user';
-import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InspectionMemberFormService } from '../../../preparation/inspection-member/inspection-member-detail/inspection-member-form.service';
 import { InspectionMemberService } from '../../../preparation/inspection-member/inspection-member.service';
 import { UserService } from '../../../../user-management/user/user.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../../../../user-management/user/user';
 
 @Component({
-  selector: 'app-courtesy-detail',
-  templateUrl: './courtesy-detail.component.html',
-  styleUrls: ['./courtesy-detail.component.scss'],
+  selector: 'app-briefying-detail',
+  templateUrl: './briefying-detail.component.html',
+  styleUrls: ['./briefying-detail.component.scss'],
 })
-export class CourtesyDetailComponent implements OnInit {
+export class BriefyingDetailComponent implements OnInit {
   inspectionMember: InspectionMember;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
@@ -32,7 +32,7 @@ export class CourtesyDetailComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CourtesyDetailComponent>
+    private dialogRef: MatDialogRef<BriefyingDetailComponent>
   ) {}
 
   ngOnInit() {
