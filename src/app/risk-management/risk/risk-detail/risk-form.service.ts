@@ -22,9 +22,6 @@ export class RiskFormService {
       riskCategoryId: this.formBuilder.control(risk.riskCategoryId, [
         Validators.required,
       ]),
-      /*riskOwnerId: this.formBuilder.control(risk.riskOwnerId, [
-        Validators.required,
-      ])*/
     });
   }
 
@@ -33,10 +30,8 @@ export class RiskFormService {
       id: formGroup.get('id')!.value,
       code: formGroup.get('code')!.value,
       description: formGroup.get('description')!.value,
-      /*riskRegisterId: formGroup.get('riskRegisterId')!.value,*/
       objectiveId: formGroup.get('objectiveId')!.value,
       riskCategoryId: formGroup.get('riskCategoryId')!.value,
-      /*riskOwnerId: formGroup.get('riskOwnerId')!.value,*/
     };
   }
 }
