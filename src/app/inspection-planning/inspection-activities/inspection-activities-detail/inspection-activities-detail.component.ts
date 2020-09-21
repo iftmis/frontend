@@ -312,7 +312,6 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     const organisation = (this.organisationUnitFormGroup.get(
       'organisationUnit'
     ) as FormArray) as FormArray;
-    console.log(' showa ' + organisation);
     if (eventOrganisationUnit.checked) {
       organisation.push(new FormControl(eventOrganisationUnit.source.value));
     } else {
@@ -352,15 +351,16 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         auditableAreaId: this.form.value.auditableAreaId.id,
         days: this.form.value.days,
         objectiveId: this.form.value.objectiveId,
-        organisationUnit: selectedOrganisationUnits,
-        quarter1: this.form.value.quarter1,
-        quarter2: this.form.value.quarter2,
-        quarter3: this.form.value.quarter3,
-        quarter4: this.form.value.quarter4,
+        organisationUnits: selectedOrganisationUnits,
+        quarter_one: this.form.value.quarter_one,
+        quarter_two: this.form.value.quarter_two,
+        quarter_three: this.form.value.quarter_three,
+        quarter_four: this.form.value.quarter_four,
         inspectionPlanId: this.inspectionPlanId,
-        risk: selectedRisks,
+        risks: selectedRisks,
         subAreaId: this.form.value.subAreaId,
       };
+
       this.inspectionActivitiesService
         .create(this.inspectionActivities)
         .subscribe(res => {

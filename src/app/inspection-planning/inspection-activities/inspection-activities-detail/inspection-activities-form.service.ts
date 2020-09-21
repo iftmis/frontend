@@ -28,18 +28,20 @@ export class InspectionActivitiesFormService {
       days: this.formBuilder.control(inspectionActivities.days, [
         Validators.required,
       ]),
-      quarter1: this.formBuilder.control(inspectionActivities.quarter1, [
+      quarter_one: this.formBuilder.control(inspectionActivities.quarter_one, [
         Validators.required,
       ]),
-      quarter2: this.formBuilder.control(inspectionActivities.quarter2, [
+      quarter_two: this.formBuilder.control(inspectionActivities.quarter_two, [
         Validators.required,
       ]),
-      quarter3: this.formBuilder.control(inspectionActivities.quarter3, [
-        Validators.required,
-      ]),
-      quarter4: this.formBuilder.control(inspectionActivities.quarter4, [
-        Validators.required,
-      ]),
+      quarter_three: this.formBuilder.control(
+        inspectionActivities.quarter_three,
+        [Validators.required]
+      ),
+      quarter_four: this.formBuilder.control(
+        inspectionActivities.quarter_four,
+        [Validators.required]
+      ),
     });
   }
 
@@ -51,13 +53,13 @@ export class InspectionActivitiesFormService {
       subAreaId: formGroup.get('subAreaId')!.value,
       activity: formGroup.get('activity')!.value,
       days: formGroup.get('days')!.value,
-      quarter1: formGroup.get('quarter1')!.value,
-      quarter2: formGroup.get('quarter2')!.value,
-      quarter3: formGroup.get('quarter3')!.value,
-      quarter4: formGroup.get('quarter4')!.value,
+      quarter_one: formGroup.get('quarter_one')!.value,
+      quarter_two: formGroup.get('quarter_two')!.value,
+      quarter_three: formGroup.get('quarter_three')!.value,
+      quarter_four: formGroup.get('quarter_four')!.value,
       inspectionPlanId: formGroup.get('inspectionPlanId')!.value,
-      risk: formGroup.get('risk')!.value,
-      organisationUnit: formGroup.get('organisation')!.value,
+      risks: formGroup.get('risk')!.value,
+      organisationUnits: formGroup.get('organisation')!.value,
     };
   }
 }

@@ -12,10 +12,10 @@ export interface InspectionActivities {
   subAreaName?: string;
   activity: string;
   days: string;
-  quarter1: string;
-  quarter2: string;
-  quarter3: string;
-  quarter4: string;
-  risk: Risk[];
-  organisationUnit: OrganisationUnit[];
+  quarter_one: string;
+  quarter_two: string;
+  quarter_three: string;
+  quarter_four: string;
+  risks: Risk[];
+  organisationUnits: OrganisationUnit[];
 }
