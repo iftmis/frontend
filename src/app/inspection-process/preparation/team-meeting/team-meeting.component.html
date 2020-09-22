@@ -7,42 +7,44 @@
     </mat-expansion-panel-header>
     <form *ngIf="form" [formGroup]="form" novalidate (ngSubmit)="update()">
       <div>
-        <mat-form-field class="full-width">
-          <mat-label>Date</mat-label>
-          <input
-            autocomplete="off"
-            type="text"
-            required
-            matInput
-            placeholder="Select inspection start date"
-            [matDatepicker]="date"
-            formControlName="meetingDate"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            color="accent"
-            [for]="date"
-          ></mat-datepicker-toggle>
-          <mat-datepicker color="accent" #date></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>Venue</mat-label>
-          <input matInput formControlName="venue" />
-        </mat-form-field>
-        <mat-form-field class="full-width">
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Date</mat-label>
+            <input
+              autocomplete="off"
+              type="text"
+              required
+              matInput
+              placeholder="Select inspection start date"
+              [matDatepicker]="date"
+              formControlName="meetingDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              color="accent"
+              [for]="date"
+            ></mat-datepicker-toggle>
+            <mat-datepicker color="accent" #date></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Venue</mat-label>
+            <input matInput formControlName="venue" />
+          </mat-form-field>
+        </div>
+        <mat-form-field class="full-width" appearance="outline">
           <mat-label>Introduction</mat-label>
           <textarea matInput formControlName="introduction"> </textarea>
         </mat-form-field>
-        <mat-form-field class="full-width">
+        <mat-form-field class="full-width" appearance="outline">
           <mat-label>Inspection Overview</mat-label>
           <textarea matInput formControlName="inspectionOverview"> </textarea>
         </mat-form-field>
-        <mat-form-field class="full-width">
+        <mat-form-field class="full-width" appearance="outline">
           <mat-label>Inspection Program Review</mat-label>
           <textarea matInput formControlName="inspectionProgramReview">
           </textarea>
         </mat-form-field>
-        <mat-form-field class="full-width">
+        <mat-form-field class="full-width" appearance="outline">
           <mat-label>Conclusion</mat-label>
           <textarea matInput formControlName="conclusion"> </textarea>
         </mat-form-field>
