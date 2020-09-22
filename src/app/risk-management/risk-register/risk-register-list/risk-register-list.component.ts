@@ -15,13 +15,12 @@ import {
 import { RiskRegisterDeleteComponent } from '../risk-register-delete/risk-register-delete.component';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
-import { FormControl } from '@angular/forms';
 import { FinancialYearService } from '../../../setting/financial-year/financial-year.service';
 import { FinancialYear } from '../../../setting/financial-year/financial-year';
-import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
-import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { RiskRegisterApproveComponent } from '../risk-register-approve/risk-register-approve.component';
+import { MatListOption, MatSelectionListChange } from '@angular/material/list';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-risk-register-list',
@@ -43,17 +42,16 @@ export class RiskRegisterListComponent implements OnInit {
   riskRegisterSubject: BehaviorSubject<RiskRegister[]> = new BehaviorSubject(
     []
   );
-
-  financialYearControl = new FormControl(null);
-  financialYears: FinancialYear[];
-
-  organisationUnitControl = new FormControl(null);
-  organisationUnits: OrganisationUnit[];
-
+  financialYearSubject: BehaviorSubject<FinancialYear[]> = new BehaviorSubject(
+    []
+  );
+  last5FinancialYears: FinancialYear[];
   totalItems = 0;
   size: number;
   pageSizeOptions: number[];
   page: number;
+
+  financialYear: FinancialYear;
   financialYearId: number;
   organisationUnitId: number;
 
@@ -64,62 +62,44 @@ export class RiskRegisterListComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService,
     private riskRegisterService: RiskRegisterService,
-    private financialYearService: FinancialYearService,
-    private organisationUnitService: OrganisationUnitService
+    private financialYearService: FinancialYearService
   ) {
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
     this.pageSizeOptions = PAGE_SIZE_OPTIONS;
     this.financialYearId = 0;
-    this.organisationUnitId = 0;
     this.titleService.setTitle('Risk Register|' + environment.app);
   }
 
   ngOnInit() {
-    this.loadPage(
-      this.page,
-      this.size,
-      this.financialYearId,
-      this.organisationUnitId
-    );
-    this.loadFinancialYears();
-    this.loadCouncils();
+    this.loadLast5Years();
   }
 
-  loadPage(
-    page: number,
-    size: number,
-    financialYearId: number,
-    organisationUnitId: number
-  ) {
-    this.riskRegisterService
-      .getAllPaged(page, size, financialYearId, organisationUnitId)
+  loadLast5Years() {
+    this.financialYearService
+      .getAll({
+        page: 0,
+        size: 5,
+      })
       .subscribe(
-        resp => this.onSuccess(resp.body, resp.headers),
+        resp => this.onSuccessFinancialYears(resp.body),
         () => this.onError()
       );
   }
 
-  loadFinancialYears() {
-    this.financialYearService.getAllUnPaged().subscribe(
-      response => {
-        this.financialYears = response;
-      },
-      error => {}
-    );
-  }
-
-  loadCouncils() {
-    this.organisationUnitService.getAllCouncils().subscribe(
-      response => {
-        this.organisationUnits = response;
-      },
-      error => {}
+  loadData(page: number, size: number, financialYearId: number) {
+    this.riskRegisterService.getAllPaged(page, size, financialYearId).subscribe(
+      resp => this.onSuccess(resp.body, resp.headers),
+      () => this.onError()
     );
   }
 
   getData(): Observable<RiskRegister[]> {
     return this.riskRegisterSubject.asObservable();
+  }
+
+  getFinancialYears(): Observable<FinancialYear[]> {
+    return this.financialYearSubject.asObservable();
   }
 
   delete(id: number, riskRegister: RiskRegister) {
@@ -132,12 +112,7 @@ export class RiskRegisterListComponent implements OnInit {
         this.showLoader = true;
         this.riskRegisterService.delete(id).subscribe({
           next: () => {
-            this.loadPage(
-              this.page,
-              this.size,
-              this.financialYearId,
-              this.organisationUnitId
-            );
+            this.loadData(this.page, this.size, this.financialYearId);
             this.toastService.success('Success', 'Risk Deleted Successfully!');
             this.router.navigate(['/risk-management/risk-register']);
           },
@@ -153,57 +128,24 @@ export class RiskRegisterListComponent implements OnInit {
     this.riskRegisterSubject.next(data);
   }
 
+  onSuccessFinancialYears(data: any): void {
+    this.financialYearSubject.next(data);
+    const items = data as FinancialYear[];
+    items.forEach(row => {
+      if (row.isOpened) {
+        this.financialYear = row;
+        this.financialYearId = row.id as number;
+        this.loadData(this.page, this.size, this.financialYearId);
+      }
+    });
+  }
+
   onError(): void {}
 
   pageChange($event: PageEvent) {
     this.size = $event.pageSize;
     this.page = $event.pageIndex;
-    this.loadPage(
-      this.page,
-      this.size,
-      this.financialYearId,
-      this.organisationUnitId
-    );
-  }
-
-  filterByFinancialYear(financialYear: FinancialYear) {
-    if (financialYear) {
-      this.financialYearId = financialYear.id as number;
-      this.loadPage(
-        this.page,
-        this.size,
-        this.financialYearId,
-        this.organisationUnitId
-      );
-    } else {
-      this.financialYearId = 0 as number;
-      this.loadPage(
-        this.page,
-        this.size,
-        this.financialYearId,
-        this.organisationUnitId
-      );
-    }
-  }
-
-  filterByOrganisationUnit(organisationUnit: OrganisationUnit) {
-    if (organisationUnit) {
-      this.organisationUnitId = organisationUnit.id as number;
-      this.loadPage(
-        this.page,
-        this.size,
-        this.financialYearId,
-        this.organisationUnitId
-      );
-    } else {
-      this.organisationUnitId = 0 as number;
-      this.loadPage(
-        this.page,
-        this.size,
-        this.financialYearId,
-        this.organisationUnitId
-      );
-    }
+    this.loadData(this.page, this.size, this.financialYearId);
   }
 
   approve(id: number, element: RiskRegister) {
@@ -216,12 +158,7 @@ export class RiskRegisterListComponent implements OnInit {
         this.showLoader = true;
         this.riskRegisterService.approve(id).subscribe({
           next: () => {
-            this.loadPage(
-              this.page,
-              this.size,
-              this.financialYearId,
-              this.organisationUnitId
-            );
+            this.loadData(this.page, this.size, this.financialYearId);
             this.toastService.success('Success', 'Risk Approved Successfully!');
             this.router.navigate(['/risk-management/risk-register']);
           },
@@ -230,5 +167,11 @@ export class RiskRegisterListComponent implements OnInit {
         });
       }
     });
+  }
+
+  loadByFinancialYear(event: MatSelectionListChange) {
+    this.financialYear = event.option.value;
+    this.financialYearId = event.option.value.id;
+    this.loadData(this.page, this.size, event.option.value.id);
   }
 }

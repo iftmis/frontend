@@ -37,6 +37,13 @@ export class FinancialYearService {
     return this.http.post<FinancialYear>(this.resourceUrl, financialYear);
   }
 
+  activate(newFinancialYear: FinancialYear): Observable<FinancialYear> {
+    return this.http.post<FinancialYear>(
+      this.resourceUrl + '/activate',
+      newFinancialYear
+    );
+  }
+
   update(row: FinancialYear): Observable<FinancialYear> {
     return this.http.put<FinancialYear>(`${this.resourceUrl}`, row);
   }

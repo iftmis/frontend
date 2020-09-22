@@ -9,8 +9,6 @@ export interface Risk {
   objectiveDescription?: string;
   riskCategoryId: number;
   riskCategoryName?: string;
-  riskOwnerId: number;
-  riskOwnerName?: string;
   riskRatings?: RiskRating[];
 }
 

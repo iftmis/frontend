@@ -1,7 +1,6 @@
 export interface InspectionPlan {
   id?: number;
-  FinancialYearID: number;
-  financialYearName: string;
-  OrganizationUnitID: number;
-  OrganizationUnitName: string;
+  name: string;
+  financialYearId: number;
+  organisationUnitId: number;
 }

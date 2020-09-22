@@ -1,8 +1,9 @@
 <mat-card>
   <div class="page-heading">
-    <span class="mat-card-title"
-      ><strong>Risk Register:</strong> {{ riskRegister?.name }}
-      <!--<mat-icon *ngIf="riskRegister?.isApproved" color="primary">done_all</mat-icon>-->
+    <span
+      class="mat-card-title"
+      *ngIf="{ riskRegister: riskRegister$ | async } as riskRegister"
+      ><strong>Risk Register: {{ riskRegister.riskRegister?.name }}</strong>
     </span>
     <div>
       <button
@@ -19,11 +20,8 @@
         mat-raised-button
         type="button"
         class="button-spacing"
-        [disabled]="
-          !selectedOrganisationUnit ||
-          (selectedOrganisationUnit && riskRegister?.isApproved)
-        "
         color="primary"
+        [disabled]="riskRegister?.isApproved"
         (click)="create()"
       >
         <mat-icon>add</mat-icon>
@@ -41,28 +39,7 @@
     >
     </mat-progress-spinner>
     <div fxLayout fxLayout.xs="column" fxLayoutGap.xs="0">
-      <div fxFlex="15%">
-        <div class="ou-tree">
-          <h3>Organisation Unit</h3>
-          <tree-root
-            #tree
-            [(state)]="state"
-            [nodes]="nodes | async"
-            (activate)="onOuChange($event)"
-            [options]="options"
-          >
-          </tree-root>
-        </div>
-      </div>
-      <div fxFlex="85%">
-        <mat-form-field appearance="outline">
-          <mat-label>Filter Risks</mat-label>
-          <input
-            matInput
-            (keyup)="filter($event.target.value)"
-            placeholder="Search ..."
-          />
-        </mat-form-field>
+      <div fxFlex="100%">
         <table
           mat-table
           [dataSource]="getData()"
@@ -92,12 +69,6 @@
             <th mat-header-cell *matHeaderCellDef rowspan="3">Category</th>
             <td mat-cell *matCellDef="let row; let i = dataIndex">
               {{ row.riskCategoryName }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="owner">
-            <th mat-header-cell *matHeaderCellDef rowspan="3">Owner</th>
-            <td mat-cell *matCellDef="let row; let i = dataIndex">
-              {{ row.riskOwnerName }}
             </td>
           </ng-container>
           <ng-container matColumnDef="council">
@@ -219,7 +190,6 @@
               'description',
               'category',
               'objective',
-              'owner',
               'source',
               'action'
             ]"
@@ -245,7 +215,6 @@
                 'description',
                 'category',
                 'objective',
-                'owner',
                 'councilLikelihood',
                 'councilImpact',
                 'councilStatus',

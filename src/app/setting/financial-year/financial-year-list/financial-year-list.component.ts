@@ -15,6 +15,7 @@ import { FinancialYear } from '../financial-year';
 import { FinancialYearService } from '../financial-year.service';
 import { FinancialYearDeleteComponent } from '../financial-year-delete/financial-year-delete.component';
 import { ToastService } from '../../../shared/toast.service';
+import { ActivateComponent } from '../activate/activate.component';
 
 @Component({
   selector: 'app-financial-year-list',
@@ -27,6 +28,7 @@ export class FinancialYearListComponent implements OnInit {
     'name',
     'startDate',
     'endDate',
+    'closed',
     'isOpened',
     'formActions',
   ];
@@ -110,5 +112,32 @@ export class FinancialYearListComponent implements OnInit {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;
     this.loadPage();
+  }
+
+  activate(element: FinancialYear) {
+    const dialogRef = this.dialog.open(ActivateComponent, {
+      data: element,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showLoader = true;
+        this.financialYearService.activate(element).subscribe(
+          response => {
+            this.loadPage();
+            this.showLoader = false;
+            this.toastService.success(
+              'Success',
+              'Financial Year Activated Successfully!'
+            );
+            this.router.navigate(['/settings/financial-years']);
+          },
+          error => {
+            this.showLoader = false;
+            this.toastService.error('Error', error.error);
+          }
+        );
+      }
+    });
   }
 }

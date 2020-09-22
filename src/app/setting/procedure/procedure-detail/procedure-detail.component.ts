@@ -49,6 +49,7 @@ export class ProcedureDetailComponent implements OnInit {
 
   save() {
     this.isSaveOrUpdateInProgress = true;
+
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(

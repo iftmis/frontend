@@ -1,4 +1,4 @@
-<mat-card *ngIf="routeData$ | async as data">
+<mat-card *ngIf="getData() | async as data">
   <div class="page-heading">
     <span class="mat-card-title">Inspection Plan</span>
     <div>
@@ -21,26 +21,28 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!data.inspectionPlans?.length">
+    <div *ngIf="!getData()">
       <span class="table-overlay">No records found</span>
     </div>
-    <table
-      mat-table
-      [dataSource]="data.inspectionPlans"
-      matSort
-      *ngIf="!!data.inspectionPlans?.length"
-    >
-      <ng-container matColumnDef="financialYearName">
+    <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="FinancialYearName">
         <th mat-header-cell *matHeaderCellDef>Financial Year</th>
         <td mat-cell *matCellDef="let element">
           {{ element.financialYearName }}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="OrganizationUnitName">
-        <th mat-header-cell *matHeaderCellDef>Organization Unit</th>
+      <ng-container matColumnDef="OrganisationUnitName">
+        <th mat-header-cell *matHeaderCellDef>Organisation Unit</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.OrganizationUnitName }}
+          {{ element.organisationUnitName }}
         </td>
       </ng-container>
 
@@ -66,10 +68,25 @@
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
     </table>
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="itemsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChange($event)"
+    >
+    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
+    <button
+      mat-menu-item
+      aria-label="View InspectionPlan"
+      [routerLink]="['/inspection-planning/inspection-planning', id, 'edit']"
+    >
+      <mat-icon>folder_open</mat-icon>
+      <span>Open</span>
+    </button>
     <button
       mat-menu-item
       aria-label="Edit InspectionPlan"

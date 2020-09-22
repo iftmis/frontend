@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { InspectionActivitiesService } from '../inspection-activities.service';
 import { InspectionActivitiesFormService } from './inspection-activities-form.service';
@@ -16,6 +22,15 @@ import { InspectionArea } from '../../../inspection-process/preparation/inspecti
 import { Risk } from '../../../risk-management/risk/risk';
 import { RiskService } from '../../../risk-management/risk/risk.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ThemePalette } from '@angular/material/core';
+import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
+import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
+export interface Task {
+  name: string;
+  completed: boolean;
+  color: ThemePalette;
+  subtasks?: Task[];
+}
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -24,8 +39,12 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectionActivitiesDetailComponent implements OnInit {
+  interestFormGroup: FormGroup;
+  organisationUnitFormGroup: FormGroup;
+  selected: any;
   inspectionActivities: InspectionActivities;
   form: FormGroup;
+
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   subAreas: SubArea[];
@@ -36,6 +55,13 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   activityId: number;
   risks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
   chosen: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
+  organisationUnit: BehaviorSubject<OrganisationUnit[]> = new BehaviorSubject<
+    OrganisationUnit[]
+  >([]);
+
+  auditableAreaSubject: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>(
+    []
+  );
 
   allRisks: Risk[] = [];
   selectedRisks: Risk[] = [];
@@ -49,19 +75,24 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private auditAreasService: AuditableAreaService,
     private subAreasService: SubAreaService,
     private riskService: RiskService,
+    private organisationUnitService: OrganisationUnitService,
     private dialogRef: MatDialogRef<InspectionActivitiesDetailComponent>,
     private inspectionActivitiesService: InspectionActivitiesService,
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder
   ) {
+    this.form = this._formBuilder.group({
+      checkArray: this._formBuilder.array([], [Validators.required]),
+    });
     // this.activityId = route.snapshot.parent?.parent?.params['id'];
   }
-  chaguliwaRisks = new Array();
+  // chaguliwaRisks = new Array();
 
   ngOnInit() {
     this.loadObjectives();
     this.loadAuditableAreas();
     // this.loadSubAreas();
+    this.loadOrganisationUnits();
     this.route.data.subscribe(({ inspectionActivities }) => {
       this.inspectionActivities = inspectionActivities;
       this.form = this.formService.toFormGroup(inspectionActivities);
@@ -69,21 +100,49 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     this.loadRisks();
 
     this.error = undefined;
+
+    this.interestFormGroup = this._formBuilder.group({
+      risks: this._formBuilder.array([]),
+    });
+
+    this.organisationUnitFormGroup = this._formBuilder.group({
+      organisationUnit: this._formBuilder.array([]),
+    });
   }
 
   loadRisks() {
-    this.riskService.getAll().subscribe(response => {
+    // TODO get  by financial year
+    this.riskService.getAllByCurrentFinancialYearId().subscribe(response => {
       this.risks.next(response);
+      // this.allRisks = response;
+
+      console.log('all risk');
+
+      console.log(this.allRisks);
+
       this.loadAllSelectedRisks();
     });
   }
 
   removeAll(risks: Risk[]) {
-    this.riskService.removeAll(risks).subscribe(res => this.onSuccess());
+    // var pulled = _.pullAt(this.chosenRisks, [1, 3]);
+    // console.log( Object.keys(risks));
+    // this.chosenRisks.pop();
+    // this.riskService.removeAll(risks).subscribe(res => this.onSuccess());
+
+    const risksToAdd = risks.map(a => {
+      console.log(a.description + ' this is being removed ');
+
+      const filteredRisks = this.chosenRisks.filter(item => item.id !== a.id);
+
+      this.risks.next(filteredRisks);
+
+      console.log('Filtered list is  ' + filteredRisks);
+    });
   }
 
   getSelectedRisks(): Observable<Risk[]> {
-    return this.chosen.asObservable();
+    return of(this.chosenRisks);
   }
 
   saveAll(risk: Risk[]) {
@@ -92,13 +151,16 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     }
 
     const risksToAdd = risk.map(a => {
-      console.log(a.description + ' this is being saved');
+      console.log(a.description + ' This is being saved');
 
       // storing select risks in an array
-      this.chaguliwaRisks.push(a.id);
-      for (const i of this.chaguliwaRisks) {
+      this.chosenRisks.push(a);
+      for (const i of this.chosenRisks) {
         console.log('array has ' + i);
       }
+
+      // remove item from all risks
+      this.filterAreas(risk);
 
       return {
         name: a.description,
@@ -115,16 +177,21 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   loadAllSelectedRisks() {
     this.riskService.getByActivityId(this.activityId).subscribe(res => {
       this.risks.next(res);
+      console.log('chosen risk');
+      console.log(this.chosenRisks);
       this.filterAreas(res);
     });
   }
 
   filterAreas(risk: any) {
-    const ids = risk.map((a: any) => a.riskId || 0);
+    const ids = risk.map((a: any) => a.id || 0);
+    console.log('ids', ids);
     // @ts-ignore
-    const filtered = this.allAreasAuditableAreas.filter((a: { id: any }) => {
+    const filtered = this.risks.filter((a: { id: any }) => {
       return ids.indexOf(a.id) === -1;
     });
+    console.log(filtered);
+
     this.risks.next(filtered);
   }
 
@@ -210,5 +277,56 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   filterSubAreaByArea(auditableArea: AuditableArea) {
     this.areaId = auditableArea.id as number;
     this.loadSubAreas(this.areaId);
+  }
+
+  onChange(event: any) {
+    const interests = (this.interestFormGroup.get(
+      'risks'
+    ) as FormArray) as FormArray;
+    console.log(' showa ' + interests);
+    if (event.checked) {
+      interests.push(new FormControl(event.source.value));
+    } else {
+      const i = interests.controls.findIndex(
+        x => x.value === event.source.value
+      );
+      interests.removeAt(i);
+    }
+  }
+  onOrganisationUnitChange(eventOrganisationUnit: any) {
+    const organisation = (this.organisationUnitFormGroup.get(
+      'organisationUnit'
+    ) as FormArray) as FormArray;
+    console.log(' showa ' + organisation);
+    if (eventOrganisationUnit.checked) {
+      organisation.push(new FormControl(eventOrganisationUnit.source.value));
+    } else {
+      const i = organisation.controls.findIndex(
+        x => x.value === eventOrganisationUnit.source.value
+      );
+      organisation.removeAt(i);
+    }
+  }
+
+  submit() {
+    console.log(this.interestFormGroup.value);
+    console.log(this.organisationUnitFormGroup.value);
+  }
+
+  save() {
+    console.log('save');
+  }
+
+  getAllOrganisationUnit(): Observable<OrganisationUnit[]> {
+    return this.organisationUnit.asObservable();
+  }
+
+  loadOrganisationUnits() {
+    // TODO get  by financial year
+    this.organisationUnitService.getAllCouncils().subscribe(response => {
+      this.organisationUnit.next(response);
+
+      this.loadAllSelectedRisks();
+    });
   }
 }

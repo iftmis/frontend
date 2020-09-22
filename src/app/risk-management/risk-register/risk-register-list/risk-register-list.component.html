@@ -1,7 +1,7 @@
-<mat-card *ngIf="getData() | async as data">
+<mat-card>
   <div class="page-heading">
     <span class="mat-card-title">Risk Register</span>
-    <div>
+    <!--<div>
       <button
         mat-raised-button
         color="accent"
@@ -10,7 +10,7 @@
         <mat-icon>add</mat-icon>
         <span>Create</span>
       </button>
-    </div>
+    </div>-->
   </div>
   <mat-card-content>
     <mat-progress-spinner
@@ -21,110 +21,85 @@
       mode="indeterminate"
     >
     </mat-progress-spinner>
-    <div *ngIf="!getData()">
-      <span class="table-overlay">No records found</span>
-    </div>
-
-    <div
-      class="container"
-      fxLayout
-      fxLayout.xs="column"
-      fxLayoutAlign="center"
-      fxLayoutGap="10px"
-      fxLayoutGap.xs="0"
-    >
-      <div fxFlex="50%">
-        <mat-form-field appearance="outline">
-          <mat-label>Financial Year</mat-label>
-          <mat-select
-            [formControl]="financialYearControl"
-            (ngModelChange)="filterByFinancialYear($event)"
-            placeholder="Select Financial Year"
+    <div fxLayout fxLayout.xs="column" fxLayoutGap.xs="0">
+      <div fxFlex="15%">
+        <mat-selection-list
+          (selectionChange)="loadByFinancialYear($event)"
+          [multiple]="false"
+        >
+          <mat-list-option
+            *ngFor="let financialYear of getFinancialYears() | async"
+            [value]="financialYear"
           >
-            <mat-option value="null">-All-</mat-option>
-            <mat-option
-              *ngFor="let financialYear of financialYears"
-              [value]="financialYear"
-            >
-              {{ financialYear.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+            <div mat-line>{{ financialYear.name }}</div>
+            <div mat-line *ngIf="financialYear?.isOpened">(Current)</div>
+          </mat-list-option>
+        </mat-selection-list>
       </div>
-      <div fxFlex="50%">
-        <mat-form-field appearance="outline">
-          <mat-label>Council</mat-label>
-          <mat-select
-            [formControl]="organisationUnitControl"
-            (ngModelChange)="filterByOrganisationUnit($event)"
-            placeholder="Select Council"
-          >
-            <mat-option value="null">-All-</mat-option>
-            <mat-option
-              *ngFor="let organisationUnit of organisationUnits"
-              [value]="organisationUnit"
-            >
-              {{ organisationUnit.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div fxFlex="85%">
+        <span class="mat-card-title"
+          >Year: {{ financialYear?.name }}
+          <span *ngIf="financialYear?.isOpened">(Current)</span></span
+        >
+        <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="risk">
+            <th mat-header-cell *matHeaderCellDef>Register</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="financialYear">
+            <th mat-header-cell *matHeaderCellDef>Financial Year</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.financialYearName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="organisationUnit">
+            <th mat-header-cell *matHeaderCellDef>Organisation Unit</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.organisationUnitName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="formActions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button
+                mat-icon-button
+                color="accent"
+                [matMenuTriggerFor]="menu"
+                [matMenuTriggerData]="{ id: element.id, element: element }"
+                aria-label="Risk form actions "
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></tr>
+          <tr
+            mat-row
+            class="data-row"
+            *matRowDef="let row; columns: displayedColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="totalItems"
+          [pageSize]="size"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="pageChange($event)"
+        >
+        </mat-paginator>
       </div>
     </div>
-
-    <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="risk">
-        <th mat-header-cell *matHeaderCellDef>Risk</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="financialYear">
-        <th mat-header-cell *matHeaderCellDef>Financial Year</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.financialYearName }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="organisationUnit">
-        <th mat-header-cell *matHeaderCellDef>Organisation Unit</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.organisationUnitName }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="formActions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            mat-icon-button
-            color="accent"
-            [matMenuTriggerFor]="menu"
-            [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="Risk form actions "
-          >
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        class="data-row"
-        *matRowDef="let row; columns: displayedColumns"
-      ></tr>
-    </table>
-    <mat-paginator
-      [length]="totalItems"
-      [pageSize]="size"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="pageChange($event)"
-    >
-    </mat-paginator>
   </mat-card-content>
 </mat-card>
 <mat-menu #menu="matMenu">

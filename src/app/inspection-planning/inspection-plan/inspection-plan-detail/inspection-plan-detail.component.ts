@@ -105,9 +105,15 @@ export class InspectionPlanDetailComponent implements OnInit {
     result.subscribe({
       next: () => {
         if (action === 'create') {
-          this.toastService.success('Success!', 'Risk Created Successfully!');
+          this.toastService.success(
+            'Success!',
+            'Inspection Plan Created Successfully!'
+          );
         } else {
-          this.toastService.success('Success!', 'Risk Updated Successfully!');
+          this.toastService.success(
+            'Success!',
+            'Inspection Plan Updated Successfully!'
+          );
         }
         this.router.navigate(['/inspection-planning']);
       },
@@ -124,6 +130,11 @@ export class InspectionPlanDetailComponent implements OnInit {
   }
 
   cancel() {
+    console.log(
+      'this is ' +
+        this.formService.fromFormGroup(this.form).financialYearId +
+        'now '
+    );
     this.router.navigate(['/inspection-planning']);
     return false;
   }

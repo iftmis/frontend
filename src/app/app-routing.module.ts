@@ -8,7 +8,6 @@ import { AuthenticatedUserGuard } from './security/authenticated-user.guard';
 import { SettingComponent } from './setting/setting.component';
 import { InspectionComponent } from './inspection/inspection.component';
 import { UserManagementComponent } from './user-management/user-management.component';
-import { RiskManagementComponent } from './risk-management/risk-management.component';
 import { ReportComponent } from './report/report.component';
 import { InspectionProcessComponent } from './inspection-process/inspection-process.component';
 import { InspectionResolver } from './inspection/inspection.resolver';
@@ -68,7 +67,6 @@ const routes: Routes = [
   },
   {
     path: 'risk-management',
-    component: RiskManagementComponent,
     canActivateChild: [AuthenticatedUserGuard],
     loadChildren: () =>
       import('./risk-management/risk-management.module').then(
