@@ -12,8 +12,11 @@ export class InspectionFindingService {
 
   constructor(private http: HttpClient) {}
 
-  query(): Observable<InspectionFinding[]> {
-    return this.http.get<InspectionFinding[]>(this.resourceUrl);
+  query(inspectionId: number, params?: any): Observable<InspectionFinding[]> {
+    return this.http.get<InspectionFinding[]>(
+      `${this.resourceUrl}/by-inspection/${inspectionId}`,
+      { params: params }
+    );
   }
 
   getById(id: number): Observable<InspectionFinding> {
