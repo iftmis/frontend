@@ -9,6 +9,7 @@ import { BriefyingComponent } from './briefying/briefying.component';
 import { CourtesyDetailComponent } from './courtesy/courtesy-detail/courtesy-detail.component';
 import { BriefyingDetailComponent } from './briefying/briefying-detail/briefying-detail.component';
 import { CourtesyDeleteComponent } from './courtesy/courtesy-delete/courtesy-delete.component';
+import { BriefyingDeleteComponent } from './briefying/briefying-delete/briefying-delete.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CourtesyDeleteComponent } from './courtesy/courtesy-delete/courtesy-del
     CourtesyDetailComponent,
     BriefyingDetailComponent,
     CourtesyDeleteComponent,
+    BriefyingDeleteComponent,
   ],
   imports: [CommonModule, SharedModule, FormsModule],
 })

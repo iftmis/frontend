@@ -1,17 +1,9 @@
-<!--<div class="page-heading">-->
-<!--  <div>-->
-<!--    <button mat-raised-button color="accent" (click)="create()">-->
-<!--      <mat-icon>add</mat-icon>-->
-<!--      <span>Add</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</div>-->
-<div *ngIf="getMembers() | async as data">
+<div *ngIf="getMeetings() | async as data">
   <div class="page-heading">
     <div>
       <button mat-raised-button color="accent" (click)="createOrEdit()">
         <mat-icon>add</mat-icon>
-        <span>Add</span>
+        <span>Add Meeting</span>
       </button>
     </div>
   </div>
@@ -36,11 +28,6 @@
       <ng-container matColumnDef="venue">
         <th mat-header-cell *matHeaderCellDef>Venue</th>
         <td mat-cell *matCellDef="let element">{{ element.venue }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="userFullName">
-        <th mat-header-cell *matHeaderCellDef>User</th>
-        <td mat-cell *matCellDef="let element">{{ element.userFullName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="formActions">
@@ -71,7 +58,7 @@
     <button
       mat-menu-item
       aria-label="Edit inspectionMember"
-      (click)="createOrEdit(element)"
+      (click)="createOrEdit()"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
