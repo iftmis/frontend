@@ -14,6 +14,9 @@ import { InspectionBudgetListComponent } from '../inspection-process/inspection-
 import { InspectionWorkDoneListComponent } from '../inspection-process/inspection-work-done/inspection-work-done-list/inspection-work-done-list.component';
 import { InspectionWorkDoneDetailComponent } from '../inspection-process/inspection-work-done/inspection-work-done-detail/inspection-work-done-detail.component';
 import { InspectionWorkDoneDeleteComponent } from '../inspection-process/inspection-work-done/inspection-work-done-delete/inspection-work-done-delete.component';
+import { InspectionFindingListComponent } from '../inspection-process/inspection-finding/inspection-finding-list/inspection-finding-list.component';
+import { InspectionFindingDetailComponent } from '../inspection-process/inspection-finding/inspection-finding-detail/inspection-finding-detail.component';
+import { InspectionFindingDeleteComponent } from '../inspection-process/inspection-finding/inspection-finding-delete/inspection-finding-delete.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,9 @@ import { InspectionWorkDoneDeleteComponent } from '../inspection-process/inspect
     InspectionWorkDoneListComponent,
     InspectionWorkDoneDetailComponent,
     InspectionWorkDoneDeleteComponent,
+    InspectionFindingListComponent,
+    InspectionFindingDetailComponent,
+    InspectionFindingDeleteComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +53,9 @@ import { InspectionWorkDoneDeleteComponent } from '../inspection-process/inspect
     InspectionWorkDoneListComponent,
     InspectionWorkDoneDetailComponent,
     InspectionWorkDoneDeleteComponent,
+    InspectionFindingListComponent,
+    InspectionFindingDetailComponent,
+    InspectionFindingDeleteComponent,
   ],
 })
 export class SharedModule {

@@ -14,12 +14,10 @@
       "controlType": "text",
       "validation": {
         "required": true,
-
         "minlength": 2,
         "maxlength": 200
       }
     },
-
     {
       "label": "Start Date",
       "name": "startDate",
@@ -39,7 +37,6 @@
         "required": true
       }
     },
-
     {
       "label": "Is Opened",
       "name": "isOpened",

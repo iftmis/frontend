@@ -59,7 +59,7 @@ export class InspectionWorkDoneDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<InspectionWorkDone>) {
     result.subscribe({
-      next: () => this.dialogRef.close(result),
+      next: data => this.dialogRef.close(data),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error

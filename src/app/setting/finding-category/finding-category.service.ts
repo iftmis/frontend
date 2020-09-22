@@ -29,6 +29,10 @@ export class FindingCategoryService {
     return this.http.get<FindingCategory>(`${this.resourceUrl}/${id}`);
   }
 
+  all(): Observable<FindingCategory[]> {
+    return this.http.get<FindingCategory[]>(`${this.resourceUrl}`);
+  }
+
   create(findingCategory: FindingCategory): Observable<FindingCategory> {
     return this.http.post<FindingCategory>(this.resourceUrl, findingCategory);
   }

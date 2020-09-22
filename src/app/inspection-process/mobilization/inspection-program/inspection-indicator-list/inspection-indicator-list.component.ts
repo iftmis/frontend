@@ -24,6 +24,9 @@ import { InspectionProcedure } from '../inspection-procedure';
 import { InspectionWorkDoneDetailComponent } from '../../../inspection-work-done/inspection-work-done-detail/inspection-work-done-detail.component';
 import { InspectionWorkDone } from 'src/app/inspection-process/inspection-work-done/inspection-work-done';
 import { InspectionWorkDoneService } from 'src/app/inspection-process/inspection-work-done/inspection-work-done.service';
+import { InspectionFinding } from 'src/app/inspection-process/inspection-finding/inspection-finding';
+import { InspectionFindingService } from 'src/app/inspection-process/inspection-finding/inspection-finding.service';
+import { InspectionFindingDetailComponent } from 'src/app/inspection-process/inspection-finding/inspection-finding-detail/inspection-finding-detail.component';
 
 @Component({
   selector: 'app-inspection-indicator-list',
@@ -55,7 +58,8 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
     private inspectionIndicatorService: InspectionIndicatorService,
     private inspectionAreaService: InspectionAreaService,
     private inspectionProcedureService: InspectionProcedureService,
-    private workDoneService: InspectionWorkDoneService
+    private workDoneService: InspectionWorkDoneService,
+    private findingService: InspectionFindingService
   ) {}
 
   ngOnInit() {
@@ -92,11 +96,28 @@ export class InspectionIndicatorListComponent implements OnInit, AfterViewInit {
       if (result) {
         p.workDoneLoaded = false;
         this.loadWorkDone(p);
+        console.log(result);
+        if (!result.isOk) {
+          this.createOrEditFinding(result);
+        }
       }
     });
   }
 
-  createOrEditFinding(w: InspectionWorkDone, finding?: any): void {}
+  createOrEditFinding(
+    w: InspectionWorkDone,
+    finding?: InspectionFinding
+  ): void {
+    this.findingService.getByWorkDone(w.id!).subscribe(res => {
+      if (res) {
+        const dialogRef = this.dialog.open(InspectionFindingDetailComponent, {
+          width: '400px',
+          data: res,
+        });
+        dialogRef.afterClosed().subscribe(res => {});
+      }
+    });
+  }
 
   loadInspectionAreasWithSubAreas() {
     this.inspectionAreaService
