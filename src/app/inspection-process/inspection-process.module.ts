@@ -10,18 +10,16 @@ import { ReportAndFollowupComponent } from './report-and-followup/report-and-fol
 import { SharedModule } from '../shared/shared.module';
 import { InspectionProcessRoutingModule } from './inspection-process-routing.module';
 import { FormsModule } from '@angular/forms';
+import { ExecutionModule } from './execution/execution.module';
 
 @NgModule({
-  declarations: [
-    InspectionProcessComponent,
-    ExecutionComponent,
-    ReportAndFollowupComponent,
-  ],
+  declarations: [InspectionProcessComponent, ReportAndFollowupComponent],
   imports: [
     CommonModule,
     SharedModule,
     InspectionProcessRoutingModule,
     FormsModule,
+    ExecutionModule,
   ],
 })
 export class InspectionProcessModule {}
