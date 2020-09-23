@@ -1,15 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CourtesyDetailComponent } from './courtesy-detail/courtesy-detail.component';
 import { FormGroup } from '@angular/forms';
-import { InspectionMember } from '../../preparation/inspection-member/inspection-member';
-import { InspectionMemberDetailComponent } from '../../preparation/inspection-member/inspection-member-detail/inspection-member-detail.component';
 import { CourtesyService } from './courtesy.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Courtesy } from './courtesy';
-import { InspectionMemberDeleteComponent } from '../../preparation/inspection-member/inspection-member-delete/inspection-member-delete.component';
 import { CourtesyDeleteComponent } from './courtesy-delete/courtesy-delete.component';
+import { CourtesyDetailComponent } from './courtesy-detail/courtesy-detail.component';
+import { CourtesyUploadComponent } from './courtesy-upload/courtesy-upload.component';
+import { CourtesyMembersComponent } from './courtesy-members/courtesy-members.component';
 
 @Component({
   selector: 'app-courtesy',
@@ -17,6 +16,8 @@ import { CourtesyDeleteComponent } from './courtesy-delete/courtesy-delete.compo
   styleUrls: ['./courtesy.component.scss'],
 })
 export class CourtesyComponent implements OnInit {
+  displayedColumns = ['meeting_date', 'venue', 'formActions'];
+
   form: FormGroup;
   routeData$ = this.route.data;
   showLoader = false;
@@ -39,6 +40,9 @@ export class CourtesyComponent implements OnInit {
       this.meetings.next(res.body || []);
     });
   }
+  getMeetings(): Observable<Courtesy[]> {
+    return this.meetings.asObservable();
+  }
 
   delete(id: number) {
     const dialogRef = this.dialog.open(CourtesyDeleteComponent);
@@ -56,7 +60,29 @@ export class CourtesyComponent implements OnInit {
   }
 
   createOrEdit() {
-    const dialogRef = this.dialog.open(InspectionMemberDetailComponent, {
+    const dialogRef = this.dialog.open(CourtesyDetailComponent, {
+      data: { inspectionId: this.inspectionId },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadMeeting();
+      if (result) {
+        this.showLoader = true;
+      }
+    });
+  }
+  uploadMinutes() {
+    const dialogRef = this.dialog.open(CourtesyUploadComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadMeeting();
+      if (result) {
+        this.showLoader = true;
+      }
+    });
+  }
+
+  addMembers() {
+    const dialogRef = this.dialog.open(CourtesyMembersComponent, {
       data: { inspectionId: this.inspectionId },
     });
 
