@@ -1,6 +1,6 @@
 <form (ngSubmit)="saveOrUpdate()" [formGroup]="form">
   <mat-dialog-content>
-    <h2 mat-dialog-title>Courtesy Members</h2>
+    <h2 mat-dialog-title>Courtesy</h2>
     <mat-progress-spinner
       *ngIf="isSaveOrUpdateInProgress"
       class="form-overlay"
@@ -12,28 +12,57 @@
     <div class="error mat-error">
       {{ error ? error : '&nbsp;' }}
     </div>
-    <mat-form-field appearance="fill" style="width: 800px;">
-      <mat-label>Description</mat-label>
-      <textarea
-        matInput
-        rows="5"
-        cols="40"
-        formControlName="description"
-      ></textarea>
-    </mat-form-field>
-
-    <div class="row">
-      <div class="col-sm-8 text-center">
-        <div class="custom-file">
+    <div
+      class="container"
+      fxLayout
+      fxLayout.xs="column"
+      fxLayoutAlign="center"
+      fxLayoutGap="10px"
+      fxLayoutGap.xs="0"
+    >
+      <div fxFlex="50%">
+        <mat-form-field appearance="outline">
+          <mat-label>Meeting Date</mat-label>
           <input
-            type="file"
-            class="custom-file-input"
-            id="customFile"
-            name="myfile"
-            (change)="onFileSelect($event)"
-            #UploadFileInput
+            autocomplete="off"
+            type="text"
+            required
+            matInput
+            placeholder="Select Meeting date"
+            (click)="startDatePicker.open()"
+            formControlName="meetingDate"
+            [matDatepicker]="startDatePicker"
           />
-        </div>
+          <mat-datepicker-toggle
+            matSuffix
+            color="accent"
+            [for]="startDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker color="accent" #startDatePicker></mat-datepicker>
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('meetingDate')"
+              label="Meeting Date"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%">
+        <mat-form-field appearance="outline">
+          <mat-label>Venue</mat-label>
+          <input
+            matInput
+            placeholder="Enter meeting venue"
+            formControlName="venue"
+            required
+          />
+          <mat-error
+            ><hip-ngx-error
+              [control]="form.get('venue')"
+              label="Venue"
+            ></hip-ngx-error
+          ></mat-error>
+        </mat-form-field>
       </div>
     </div>
   </mat-dialog-content>
