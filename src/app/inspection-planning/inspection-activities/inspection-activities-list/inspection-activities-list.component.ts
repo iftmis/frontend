@@ -40,13 +40,17 @@ export class InspectionActivitiesListComponent implements OnInit {
   displayedColumns = ['No', 'activity', 'formActions'];
   routeData$ = this.route.data;
   showLoader = false;
-
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
+  filter = {
+    'objectiveId.equals': null,
+    'auditableAreaId.equals': null,
+    'subAreaId.equals': null,
+  };
   size: number;
-  private InspectionActivityBehaviorSubject: BehaviorSubject<
+  InspectionActivityBehaviorSubject: BehaviorSubject<
     InspectionActivities[]
   > = new BehaviorSubject([]);
   // @ts-ignore
@@ -169,5 +173,17 @@ export class InspectionActivitiesListComponent implements OnInit {
 
   filterActivityFromSelection() {
     // Filter activity by selection
+
+    const pageToLoad = this.page || 0;
+    this.inspectionActivitiesService
+      .query({
+        InspectionActivityCriteria: this.filter,
+        page: pageToLoad,
+        size: this.itemsPerPage,
+      })
+      .subscribe(
+        resp => this.onSuccess(resp.body, resp.headers, this.page),
+        () => this.onError()
+      );
   }
 }

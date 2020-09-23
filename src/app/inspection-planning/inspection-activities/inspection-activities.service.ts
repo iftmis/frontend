@@ -15,6 +15,7 @@ export class InspectionActivitiesService {
 
   query(req?: any): Observable<HttpResponse<InspectionActivities[]>> {
     const options = createRequestOption(req);
+
     return this.http.get<InspectionActivities[]>(this.resourceUrl, {
       params: options,
       observe: 'response',
