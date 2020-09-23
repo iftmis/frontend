@@ -41,6 +41,7 @@ export class InspectionActivitiesListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   totalItems = 0;
+  inspectionActivity: InspectionActivities;
   itemsPerPage = ITEMS_PER_PAGE;
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
@@ -177,7 +178,6 @@ export class InspectionActivitiesListComponent implements OnInit {
     const pageToLoad = this.page || 0;
     this.inspectionActivitiesService
       .query({
-        InspectionActivityCriteria: this.filter,
         page: pageToLoad,
         size: this.itemsPerPage,
       })
