@@ -31,6 +31,7 @@ export class InspectionMemberListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   @Input() inspectionId: number;
+  @Input() stage: any;
   members: BehaviorSubject<InspectionMember[]> = new BehaviorSubject<
     InspectionMember[]
   >([]);

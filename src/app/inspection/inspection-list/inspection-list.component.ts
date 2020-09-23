@@ -8,6 +8,10 @@ import { Inspection } from '../inspection';
 import { OrganisationUnit } from 'src/app/setting/organisation-unit/organisation-unit';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { InspectionActivitiesDetailComponent } from '../../inspection-planning/inspection-activities/inspection-activities-detail/inspection-activities-detail.component';
+import { FinancialYearService } from 'src/app/setting/financial-year/financial-year.service';
+import { FinancialYear } from 'src/app/setting/financial-year/financial-year';
+import { InspectionDetailComponent } from '../inspection-detail/inspection-detail.component';
+import { InspectionComponent } from '../inspection.component';
 
 @Component({
   selector: 'app-inspection-list',
@@ -26,6 +30,8 @@ export class InspectionListComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   organisationUnit: OrganisationUnit;
+  inspectionType: string;
+  financialYear: FinancialYear;
   inspections: BehaviorSubject<Inspection[]> = new BehaviorSubject([]);
 
   constructor(
@@ -36,24 +42,57 @@ export class InspectionListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ organisation }) => {
+    this.inspectionType = this.route.snapshot.params['type'];
+    console.log(this.route.snapshot);
+    this.route.data.subscribe(({ organisation, financialYear, type }) => {
       this.organisationUnit = organisation;
-      this.loadInspection(this.organisationUnit.id);
+      this.financialYear = financialYear;
+      this.inspectionType = type;
+      this.loadInspection();
     });
   }
 
-  loadInspection(ouId: number | undefined) {
-    if (ouId === undefined) {
-      this.inspections.next([]);
-      return;
-    }
-    this.inspectionService.query(ouId).subscribe(resp => {
-      this.inspections.next(resp);
-    });
+  loadInspection() {
+    const params = {
+      sort: ['id,desc'],
+    };
+    console.log(this.route.snapshot);
+
+    this.inspectionService
+      .query(
+        this.financialYear.id!,
+        this.inspectionType,
+        this.organisationUnit.id!,
+        params
+      )
+      .subscribe(resp => {
+        this.inspections.next(resp);
+      });
   }
 
   getInspections(): Observable<Inspection[]> {
     return this.inspections.asObservable();
+  }
+
+  createOrEdit(inspection?: Inspection): void {
+    const insp: Inspection = inspection || {
+      inspectionType: this.inspectionType!,
+      organisationUnitId: this.organisationUnit.id!,
+      financialYearId: this.financialYear.id!,
+      financialYearName: this.financialYear.name,
+      organisationUnitName: this.organisationUnit.name,
+    };
+    const dialogRef = this.dialog.open(InspectionDetailComponent, {
+      data: insp,
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+        this.loadInspection();
+      }
+    });
   }
 
   delete(id: number, inspection: Inspection) {

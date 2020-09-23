@@ -1,0 +1,64 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-dialog-content>
+    <mat-card-title>InspectionWorkDone</mat-card-title>
+    <mat-card-subtitle>{{
+      inspectionWorkDone?.id
+        ? 'Update an existing inspectionWorkDone.'
+        : 'Creates a new inspectionWorkDone.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <mat-card-content class="content">
+      <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter inspectionWorkDone name"
+          formControlName="name"
+          required
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('name')"
+            label="Name"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Results</mat-label>
+        <textarea
+          matInput
+          placeholder="Enter inspectionWorkDone results"
+          formControlName="result"
+        ></textarea>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('result')"
+            label="Results"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <!-- Attachment here -->
+      <mat-radio-group aria-label="Status" formControlName="isOk">
+        <mat-radio-button [value]="true">Result Is Ok</mat-radio-button>
+        <mat-radio-button [value]="false">Result Not Ok</mat-radio-button>
+      </mat-radio-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+        <span>Cancel</span>
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || isSaveOrUpdateInProgress"
+        type="submit"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ inspectionWorkDone?.id ? 'Update' : 'Save' }} </span>
+      </button>
+    </mat-card-actions>
+  </mat-dialog-content>
+</form>

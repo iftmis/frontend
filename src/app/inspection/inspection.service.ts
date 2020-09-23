@@ -13,9 +13,16 @@ export class InspectionService {
 
   constructor(private http: HttpClient) {}
 
-  query(ouId: number): Observable<Inspection[]> {
+  query(
+    fyId: number,
+    type: string,
+    ouId: number,
+    params: any
+  ): Observable<Inspection[]> {
     return this.http
-      .get<Inspection[]>(`${this.resourceUrl}/by-ou/${ouId}`)
+      .get<Inspection[]>(`${this.resourceUrl}/${fyId}/${type}/${ouId}`, {
+        params: params,
+      })
       .pipe(map((response: Inspection[]) => this.parseArrayResponse(response)));
   }
 
@@ -30,10 +37,7 @@ export class InspectionService {
   }
 
   update(inspection: Inspection): Observable<Inspection> {
-    return this.http.put<Inspection>(
-      `${this.resourceUrl}/${inspection.id}`,
-      inspection
-    );
+    return this.http.put<Inspection>(`${this.resourceUrl}`, inspection);
   }
 
   delete(id: number) {
@@ -48,8 +52,8 @@ export class InspectionService {
   }
 
   private parseResponse(inspection: Inspection): Inspection {
-    inspection.startDate = new Date(inspection.startDate);
-    inspection.endDate = new Date(inspection.endDate);
+    inspection.startDate = new Date(inspection.startDate!);
+    inspection.endDate = new Date(inspection.endDate!);
     return inspection;
   }
 }

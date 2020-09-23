@@ -1,0 +1,79 @@
+<form (ngSubmit)="saveOrUpdate()" [formGroup]="form">
+  <mat-dialog-content>
+    <h2 mat-dialog-title>Courtesy</h2>
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      class="form-overlay"
+      color="accent"
+      diameter="50"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <div
+      class="container"
+      fxLayout
+      fxLayout.xs="column"
+      fxLayoutAlign="center"
+      fxLayoutGap="10px"
+      fxLayoutGap.xs="0"
+    >
+      <div fxFlex="50%">
+        <mat-form-field appearance="outline">
+          <mat-label>Meeting Date</mat-label>
+          <input
+            autocomplete="off"
+            type="text"
+            required
+            matInput
+            placeholder="Select Meeting date"
+            (click)="startDatePicker.open()"
+            formControlName="meetingDate"
+            [matDatepicker]="startDatePicker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            color="accent"
+            [for]="startDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker color="accent" #startDatePicker></mat-datepicker>
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('meetingDate')"
+              label="Meeting Date"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%">
+        <mat-form-field appearance="outline">
+          <mat-label>Venue</mat-label>
+          <input
+            matInput
+            placeholder="Enter meeting venue"
+            formControlName="venue"
+            required
+          />
+          <mat-error
+            ><hip-ngx-error
+              [control]="form.get('venue')"
+              label="Venue"
+            ></hip-ngx-error
+          ></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>
+      <mat-icon>cancel</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button color="accent" mat-raised-button type="submit">
+      <mat-icon>save</mat-icon>
+      <span>{{ inspectionMember?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </mat-dialog-actions>
+</form>

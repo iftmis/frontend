@@ -1,0 +1,53 @@
+{
+  "name": "teamMeetingTimeline",
+  "pageTitle": "Team Meeting Timeline",
+  "pageOptions": {
+    "list": {
+      "displayFields": ["activity", "responsible", "days", "comments"]
+    }
+  },
+  "fields": [
+    {
+      "label": "Activity",
+      "name": "activity",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "User",
+      "name": "userId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "User",
+      "name": "userFullName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Comments",
+      "name": "comments",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Days",
+      "name": "days",
+      "dataType": "number",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "TeamMeeting",
+      "name": "teamMeetingId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {}
+    }
+  ]
+}

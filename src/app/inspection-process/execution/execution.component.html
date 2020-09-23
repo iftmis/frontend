@@ -1,1 +1,20 @@
-<p>execution works!</p>
+<mat-tab-group mat-align-tabs="start">
+  <mat-tab label="Courtesy">
+    <ng-template matTabContent>
+      <app-courtesy></app-courtesy>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Briefying">
+    <ng-template matTabContent>
+      <app-briefying></app-briefying>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Inspection">
+    <ng-template matTabContent> </ng-template>
+  </mat-tab>
+  <mat-tab label="Briefying">
+    <ng-template matTabContent>
+      <app-inspection-finding-list></app-inspection-finding-list>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

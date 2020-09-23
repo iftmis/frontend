@@ -2,11 +2,7 @@
   <div class="page-heading">
     <span class="mat-card-title">{{ organisationUnit.name }} Inspections</span>
     <div>
-      <button
-        mat-raised-button
-        color="accent"
-        [routerLink]="['/inspections', organisationUnit?.id, 'new']"
-      >
+      <button mat-raised-button color="accent" (click)="createOrEdit()">
         <mat-icon>add</mat-icon>
         <span>Create</span>
       </button>
@@ -88,7 +84,7 @@
     <button
       mat-menu-item
       aria-label="Edit inspection"
-      [routerLink]="['/inspections', id, 'edit']"
+      (click)="createOrEdit(element)"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>

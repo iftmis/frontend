@@ -1,0 +1,105 @@
+{
+  "name": "inspectionFinding",
+  "pageTitle": "Inspection Finding",
+  "pageOptions": {
+    "list": {
+      "displayFields": []
+    }
+  },
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {
+        "minlength": 1,
+        "maxlength": 64
+      }
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {}
+    },
+    {
+      "label": "Condition",
+      "name": "condition",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Disclosed Last Inspection",
+      "name": "disclosedLastInspection",
+      "dataType": "boolean",
+      "controlType": "checkbox",
+      "validation": {}
+    },
+    {
+      "label": "Causes",
+      "name": "causes",
+      "dataType": "string",
+      "controlType": "textarea",
+      "validation": {}
+    },
+    {
+      "label": "Action Plan Category",
+      "name": "actionPlanCategory",
+      "dataType": "string",
+      "controlType": "select",
+      "validation": {},
+      "options": [
+        {
+          "name": "LOW",
+          "label": "Low"
+        },
+        {
+          "name": "MEDIUM",
+          "label": "Medium"
+        },
+        {
+          "name": "HIGH",
+          "label": "High"
+        }
+      ]
+    },
+    {
+      "label": "Is Closed",
+      "name": "isClosed",
+      "dataType": "boolean",
+      "controlType": "checkbox",
+      "validation": {}
+    },
+    {
+      "label": "Category",
+      "name": "categoryId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Category",
+      "name": "categoryName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    },
+    {
+      "label": "Sub Category Id",
+      "name": "subCategoryId",
+      "dataType": "number",
+      "controlType": "select",
+      "validation": {}
+    },
+    {
+      "label": "Sub Category Id",
+      "name": "subCategoryName",
+      "dataType": "string",
+      "controlType": "text",
+      "validation": {}
+    }
+  ]
+}

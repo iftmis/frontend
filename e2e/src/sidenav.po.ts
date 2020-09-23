@@ -45,11 +45,26 @@ export class SidenavPage {
     by.css('a[routerLink="/inspection-objectives"]')
   );
   riskMenu = this.root.element(by.css('a[routerLink="/risks"]'));
+  inspectionSubAreaMenu = this.root.element(
+    by.css('a[routerLink="/inspection-sub-areas"]')
+  );
+  inspectionBudgetMenu = this.root.element(
+    by.css('a[routerLink="/inspection-budgets"]')
+  );
   inspectionActivitiesMenu = this.root.element(
     by.css('a[routerLink="/inspection-activities"]')
   );
 
   inspectionPlanMenu = this.root.element(
     by.css('a[routerLink="/inspection-plans"]')
+  );
+  teamMeetingTimelineMenu = this.root.element(
+    by.css('a[routerLink="/team-meeting-timelines"]')
+  );
+  inspectionWorkDoneMenu = this.root.element(
+    by.css('a[routerLink="/inspection-work-dones"]')
+  );
+  inspectionFindingMenu = this.root.element(
+    by.css('a[routerLink="/inspection-findings"]')
   );
 }

@@ -21,6 +21,10 @@ export class FindingSubCategoryService {
     });
   }
 
+  all(): Observable<FindingSubCategory[]> {
+    return this.http.get<FindingSubCategory[]>(this.resourceUrl, {});
+  }
+
   getById(id: number): Observable<FindingSubCategory> {
     return this.http.get<FindingSubCategory>(`${this.resourceUrl}/${id}`);
   }

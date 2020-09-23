@@ -1,0 +1,26 @@
+<div fxLayout="column">
+  <mat-form-field class="full-width" appearance="outline">
+    <mat-label>
+      Subject
+    </mat-label>
+    <input
+      matInput
+      [(ngModel)]="letter.subject"
+      [disabled]="stage?.isApproved"
+    />
+  </mat-form-field>
+  <mat-form-field class="full-width" appearance="outline">
+    <mat-label>
+      Body
+    </mat-label>
+    <textarea
+      matInput
+      rows="20"
+      [(ngModel)]="letter.body"
+      [disabled]="stage?.isApproved"
+    ></textarea>
+  </mat-form-field>
+  <mat-action-row>
+    <button mat-raised-button color="primary" (click)="update()">Save</button>
+  </mat-action-row>
+</div>

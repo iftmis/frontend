@@ -50,6 +50,21 @@
           ></hip-ngx-error
         ></mat-error>
       </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>General Objective</mat-label>
+        <textarea
+          autocomplete="off"
+          matInput
+          formControlName="generalObjective"
+          required
+        ></textarea>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('generalObjective')"
+            label="General Objective"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button (click)="cancel()">

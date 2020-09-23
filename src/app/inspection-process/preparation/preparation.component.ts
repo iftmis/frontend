@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { InspectionArea } from './inspection-area/inspection-area';
 import { AuditableArea } from '../../setting/auditable-area/auditable-area';
 import { AuditableAreaService } from '../../setting/auditable-area/auditable-area.service';
 import { InspectionAreaService } from './inspection-area/inspection-area.service';
+import { InspectionProcessService } from '../inspection-process.service';
 
 @Component({
   selector: 'app-preparation',
@@ -22,11 +23,13 @@ export class PreparationComponent implements OnInit {
   allAreasAuditableAreas: AuditableArea[] = [];
   selectedAreas: AuditableArea[] = [];
   selectedInspectionAreas: InspectionArea[] = [];
+  stage: any;
 
   constructor(
     private route: ActivatedRoute,
     private auditableAreaService: AuditableAreaService,
-    private inspectionAreaService: InspectionAreaService
+    private inspectionAreaService: InspectionAreaService,
+    private processService: InspectionProcessService
   ) {
     this.inspectionId = route.snapshot.parent?.parent?.params['id'];
     this.loadAuditableAreas();
@@ -66,6 +69,11 @@ export class PreparationComponent implements OnInit {
       .subscribe(res => this.onSuccess());
   }
 
+  stageChange(stage: any) {
+    console.log(stage);
+    this.stage = stage;
+  }
+
   removeAll(inAreas: InspectionArea[]) {
     this.inspectionAreaService
       .removeAll(inAreas)
@@ -92,11 +100,15 @@ export class PreparationComponent implements OnInit {
   }
 
   getAuditableAreas(): Observable<AuditableArea[]> {
-    console.log(this.auditableAreas.asObservable());
     return this.auditableAreas.asObservable();
   }
 
   ngOnInit(): void {
+    this.processService
+      .getOne(this.inspectionId, 'PREPARATION')
+      .subscribe(res => {
+        this.stage = res;
+      });
     this.inspectionAreas.subscribe(areas => {});
   }
 }

@@ -19,6 +19,7 @@ export class SubAreaFormService {
       ]),
       areaId: this.formBuilder.control(subArea.areaId, [Validators.required]),
       areaName: this.formBuilder.control(subArea.areaName, []),
+      generalObjective: this.formBuilder.control(subArea.generalObjective, []),
     });
   }
 
@@ -28,6 +29,7 @@ export class SubAreaFormService {
       name: formGroup.get('name')!.value,
       areaId: formGroup.get('areaId')!.value,
       areaName: formGroup.get('areaName')!.value,
+      generalObjective: formGroup.get('generalObjective')!.value,
     };
   }
 }
