@@ -28,6 +28,12 @@ export class ProcedureService {
     return this.http.get<Procedure>(`${this.resourceUrl}/${id}`);
   }
 
+  getByIndicator(indicatorId: number): Observable<Procedure[]> {
+    return this.http.get<Procedure[]>(
+      `${this.resourceUrl}/by-indicator/${indicatorId}`
+    );
+  }
+
   create(procedure: Procedure): Observable<Procedure> {
     return this.http.post<Procedure>(this.resourceUrl, procedure);
   }

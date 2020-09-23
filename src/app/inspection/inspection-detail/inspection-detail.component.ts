@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,9 +12,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { InspectionService } from '../inspection.service';
 import { InspectionFormService } from './inspection-form.service';
 import { Inspection } from '../inspection';
-import { OrganisationUnit } from 'src/app/setting/organisation-unit/organisation-unit';
-import { FinancialYear } from 'src/app/setting/financial-year/financial-year';
-import { FinancialYearService } from 'src/app/setting/financial-year/financial-year.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-inspection-detail',
@@ -18,7 +21,6 @@ import { FinancialYearService } from 'src/app/setting/financial-year/financial-y
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectionDetailComponent implements OnInit {
-  inspection: Inspection;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   inspectionTypeOptions: KeyValue<string, string>[] = [
@@ -26,43 +28,24 @@ export class InspectionDetailComponent implements OnInit {
     { key: 'SPECIAL', value: 'Special' },
   ];
   error: string | undefined = undefined;
-  organisationUnit: OrganisationUnit;
-  financialYears: BehaviorSubject<FinancialYear[]> = new BehaviorSubject([]);
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private formService: InspectionFormService,
     private inspectionService: InspectionService,
-    private fyService: FinancialYearService
+    @Inject(MAT_DIALOG_DATA) public inspection: Inspection,
+    private dialogRef: MatDialogRef<InspectionDetailComponent>
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ inspection, organisation }) => {
-      console.log(organisation);
-      this.inspection = inspection;
-      this.organisationUnit = organisation;
-      this.form = this.formService.toFormGroup(inspection);
-      this.form.patchValue({ organisationUnitId: organisation.id });
-    });
-    this.loadFinancialYears();
-
+    this.form = this.formService.toFormGroup(this.inspection);
     this.error = undefined;
-  }
-
-  loadFinancialYears() {
-    this.fyService.getAll().subscribe(resp => {
-      this.financialYears.next(resp.body || []);
-    });
-  }
-
-  getFinancialYears(): Observable<FinancialYear[]> {
-    return this.financialYears.asObservable();
   }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
+    console.log(this.form.value);
     if (this.form.value.id) {
       this.subscribeToResponse(
         this.inspectionService.update(this.formService.fromFormGroup(this.form))
@@ -76,8 +59,7 @@ export class InspectionDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<Inspection>) {
     result.subscribe({
-      next: () =>
-        this.router.navigate(['/inspections', this.organisationUnit.id]),
+      next: res => this.dialogRef.close(res),
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
@@ -91,7 +73,7 @@ export class InspectionDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/inspections']);
+    this.dialogRef.close();
     return false;
   }
 }

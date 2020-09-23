@@ -1,0 +1,42 @@
+<div>
+  <div fxLayout="column" fxLayoutGap="10px" style="margin-bottom: 20px;">
+    <mat-checkbox [disabled]="true" color="primary" [checked]="true"
+      >Auditable Areas</mat-checkbox
+    >
+    <mat-checkbox [disabled]="true" color="primary" [checked]="true"
+      >Sub Areas</mat-checkbox
+    >
+    <mat-checkbox [disabled]="true" color="primary" [checked]="true"
+      >Team Members</mat-checkbox
+    >
+    <mat-checkbox [disabled]="true" color="primary" [checked]="true"
+      >Team Meeting</mat-checkbox
+    >
+    <mat-checkbox [disabled]="true" color="primary" [checked]="true"
+      >Client Letter</mat-checkbox
+    >
+  </div>
+  <button
+    [disabled]="stage?.isApproved"
+    mat-raised-button
+    color="primary"
+    (click)="apporve(confirm)"
+  >
+    {{ stage?.isApproved ? 'Approved' : 'Approve' }}
+  </button>
+</div>
+
+<ng-template #confirm>
+  <h2 matDialogTitle>Confirm Approve</h2>
+  <mat-dialog-content>
+    Are sure you waht to approve this stage
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>
+      <span>No</span>
+    </button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="true">
+      <span>Yes</span>
+    </button>
+  </mat-dialog-actions>
+</ng-template>

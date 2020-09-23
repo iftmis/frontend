@@ -19,6 +19,7 @@ import {
   ShowOnDirtyErrorStateMatcher,
   ErrorStateMatcher,
   MatNativeDateModule,
+  MatRippleModule,
 } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -36,7 +37,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSliderModule } from '@angular/material/slider';
@@ -80,6 +80,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatTabsModule,
     MatBottomSheetModule,
     MatButtonToggleModule,
+    MatRippleModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Delete Inspection Indicator</h2>
+<mat-dialog-content>
+  <div class="content">
+    Are you sure you want to delete inspectionIndicator
+    <strong>{{ data.id }}</strong> ?
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="right">
+  <button mat-button mat-dialog-close>
+    <span>Cancel</span>
+  </button>
+  <button mat-button color="warn" [mat-dialog-close]="true">
+    <span>Yes</span>
+  </button>
+</mat-dialog-actions>

@@ -16,16 +16,16 @@ export class InspectionAreaService {
     return this.http.get<InspectionArea[]>(this.resourceUrl);
   }
 
-  getByInspection(id: number): Observable<InspectionArea[]> {
+  getByInspection(inspectionId: number): Observable<InspectionArea[]> {
     return this.http.get<InspectionArea[]>(
-      `${this.resourceUrl}/by-inspection/${id}`,
+      `${this.resourceUrl}/by-inspection/${inspectionId}`,
       {}
     );
   }
 
-  getWithObjectives(id: number): Observable<any> {
+  getWithSubAreas(inspectionId: number): Observable<any> {
     return this.http.get<any>(
-      `${this.resourceUrl}/by-inspection/${id}/with-objectives`,
+      `${this.resourceUrl}/by-inspection/${inspectionId}/with-sub-areas`,
       {}
     );
   }

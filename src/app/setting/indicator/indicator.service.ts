@@ -16,6 +16,12 @@ export class IndicatorService {
     return this.http.get<any>(this.resourceUrl);
   }
 
+  getBySubArea(subAreaId: number): Observable<Indicator[]> {
+    return this.http.get<Indicator[]>(
+      `${this.resourceUrl}/by-sub-area/${subAreaId}`
+    );
+  }
+
   getAllPaged(
     page: number,
     size: number,

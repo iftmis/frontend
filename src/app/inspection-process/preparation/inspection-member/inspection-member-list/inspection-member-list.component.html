@@ -1,9 +1,11 @@
 <div *ngIf="getMembers() | async as data">
   <div class="page-heading">
+    <span class="mat-card-title"></span>
     <div>
       <button
+        [disabled]="stage.isApproved!"
         mat-raised-button
-        color="accent"
+        color="primary"
         (click)="createOrEdit(undefined)"
       >
         <mat-icon>add</mat-icon>
@@ -43,7 +45,15 @@
         <th mat-header-cell *matHeaderCellDef>Letter</th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.letterAttachmentId">
-            <button mat-icon-button><mat-icon>attachment</mat-icon></button>
+            <a
+              target="_blanck"
+              [href]="
+                'http://localhost:8080/api/file-resources/download' +
+                element.contentId
+              "
+            >
+              <mat-icon>attachment</mat-icon>
+            </a>
           </span>
           <span *ngIf="!element.letterAttachmentId">
             <button mat-icon-button><mat-icon>email</mat-icon></button>
@@ -69,7 +79,6 @@
         <td mat-cell *matCellDef="let element">
           <button
             mat-icon-button
-            color="accent"
             [matMenuTriggerFor]="menu"
             [matMenuTriggerData]="{ id: element.id, element: element }"
             aria-label="InspectionMember form actions "
@@ -92,6 +101,7 @@
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
       mat-menu-item
+      [disabled]="stage.isApproved!"
       aria-label="Edit inspectionMember"
       (click)="createOrEdit(element)"
     >
@@ -100,6 +110,7 @@
     </button>
     <button
       mat-menu-item
+      [disabled]="stage.isApproved!"
       aria-label="Delete inspectionMember"
       (click)="delete(id, element)"
     >

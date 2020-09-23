@@ -1,0 +1,83 @@
+<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <mat-dialog-content>
+    <mat-progress-spinner
+      *ngIf="isSaveOrUpdateInProgress"
+      diameter="50"
+      class="form-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <mat-card-title>InspectionIndicator</mat-card-title>
+    <mat-card-subtitle>{{
+      inspectionIndicator?.id
+        ? 'Update an existing inspectionIndicator.'
+        : 'Creates a new inspectionIndicator.'
+    }}</mat-card-subtitle>
+    <div class="error mat-error">
+      {{ error ? error : '&nbsp;' }}
+    </div>
+    <div class="content">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Inspection Sub Area</mat-label>
+        <mat-select formControlName="inspectionSubAreaId">
+          <mat-option *ngFor="let isa of inspectionSubAreas" [value]="isa.id">{{
+            isa.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        class="full-width"
+        appearance="outline"
+        *ngIf="!inspectionIndicator?.id"
+      >
+        <mat-label>Indicator</mat-label>
+        <mat-select formControlName="indicatorId">
+          <mat-option
+            *ngFor="let ind of getIndicators() | async"
+            [value]="ind.id"
+            >{{ ind.name }}</mat-option
+          >
+        </mat-select>
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('indicatorId')"
+            label="Indicator"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field
+        class="full-width"
+        appearance="outline"
+        *ngIf="!form.get('indicatorId')?.value || inspectionIndicator?.id"
+      >
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter inspectionIndicator name"
+          formControlName="name"
+          required
+        />
+        <mat-error>
+          <hip-ngx-error
+            [control]="form.get('name')"
+            label="Name"
+          ></hip-ngx-error>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="cancel()">
+      <span>Cancel</span>
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid || isSaveOrUpdateInProgress"
+      type="submit"
+    >
+      <span>{{ inspectionIndicator?.id ? 'Update' : 'Save' }} </span>
+    </button>
+  </mat-dialog-actions>
+</form>

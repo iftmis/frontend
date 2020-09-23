@@ -1,0 +1,92 @@
+<div *ngIf="getBudget() | async as data">
+  <div class="page-heading">
+    <span class="mat-card-title"></span>
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="createOrEdit(undefined)"
+      >
+        <mat-icon>add</mat-icon>
+        <span>Create</span>
+      </button>
+    </div>
+  </div>
+  <mat-card-content class="table-container">
+    <mat-progress-spinner
+      *ngIf="showLoader"
+      diameter="50"
+      class="table-overlay"
+      color="accent"
+      mode="indeterminate"
+    >
+    </mat-progress-spinner>
+    <div *ngIf="!data?.length">
+      <span class="table-overlay">No records found</span>
+    </div>
+    <table mat-table [dataSource]="data" matSort *ngIf="!!data?.length">
+      <ng-container matColumnDef="gfsCodeName">
+        <th mat-header-cell *matHeaderCellDef>Gfs Code</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.gfsCodeDescription }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="frequency">
+        <th mat-header-cell *matHeaderCellDef>Frequency</th>
+        <td mat-cell *matCellDef="let element">{{ element.frequency }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="unitPrice">
+        <th mat-header-cell *matHeaderCellDef>Unit Price</th>
+        <td mat-cell *matCellDef="let element">{{ element.unitPrice }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="formActions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            [matMenuTriggerData]="{ id: element.id, element: element }"
+            aria-label="InspectionBudget form actions "
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        class="data-row"
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
+  </mat-card-content>
+</div>
+<mat-menu #menu="matMenu">
+  <ng-template matMenuContent let-id="id" let-element="element">
+    <button
+      mat-menu-item
+      aria-label="Edit inspectionBudget"
+      (click)="createOrEdit(element)"
+    >
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button
+      mat-menu-item
+      aria-label="Delete inspectionBudget"
+      (click)="delete(id, element)"
+    >
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>
