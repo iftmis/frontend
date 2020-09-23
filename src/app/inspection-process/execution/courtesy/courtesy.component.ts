@@ -7,6 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Courtesy } from './courtesy';
 import { CourtesyDeleteComponent } from './courtesy-delete/courtesy-delete.component';
 import { CourtesyDetailComponent } from './courtesy-detail/courtesy-detail.component';
+import { CourtesyUploadComponent } from './courtesy-upload/courtesy-upload.component';
+import { CourtesyMembersComponent } from './courtesy-members/courtesy-members.component';
 
 @Component({
   selector: 'app-courtesy',
@@ -59,6 +61,28 @@ export class CourtesyComponent implements OnInit {
 
   createOrEdit() {
     const dialogRef = this.dialog.open(CourtesyDetailComponent, {
+      data: { inspectionId: this.inspectionId },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadMeeting();
+      if (result) {
+        this.showLoader = true;
+      }
+    });
+  }
+  uploadMinutes() {
+    const dialogRef = this.dialog.open(CourtesyUploadComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadMeeting();
+      if (result) {
+        this.showLoader = true;
+      }
+    });
+  }
+
+  addMembers() {
+    const dialogRef = this.dialog.open(CourtesyMembersComponent, {
       data: { inspectionId: this.inspectionId },
     });
 
