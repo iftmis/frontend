@@ -167,8 +167,8 @@ export class InspectionActivitiesListComponent implements OnInit {
       });
   }
 
-  filterSubAreaByArea(auditableArea: AuditableArea) {
-    this.areaId = auditableArea.id as number;
+  filterSubAreaByArea(auditableArea: number) {
+    this.areaId = auditableArea;
     this.loadSubAreas(this.areaId);
   }
 
@@ -178,6 +178,9 @@ export class InspectionActivitiesListComponent implements OnInit {
     const pageToLoad = this.page || 0;
     this.inspectionActivitiesService
       .query({
+        'objectiveId.equals': this.filter['objectiveId.equals'],
+        'auditableAreaId.equals': this.filter['auditableAreaId.equals'],
+        'subAreaId.equals': this.filter['subAreaId.equals'],
         page: pageToLoad,
         size: this.itemsPerPage,
       })

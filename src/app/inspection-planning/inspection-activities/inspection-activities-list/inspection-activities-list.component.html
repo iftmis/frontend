@@ -70,7 +70,7 @@
             <mat-option value="null">-All-</mat-option>
             <mat-option
               *ngFor="let auditableArea of auditableAreas"
-              [value]="auditableArea"
+              [value]="auditableArea.id"
             >
               {{ auditableArea.name }}
             </mat-option>
@@ -87,7 +87,7 @@
             (ngModelChange)="filterActivityFromSelection()"
           >
             <mat-option value="null">-All-</mat-option>
-            <mat-option *ngFor="let subArea of subAreas" [value]="subArea">
+            <mat-option *ngFor="let subArea of subAreas" [value]="subArea.id">
               {{ subArea.name }}
             </mat-option>
           </mat-select>
