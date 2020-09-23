@@ -81,7 +81,7 @@ export class InspectionActivitiesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadPage(this.areaId);
+    this.loadPage(this.page, this.itemsPerPage);
 
     this.loadObjeectives();
 
@@ -90,10 +90,16 @@ export class InspectionActivitiesListComponent implements OnInit {
     // this.loadSubAreas();
   }
 
-  loadPage(auditableAreaId: number) {
+  loadPage(page: number, size: number) {
     const pageToLoad = this.page || 0;
-    this.subAreaService
-      .getAllPaged(pageToLoad, this.itemsPerPage, auditableAreaId)
+    this.inspectionActivitiesService
+      .query({
+        'objectiveId.equals': this.filter['objectiveId.equals'],
+        'auditableAreaId.equals': this.filter['auditableAreaId.equals'],
+        'subAreaId.equals': this.filter['subAreaId.equals'],
+        page: pageToLoad,
+        size: this.itemsPerPage,
+      })
       .subscribe(
         resp => this.onSuccess(resp.body, resp.headers, this.page),
         () => this.onError()
@@ -130,7 +136,8 @@ export class InspectionActivitiesListComponent implements OnInit {
   pageChange($event: PageEvent) {
     this.itemsPerPage = $event.pageSize;
     this.page = $event.pageIndex;
-    this.loadPage(this.areaId);
+
+    this.loadPage(this.page, this.itemsPerPage);
   }
 
   delete(id: number, inspectionActivities: InspectionActivities) {
@@ -143,7 +150,7 @@ export class InspectionActivitiesListComponent implements OnInit {
         this.showLoader = true;
         this.inspectionActivitiesService.delete(id).subscribe({
           next: () => {
-            this.loadPage(this.areaId);
+            this.loadPage(this.page, this.itemsPerPage);
             this.toastService.success(
               'Success',
               'Inspection Activity Deleted Successfully!'
