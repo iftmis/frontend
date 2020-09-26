@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>
-  Create Inspection Activity
+  {{ title }}
 </h1>
 <div mat-dialog-content>
   <mat-progress-spinner
@@ -15,7 +15,7 @@
   </div>
   <mat-horizontal-stepper [linear]="true" #stepper>
     <mat-step [stepControl]="form">
-      <form [formGroup]="form">
+      <form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
         <ng-template matStepLabel>Create Inspection Activity</ng-template>
         <mat-card-content class="content">
           <div
@@ -206,7 +206,7 @@
         <div fxFlex fxLayout="column">
           <div class="interest-list">
             <div><b>SELECT RISKS</b></div>
-            <form [formGroup]="interestFormGroup" (ngSubmit)="submit()">
+            <form [formGroup]="interestFormGroup" (ngSubmit)="saveOrUpdate()">
               <div *ngFor="let interest of getAllRisks() | async">
                 <mat-checkbox
                   class="example-margin"
@@ -239,7 +239,7 @@
 
         <div fxFlex fxLayout="column">
           <div><b>CHOOSE ORGANISATION UNIT</b></div>
-          <form [formGroup]="organisationUnitFormGroup" (ngSubmit)="submit()">
+          <form [formGroup]="organisationUnitFormGroup">
             <div
               *ngFor="let organisationUnit of getAllOrganisationUnit() | async"
             >

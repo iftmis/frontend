@@ -34,7 +34,6 @@ export class FinancialYearListComponent implements OnInit {
   ];
   routeData$ = this.route.data;
   showLoader = false;
-
   financialYearSubject: BehaviorSubject<FinancialYear[]> = new BehaviorSubject(
     []
   );

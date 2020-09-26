@@ -146,17 +146,9 @@
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent let-id="id" let-element="element">
     <button
-      mat-menu-item
-      aria-label="Risks"
-      [routerLink]="['/risk-management/risk-register', id, 'risks']"
-    >
-      <mat-icon>list</mat-icon>
-      <span>Risks</span>
-    </button>
-    <button
+      (click)="edit(element)"
       mat-menu-item
       aria-label="Edit Inspection Activity"
-      [routerLink]="['/inspection-planning/inspection-activities', id, 'edit']"
     >
       <mat-icon>edit</mat-icon>
       <span>Edit</span>

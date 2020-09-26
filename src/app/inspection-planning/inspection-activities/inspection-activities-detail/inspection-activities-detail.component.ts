@@ -23,16 +23,14 @@ import { SubAreaService } from '../../../setting/sub-area/sub-area.service';
 import { Objective } from '../../../setting/objective/objective';
 import { SubArea } from '../../../setting/sub-area/sub-area';
 import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
-import { InspectionArea } from '../../../inspection-process/preparation/inspection-area/inspection-area';
 import { Risk } from '../../../risk-management/risk/risk';
 import { RiskService } from '../../../risk-management/risk/risk.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThemePalette } from '@angular/material/core';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
-import * as _ from 'lodash';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from '../../../user-management/user/user';
+
 export interface Task {
   name: string;
   completed: boolean;
@@ -51,8 +49,12 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   organisationUnitFormGroup: FormGroup;
   selected: any;
   inspectionActivities: InspectionActivities;
+  inspectionActivitiesObject: InspectionActivities[];
   form: FormGroup;
-
+  title: string;
+  action: string;
+  id: number;
+  activity: string;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   subAreas: SubArea[];
@@ -62,6 +64,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   areaId: number;
   activityId: number;
   inspectionPlanId: number;
+  days: string;
   risks: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
   chosen: BehaviorSubject<Risk[]> = new BehaviorSubject<Risk[]>([]);
   organisationUnit: BehaviorSubject<OrganisationUnit[]> = new BehaviorSubject<
@@ -72,9 +75,14 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     []
   );
 
+  inpsectionActivitySubject: BehaviorSubject<
+    InspectionActivities[]
+  > = new BehaviorSubject<InspectionActivities[]>([]);
+
   allRisks: Risk[] = [];
   selectedRisks: Risk[] = [];
   chosenRisks: Risk[] = [];
+  inspectionActivityEdit: InspectionActivities;
 
   // @ts-ignore
   constructor(
@@ -95,6 +103,10 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) {
     this.inspectionPlanId = data.inspectionPlanId;
+    this.title = data.title;
+    this.action = data.action;
+    this.id = data.id;
+    this.inspectionActivityEdit = data.mzigo;
 
     this.form = this._formBuilder.group({
       checkArray: this._formBuilder.array([], [Validators.required]),
@@ -104,25 +116,51 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   // chaguliwaRisks = new Array();
 
   ngOnInit() {
-    this.loadObjectives();
-    this.loadAuditableAreas();
-    // this.loadSubAreas();
-    this.loadOrganisationUnits();
-    this.route.data.subscribe(({ inspectionActivities }) => {
-      this.inspectionActivities = inspectionActivities;
-      this.form = this.formService.toFormGroup(inspectionActivities);
-    });
-    this.loadRisks();
+    if (this.action === 'update') {
+      this.loadAuditableAreas();
+      // this.loadSubAreas();
+      this.loadOrganisationUnits();
+      this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
+      this.loadObjectives();
+      this.form = this.formService.toFormGroup(this.inspectionActivityEdit);
+      this.interestFormGroup = this.formService.toFormGroup(
+        this.inspectionActivityEdit
+      );
+      this.organisationUnitFormGroup = this.formService.toFormGroup(
+        this.inspectionActivityEdit
+      );
 
-    this.error = undefined;
+      // load the material and set manually
+      // this.inspectionActivitiesService.getById(this.id).subscribe(result => {
+      //
+      //
 
-    this.interestFormGroup = this._formBuilder.group({
-      risks: this._formBuilder.array([]),
-    });
+      // });
+      //   this.route.data.subscribe(({ inspectionActivities }) => {
+      //     this.inspectionActivities = inspectionActivities;
+      //     this.form = this.formService.toFormGroup(inspectionActivities);
+      //   });
+    } else if (this.action === 'create') {
+      this.loadObjectives();
+      this.loadAuditableAreas();
+      // this.loadSubAreas();
+      this.loadOrganisationUnits();
+      this.route.data.subscribe(({ inspectionActivities }) => {
+        this.inspectionActivities = inspectionActivities;
+        this.form = this.formService.toFormGroup(inspectionActivities);
+      });
+      this.loadRisks();
 
-    this.organisationUnitFormGroup = this._formBuilder.group({
-      organisationUnit: this._formBuilder.array([]),
-    });
+      this.error = undefined;
+
+      this.interestFormGroup = this._formBuilder.group({
+        risks: this._formBuilder.array([]),
+      });
+
+      this.organisationUnitFormGroup = this._formBuilder.group({
+        organisationUnit: this._formBuilder.array([]),
+      });
+    }
   }
 
   loadRisks() {

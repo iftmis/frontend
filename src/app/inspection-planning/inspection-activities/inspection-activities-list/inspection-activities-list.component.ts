@@ -196,4 +196,45 @@ export class InspectionActivitiesListComponent implements OnInit {
         () => this.onError()
       );
   }
+
+  edit(element: InspectionActivities) {
+    const data = {
+      title: 'Update Inspection Activity',
+      action: 'update',
+      mzigo: element,
+    };
+
+    // console.log('THE ID IS  ');
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    /*dialogConfig.height = '80%';*/
+    dialogConfig.width = '60%';
+    dialogConfig.data = data;
+
+    // this.service.populateForm(form)
+
+    const dialog = this.dialog.open(
+      InspectionActivitiesDetailComponent,
+      dialogConfig
+    );
+
+    dialog.afterClosed().subscribe((response: any) => {
+      if (response) {
+        // this.loadRisk(
+        //   this.page,
+        //   this.size,
+        //   Number(this.riskRegisterId),
+        //   this.parentId,
+        //   this.queryString
+        // );
+        this.loadPage(this.page, this.itemsPerPage);
+        this.toastService.success(
+          'Success!',
+          'Inspection Activity Created Successfully!'
+        );
+      }
+    });
+  }
 }

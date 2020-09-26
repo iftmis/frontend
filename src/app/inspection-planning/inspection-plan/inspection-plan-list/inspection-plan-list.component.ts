@@ -109,7 +109,7 @@ export class InspectionPlanListComponent implements OnInit {
 
   create(id: number) {
     const data = {
-      title: 'Create',
+      title: 'Create Inspection Activity',
       action: 'create',
       inspectionPlanId: id,
     };
