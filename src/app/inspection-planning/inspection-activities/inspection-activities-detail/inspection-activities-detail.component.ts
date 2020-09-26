@@ -363,6 +363,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   submit() {}
 
   save() {
+    // SAVE OR UPDATE FUNCTION WILL BE HERE
+
     console.log(this.interestFormGroup.value);
     const selectedOrganisationUnits = this.organisationUnitFormGroup.value
       .organisationUnit;
