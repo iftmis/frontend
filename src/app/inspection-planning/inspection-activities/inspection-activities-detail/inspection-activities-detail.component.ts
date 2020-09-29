@@ -30,6 +30,7 @@ import { ThemePalette } from '@angular/material/core';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../../shared/toast.service';
 
 export interface Task {
   name: string;
@@ -100,7 +101,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder,
     // tslint:disable-next-line:variable-name
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private toastService: ToastService
   ) {
     this.inspectionPlanId = data.inspectionPlanId;
     this.title = data.title;
@@ -408,7 +410,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
           console.log('Inspection activity : ' + res);
 
           this.subscribeToResponseAfterCreating(
-            this.inspectionActivitiesService.create(this.inspectionActivities)
+            this.inspectionActivitiesService.create(this.inspectionActivities),
+            'create'
           );
         });
     }
@@ -435,11 +438,26 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   }
 
   private subscribeToResponseAfterCreating(
-    result: Observable<InspectionActivities>
+    result: Observable<InspectionActivities>,
+    action: string
   ) {
     result.subscribe({
-      next: () =>
-        this.router.navigate(['inspection-planning/inspection-activities']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Activity Updated Successfully!'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Activity Created Successfully!'
+          );
+        }
+        // Close the dialog
+        this.dialogRef.close();
+      },
+
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
