@@ -32,13 +32,6 @@ import { OrganisationUnit } from '../../../setting/organisation-unit/organisatio
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastService } from '../../../shared/toast.service';
 
-export interface Task {
-  name: string;
-  completed: boolean;
-  color: ThemePalette;
-  subtasks?: Task[];
-}
-
 @Component({
   selector: 'app-inspection-activities-detail',
   templateUrl: './inspection-activities-detail.component.html',
@@ -365,8 +358,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   submit() {}
 
   save() {
-    // SAVE OR UPDATE FUNCTION WILL BE HERE
-
+    // create
     console.log(this.interestFormGroup.value);
     const selectedOrganisationUnits = this.organisationUnitFormGroup.value
       .organisationUnit;
@@ -403,19 +395,24 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         subAreaId: this.form.value.subAreaId,
       };
 
-      this.inspectionActivitiesService
-        .create(this.inspectionActivities)
-        .subscribe(res => {
-          // show the results
-          console.log('Inspection activity : ' + res);
+      // CHECK IF SAVE OR UPDATE
+      if (this.action === 'update') {
+        // update activity
 
-          this.subscribeToResponseAfterCreating(
-            this.inspectionActivitiesService.create(this.inspectionActivities),
-            'create'
-          );
-        });
+        this.subscribeToResponseAfterCreating(
+          this.inspectionActivitiesService.update(this.inspectionActivities),
+          'update'
+        );
+      } else {
+        // create activity
+
+        this.subscribeToResponseAfterCreating(
+          this.inspectionActivitiesService.create(this.inspectionActivities),
+          'create'
+        );
+      }
+      console.log('save');
     }
-    console.log('save');
   }
 
   getAllOrganisationUnit(): Observable<OrganisationUnit[]> {
@@ -428,12 +425,6 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.organisationUnit.next(response);
 
       this.loadAllSelectedRisks();
-    });
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
     });
   }
 
