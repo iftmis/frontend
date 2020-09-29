@@ -77,6 +77,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   selectedRisks: Risk[] = [];
   chosenRisks: Risk[] = [];
   inspectionActivityEdit: InspectionActivities;
+  organisationUnitToEdit: OrganisationUnit;
 
   // @ts-ignore
   constructor(
@@ -100,8 +101,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     this.inspectionPlanId = data.inspectionPlanId;
     this.title = data.title;
     this.action = data.action;
-    this.id = data.id;
+    this.id = data.mzigo.id;
     this.inspectionActivityEdit = data.mzigo;
+    this.organisationUnitToEdit = data.organisationUnit;
 
     this.form = this._formBuilder.group({
       checkArray: this._formBuilder.array([], [Validators.required]),
@@ -111,18 +113,18 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   // chaguliwaRisks = new Array();
 
   ngOnInit() {
+    this.loadAuditableAreas();
+    this.loadOrganisationUnits();
+    this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
+    this.loadObjectives();
+
     if (this.action === 'update') {
-      this.loadAuditableAreas();
-      // this.loadSubAreas();
-      this.loadOrganisationUnits();
-      this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
-      this.loadObjectives();
       this.form = this.formService.toFormGroup(this.inspectionActivityEdit);
       this.interestFormGroup = this.formService.toFormGroup(
         this.inspectionActivityEdit
       );
       this.organisationUnitFormGroup = this.formService.toFormGroup(
-        this.inspectionActivityEdit
+        this.organisationUnitToEdit
       );
 
       // load the material and set manually
@@ -135,15 +137,12 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       //     this.inspectionActivities = inspectionActivities;
       //     this.form = this.formService.toFormGroup(inspectionActivities);
       //   });
-    } else if (this.action === 'create') {
-      this.loadObjectives();
-      this.loadAuditableAreas();
-      // this.loadSubAreas();
-      this.loadOrganisationUnits();
+    } else {
       this.route.data.subscribe(({ inspectionActivities }) => {
         this.inspectionActivities = inspectionActivities;
         this.form = this.formService.toFormGroup(inspectionActivities);
       });
+
       this.loadRisks();
 
       this.error = undefined;
@@ -381,6 +380,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       console.log('' + this.organisationUnitFormGroup.value);
 
       this.inspectionActivities = {
+        id: this.id,
         activity: this.form.value.activity,
         auditableAreaId: this.form.value.auditableAreaId.id,
         days: this.form.value.days,
