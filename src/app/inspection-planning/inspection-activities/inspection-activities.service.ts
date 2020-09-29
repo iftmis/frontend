@@ -39,7 +39,7 @@ export class InspectionActivitiesService {
     inspectionActivities: InspectionActivities
   ): Observable<InspectionActivities> {
     return this.http.put<InspectionActivities>(
-      `${this.resourceUrl}/${inspectionActivities.id}`,
+      `${this.resourceUrl}`,
       inspectionActivities
     );
   }

@@ -202,6 +202,7 @@ export class InspectionActivitiesListComponent implements OnInit {
       title: 'Update Inspection Activity',
       action: 'update',
       mzigo: element,
+      organisationUnit: element.organisationUnits,
     };
 
     // console.log('THE ID IS  ');

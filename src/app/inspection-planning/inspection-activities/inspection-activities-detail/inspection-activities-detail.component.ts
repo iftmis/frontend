@@ -30,13 +30,7 @@ import { ThemePalette } from '@angular/material/core';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-export interface Task {
-  name: string;
-  completed: boolean;
-  color: ThemePalette;
-  subtasks?: Task[];
-}
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-inspection-activities-detail',
@@ -83,6 +77,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   selectedRisks: Risk[] = [];
   chosenRisks: Risk[] = [];
   inspectionActivityEdit: InspectionActivities;
+  organisationUnitToEdit: OrganisationUnit;
 
   // @ts-ignore
   constructor(
@@ -100,13 +95,15 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder,
     // tslint:disable-next-line:variable-name
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private toastService: ToastService
   ) {
     this.inspectionPlanId = data.inspectionPlanId;
     this.title = data.title;
     this.action = data.action;
-    this.id = data.id;
+    this.id = data.mzigo.id;
     this.inspectionActivityEdit = data.mzigo;
+    this.organisationUnitToEdit = data.organisationUnit;
 
     this.form = this._formBuilder.group({
       checkArray: this._formBuilder.array([], [Validators.required]),
@@ -116,18 +113,18 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   // chaguliwaRisks = new Array();
 
   ngOnInit() {
+    this.loadAuditableAreas();
+    this.loadOrganisationUnits();
+    this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
+    this.loadObjectives();
+
     if (this.action === 'update') {
-      this.loadAuditableAreas();
-      // this.loadSubAreas();
-      this.loadOrganisationUnits();
-      this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
-      this.loadObjectives();
       this.form = this.formService.toFormGroup(this.inspectionActivityEdit);
       this.interestFormGroup = this.formService.toFormGroup(
         this.inspectionActivityEdit
       );
       this.organisationUnitFormGroup = this.formService.toFormGroup(
-        this.inspectionActivityEdit
+        this.organisationUnitToEdit
       );
 
       // load the material and set manually
@@ -140,15 +137,12 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       //     this.inspectionActivities = inspectionActivities;
       //     this.form = this.formService.toFormGroup(inspectionActivities);
       //   });
-    } else if (this.action === 'create') {
-      this.loadObjectives();
-      this.loadAuditableAreas();
-      // this.loadSubAreas();
-      this.loadOrganisationUnits();
+    } else {
       this.route.data.subscribe(({ inspectionActivities }) => {
         this.inspectionActivities = inspectionActivities;
         this.form = this.formService.toFormGroup(inspectionActivities);
       });
+
       this.loadRisks();
 
       this.error = undefined;
@@ -363,6 +357,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
   submit() {}
 
   save() {
+    // create
     console.log(this.interestFormGroup.value);
     const selectedOrganisationUnits = this.organisationUnitFormGroup.value
       .organisationUnit;
@@ -385,6 +380,7 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       console.log('' + this.organisationUnitFormGroup.value);
 
       this.inspectionActivities = {
+        id: this.id,
         activity: this.form.value.activity,
         auditableAreaId: this.form.value.auditableAreaId.id,
         days: this.form.value.days,
@@ -399,18 +395,24 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         subAreaId: this.form.value.subAreaId,
       };
 
-      this.inspectionActivitiesService
-        .create(this.inspectionActivities)
-        .subscribe(res => {
-          // show the results
-          console.log('Inspection activity : ' + res);
+      // CHECK IF SAVE OR UPDATE
+      if (this.action === 'update') {
+        // update activity
 
-          this.subscribeToResponseAfterCreating(
-            this.inspectionActivitiesService.create(this.inspectionActivities)
-          );
-        });
+        this.subscribeToResponseAfterCreating(
+          this.inspectionActivitiesService.update(this.inspectionActivities),
+          'update'
+        );
+      } else {
+        // create activity
+
+        this.subscribeToResponseAfterCreating(
+          this.inspectionActivitiesService.create(this.inspectionActivities),
+          'create'
+        );
+      }
+      console.log('save');
     }
-    console.log('save');
   }
 
   getAllOrganisationUnit(): Observable<OrganisationUnit[]> {
@@ -426,18 +428,27 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     });
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-    });
-  }
-
   private subscribeToResponseAfterCreating(
-    result: Observable<InspectionActivities>
+    result: Observable<InspectionActivities>,
+    action: string
   ) {
     result.subscribe({
-      next: () =>
-        this.router.navigate(['inspection-planning/inspection-activities']),
+      next: () => {
+        if (action === 'update') {
+          this.toastService.success(
+            'Success!',
+            'Activity Updated Successfully!'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Activity Created Successfully!'
+          );
+        }
+        // Close the dialog
+        this.dialogRef.close();
+      },
+
       error: response => {
         this.isSaveOrUpdateInProgress = false;
         this.error = response.error
