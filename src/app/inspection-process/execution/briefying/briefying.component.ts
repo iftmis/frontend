@@ -1,15 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CourtesyDetailComponent } from '../courtesy/courtesy-detail/courtesy-detail.component';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { BriefyingService } from './briefying.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Briefying } from './Briefying';
-import { Courtesy } from '../courtesy/courtesy';
-import { CourtesyDeleteComponent } from '../courtesy/courtesy-delete/courtesy-delete.component';
 import { BriefyingDeleteComponent } from './briefying-delete/briefying-delete.component';
 import { BriefyingDetailComponent } from './briefying-detail/briefying-detail.component';
+import { BriefyingUploadComponent } from './briefying-upload/briefying-upload.component';
 
 @Component({
   selector: 'app-briefying',
@@ -61,6 +59,16 @@ export class BriefyingComponent implements OnInit {
       data: { inspectionId: this.inspectionId },
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadMeeting();
+      if (result) {
+        this.showLoader = true;
+      }
+    });
+  }
+
+  uploadMinutes() {
+    const dialogRef = this.dialog.open(BriefyingUploadComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.loadMeeting();
       if (result) {

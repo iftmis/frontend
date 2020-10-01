@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-courtesy-upload',
-  templateUrl: './courtesy-upload.component.html',
-  styleUrls: ['./courtesy-upload.component.scss'],
+  selector: 'app-briefying-upload',
+  templateUrl: './briefying-upload.component.html',
+  styleUrls: ['./briefying-upload.component.scss'],
 })
-export class CourtesyUploadComponent implements OnInit {
+export class BriefyingUploadComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
@@ -16,7 +16,7 @@ export class CourtesyUploadComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<CourtesyUploadComponent>
+    private dialogRef: MatDialogRef<BriefyingUploadComponent>
   ) {}
 
   ngOnInit() {
@@ -24,7 +24,6 @@ export class CourtesyUploadComponent implements OnInit {
       myfile: [''],
     });
   }
-
   onFileSelect(event: any) {
     console.log(event);
     if (event.target.files.length > 0) {
@@ -38,7 +37,6 @@ export class CourtesyUploadComponent implements OnInit {
   cancel() {
     this.dialogRef.close();
   }
-
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;

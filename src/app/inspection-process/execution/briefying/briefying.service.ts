@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Courtesy } from '../courtesy/courtesy';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Briefying } from './Briefying';
 
@@ -10,6 +9,18 @@ import { Briefying } from './Briefying';
 export class BriefyingService {
   private resourceUrl = '';
   constructor(private http: HttpClient) {}
+
+  getById(id: number): Observable<Briefying> {
+    return this.http.get<Briefying>(`${this.resourceUrl}/${id}`);
+  }
+
+  create(briefying: Briefying): Observable<Briefying> {
+    return this.http.post<Briefying>(this.resourceUrl, briefying);
+  }
+
+  update(briefying: Briefying): Observable<Briefying> {
+    return this.http.put<Briefying>(`${this.resourceUrl}`, briefying);
+  }
 
   query(): Observable<Briefying[]> {
     return this.http.get<Briefying[]>(this.resourceUrl);
