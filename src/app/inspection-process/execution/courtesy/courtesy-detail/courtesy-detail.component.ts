@@ -1,6 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { User } from '../../../../user-management/user/user';
 import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,10 +16,8 @@ export class CourtesyDetailComponent implements OnInit {
   inspectionMember: InspectionMember;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
-  users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   inspectionId: number;
   error: string | undefined = undefined;
-  fileInputLabel: string;
   file: any;
 
   constructor(
@@ -37,20 +33,9 @@ export class CourtesyDetailComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      myfile: [''],
-      description: [''],
+      meetingDate: [''],
+      venue: [''],
     });
-  }
-
-  onFileSelect(event: any) {
-    console.log(event);
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.file = file;
-      this.fileInputLabel = file.name;
-      // @ts-ignore
-      this.form.get('myfile').setValue(file);
-    }
   }
 
   saveOrUpdate() {
@@ -59,15 +44,15 @@ export class CourtesyDetailComponent implements OnInit {
     if (this.form.value.id) {
       const formData = new FormData();
       // @ts-ignore
-      formData.append('formFile', this.form.get('myfile').value);
+      formData.append('meetingDate', this.form.get('meetingDate').value);
       // @ts-ignore
-      formData.append('description', this.form.get('description').value);
+      formData.append('venue', this.form.get('venue').value);
     } else {
       const formData = new FormData();
       // @ts-ignore
-      formData.append('formFile', this.form.get('myfile').value);
+      formData.append('meetingDate', this.form.get('meetingDate').value);
       // @ts-ignore
-      formData.append('description', this.form.get('description').value);
+      formData.append('venue', this.form.get('venue').value);
     }
   }
 

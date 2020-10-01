@@ -1,5 +1,5 @@
 export interface Briefying {
   id?: number;
-  myfile: string;
-  description: string;
+  briefying_Date: string;
+  briefying_venue: string;
 }

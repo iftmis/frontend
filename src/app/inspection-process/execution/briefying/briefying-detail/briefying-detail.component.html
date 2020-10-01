@@ -30,7 +30,7 @@
             matInput
             placeholder="Select Meeting date"
             (click)="startDatePicker.open()"
-            formControlName="meetingDate"
+            formControlName="briefying_Date"
             [matDatepicker]="startDatePicker"
           />
           <mat-datepicker-toggle
@@ -41,7 +41,7 @@
           <mat-datepicker color="accent" #startDatePicker></mat-datepicker>
           <mat-error>
             <hip-ngx-error
-              [control]="form.get('meetingDate')"
+              [control]="form.get('briefying_Date')"
               label="Meeting Date"
             ></hip-ngx-error>
           </mat-error>
@@ -53,12 +53,12 @@
           <input
             matInput
             placeholder="Enter meeting venue"
-            formControlName="venue"
+            formControlName="briefying_venue"
             required
           />
           <mat-error
             ><hip-ngx-error
-              [control]="form.get('venue')"
+              [control]="form.get('briefying_venue')"
               label="Venue"
             ></hip-ngx-error
           ></mat-error>

@@ -11,15 +11,15 @@ export class BriefyingFormService {
   toFormGroup(Briefying: Partial<Briefying> = {}) {
     return this.formBuilder.group({
       id: this.formBuilder.control(Briefying.id, []),
-      myfile: this.formBuilder.control(Briefying.myfile),
-      description: this.formBuilder.control(Briefying.description),
+      briefying_Date: this.formBuilder.control(Briefying.briefying_Date),
+      briefying_venue: this.formBuilder.control(Briefying.briefying_venue),
     });
   }
   fromFormGroup(formGroup: FormGroup) {
     return {
       id: formGroup.get('id')!.value,
-      description: formGroup.get('description')!.value,
-      myfile: formGroup.get('myfile')!.value,
+      briefying_Date: formGroup.get('briefying_Date')!.value,
+      briefying_venue: formGroup.get('briefying_venue')!.value,
     };
   }
 }
