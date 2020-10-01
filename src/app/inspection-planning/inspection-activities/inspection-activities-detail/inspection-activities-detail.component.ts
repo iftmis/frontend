@@ -116,7 +116,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     // this.loadOrganisationUnits();
     this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
     this.loadObjectives();
-
+    this.loadRisks();
+    this.loadOrganisationUnits();
     if (this.action === 'update') {
       this.form = this.formService.toFormGroup(this.inspectionActivityEdit);
       this.interestFormGroup = this.formService.toFormGroup(
@@ -144,8 +145,6 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         this.form = this.formService.toFormGroup(inspectionActivities);
       });
 
-      this.loadRisks();
-
       this.error = undefined;
 
       this.interestFormGroup = this._formBuilder.group({
@@ -164,11 +163,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.risks.next(response);
       // this.allRisks = response;
 
-      console.log('all risk');
-
       console.log(this.allRisks);
 
-      this.loadAllSelectedRisks();
+      //  this.loadAllSelectedRisks();
     });
   }
 
