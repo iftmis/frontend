@@ -201,6 +201,7 @@ export class InspectionActivitiesListComponent implements OnInit {
     const data = {
       title: 'Update Inspection Activity',
       action: 'update',
+      inspectionPlanId: element.inspectionPlanId,
       mzigo: element,
       organisationUnit: element.organisationUnits,
     };
