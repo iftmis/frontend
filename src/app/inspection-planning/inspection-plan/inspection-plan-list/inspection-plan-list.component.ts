@@ -112,7 +112,7 @@ export class InspectionPlanListComponent implements OnInit {
       title: 'Create Inspection Activity',
       action: 'create',
       inspectionPlanId: id,
-      mzigo: '',
+      selectedInspectionActivity: '',
       organisationUnit: '',
     };
     console.log('THE ID IS' + id);

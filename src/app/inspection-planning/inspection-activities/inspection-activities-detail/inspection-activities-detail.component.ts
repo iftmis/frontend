@@ -100,8 +100,8 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     this.inspectionPlanId = data.inspectionPlanId;
     this.title = data.title;
     this.action = data.action;
-    this.id = data.mzigo.id;
-    this.inspectionActivityEdit = data.mzigo;
+    this.id = data.selectedInspectionActivity.id;
+    this.inspectionActivityEdit = data.selectedInspectionActivity;
     this.organisationUnitToEdit = data.organisationUnit;
 
     this.form = this._formBuilder.group({
