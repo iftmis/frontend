@@ -17,6 +17,7 @@ import { InspectionWorkDoneDeleteComponent } from '../inspection-process/inspect
 import { InspectionFindingListComponent } from '../inspection-process/inspection-finding/inspection-finding-list/inspection-finding-list.component';
 import { InspectionFindingDetailComponent } from '../inspection-process/inspection-finding/inspection-finding-detail/inspection-finding-detail.component';
 import { InspectionFindingDeleteComponent } from '../inspection-process/inspection-finding/inspection-finding-delete/inspection-finding-delete.component';
+import { BreadcrumbModule } from 'xng-breadcrumb';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { InspectionFindingDeleteComponent } from '../inspection-process/inspecti
     HttpClientModule,
     NgxHipsterModule,
     FormsModule,
+    BreadcrumbModule,
   ],
   exports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { InspectionFindingDeleteComponent } from '../inspection-process/inspecti
     HttpClientModule,
     NgxHipsterModule,
     FormsModule,
+    BreadcrumbModule,
     InspectionBudgetDeleteComponent,
     InspectionBudgetDetailComponent,
     InspectionBudgetListComponent,

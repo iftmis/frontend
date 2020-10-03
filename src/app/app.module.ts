@@ -14,15 +14,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from './shared/shared.module';
 import { TreeModule } from 'angular-tree-component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    SidenavComponent,
-    HomeComponent,
-    AppComponent,
-    PageNotFoundComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,6 +26,8 @@ import { TreeModule } from 'angular-tree-component';
     SharedModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgbModule,
+    LayoutModule,
     ToastrModule.forRoot(),
     TreeModule.forRoot(),
   ],

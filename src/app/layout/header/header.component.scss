@@ -1,5 +1,12 @@
 @import '../../../scss/variables';
-
+mat-toolbar {
+  position: fixed;
+  height: 65px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
+}
 .logo {
   outline: none;
   padding: 5px;
@@ -7,7 +14,7 @@
 }
 
 .logo-img {
-  height: 45px;
+  height: 35px;
   padding-left: 0.5em;
   margin-bottom: 4px;
 }
@@ -15,7 +22,11 @@
 .spacer {
   flex: 1 1 auto;
 }
-
+mat-menu {
+  mat-menu-item {
+    font-size: 16px !important;
+  }
+}
 .nav-links {
   display: flex;
   flex-direction: row;
@@ -34,9 +45,4 @@
 .route-loader {
   height: 4px;
   background-color: $primary;
-}
-
-.mat-toolbar-row,
-.mat-toolbar-single-row {
-  height: 50px !important;
 }

@@ -1,49 +1,65 @@
-<div class="container">
-  <mat-card class="card" tabindex="0" role="form">
-    <mat-card-title class="title">Sign In</mat-card-title>
-    <div class="error mat-error">
-      {{ loginError ? 'Invalid username or password.' : '&nbsp;' }}
+<div class="container-fluid bg__login">
+  <div class="row" fxLayout="column" fxLayoutAlign="center center">
+    <div class="col-md-9 col-sm-12">
+      <div class="login__container mat-elevation-z24">
+        <div class="login__slider">
+          <img src="../../assets/img/slider.jpg" alt="" />
+        </div>
+
+        <div class="login__form">
+          <div class="login__form_logo">
+            <img src="../../assets/img/coat_arms.svg" alt="" />
+            <h1 class="mt-3">Sign In</h1>
+          </div>
+          <form class="form" [formGroup]="loginForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter your username"
+                formControlName="username"
+                required
+              />
+              <mat-error *ngIf="username!.invalid"
+                >Username must contain a value</mat-error
+              >
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                type="password"
+                placeholder="Enter your password"
+                formControlName="password"
+                required
+              />
+              <mat-error *ngIf="password!.invalid"
+                >Password must contain a value</mat-error
+              >
+            </mat-form-field>
+            <mat-card-actions>
+              <button
+                mat-flat-button
+                color="primary"
+                class="py-1 px-2 w-50"
+                [disabled]="loginForm.invalid"
+                (click)="login()"
+              >
+                <span class="">Sign In</span>
+              </button>
+            </mat-card-actions>
+          </form>
+        </div>
+      </div>
+
+      <div class="login_form__footer">
+        <p class="">
+          Copyright PORALG &copy; {{ year | date: 'yyyy' }}. All rights
+          reserved. <span>Version 1.0.0</span>
+        </p>
+      </div>
     </div>
-    <form class="form" [formGroup]="loginForm">
-      <mat-form-field appearance="outline">
-        <mat-label>Username</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter your username"
-          formControlName="username"
-          required
-        />
-        <mat-error *ngIf="username!.invalid"
-          >Username must contain a value</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          type="password"
-          placeholder="Enter your password"
-          formControlName="password"
-          required
-        />
-        <mat-error *ngIf="password!.invalid"
-          >Password must contain a value</mat-error
-        >
-      </mat-form-field>
-      <mat-card-actions>
-        <button
-          mat-raised-button
-          color="primary"
-          class="login-btn"
-          [disabled]="loginForm.invalid"
-          (click)="login()"
-        >
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Sign In</span>
-        </button>
-      </mat-card-actions>
-    </form>
-  </mat-card>
+  </div>
 </div>

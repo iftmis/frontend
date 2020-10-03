@@ -1,0 +1,38 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #snav mode="over" fixedInViewport="true" fixedTopGap="0">
+    <app-sidenav (click)="snav.toggle()"></app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-header (toggleSidenav)="snav.toggle()"></app-header>
+    <div class="main__content">
+      <div class="content">
+        <div class="breadcrumb">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <xng-breadcrumb [separator]="iconTemplate">
+                  <ng-container
+                    *xngBreadcrumbItem="let breadcrumb; let info = info"
+                  >
+                    <mat-icon *ngIf="info">{{ info }}</mat-icon>
+                    <ng-container>{{ breadcrumb }}</ng-container>
+                  </ng-container>
+                </xng-breadcrumb>
+                <ng-template #iconTemplate>
+                  <mat-icon>chevron_right</mat-icon>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+      <div class="footer">
+        <p class="text-center text-muted">
+          Copyright PORALG ©{{ year | date: 'yyyy' }}. All rights reserved.
+          <span>Version 1.0.0</span>
+        </p>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

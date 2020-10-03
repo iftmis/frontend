@@ -1,0 +1,26 @@
+@import './assets/fonts/fonts.css';
+@import '~@angular/material/theming';
+@include mat-core();
+
+$fonts: mat-typography-config(
+  $font-family: '"Sailec"',
+);
+
+@include mat-core($fonts);
+
+$iftmis-primary: mat-palette($mat-blue, 800);
+$iftmis-accent: mat-palette($mat-green, A200);
+
+$iftmis-warn: mat-palette($mat-deep-orange);
+
+$iftmis-theme: mat-light-theme(
+  (
+    color: (
+      primary: $iftmis-primary,
+      accent: $iftmis-accent,
+      warn: $iftmis-warn,
+    ),
+  )
+);
+
+@include angular-material-theme($iftmis-theme);

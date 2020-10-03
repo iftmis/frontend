@@ -1,7 +1,41 @@
 .error {
+  font-family: 'Google Sans', Roboto, system-ui, sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
   font-size: 1.5rem;
+}
+
+.notfound__page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .notfound__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    h1 {
+      font-size: 8rem;
+      font-weight: 100;
+    }
+    mat-icon {
+      font-size: 8rem;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .notfound__message {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
