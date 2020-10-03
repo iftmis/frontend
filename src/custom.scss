@@ -8,8 +8,8 @@ $fonts: mat-typography-config(
 
 @include mat-core($fonts);
 
-$iftmis-primary: mat-palette($mat-blue, 800);
-$iftmis-accent: mat-palette($mat-green, A200);
+$iftmis-primary: mat-palette($mat-blue, 700);
+$iftmis-accent: mat-palette($mat-pink, A400);
 
 $iftmis-warn: mat-palette($mat-deep-orange);
 

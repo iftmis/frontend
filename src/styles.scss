@@ -33,10 +33,6 @@ body {
   color: #787878;
 }
 
-.content mat-card {
-  margin: 16px;
-}
-
 mat-form-field {
   width: 100%;
 }
@@ -62,7 +58,7 @@ mat-form-field {
   }
 
   .mat-list-item {
-    font-size: 16px;
+    font-size: 15px;
     padding-left: 48px;
     border-radius: 0 48px 48px 0;
   }
@@ -91,9 +87,10 @@ mat-form-field {
     }
   }
 }
+
 .iftmis__title {
   font-family: 'Sailec';
-  font-weight: 200 !important;
+  font-weight: 800 !important;
   span {
     font-weight: 900 !important;
   }
@@ -280,4 +277,40 @@ button:hover,
     padding: 0.7rem 1rem !important;
     background-color: rgba(184, 184, 184, 0.096) !important;
   }
+}
+// fab styling
+.mat-fab {
+  top: auto;
+  right: 40px;
+  bottom: 50px;
+  left: auto;
+  transform: scale(1);
+  position: fixed !important;
+  z-index: 20;
+  line-height: 56px;
+  min-width: 0;
+  width: 56px;
+  height: 56px;
+  vertical-align: middle;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  border-radius: 50%;
+  background-clip: padding-box;
+  overflow: hidden;
+}
+
+.inner_page__heading {
+  padding: 0.3rem 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .inner_page__title {
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+}
+
+.inner_page__body {
+  padding: 1rem 0px;
 }
