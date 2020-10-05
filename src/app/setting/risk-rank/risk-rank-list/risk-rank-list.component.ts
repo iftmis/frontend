@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { ToastService } from '../../../shared/toast.service';
@@ -14,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 import { RiskRank } from '../risk-rank';
 import { RiskRankDeleteComponent } from '../risk-rank-delete/risk-rank-delete.component';
 import { environment } from '../../../../environments/environment';
+import { RiskRankDetailComponent } from '../risk-rank-detail/risk-rank-detail.component';
 
 @Component({
   selector: 'app-risk-rank-list',
@@ -56,6 +57,32 @@ export class RiskRankListComponent implements OnInit {
 
   ngOnInit() {
     this.loadPage(this.page, this.size);
+  }
+
+  create() {
+    const data = {
+      title: 'Creates a new Risk Rank',
+      action: 'create',
+      label: 'Save Risk Rank',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(RiskRankDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.page, this.size);
+      }
+    });
   }
 
   loadPage(page: number, size: number) {

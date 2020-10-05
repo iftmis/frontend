@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,13 +27,23 @@ export class RiskRankDetailComponent implements OnInit {
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
 
+  public title: string;
+  public action: string;
+  public label: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: RiskRankFormService,
     private riskRankService: RiskRankService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _dialogRef: MatDialogRef<RiskRankDetailComponent>
+  ) {
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ riskRank }) => {
@@ -68,7 +84,8 @@ export class RiskRankDetailComponent implements OnInit {
             'Risk Rank Updated Successfully!'
           );
         }
-        this.router.navigate(['/settings/risk-ranks']);
+        // this.router.navigate(['/settings/risk-ranks']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;

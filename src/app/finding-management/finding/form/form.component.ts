@@ -1,7 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastService } from '../../../shared/toast.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { FindingFormService } from './finding-form.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
@@ -9,6 +14,7 @@ import { Observable } from 'rxjs';
 import { FindingService } from '../finding.service';
 import { Finding } from '../finding';
 import { FindingRecommendation } from '../../recommendation/recommendation';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-finding-form',
@@ -16,6 +22,11 @@ import { FindingRecommendation } from '../../recommendation/recommendation';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
+  public basicform: FormGroup;
+  public responseform: FormGroup;
+  public auditform: FormGroup;
+  public isLinear: boolean;
+
   action: string;
   finding: Finding;
   form: FormGroup;
@@ -45,10 +56,11 @@ export class FormComponent implements OnInit {
   >();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private toastService: ToastService,
     private findingFormService: FindingFormService,
     private findingService: FindingService,
+    private _formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<FormComponent>
   ) {
     this.action = data.action;
@@ -59,11 +71,52 @@ export class FormComponent implements OnInit {
     }
     this.organisationUnit = data.organisationUnit;
     this.source = data.source;
+    this.isLinear = false;
   }
 
   ngOnInit(): void {
     this.form = this.findingFormService.toFormGroup(this.finding);
     this.error = undefined;
+    this.basicform = this.initformBasic();
+    this.responseform = this.initformResponse();
+    this.auditform = this.initAuditResponse();
+  }
+
+  stepperBack(stepper: MatStepper) {
+    stepper.previous();
+  }
+
+  stepperForward(stepper: MatStepper) {
+    stepper.next();
+  }
+
+  stepperReset(stepper: MatStepper) {
+    stepper.reset();
+  }
+
+  private initformBasic(): FormGroup {
+    return this._formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      conditions: ['', Validators.required],
+      cause: ['', Validators.required],
+      implication: ['', Validators.required],
+      recommendation: ['', Validators.required],
+    });
+  }
+
+  private initformResponse(): FormGroup {
+    return this._formBuilder.group({
+      response: ['', Validators.required],
+      uploadfile: ['', Validators.required],
+    });
+  }
+
+  private initAuditResponse(): FormGroup {
+    return this._formBuilder.group({
+      audit_comment: ['', Validators.required],
+      update_status: ['', Validators.required],
+    });
   }
 
   saveOrUpdate() {

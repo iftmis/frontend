@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,12 +26,21 @@ export class ObjectiveDetailComponent implements OnInit {
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
 
+  public title: string;
+  public action: string;
+  public label: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: ObjectiveFormService,
-    private objectiveService: ObjectiveService
-  ) {}
+    private objectiveService: ObjectiveService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title;
+    this.label = data.label;
+    this.action = data.action;
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ objective }) => {

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,14 +30,23 @@ export class IndicatorDetailComponent implements OnInit {
   error: string | undefined = undefined;
   subAreas: BehaviorSubject<SubArea[]> = new BehaviorSubject([]);
 
+  public title: string;
+  public action: string;
+  public label: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: IndicatorFormService,
     private indicatorService: IndicatorService,
     private subAreaService: SubAreaService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title;
+    this.label = data.label;
+    this.action = data.action;
+  }
 
   ngOnInit() {
     this.loadSubAreas();

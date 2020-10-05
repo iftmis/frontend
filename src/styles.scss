@@ -76,7 +76,7 @@ mat-form-field {
       padding-inline-start: 23px;
       padding-top: 10px;
       text-decoration: none;
-      border-left: 6px solid #0abde3;
+      border-left: 6px solid #54a0ff;
     }
 
     mat-icon {
@@ -306,8 +306,10 @@ button:hover,
   align-items: center;
 
   .inner_page__title {
-    font-size: 1.4rem;
+    margin-top: 4px;
+    font-size: 1.2rem;
     font-weight: 400;
+    color: rgba($color: #000000, $alpha: 0.4);
   }
 }
 

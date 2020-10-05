@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { ProcedureDeleteComponent } from '../procedure-delete/procedure-delete.component';
@@ -14,6 +14,7 @@ import { Procedure } from '../procedure';
 import { Title } from '@angular/platform-browser';
 import { ProcedureService } from '../procedure.service';
 import { environment } from '../../../../environments/environment';
+import { ProcedureDetailComponent } from '../procedure-detail/procedure-detail.component';
 
 @Component({
   selector: 'app-procedure-list',
@@ -80,13 +81,34 @@ export class ProcedureListComponent implements OnInit {
               'Success',
               'Procedure Deleted Successfully!'
             );
-            this.router.navigate(['/settings/procedures']);
+            this.router.navigate(['/main/settings/procedures']);
           },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
       }
     });
+  }
+
+  create() {
+    const data = {
+      title: 'Create a Procedure',
+      action: 'create',
+      label: 'Save Procedure',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    this.dialog.open(ProcedureDetailComponent, config);
   }
 
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
