@@ -122,10 +122,6 @@
   </div>
 </div>
 
-<button
-  mat-fab
-  color="accent"
-  [routerLink]="['/main/settings/financial-years', 'new']"
->
+<button mat-fab color="accent" (click)="create()">
   <mat-icon>add</mat-icon>
 </button>
