@@ -11,25 +11,17 @@
 </div>
 
 <mat-dialog-content>
-  <form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <form [formGroup]="form" novalidate autocomplete="off">
     <mat-card>
       <mat-progress-spinner
-        *ngIf="isSaveOrUpdateInProgress"
+        *ngIf="showProgress"
         diameter="50"
         class="form-overlay"
         color="accent"
         mode="indeterminate"
       >
       </mat-progress-spinner>
-      <!-- <mat-card-title>Indicator</mat-card-title>
-      <mat-card-subtitle>{{
-        indicator?.id
-          ? 'Update an existing indicator.'
-          : 'Creates a new indicator.'
-      }}</mat-card-subtitle>
-      <div class="error mat-error">
-        {{ error ? error : '&nbsp;' }}
-      </div> -->
+
       <mat-card-content class="p-3">
         <mat-form-field appearance="outline">
           <mat-label>Sub Area</mat-label>
@@ -70,10 +62,10 @@
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
   <button
-    mat-raised-button
-    color="accent"
-    [disabled]="form.invalid || isSaveOrUpdateInProgress"
-    type="submit"
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid || showProgress"
+    (click)="saveOrUpdate()"
   >
     <mat-icon>save</mat-icon>
     <span>{{ label }} </span>

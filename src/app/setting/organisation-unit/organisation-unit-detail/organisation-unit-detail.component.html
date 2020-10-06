@@ -1,223 +1,269 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <mat-card class="card">
-    <mat-progress-spinner
-      *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
-      class="form-overlay"
-      color="accent"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <mat-card-title>Organisation Unit</mat-card-title>
-    <mat-card-subtitle>{{
-      organisationUnit?.id
-        ? 'Update an existing organisationUnit.'
-        : 'Creates a new organisationUnit.'
-    }}</mat-card-subtitle>
-    <div class="error mat-error">
-      {{ error ? error : '&nbsp;' }}
-    </div>
-    <mat-card-content class="content">
-      <mat-form-field appearance="outline" *ngIf="parent">
-        <mat-label>Parent Organisation</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Parent"
-          disabled
-          [value]="parent?.name"
-        />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Organisation Unit Level</mat-label>
-        <mat-select required formControlName="organisationUnitLevelId">
-          <mat-option
-            [value]="level.id"
-            *ngFor="let level of getLevels() | async"
-            >{{ level.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('organisationUnitLevelId')"
-            label="Organisation Unit Level"
-          >
-          </hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Code</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisationUnit code"
-          formControlName="code"
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('code')"
-            label="Code"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisationUnit name"
-          formControlName="name"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('name')"
-            label="Name"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Address</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisationUnit address"
-          formControlName="address"
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('address')"
-            label="Address"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Phone Number</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisationUnit phone number"
-          formControlName="phoneNumber"
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('phoneNumber')"
-            label="Phone Number"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisationUnit email"
-          formControlName="email"
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('email')"
-            label="Email"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Background</mat-label>
-        <textarea
-          matInput
-          placeholder="Enter organisationUnit background"
-          formControlName="background"
-        ></textarea>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('background')"
-            label="Background"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <div class="form-group">
-        <label class="form-control-label" for="field_logo">Logo</label>
-        <div>
-          <img
-            [src]="
-              'data:' +
-              form.get('logoContentType')!.value +
-              ';base64,' +
-              form.get('logo')!.value
-            "
-            style="max-height: 100px;"
-            *ngIf="form.get('logo')!.value"
-            alt="client image"
-          />
-          <div
-            *ngIf="form.get('logo')!.value"
-            class="form-text text-danger clearfix"
-          >
-            <span class="pull-left"
-              >{{ form.get('logoContentType')!.value }},
-              {{ byteSize(form.get('logo')!.value) }}</span
-            >
-            <button
-              type="button"
-              (click)="clearInputImage('logo', 'logoContentType', 'file_photo')"
-              class="btn btn-secondary btn-xs pull-right"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-          <input
-            autocomplete="off"
-            type="file"
-            id="file_photo"
-            (change)="setFileData($event, 'logo', true)"
-            accept="image/*"
-          />
-        </div>
-        <input
-          autocomplete="off"
-          type="hidden"
-          class="form-control"
-          name="logo"
-          id="field_logo"
-          formControlName="logo"
-        />
-        <input
-          autocomplete="off"
-          type="hidden"
-          class="form-control"
-          name="logoContentType"
-          id="field_logoContentType"
-          formControlName="logoContentType"
-        />
-        <div
-          *ngIf="
-            form.get('logo')!.invalid &&
-            (form.get('logo')!.dirty || form.get('logo')!.touched)
-          "
-        >
-          <small
-            class="form-text text-danger"
-            *ngIf="form.get('logo')?.errors?.required"
-          >
-            This field is required.
-          </small>
-        </div>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="cancel()">
-        <mat-icon>cancel</mat-icon>
-        <span>Cancel</span>
-      </button>
-      <button
-        mat-raised-button
+<div class="mat-dialog-header d-flex flex-row justify-content-between">
+  <div></div>
+  <div class="header-title align-self-center">
+    <h2 mat-dialog-title>{{ title }}</h2>
+  </div>
+  <div class="close-button align-self-center">
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="form" novalidate autocomplete="off">
+    <mat-card>
+      <mat-progress-spinner
+        *ngIf="showProgress"
+        diameter="50"
+        class="form-overlay"
         color="accent"
-        [disabled]="form.invalid || isSaveOrUpdateInProgress"
-        type="submit"
+        mode="indeterminate"
       >
-        <mat-icon>save</mat-icon>
-        <span>{{ organisationUnit?.id ? 'Update' : 'Save' }} </span>
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+      </mat-progress-spinner>
+      <!-- <mat-card-title>Organisation Unit</mat-card-title>
+      <mat-card-subtitle>{{
+        organisationUnit?.id
+          ? 'Update an existing organisationUnit.'
+          : 'Creates a new organisationUnit.'
+      }}</mat-card-subtitle>
+      <div class="error mat-error">
+        {{ error ? error : '&nbsp;' }}
+      </div> -->
+      <mat-card-content class="p-3">
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="outline" *ngIf="parent">
+              <mat-label>Parent Organisation</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Parent"
+                disabled
+                [value]="parent?.name"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Organisation Unit Level</mat-label>
+              <mat-select required formControlName="organisationUnitLevelId">
+                <mat-option
+                  [value]="level.id"
+                  *ngFor="let level of getLevels() | async"
+                  >{{ level.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('organisationUnitLevelId')"
+                  label="Organisation Unit Level"
+                >
+                </hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Code</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisationUnit code"
+                formControlName="code"
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('code')"
+                  label="Code"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisationUnit name"
+                formControlName="name"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('name')"
+                  label="Name"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-8">
+            <mat-form-field appearance="outline">
+              <mat-label>Address</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisationUnit address"
+                formControlName="address"
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('address')"
+                  label="Address"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Phone Number</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisationUnit phone number"
+                formControlName="phoneNumber"
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('phoneNumber')"
+                  label="Phone Number"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisationUnit email"
+                formControlName="email"
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('email')"
+                  label="Email"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Background</mat-label>
+              <textarea
+                matInput
+                placeholder="Enter organisationUnit background"
+                formControlName="background"
+              ></textarea>
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('background')"
+                  label="Background"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+              <label class="form-control-label" for="field_logo">Logo</label>
+              <div>
+                <img
+                  [src]="
+                    'data:' +
+                    form.get('logoContentType')!.value +
+                    ';base64,' +
+                    form.get('logo')!.value
+                  "
+                  style="max-height: 100px;"
+                  *ngIf="form.get('logo')!.value"
+                  alt="client image"
+                />
+                <div
+                  *ngIf="form.get('logo')!.value"
+                  class="form-text text-danger clearfix"
+                >
+                  <span class="pull-left"
+                    >{{ form.get('logoContentType')!.value }},
+                    {{ byteSize(form.get('logo')!.value) }}</span
+                  >
+                  <button
+                    type="button"
+                    (click)="
+                      clearInputImage('logo', 'logoContentType', 'file_photo')
+                    "
+                    class="btn btn-secondary btn-xs pull-right"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                <input
+                  autocomplete="off"
+                  type="file"
+                  id="file_photo"
+                  (change)="setFileData($event, 'logo', true)"
+                  accept="image/*"
+                />
+              </div>
+              <input
+                autocomplete="off"
+                type="hidden"
+                class="form-control"
+                name="logo"
+                id="field_logo"
+                formControlName="logo"
+              />
+              <input
+                autocomplete="off"
+                type="hidden"
+                class="form-control"
+                name="logoContentType"
+                id="field_logoContentType"
+                formControlName="logoContentType"
+              />
+              <div
+                *ngIf="
+                  form.get('logo')!.invalid &&
+                  (form.get('logo')!.dirty || form.get('logo')!.touched)
+                "
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="form.get('logo')?.errors?.required"
+                >
+                  This field is required.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button
+    mat-flat-button
+    color="accent"
+    [disabled]="form.invalid || showProgress"
+    (click)="saveOrUpdate()"
+  >
+    <mat-icon>save</mat-icon>
+    <span>{{ label }} </span>
+  </button>
+</mat-dialog-actions>

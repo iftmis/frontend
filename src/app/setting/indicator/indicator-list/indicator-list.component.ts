@@ -85,7 +85,7 @@ export class IndicatorListComponent implements OnInit {
 
   create() {
     const data = {
-      title: 'Creates a new indicator',
+      title: 'Create a new indicator',
       action: 'create',
       label: 'Save Indicator',
     };
@@ -101,7 +101,12 @@ export class IndicatorListComponent implements OnInit {
     config.disableClose = true;
     config.autoFocus = false;
 
-    this.dialog.open(IndicatorDetailComponent, config);
+    const dialog = this.dialog.open(IndicatorDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.page, this.size, this.subAreaId);
+      }
+    });
   }
 
   delete(id: number, indicator: Indicator) {

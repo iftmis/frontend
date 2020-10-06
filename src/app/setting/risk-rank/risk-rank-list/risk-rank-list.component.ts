@@ -61,7 +61,7 @@ export class RiskRankListComponent implements OnInit {
 
   create() {
     const data = {
-      title: 'Creates a new Risk Rank',
+      title: 'Create a new Risk Rank',
       action: 'create',
       label: 'Save Risk Rank',
     };

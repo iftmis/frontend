@@ -53,7 +53,7 @@ export class ObjectiveListComponent implements OnInit {
 
   create() {
     const data = {
-      title: 'Creates a new Objective',
+      title: 'Create a new Objective',
       action: 'create',
       label: 'Save Objective',
     };

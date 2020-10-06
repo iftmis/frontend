@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ToastService } from './../../../shared/toast.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,18 +26,25 @@ import { Title } from '@angular/platform-browser';
 export class OrganisationUnitLevelDetailComponent implements OnInit {
   organisationUnitLevel: OrganisationUnitLevel;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private _toastSvc: ToastService,
     private formService: OrganisationUnitLevelFormService,
     private organisationUnitLevelService: OrganisationUnitLevelService,
-    private titleService: Title
+    private titleService: Title,
+    private _dialogRef: MatDialogRef<OrganisationUnitLevelDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.titleService.setTitle(
-      'Organization Unit Level Details|' + environment.app
+      'Organization Unit Level Details | ' + environment.app
     );
   }
 
@@ -44,40 +58,58 @@ export class OrganisationUnitLevelDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
         this.organisationUnitLevelService.update(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'update'
       );
     } else {
       this.subscribeToResponse(
         this.organisationUnitLevelService.create(
           this.formService.fromFormGroup(this.form)
-        )
+        ),
+        'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<OrganisationUnitLevel>) {
+  private subscribeToResponse(
+    result: Observable<OrganisationUnitLevel>,
+    action: string
+  ) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/organisation-unit-levels']),
+      next: () => {
+        if (action === 'update') {
+          this._toastSvc.success(
+            'Success!',
+            'Organisation Unit Updated Successfully'
+          );
+        } else {
+          this._toastSvc.success(
+            'Success!',
+            'Organisation Unit Created Successfully'
+          );
+        }
+        this._dialogRef.close({ success: true });
+      },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/organisation-unit-levels']);
+    this.router.navigate(['/main/settings/organisation-unit-levels']);
     return false;
   }
 }

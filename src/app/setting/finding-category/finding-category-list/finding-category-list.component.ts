@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
@@ -21,6 +21,7 @@ import { FindingCategoryDeleteComponent } from '../finding-category-delete/findi
 import { FindingCategoryService } from '../finding-category.service';
 import { FindingCategory } from '../finding-category';
 import { ToastService } from '../../../shared/toast.service';
+import { FindingCategoryDetailComponent } from '../finding-category-detail/finding-category-detail.component';
 
 @Component({
   selector: 'app-finding-category-list',
@@ -34,7 +35,7 @@ export class FindingCategoryListComponent implements OnInit {
   size: number;
   perPageOptions: number[];
   totalItems: number;
-  showLoader = false;
+  public showProgress: boolean;
   private findingCategorySubject: BehaviorSubject<
     FindingCategory[]
   > = new BehaviorSubject([]);
@@ -53,10 +54,37 @@ export class FindingCategoryListComponent implements OnInit {
     this.page = PAGE;
     this.size = ITEMS_PER_PAGE;
     this.perPageOptions = PAGE_SIZE_OPTIONS;
+    this.showProgress = false;
   }
 
   ngOnInit() {
     this.loadData(this.page, this.size);
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new Finding Category',
+      action: 'create',
+      label: 'Save Finding Category',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(FindingCategoryDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadData(this.page, this.size);
+      }
+    });
   }
 
   loadData(page: number, size: number) {
@@ -88,7 +116,7 @@ export class FindingCategoryListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.showLoader = true;
+        this.showProgress = true;
         this.findingCategoryService.delete(id).subscribe({
           next: () => {
             this.loadData(this.page, this.size);
@@ -96,10 +124,10 @@ export class FindingCategoryListComponent implements OnInit {
               'Success',
               'Finding Category Deleted Successfully!'
             );
-            this.router.navigate(['/settings/finding-categories']);
+            this.router.navigate(['/main/settings/finding-categories']);
           },
-          error: () => (this.showLoader = false),
-          complete: () => (this.showLoader = false),
+          error: () => (this.showProgress = false),
+          complete: () => (this.showProgress = false),
         });
       }
     });

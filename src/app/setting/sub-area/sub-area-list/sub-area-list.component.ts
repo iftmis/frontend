@@ -59,7 +59,7 @@ export class SubAreaListComponent implements OnInit {
 
   create() {
     const data = {
-      title: 'Creates a new Sub Area',
+      title: 'Create a new Sub Area',
       action: 'create',
       label: 'Save Sub Area',
     };

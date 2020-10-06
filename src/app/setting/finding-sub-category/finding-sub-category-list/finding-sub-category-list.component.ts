@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -14,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 import { FindingSubCategoryService } from '../finding-sub-category.service';
 import { environment } from '../../../../environments/environment';
 import { ToastService } from '../../../shared/toast.service';
+import { FindingSubCategoryDetailComponent } from '../finding-sub-category-detail/finding-sub-category-detail.component';
 
 @Component({
   selector: 'app-finding-sub-category-list',
@@ -24,7 +25,7 @@ import { ToastService } from '../../../shared/toast.service';
 export class FindingSubCategoryListComponent implements OnInit {
   displayedColumns = ['code', 'name', 'formActions'];
   routeData$ = this.route.data;
-  showLoader = false;
+  public showProgress: boolean;
 
   findingSubCategorySubject: BehaviorSubject<
     FindingSubCategory[]
@@ -43,11 +44,37 @@ export class FindingSubCategoryListComponent implements OnInit {
     private toastService: ToastService,
     private findingSubCategoryService: FindingSubCategoryService
   ) {
-    this.titleService.setTitle('Finding Sub-Categories|' + environment.app);
+    this.titleService.setTitle('Finding Sub-Categories | ' + environment.app);
   }
 
   ngOnInit() {
     this.loadPage();
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new Finding Sub Category',
+      action: 'create',
+      label: 'Save Sub Category',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(FindingSubCategoryDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   loadPage() {
@@ -77,7 +104,7 @@ export class FindingSubCategoryListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.showLoader = true;
+        this.showProgress = true;
         this.findingSubCategoryService.delete(id).subscribe({
           next: () => {
             this.loadPage();
@@ -85,10 +112,10 @@ export class FindingSubCategoryListComponent implements OnInit {
               'Success',
               'Finding Sub-Category Deleted Successfully!'
             );
-            this.router.navigate(['/settings/finding-sub-categories']);
+            this.router.navigate(['/main/settings/finding-sub-categories']);
           },
-          error: () => (this.showLoader = false),
-          complete: () => (this.showLoader = false),
+          error: () => (this.showProgress = false),
+          complete: () => (this.showProgress = false),
         });
       }
     });

@@ -5,7 +5,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { AuditableAreaService } from '../auditable-area.service';
 import { AuditableAreaDeleteComponent } from '../auditable-area-delete/auditable-area-delete.component';
@@ -20,6 +20,7 @@ import { Title } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ToastService } from '../../../shared/toast.service';
+import { AuditableAreaDetailComponent } from '../auditable-area-detail/auditable-area-detail.component';
 
 @Component({
   selector: 'app-auditable-area-list',
@@ -53,6 +54,32 @@ export class AuditableAreaListComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.loadPage();
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new Auditable Area',
+      action: 'create',
+      label: 'Save Auditable Area',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(AuditableAreaDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   loadPage() {

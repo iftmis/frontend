@@ -316,3 +316,10 @@ button:hover,
 .inner_page__body {
   padding: 1rem 0px;
 }
+
+.loader__container {
+  background-color: #f3f3f3;
+  position: absolute;
+  left: calc(100vw / 2 + 25vw);
+  bottom: 20px;
+}

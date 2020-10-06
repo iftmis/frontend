@@ -2,8 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  Inject,
   OnInit,
 } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -27,11 +29,15 @@ import { JhiDataUtils, JhiFileLoadError } from 'ng-jhipster';
 export class OrganisationUnitDetailComponent implements OnInit {
   organisationUnit: OrganisationUnit;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  showProgress = false;
   error: string | undefined = undefined;
   levels: BehaviorSubject<OrganisationUnitLevel[]> = new BehaviorSubject([]);
   organisationUnits: OrganisationUnit[];
   parent: OrganisationUnit;
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,9 +48,16 @@ export class OrganisationUnitDetailComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService,
     protected dataUtils: JhiDataUtils,
-    protected elementRef: ElementRef
+    protected elementRef: ElementRef,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _dialogRef: MatDialogRef<OrganisationUnitDetailComponent>
   ) {
-    this.titleService.setTitle('Organization Unit Details|' + environment.app);
+    this.titleService.setTitle(
+      'Organization Unit Details | ' + environment.app
+    );
+    this.title = data.title;
+    this.label = data.label;
+    this.action = data.action;
   }
 
   ngOnInit() {
@@ -77,7 +90,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -113,17 +126,18 @@ export class OrganisationUnitDetailComponent implements OnInit {
             'Organisation Unit Created Successfully'
           );
         }
-        this.router.navigate(['/settings/organisation-units']);
+        // this.router.navigate(['/main/settings/organisation-units']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
@@ -174,7 +188,7 @@ export class OrganisationUnitDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/settings/organisation-units']);
+    this.router.navigate(['/main/settings/organisation-units']);
     return false;
   }
 }

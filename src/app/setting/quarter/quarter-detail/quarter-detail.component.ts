@@ -1,5 +1,11 @@
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FinancialYearService } from '../../financial-year/financial-year.service';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -22,9 +28,13 @@ import { ToastService } from '../../../shared/toast.service';
 export class QuarterDetailComponent implements OnInit {
   quarter: Quarter;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
   financialYears: FinancialYear[];
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,9 +43,15 @@ export class QuarterDetailComponent implements OnInit {
     private quarterService: QuarterService,
     private financialYearService: FinancialYearService,
     private titleService: Title,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private _dialogRef: MatDialogRef<QuarterDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.titleService.setTitle('Quarter Details|' + environment.app);
+    this.titleService.setTitle('Quarter Details | ' + environment.app);
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+    this.showProgress = false;
   }
 
   ngOnInit() {
@@ -56,7 +72,7 @@ export class QuarterDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -82,22 +98,23 @@ export class QuarterDetailComponent implements OnInit {
             'Quarter Initiated Successfully'
           );
         }
-        this.router.navigate(['/settings/quarters']);
+        // this.router.navigate(['/main/settings/quarters']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/quarters']);
+    this.router.navigate(['/main/settings/quarters']);
     return false;
   }
 }

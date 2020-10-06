@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { QuarterService } from '../quarter.service';
 import { QuarterDeleteComponent } from '../quarter-delete/quarter-delete.component';
@@ -21,6 +21,7 @@ import {
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { ToastService } from '../../../shared/toast.service';
+import { QuarterDetailComponent } from '../quarter-detail/quarter-detail.component';
 
 @Component({
   selector: 'app-quarter-list',
@@ -65,6 +66,32 @@ export class QuarterListComponent implements OnInit {
 
   ngOnInit() {
     this.loadPage();
+  }
+
+  create() {
+    const data = {
+      title: 'Creates a new Quarter',
+      action: 'create',
+      label: 'Save Quarter',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(QuarterDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   loadPage() {

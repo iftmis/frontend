@@ -1,98 +1,108 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <mat-card class="card">
-    <mat-progress-spinner
-      *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
-      class="form-overlay"
-      color="accent"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <mat-card-title>Organisation Unit Level</mat-card-title>
-    <mat-card-subtitle>{{
-      organisationUnitLevel?.id
-        ? 'Update an existing organisation Unit Level.'
-        : 'Create a new organisation Unit Level.'
-    }}</mat-card-subtitle>
-    <div class="error mat-error">
-      {{ error ? error : '&nbsp;' }}
-    </div>
-    <mat-card-content class="content">
-      <mat-form-field appearance="outline">
-        <mat-label>Code</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisation Unit Level code"
-          formControlName="code"
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('code')"
-            label="Code"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter organisationUnitLevel name"
-          formControlName="name"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('name')"
-            label="Name"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Level</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          type="number"
-          min="1"
-          placeholder="Enter organisation Unit Level"
-          formControlName="level"
-          required
-        />
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('level')"
-            label="Level"
-          ></hip-ngx-error>
-        </mat-error>
-      </mat-form-field>
-      <ng-container>
-        <mat-slide-toggle color="accent" formControlName="isInspectionLevel">
-          <mat-label>Is Inspectable Level</mat-label>
-        </mat-slide-toggle>
-        <mat-error>
-          <hip-ngx-error
-            [control]="form.get('isInspectionLevel')"
-            label="Is Inspectable Level"
-          ></hip-ngx-error>
-        </mat-error>
-      </ng-container>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="cancel()">
-        <mat-icon>cancel</mat-icon>
-        <span>Cancel</span>
-      </button>
-      <button
-        mat-raised-button
+<div class="mat-dialog-header d-flex flex-row justify-content-between">
+  <div></div>
+  <div class="header-title align-self-center">
+    <h2 mat-dialog-title>{{ title }}</h2>
+  </div>
+  <div class="close-button align-self-center">
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="form" novalidate autocomplete="off">
+    <mat-card>
+      <mat-progress-spinner
+        *ngIf="showProgress"
+        diameter="50"
+        class="form-overlay"
         color="accent"
-        [disabled]="form.invalid || isSaveOrUpdateInProgress"
-        type="submit"
+        mode="indeterminate"
       >
-        <mat-icon>save</mat-icon>
-        <span>{{ organisationUnitLevel?.id ? 'Update' : 'Save' }} </span>
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+      </mat-progress-spinner>
+      <!-- <mat-card-title>Organisation Unit Level</mat-card-title>
+      <mat-card-subtitle>{{
+        organisationUnitLevel?.id
+          ? 'Update an existing organisation Unit Level.'
+          : 'Create a new organisation Unit Level.'
+      }}</mat-card-subtitle>
+      <div class="error mat-error">
+        {{ error ? error : '&nbsp;' }}
+      </div> -->
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Code</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter organisation Unit Level code"
+            formControlName="code"
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('code')"
+              label="Code"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter organisationUnitLevel name"
+            formControlName="name"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('name')"
+              label="Name"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Level</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            type="number"
+            min="1"
+            placeholder="Enter organisation Unit Level"
+            formControlName="level"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('level')"
+              label="Level"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+        <ng-container>
+          <mat-slide-toggle color="accent" formControlName="isInspectionLevel">
+            <mat-label>Is Inspectable Level</mat-label>
+          </mat-slide-toggle>
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('isInspectionLevel')"
+              label="Is Inspectable Level"
+            ></hip-ngx-error>
+          </mat-error>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button
+    mat-raised-button
+    color="accent"
+    [disabled]="form.invalid || showProgress"
+    (click)="saveOrUpdate()"
+  >
+    <mat-icon>save</mat-icon>
+    <span>{{ label }} </span>
+  </button>
+</mat-dialog-actions>
