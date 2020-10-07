@@ -78,7 +78,7 @@ export class InspectionComponent implements OnInit {
     }
     // Todo if planned check selected Ou if exist in list of plans
     this.router.navigate([
-      '/inspections',
+      '/main/inspections',
       this.selectedFinancialYear.id,
       this.inspectionType,
       this.organisation.id,
