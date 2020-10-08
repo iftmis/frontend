@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   ITEMS_PER_PAGE,
@@ -14,6 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { RiskCategoryService } from '../risk-category.service';
 import { RiskCategory } from '../risk-category';
 import { RiskCategoryDeleteComponent } from '../risk-category-delete/risk-category-delete.component';
+import { RiskCategoryDetailComponent } from '../risk-category-detail/risk-category-detail.component';
 
 @Component({
   selector: 'app-risk-category-list',
@@ -62,6 +63,33 @@ export class RiskCategoryListComponent implements OnInit {
 
   getData(): Observable<RiskCategory[]> {
     return this.riskCategorySubject.asObservable();
+  }
+
+  create() {
+    const data = {
+      title: 'Creates a Risk Category',
+      action: 'create',
+      label: 'Save Risk Category',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialogRef = this.dialog.open(RiskCategoryDetailComponent, config);
+    dialogRef.afterClosed().subscribe(response => {
+      console.log(response);
+      if (response.success) {
+        this.loadPage(this.page, this.size);
+      }
+    });
   }
 
   delete(id: number, riskCategory: RiskCategory) {

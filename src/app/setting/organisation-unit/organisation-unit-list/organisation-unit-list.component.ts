@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { OrganisationUnitService } from '../organisation-unit.service';
 import { OrganisationUnitDeleteComponent } from '../organisation-unit-delete/organisation-unit-delete.component';
@@ -19,6 +19,7 @@ import { ToastService } from '../../../shared/toast.service';
 import { Page } from '../../../shared/page';
 import { HttpHeaders } from '@angular/common/http';
 import { ITreeState, TreeComponent } from 'angular-tree-component';
+import { OrganisationUnitDetailComponent } from '../organisation-unit-detail/organisation-unit-detail.component';
 
 @Component({
   selector: 'app-organisation-unit-list',
@@ -29,7 +30,7 @@ import { ITreeState, TreeComponent } from 'angular-tree-component';
 export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
   displayedColumns = ['code', 'name', 'level', 'formActions'];
   routeData$ = this.route.data;
-  showLoader = false;
+  public showProgress: boolean;
 
   totalItems: number;
   pageSizeOptions: number[];
@@ -56,7 +57,7 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
     private titleService: Title,
     private toastService: ToastService
   ) {
-    this.titleService.setTitle('Organisation Units|' + environment.app);
+    this.titleService.setTitle('Organisation Units | ' + environment.app);
     this.page = Page.page;
     this.size = Page.size;
     this.pageSizeOptions = Page.perPageOptions;
@@ -73,6 +74,32 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
         this.parentId = ou.id;
       }
       this.loadPage(0);
+    });
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new Organization Unit',
+      action: 'create',
+      label: 'Save Organization Unit',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(OrganisationUnitDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(0);
+      }
     });
   }
 
@@ -144,7 +171,7 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.showLoader = true;
+        this.showProgress = true;
         this.organisationUnitService.delete(id).subscribe({
           next: () => {
             this.loadPage(this.page);
@@ -154,8 +181,8 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
             );
             this.router.navigate(['/settings/organisation-units']);
           },
-          error: () => (this.showLoader = false),
-          complete: () => (this.showLoader = false),
+          error: () => (this.showProgress = false),
+          complete: () => (this.showProgress = false),
         });
       }
     });

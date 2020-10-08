@@ -26,7 +26,6 @@ import { AuditableArea } from '../../../setting/auditable-area/auditable-area';
 import { Risk } from '../../../risk-management/risk/risk';
 import { RiskService } from '../../../risk-management/risk/risk.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ThemePalette } from '@angular/material/core';
 import { OrganisationUnitService } from '../../../setting/organisation-unit/organisation-unit.service';
 import { OrganisationUnit } from '../../../setting/organisation-unit/organisation-unit';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -114,19 +113,22 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
   ngOnInit() {
     this.loadAuditableAreas();
-    this.loadOrganisationUnits();
+    // this.loadOrganisationUnits();
     this.loadSubAreas(this.inspectionActivityEdit.auditableAreaId);
     this.loadObjectives();
-
+    this.loadRisks();
+    this.loadOrganisationUnits();
     if (this.action === 'update') {
       this.form = this.formService.toFormGroup(this.inspectionActivityEdit);
       this.interestFormGroup = this.formService.toFormGroup(
         this.inspectionActivityEdit
       );
-      this.organisationUnitFormGroup = this.formService.toFormGroup(
-        this.organisationUnitToEdit
-      );
 
+      this.organisationUnitFormGroup = this._formBuilder.group({
+        organisationUnit: this._formBuilder.array([]),
+      });
+
+      this.loadOrganisationUnits();
       // load the material and set manually
       // this.inspectionActivitiesService.getById(this.id).subscribe(result => {
       //
@@ -142,8 +144,6 @@ export class InspectionActivitiesDetailComponent implements OnInit {
         this.inspectionActivities = inspectionActivities;
         this.form = this.formService.toFormGroup(inspectionActivities);
       });
-
-      this.loadRisks();
 
       this.error = undefined;
 
@@ -163,11 +163,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
       this.risks.next(response);
       // this.allRisks = response;
 
-      console.log('all risk');
-
       console.log(this.allRisks);
 
-      this.loadAllSelectedRisks();
+      //  this.loadAllSelectedRisks();
     });
   }
 
@@ -344,6 +342,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
     const organisation = (this.organisationUnitFormGroup.get(
       'organisationUnit'
     ) as FormArray) as FormArray;
+
+    console.log(' OG ' + organisation);
+
     if (eventOrganisationUnit.checked) {
       organisation.push(new FormControl(eventOrganisationUnit.source.value));
     } else {
@@ -377,8 +378,9 @@ export class InspectionActivitiesDetailComponent implements OnInit {
 
     {
       // if they are filled then upload
-      console.log('' + this.organisationUnitFormGroup.value);
+      console.log('ORG UNIT' + this.organisationUnitFormGroup.value);
 
+      console.log(' INSPECTION PLAN ID : ' + this.inspectionPlanId);
       this.inspectionActivities = {
         id: this.id,
         activity: this.form.value.activity,

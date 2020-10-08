@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { DatePipe, KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -37,8 +43,12 @@ import { ToastService } from '../../../shared/toast.service';
 export class FinancialYearDetailComponent implements OnInit {
   financialYear: FinancialYear;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,9 +57,14 @@ export class FinancialYearDetailComponent implements OnInit {
     private financialYearService: FinancialYearService,
     private titleService: Title,
     private datePipe: DatePipe,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private _dialogRef: MatDialogRef<FinancialYearDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.titleService.setTitle('Financial Year Details|' + environment.app);
+    this.titleService.setTitle('Financial Year Details | ' + environment.app);
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
   }
 
   ngOnInit() {
@@ -62,7 +77,7 @@ export class FinancialYearDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -98,22 +113,23 @@ export class FinancialYearDetailComponent implements OnInit {
             'Financial Year Created Successfully'
           );
         }
-        this.router.navigate(['/settings/financial-years']);
+        // this.router.navigate(['/main/settings/financial-years']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/financial-years']);
+    this.router.navigate(['/main/settings/financial-years']);
     return false;
   }
 }

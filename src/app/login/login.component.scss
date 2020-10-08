@@ -1,27 +1,61 @@
-.container {
+.bg__login {
+  background: #f3f3f3 url(./../../assets/img/bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+.login__container {
+  width: 100%;
+  margin-top: 160px;
+  background-color: #ffffff;
   display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+
+  .login__slider {
+    height: 100%;
+    flex: 0.65;
+    img {
+      width: 100%;
+    }
+  }
+  .login__form {
+    height: 100%;
+    padding: 2rem 2.5rem;
+    flex: 0.35;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    .login__form_logo {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      h1 {
+        font-weight: 900 !important;
+      }
+      img {
+        width: 30%;
+      }
+    }
+  }
 }
 
-.card {
-  width: 400px;
-}
-
-.title {
-  margin-bottom: 0.5em;
-}
-
-.error {
-  margin-bottom: 1.5rem;
-}
-
-.form {
+.login_form__footer {
+  padding: 3rem 0px;
   display: flex;
   flex-direction: column;
-}
-
-.login-btn {
-  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  p {
+    color: rgba($color: #000000, $alpha: 0.5);
+    span {
+      border-left: 1px solid #000000;
+      padding: 0.2rem 1rem;
+      margin-left: 10px;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { SubAreaService } from '../sub-area.service';
 import { SubAreaDeleteComponent } from '../sub-area-delete/sub-area-delete.component';
@@ -17,6 +17,7 @@ import { SubArea } from '../sub-area';
 import { AuditableAreaService } from '../../auditable-area/auditable-area.service';
 import { AuditableArea } from '../../auditable-area/auditable-area';
 import { FormControl } from '@angular/forms';
+import { SubAreaDetailComponent } from '../sub-area-detail/sub-area-detail.component';
 
 @Component({
   selector: 'app-sub-area-list',
@@ -48,12 +49,38 @@ export class SubAreaListComponent implements OnInit {
     private areaService: AuditableAreaService
   ) {
     this.areaId = 0;
-    this.titleService.setTitle('Sub Areas|' + environment.app);
+    this.titleService.setTitle('Sub Areas |' + environment.app);
   }
 
   ngOnInit() {
     this.loadPage(this.areaId);
     this.loadAuditableAreas();
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new Sub Area',
+      action: 'create',
+      label: 'Save Sub Area',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(SubAreaDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.areaId);
+      }
+    });
   }
 
   loadPage(auditableAreaId: number) {
@@ -85,7 +112,7 @@ export class SubAreaListComponent implements OnInit {
       if (result) {
         this.showLoader = true;
         this.subAreaService.delete(id).subscribe({
-          next: () => this.router.navigate(['/settings/sub-areas']),
+          next: () => this.router.navigate(['/main/settings/sub-areas']),
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });

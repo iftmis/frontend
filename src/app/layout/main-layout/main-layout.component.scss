@@ -1,0 +1,38 @@
+.sidenav-container {
+  height: 100%;
+}
+.breadcrumb {
+  padding-top: 80px;
+  background-color: #dcdde1;
+  border-radius: 0px !important;
+}
+mat-sidenav {
+  width: 300px;
+}
+
+.main__content {
+  flex: 1 1 auto;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 0.35rem;
+  p {
+    font-size: 14px;
+    color: rgba($color: #000000, $alpha: 0.5);
+    span {
+      border-left: 1px solid #000000;
+      padding: 0.2rem 1rem;
+      margin-left: 10px;
+    }
+  }
+}

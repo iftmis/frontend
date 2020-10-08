@@ -1,67 +1,77 @@
-<form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
-  <mat-card class="card">
-    <mat-progress-spinner
-      *ngIf="isSaveOrUpdateInProgress"
-      diameter="50"
-      class="form-overlay"
-      color="accent"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <mat-card-title>GfsCode</mat-card-title>
-    <mat-card-subtitle>{{
-      gfsCode?.id ? 'Update an existing gfsCode.' : 'Creates a new gfsCode.'
-    }}</mat-card-subtitle>
-    <div class="error mat-error">
-      {{ error ? error : '&nbsp;' }}
-    </div>
-    <mat-card-content class="content">
-      <mat-form-field appearance="outline">
-        <mat-label>Code</mat-label>
-        <input
-          autocomplete="off"
-          matInput
-          placeholder="Enter gfsCode code"
-          formControlName="code"
-          required
-        />
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('code')"
-            label="Code"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          placeholder="Enter gfsCode description"
-          formControlName="description"
-          required
-        ></textarea>
-        <mat-error
-          ><hip-ngx-error
-            [control]="form.get('description')"
-            label="Description"
-          ></hip-ngx-error
-        ></mat-error>
-      </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="cancel()">
-        <mat-icon>cancel</mat-icon>
-        <span>Cancel</span>
-      </button>
-      <button
-        mat-raised-button
+<div class="mat-dialog-header d-flex flex-row justify-content-between">
+  <div></div>
+  <div class="header-title align-self-center">
+    <h2 mat-dialog-title>{{ title }}</h2>
+  </div>
+  <div class="close-button align-self-center">
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="form" novalidate autocomplete="off">
+    <mat-card>
+      <mat-progress-spinner
+        *ngIf="showProgress"
+        diameter="50"
+        class="form-overlay"
         color="accent"
-        [disabled]="form.invalid || isSaveOrUpdateInProgress"
-        type="submit"
+        mode="indeterminate"
       >
-        <mat-icon>save</mat-icon>
-        <span>{{ gfsCode?.id ? 'Update' : 'Save' }} </span>
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+      </mat-progress-spinner>
+      <!-- <mat-card-title>GfsCode</mat-card-title>
+      <mat-card-subtitle>{{
+        gfsCode?.id ? 'Update an existing gfsCode.' : 'Creates a new gfsCode.'
+      }}</mat-card-subtitle>
+      <div class="error mat-error">
+        {{ error ? error : '&nbsp;' }}
+      </div> -->
+      <mat-card-content class="p-3">
+        <mat-form-field appearance="outline">
+          <mat-label>Code</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter gfsCode code"
+            formControlName="code"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('code')"
+              label="Code"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            placeholder="Enter gfsCode description"
+            formControlName="description"
+            required
+          ></textarea>
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('description')"
+              label="Description"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button
+    mat-flat-button
+    color="accent"
+    [disabled]="form.invalid || showProgress"
+    (click)="saveOrUpdate()"
+  >
+    <mat-icon>save</mat-icon>
+    <span>{{ label }} </span>
+  </button>
+</mat-dialog-actions>

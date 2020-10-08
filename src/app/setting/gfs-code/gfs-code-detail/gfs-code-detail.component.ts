@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,8 +26,12 @@ import { ToastService } from '../../../shared/toast.service';
 export class GfsCodeDetailComponent implements OnInit {
   gfsCode: GfsCode;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,9 +39,15 @@ export class GfsCodeDetailComponent implements OnInit {
     private formService: GfsCodeFormService,
     private gfsCodeService: GfsCodeService,
     private titleService: Title,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private _dialogRef: MatDialogRef<GfsCodeDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.titleService.setTitle('GFS Code Details|' + environment.app);
+    this.titleService.setTitle('GFS Code Details | ' + environment.app);
+    this.showProgress = false;
+    this.title = data.title;
+    this.label = data.label;
+    this.action = data.action;
   }
 
   ngOnInit() {
@@ -44,7 +60,7 @@ export class GfsCodeDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -73,22 +89,23 @@ export class GfsCodeDetailComponent implements OnInit {
             'GFS Code Created Successfully'
           );
         }
-        this.router.navigate(['/settings/gfs-codes']);
+        // this.router.navigate(['/main/settings/gfs-codes']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/gfs-codes']);
+    this.router.navigate(['/main/settings/gfs-codes']);
     return false;
   }
 }

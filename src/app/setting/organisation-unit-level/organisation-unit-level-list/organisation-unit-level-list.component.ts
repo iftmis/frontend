@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { OrganisationUnitLevelService } from '../organisation-unit-level.service';
 import { OrganisationUnitLevelDeleteComponent } from '../organisation-unit-level-delete/organisation-unit-level-delete.component';
@@ -21,6 +21,7 @@ import {
 } from '../../../shared/pagination.constants';
 import { HttpHeaders } from '@angular/common/http';
 import { ToastService } from '../../../shared/toast.service';
+import { OrganisationUnitLevelDetailComponent } from '../organisation-unit-level-detail/organisation-unit-level-detail.component';
 
 @Component({
   selector: 'app-organisation-unit-level-list',
@@ -31,7 +32,7 @@ import { ToastService } from '../../../shared/toast.service';
 export class OrganisationUnitLevelListComponent implements OnInit {
   displayedColumns = ['code', 'name', 'level', 'formActions'];
   routeData$ = this.route.data;
-  showLoader = false;
+  showProgress = false;
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -53,11 +54,40 @@ export class OrganisationUnitLevelListComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService
   ) {
-    this.titleService.setTitle('Organisation Unit Levels|' + environment.app);
+    this.titleService.setTitle('Organisation Unit Levels | ' + environment.app);
   }
 
   ngOnInit() {
     this.loadPage();
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new Organization Unit Level',
+      action: 'create',
+      label: 'Save OrganisationUnit Level',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(
+      OrganisationUnitLevelDetailComponent,
+      config
+    );
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   loadPage() {
@@ -98,7 +128,7 @@ export class OrganisationUnitLevelListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.showLoader = true;
+        this.showProgress = true;
         this.organisationUnitLevelService.delete(id).subscribe({
           next: () => {
             this.loadPage();
@@ -106,11 +136,11 @@ export class OrganisationUnitLevelListComponent implements OnInit {
               'Success',
               'Organisation Unit Level Deleted Successfully!'
             );
-            this.router.navigate(['/settings/organisation-unit-levels']);
+            this.router.navigate(['/main/settings/organisation-unit-levels']);
           },
 
-          error: () => (this.showLoader = false),
-          complete: () => (this.showLoader = false),
+          error: () => (this.showProgress = false),
+          complete: () => (this.showProgress = false),
         });
       }
     });

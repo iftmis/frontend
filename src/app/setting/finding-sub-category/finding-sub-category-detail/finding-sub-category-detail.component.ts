@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,16 +24,27 @@ import { ToastService } from '../../../shared/toast.service';
 export class FindingSubCategoryDetailComponent implements OnInit {
   findingSubCategory: FindingSubCategory;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
+
+  public showProgress: boolean;
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: FindingSubCategoryFormService,
     private findingSubCategoryService: FindingSubCategoryService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private _dialogRef: MatDialogRef<FindingSubCategoryDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+    this.showProgress = false;
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ findingSubCategory }) => {
@@ -39,7 +56,7 @@ export class FindingSubCategoryDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -75,22 +92,23 @@ export class FindingSubCategoryDetailComponent implements OnInit {
             'Finding Sub-Category Created Successfully'
           );
         }
-        this.router.navigate(['/settings/finding-sub-categories']);
+        // this.router.navigate(['/main/settings/finding-sub-categories']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/finding-sub-categories']);
+    this.router.navigate(['/main/settings/finding-sub-categories']);
     return false;
   }
 }

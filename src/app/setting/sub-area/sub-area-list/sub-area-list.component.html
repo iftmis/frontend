@@ -1,106 +1,117 @@
-<mat-card *ngIf="getData() | async as data" class="mat-elevation-z0">
-  <div class="page-heading">
-    <span class="mat-card-title">Sub Areas</span>
-    <div>
-      <button
-        mat-raised-button
-        color="accent"
-        [routerLink]="['/settings/sub-areas', 'new']"
-      >
-        <mat-icon>add</mat-icon>
-        <span>Create</span>
-      </button>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="inner_page__heading">
+        <span class="inner_page__title">List of Sub Areas</span>
+        <div></div>
+      </div>
+
+      <div class="inner_page__body">
+        <mat-card *ngIf="getData() | async as data">
+          <mat-card-content>
+            <mat-progress-spinner
+              *ngIf="showLoader"
+              diameter="50"
+              class="table-overlay"
+              color="accent"
+              mode="indeterminate"
+            >
+            </mat-progress-spinner>
+            <div *ngIf="!getData()">
+              <span class="table-overlay">No records found</span>
+            </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Auditable Area</mat-label>
+              <mat-select
+                [formControl]="auditableAreaControl"
+                required
+                (ngModelChange)="filterSubAreaByArea($event)"
+                placeholder="Select auditable Area"
+              >
+                <mat-option value="null">-All-</mat-option>
+                <mat-option *ngFor="let area of auditableAreas" [value]="area">
+                  {{ area.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <table mat-table [dataSource]="getData()" matSort>
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="areaName">
+                <th mat-header-cell *matHeaderCellDef>Auditable Area</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.areaName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Sub Area</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="formActions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <button
+                    mat-icon-button
+                    color="accent"
+                    [matMenuTriggerFor]="menu"
+                    [matMenuTriggerData]="{ id: element.id, element: element }"
+                    aria-label="AuditableArea form actions "
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+              ></tr>
+              <tr
+                mat-row
+                class="data-row"
+                *matRowDef="let row; columns: displayedColumns"
+              ></tr>
+            </table>
+            <mat-paginator
+              [length]="totalItems"
+              [pageSize]="itemsPerPage"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="pageChange($event)"
+            >
+            </mat-paginator>
+          </mat-card-content>
+        </mat-card>
+        <mat-menu #menu="matMenu">
+          <ng-template matMenuContent let-id="id" let-element="element">
+            <button
+              mat-menu-item
+              aria-label="Edit subArea"
+              [routerLink]="['/settings/sub-areas', id, 'edit']"
+            >
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button
+              mat-menu-item
+              aria-label="Delete subArea"
+              (click)="delete(id, element)"
+            >
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </ng-template>
+        </mat-menu>
+      </div>
     </div>
   </div>
-  <mat-card-content class="table-container">
-    <mat-progress-spinner
-      *ngIf="showLoader"
-      diameter="50"
-      class="table-overlay"
-      color="accent"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <div *ngIf="!getData()">
-      <span class="table-overlay">No records found</span>
-    </div>
-    <mat-form-field appearance="outline">
-      <mat-label>Auditable Area</mat-label>
-      <mat-select
-        [formControl]="auditableAreaControl"
-        required
-        (ngModelChange)="filterSubAreaByArea($event)"
-        placeholder="Select auditable Area"
-      >
-        <mat-option value="null">-All-</mat-option>
-        <mat-option *ngFor="let area of auditableAreas" [value]="area">
-          {{ area.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <table mat-table [dataSource]="getData()" matSort>
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-      </ng-container>
-      <ng-container matColumnDef="areaName">
-        <th mat-header-cell *matHeaderCellDef>Auditable Area</th>
-        <td mat-cell *matCellDef="let element">{{ element.areaName }}</td>
-      </ng-container>
+</div>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Sub Area</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="formActions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            mat-icon-button
-            color="accent"
-            [matMenuTriggerFor]="menu"
-            [matMenuTriggerData]="{ id: element.id, element: element }"
-            aria-label="AuditableArea form actions "
-          >
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        class="data-row"
-        *matRowDef="let row; columns: displayedColumns"
-      ></tr>
-    </table>
-    <mat-paginator
-      [length]="totalItems"
-      [pageSize]="itemsPerPage"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="pageChange($event)"
-    >
-    </mat-paginator>
-  </mat-card-content>
-</mat-card>
-<mat-menu #menu="matMenu">
-  <ng-template matMenuContent let-id="id" let-element="element">
-    <button
-      mat-menu-item
-      aria-label="Edit subArea"
-      [routerLink]="['/settings/sub-areas', id, 'edit']"
-    >
-      <mat-icon>edit</mat-icon>
-      <span>Edit</span>
-    </button>
-    <button
-      mat-menu-item
-      aria-label="Delete subArea"
-      (click)="delete(id, element)"
-    >
-      <mat-icon>delete</mat-icon>
-      <span>Delete</span>
-    </button>
-  </ng-template>
-</mat-menu>
+<button mat-fab color="accent" (click)="create()">
+  <mat-icon>add</mat-icon>
+</button>

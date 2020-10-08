@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -15,6 +15,7 @@ import { SubArea } from '../../sub-area/sub-area';
 import { SubAreaService } from '../../sub-area/sub-area.service';
 import { Page } from '../../../shared/page';
 import { HttpHeaders } from '@angular/common/http';
+import { IndicatorDetailComponent } from '../indicator-detail/indicator-detail.component';
 
 @Component({
   selector: 'app-indicator-list',
@@ -80,6 +81,32 @@ export class IndicatorListComponent implements OnInit {
 
   getData(): Observable<Indicator[]> {
     return this.indicatorSubject.asObservable();
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new indicator',
+      action: 'create',
+      label: 'Save Indicator',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(IndicatorDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.page, this.size, this.subAreaId);
+      }
+    });
   }
 
   delete(id: number, indicator: Indicator) {

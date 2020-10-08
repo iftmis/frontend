@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,8 +26,12 @@ import { ToastService } from '../../../shared/toast.service';
 export class AuditableAreaDetailComponent implements OnInit {
   auditableArea: AuditableArea;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,8 +39,15 @@ export class AuditableAreaDetailComponent implements OnInit {
     private formService: AuditableAreaFormService,
     private auditableAreaService: AuditableAreaService,
     private titleService: Title,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private _dialogRef: MatDialogRef<AuditableAreaDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+
     this.titleService.setTitle('Auditable Area Details|' + environment.app);
   }
 
@@ -44,7 +61,7 @@ export class AuditableAreaDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     const formData = this.formService.fromFormGroup(this.form);
     if (this.form.value.id) {
@@ -77,17 +94,18 @@ export class AuditableAreaDetailComponent implements OnInit {
             'Auditable Area Created Successfully!'
           );
         }
-        this.router.navigate(['/settings/auditable-areas']);
+        // this.router.navigate(['/main/settings/auditable-areas']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 

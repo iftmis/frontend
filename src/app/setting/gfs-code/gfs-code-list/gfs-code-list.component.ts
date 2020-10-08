@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { GfsCodeService } from '../gfs-code.service';
 import { GfsCodeDeleteComponent } from '../gfs-code-delete/gfs-code-delete.component';
@@ -15,6 +15,7 @@ import {
   PAGE_SIZE_OPTIONS,
 } from '../../../shared/pagination.constants';
 import { ToastService } from '../../../shared/toast.service';
+import { GfsCodeDetailComponent } from '../gfs-code-detail/gfs-code-detail.component';
 
 @Component({
   selector: 'app-gfs-code-list',
@@ -47,6 +48,32 @@ export class GfsCodeListComponent implements OnInit {
 
   ngOnInit() {
     this.loadPage();
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new GFS Code',
+      action: 'create',
+      label: 'Save GFS Code',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(GfsCodeDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   loadPage() {

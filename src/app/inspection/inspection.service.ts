@@ -9,9 +9,9 @@ import { Inspection } from './inspection';
   providedIn: 'root',
 })
 export class InspectionService {
-  // private resourceUrl = 'api/inspections';
-  private resourceUrl = 'api/inspections/by-ou';
-
+  private resourceUrl = 'api/inspections';
+  // private resourceUrlTwo = 'api/inspections/by-ou';
+  private resourceThree = ' /inspections/by/organisation-unit';
   constructor(private http: HttpClient) {}
 
   query(
@@ -21,9 +21,12 @@ export class InspectionService {
     params: any
   ): Observable<Inspection[]> {
     return this.http
-      .get<Inspection[]>(`${this.resourceUrl}/${ouId}`, {
-        params,
-      })
+      .get<Inspection[]>(
+        `${this.resourceThree}/${ouId}/financial-year/${fyId}`,
+        {
+          params,
+        }
+      )
       .pipe(map((response: Inspection[]) => this.parseArrayResponse(response)));
   }
 

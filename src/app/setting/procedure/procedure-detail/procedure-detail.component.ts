@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -22,14 +28,23 @@ export class ProcedureDetailComponent implements OnInit {
   error: string | undefined = undefined;
   indicators: Indicator[] = [];
 
+  public title: string;
+  public action: string;
+  public label: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: ProcedureFormService,
     private procedureService: ProcedureService,
     private toastService: ToastService,
-    private indicatorService: IndicatorService
-  ) {}
+    private indicatorService: IndicatorService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+  }
 
   ngOnInit() {
     this.loadIndicators();
@@ -78,7 +93,7 @@ export class ProcedureDetailComponent implements OnInit {
             'Procedure Created Successfully!'
           );
         }
-        this.router.navigate(['/settings/procedures']);
+        this.router.navigate(['/main/settings/procedures']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -93,7 +108,7 @@ export class ProcedureDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/settings/procedures']);
+    this.router.navigate(['/main/settings/procedures']);
     return false;
   }
 }

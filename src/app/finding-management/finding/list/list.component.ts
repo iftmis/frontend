@@ -104,9 +104,14 @@ export class ListComponent implements OnInit, OnChanges {
     };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
+    dialogConfig.autoFocus = false;
+    dialogConfig.width = '70%';
     dialogConfig.data = data;
+    dialogConfig.position = {
+      top: '80px',
+    };
+    dialogConfig.panelClass = 'mat-dialog-box';
+    dialogConfig.backdropClass = 'mat-dialog-overlay';
     const dialog = this.dialog.open(FindingFormComponent, dialogConfig);
 
     dialog.afterClosed().subscribe((response: any) => {

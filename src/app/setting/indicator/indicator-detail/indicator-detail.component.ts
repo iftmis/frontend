@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,9 +26,13 @@ import { ToastService } from '../../../shared/toast.service';
 export class IndicatorDetailComponent implements OnInit {
   indicator: Indicator;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
   subAreas: BehaviorSubject<SubArea[]> = new BehaviorSubject([]);
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,8 +40,16 @@ export class IndicatorDetailComponent implements OnInit {
     private formService: IndicatorFormService,
     private indicatorService: IndicatorService,
     private subAreaService: SubAreaService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private _dialogRef: MatDialogRef<IndicatorDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title;
+    this.label = data.label;
+    this.action = data.action;
+
+    this.showProgress = false;
+  }
 
   ngOnInit() {
     this.loadSubAreas();
@@ -54,7 +72,7 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -83,22 +101,23 @@ export class IndicatorDetailComponent implements OnInit {
             'Indicator Created Successfully!'
           );
         }
-        this.router.navigate(['/settings/indicators']);
+        // this.router.navigate(['/main/settings/indicators']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/indicators']);
+    this.router.navigate(['/main/settings/indicators']);
     return false;
   }
 }

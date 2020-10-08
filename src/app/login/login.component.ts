@@ -19,6 +19,7 @@ import { AuthenticationService } from '../security/authentication.service';
 import { User } from '../security/user';
 import { environment } from '../../environments/environment';
 import { Title } from '@angular/platform-browser';
+import { ToastService } from './../shared/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -27,24 +28,26 @@ import { Title } from '@angular/platform-browser';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnDestroy {
+  public year = new Date();
   loginForm: FormGroup;
   loginError: boolean;
   private componentDestroyed$ = new Subject();
 
   constructor(
-    formBuilder: FormBuilder,
+    private _toastSvc: ToastService,
+    private _formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private authenticationService: AuthenticationService,
     private router: Router,
     private snackBar: MatSnackBar,
     private titleService: Title
   ) {
-    this.loginForm = formBuilder.group({
-      username: formBuilder.control('', [Validators.required]),
-      password: formBuilder.control('', [Validators.required]),
+    this.loginForm = _formBuilder.group({
+      username: _formBuilder.control('', [Validators.required]),
+      password: _formBuilder.control('', [Validators.required]),
     });
     this.loginError = false;
-    this.titleService.setTitle('Login|' + environment.app);
+    this.titleService.setTitle('Login | ' + environment.app);
   }
 
   get username(): AbstractControl | null {
@@ -62,13 +65,18 @@ export class LoginComponent implements OnDestroy {
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (user: User) => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/main']);
           this.loginForm.reset();
           this.snackBar.open(
             `Welcome ${user.firstName ? user.login : user.firstName}`
           );
         },
         error: (err: any) => {
+          this._toastSvc.warning(
+            'Information',
+            'Sorry, You provided Invalid Username or Password, Try again.',
+            6000
+          );
           this.loginError = true;
           this.ref.detectChanges();
         },

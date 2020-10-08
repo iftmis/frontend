@@ -6,7 +6,7 @@ import { UserResolver } from './user.resolver';
 
 export const userRoutes: Route[] = [
   {
-    path: 'new',
+    path: 'create-new',
     component: UserDetailComponent,
     resolve: {
       user: UserResolver,

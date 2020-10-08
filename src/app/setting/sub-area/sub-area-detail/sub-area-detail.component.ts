@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,9 +26,13 @@ import { ToastService } from '../../../shared/toast.service';
 export class SubAreaDetailComponent implements OnInit {
   subArea: SubArea;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
   auditableAreas: AuditableArea[] = [];
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,8 +40,16 @@ export class SubAreaDetailComponent implements OnInit {
     private formService: SubAreaFormService,
     private subAreaService: SubAreaService,
     private areaService: AuditableAreaService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _dialogRef: MatDialogRef<SubAreaDetailComponent>
+  ) {
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+
+    this.showProgress = false;
+  }
 
   ngOnInit() {
     this.loadAuditableAreas();
@@ -50,7 +68,7 @@ export class SubAreaDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -79,22 +97,23 @@ export class SubAreaDetailComponent implements OnInit {
             'Sub-Area Created Successfully'
           );
         }
-        this.router.navigate(['/settings/sub-areas']);
+        // this.router.navigate(['/main/settings/sub-areas']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/sub-areas']);
+    this.router.navigate(['/main/settings/sub-areas']);
     return false;
   }
 

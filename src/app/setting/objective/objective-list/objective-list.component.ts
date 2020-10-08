@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { ObjectiveService } from '../objective.service';
 import { ObjectiveDeleteComponent } from '../objective-delete/objective-delete.component';
@@ -16,6 +16,7 @@ import { ToastService } from '../../../shared/toast.service';
 import { environment } from '../../../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
+import { ObjectiveDetailComponent } from '../objective-detail/objective-detail.component';
 
 @Component({
   selector: 'app-objective-list',
@@ -50,6 +51,27 @@ export class ObjectiveListComponent implements OnInit {
     this.loadPage();
   }
 
+  create() {
+    const data = {
+      title: 'Create a new Objective',
+      action: 'create',
+      label: 'Save Objective',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    this.dialog.open(ObjectiveDetailComponent, config);
+  }
+
   delete(id: number, objective: Objective) {
     const dialogRef = this.dialog.open(ObjectiveDeleteComponent, {
       data: objective,
@@ -64,7 +86,7 @@ export class ObjectiveListComponent implements OnInit {
               'Success',
               'Objective Deleted Successfully!'
             );
-            this.router.navigate(['/settings/objectives']);
+            this.router.navigate(['/main/settings/objectives']);
           },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
