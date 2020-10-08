@@ -1,7 +1,6 @@
-<mat-card>
-  <mat-card-title>Finding Management</mat-card-title>
-  <mat-card-content>
-    <div fxLayout="row">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
       <div class="secondary-menu" fxLayout="column">
         <div class="ou-tree">
           <tree-root
@@ -12,11 +11,15 @@
           </tree-root>
         </div>
       </div>
-      <div fxFlex>
-        <mat-card class="mat-elevation-z0" *ngIf="selectedOrganisationUnit">
-          <mat-card-title
-            >Findings | {{ selectedOrganisationUnit?.name }}</mat-card-title
-          >
+    </div>
+    <div class="col-md-10">
+      <div class="inner_page__heading">
+        <div class="inner_page__title">
+          Findings | {{ selectedOrganisationUnit?.name }}
+        </div>
+      </div>
+      <div class="inner_page__body">
+        <mat-card class="" *ngIf="selectedOrganisationUnit">
           <mat-card-content>
             <mat-tab-group mat-stretch-tabs animationDuration="0ms">
               <mat-tab label="CAG">
@@ -48,7 +51,8 @@
                   <app-finding-list
                     [source]="'INSPECTION'"
                     [organisationUnit]="selectedOrganisationUnit"
-                  ></app-finding-list>
+                  >
+                  </app-finding-list>
                 </ng-template>
               </mat-tab>
               <mat-tab label="IA">
@@ -64,5 +68,5 @@
         </mat-card>
       </div>
     </div>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>

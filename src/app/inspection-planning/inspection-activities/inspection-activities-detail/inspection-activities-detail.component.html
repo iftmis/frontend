@@ -91,12 +91,12 @@
               formControlName="activity"
               required
             />
-            <mat-error
-              ><hip-ngx-error
+            <mat-error>
+              <hip-ngx-error
                 [control]="form.get('activity')"
                 label="Activity"
-              ></hip-ngx-error
-            ></mat-error>
+              ></hip-ngx-error>
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
@@ -109,12 +109,12 @@
               formControlName="days"
               required
             />
-            <mat-error
-              ><hip-ngx-error
+            <mat-error>
+              <hip-ngx-error
                 [control]="form.get('days')"
                 label="Days"
-              ></hip-ngx-error
-            ></mat-error>
+              ></hip-ngx-error>
+            </mat-error>
           </mat-form-field>
           <div
             class="container"
@@ -132,12 +132,12 @@
                 formControlName="quarter_one"
                 required
               />
-              <mat-error
-                ><hip-ngx-error
+              <mat-error>
+                <hip-ngx-error
                   [control]="form.get('quarter_one')"
                   label="Quarter 1"
-                ></hip-ngx-error
-              ></mat-error>
+                ></hip-ngx-error>
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
               <mat-label>Quarter 2</mat-label>
@@ -147,12 +147,12 @@
                 formControlName="quarter_two"
                 required
               />
-              <mat-error
-                ><hip-ngx-error
+              <mat-error>
+                <hip-ngx-error
                   [control]="form.get('quarter_two')"
                   label="Quarter 2"
-                ></hip-ngx-error
-              ></mat-error>
+                ></hip-ngx-error>
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
               <mat-label>Quarter 3</mat-label>
@@ -162,12 +162,12 @@
                 formControlName="quarter_three"
                 required
               />
-              <mat-error
-                ><hip-ngx-error
+              <mat-error>
+                <hip-ngx-error
                   [control]="form.get('quarter_three')"
                   label="Quarter 3"
-                ></hip-ngx-error
-              ></mat-error>
+                ></hip-ngx-error>
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
               <mat-label>Quarter 4</mat-label>
@@ -177,12 +177,12 @@
                 formControlName="quarter_four"
                 required
               />
-              <mat-error
-                ><hip-ngx-error
+              <mat-error>
+                <hip-ngx-error
                   [control]="form.get('quarter_four')"
                   label="Quarter 4"
-                ></hip-ngx-error
-              ></mat-error>
+                ></hip-ngx-error>
+              </mat-error>
             </mat-form-field>
           </div>
         </mat-card-content>
@@ -212,7 +212,8 @@
                   class="example-margin"
                   (change)="onChange($event)"
                   [value]="interest"
-                  >{{ interest.description }}</mat-checkbox
+                >
+                  {{ interest.description }}</mat-checkbox
                 >
               </div>
 

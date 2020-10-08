@@ -23,7 +23,7 @@ import { Objective } from '../objective';
 export class ObjectiveDetailComponent implements OnInit {
   objective: Objective;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
 
   public title: string;
@@ -40,6 +40,7 @@ export class ObjectiveDetailComponent implements OnInit {
     this.title = data.title;
     this.label = data.label;
     this.action = data.action;
+    this.showProgress = false;
   }
 
   ngOnInit() {
@@ -52,7 +53,7 @@ export class ObjectiveDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -67,21 +68,21 @@ export class ObjectiveDetailComponent implements OnInit {
 
   private subscribeToResponse(result: Observable<Objective>) {
     result.subscribe({
-      next: () => this.router.navigate(['/settings/objectives']),
+      next: () => this.router.navigate(['/main/settings/objectives']),
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/objectives']);
+    this.router.navigate(['/main/settings/objectives']);
     return false;
   }
 }

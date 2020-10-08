@@ -15,6 +15,7 @@ import { Title } from '@angular/platform-browser';
 import { User } from '../user';
 import { environment } from '../../../../environments/environment';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { UserDetailComponent } from '../user-detail/user-detail.component';
 
 @Component({
   selector: 'app-user-list',
@@ -67,6 +68,32 @@ export class UserListComponent implements OnInit {
         resp => this.onSuccess(resp.body, resp.headers, this.page),
         () => this.onError()
       );
+  }
+
+  create() {
+    const data = {
+      title: 'Create a new User',
+      action: 'create',
+      label: 'Save User',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '70%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(UserDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   getData(): Observable<User[]> {
