@@ -21,12 +21,7 @@ export class InspectionService {
     params: any
   ): Observable<Inspection[]> {
     return this.http
-      .get<Inspection[]>(
-        `${this.resourceThree}/${ouId}/financial-year/${fyId}`,
-        {
-          params,
-        }
-      )
+      .get<Inspection[]>(`${this.resourceThree}/${ouId}/financial-year/${fyId}`)
       .pipe(map((response: Inspection[]) => this.parseArrayResponse(response)));
   }
 
