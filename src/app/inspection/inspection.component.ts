@@ -14,7 +14,7 @@ import { FinancialYearService } from '../setting/financial-year/financial-year.s
 export class InspectionComponent implements OnInit {
   nodes: BehaviorSubject<any> = new BehaviorSubject([]);
   financialYears: FinancialYear[] | null = [];
-  inspectionType: string = 'PLANNED';
+  inspectionType = 'PLANNED';
   selectedFinancialYear: FinancialYear;
   organisation: any;
 
