@@ -22,14 +22,16 @@ export class CourtesyComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   meetings: BehaviorSubject<Courtesy[]> = new BehaviorSubject<Courtesy[]>([]);
-  @Input() inspectionId: number;
+  @Input() inspectionId: any;
 
   constructor(
     private route: ActivatedRoute,
     private courtesyService: CourtesyService,
     private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.inspectionId = this.route.snapshot.paramMap.get('inspectionId');
+  }
 
   ngOnInit() {
     this.loadMeeting();
@@ -39,6 +41,7 @@ export class CourtesyComponent implements OnInit {
     this.courtesyService.getByInspection(this.inspectionId).subscribe(res => {
       this.meetings.next(res.body || []);
     });
+    console.log('PeterID', this.inspectionId);
   }
   getMeetings(): Observable<Courtesy[]> {
     return this.meetings.asObservable();

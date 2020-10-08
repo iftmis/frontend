@@ -77,6 +77,7 @@
         placeholder="Select inspection start date"
         formControlName="startDate"
         [matDatepicker]="startDatePicker"
+        (click)="startDatePicker.open()"
       />
       <mat-datepicker-toggle
         matSuffix
@@ -101,6 +102,7 @@
         placeholder="Select inspection end date"
         formControlName="endDate"
         [matDatepicker]="endDatePicker"
+        (click)="endDatePicker.open()"
       />
       <mat-datepicker-toggle
         matSuffix
