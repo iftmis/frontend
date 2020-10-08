@@ -10,8 +10,8 @@ import { Inspection } from './inspection';
 })
 export class InspectionService {
   private resourceUrl = 'api/inspections';
-  // private resourceUrlTwo = 'api/inspections/by-ou';
-  private resourceThree = ' /inspections/by/organisation-unit';
+  private resourceUrlTwo = 'api/inspections/by-ou';
+  private resourceThree = 'api/inspections/by/organisation-unit';
   constructor(private http: HttpClient) {}
 
   query(
@@ -22,10 +22,7 @@ export class InspectionService {
   ): Observable<Inspection[]> {
     return this.http
       .get<Inspection[]>(
-        `${this.resourceThree}/${ouId}/financial-year/${fyId}`,
-        {
-          params,
-        }
+        `${this.resourceThree}/${ouId}/financial-year/${fyId}/inspection-type/${type}`
       )
       .pipe(map((response: Inspection[]) => this.parseArrayResponse(response)));
   }
