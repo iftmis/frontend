@@ -1,23 +1,28 @@
 <div fxLayout="row">
   <div class="secondary-menu" fxLayout="column">
-    <mat-nav-list class="nav-links">
-      <a mat-list-item class="module-title">Inspection Planning</a>
-      <a
-        mat-list-item
-        class="nav-links__item"
-        routerLinkActive="nav-links__item--active"
-        routerLink="./inspection-planning"
-        >Inspection Planning</a
-      >
+    <div class="inner_menu__title">
+      <mat-icon>east</mat-icon>
+      <h5>Inspection</h5>
+    </div>
+    <div class="nav_items__section">
+      <mat-nav-list class="nav-links">
+        <a
+          mat-list-item
+          class="nav-links__item"
+          routerLinkActive="nav-links__item--active"
+          routerLink="./inspection-planning"
+          >Inspection Planning</a
+        >
 
-      <a
-        mat-list-item
-        class="nav-links__item"
-        routerLinkActive="nav-links__item--active"
-        routerLink="./inspection-activities"
-        >Inspection Activities</a
-      >
-    </mat-nav-list>
+        <a
+          mat-list-item
+          class="nav-links__item"
+          routerLinkActive="nav-links__item--active"
+          routerLink="./inspection-activities"
+          >Inspection Activities</a
+        >
+      </mat-nav-list>
+    </div>
   </div>
   <div fxFlex>
     <router-outlet></router-outlet>

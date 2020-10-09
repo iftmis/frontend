@@ -9,27 +9,14 @@
     </button>
   </div>
 </div>
-
+<mat-progress-bar
+  *ngIf="showProgress"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>
 <mat-dialog-content>
   <form [formGroup]="form" novalidate autocomplete="off">
     <mat-card>
-      <mat-progress-spinner
-        *ngIf="showProgress"
-        diameter="50"
-        class="form-overlay"
-        color="accent"
-        mode="indeterminate"
-      >
-      </mat-progress-spinner>
-      <!-- <mat-card-title>FindingCategory</mat-card-title>
-      <mat-card-subtitle>{{
-        findingCategory?.id
-          ? 'Update an existing findingCategory.'
-          : 'Creates a new findingCategory.'
-      }}</mat-card-subtitle>
-      <div class="error mat-error">
-        {{ error ? error : '&nbsp;' }}
-      </div> -->
       <mat-card-content class="p-3">
         <mat-form-field appearance="outline">
           <mat-label>Code</mat-label>

@@ -9,27 +9,14 @@
     </button>
   </div>
 </div>
-
+<mat-progress-bar
+  *ngIf="showProgress"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>
 <mat-dialog-content>
-  <form [formGroup]="form" novalidate (ngSubmit)="saveOrUpdate()">
+  <form [formGroup]="form" novalidate autocomplete="off">
     <mat-card>
-      <mat-progress-spinner
-        *ngIf="isSaveOrUpdateInProgress"
-        diameter="50"
-        class="form-overlay"
-        color="accent"
-        mode="indeterminate"
-      >
-      </mat-progress-spinner>
-      <!-- <mat-card-title>Objective</mat-card-title>
-      <mat-card-subtitle>{{
-        objective?.id
-          ? 'Update an existing objective.'
-          : 'Creates a new objective.'
-      }}</mat-card-subtitle>
-      <div class="error mat-error">
-        {{ error ? error : '&nbsp;' }}
-      </div> -->
       <mat-card-content class="p-3">
         <mat-form-field appearance="outline">
           <mat-label>Code</mat-label>
@@ -69,9 +56,9 @@
 <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
   <button
     mat-flat-button
-    color="accent"
-    [disabled]="form.invalid || isSaveOrUpdateInProgress"
-    type="submit"
+    color="primary"
+    [disabled]="form.invalid || showProgress"
+    (click)="saveOrUpdate()"
   >
     <mat-icon>save</mat-icon>
     <span>{{ label }} </span>

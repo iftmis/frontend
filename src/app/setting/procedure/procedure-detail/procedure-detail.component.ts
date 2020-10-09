@@ -24,7 +24,7 @@ import { Indicator } from '../../indicator/indicator';
 export class ProcedureDetailComponent implements OnInit {
   procedure: Procedure;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
   indicators: Indicator[] = [];
 
@@ -44,6 +44,7 @@ export class ProcedureDetailComponent implements OnInit {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
+    this.showProgress = false;
   }
 
   ngOnInit() {
@@ -63,7 +64,7 @@ export class ProcedureDetailComponent implements OnInit {
   }
 
   save() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
 
     this.error = undefined;
     if (this.form.value.id) {
@@ -96,14 +97,14 @@ export class ProcedureDetailComponent implements OnInit {
         this.router.navigate(['/main/settings/procedures']);
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 

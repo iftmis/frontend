@@ -24,7 +24,7 @@ import { ToastService } from '../../../shared/toast.service';
 export class RiskRankDetailComponent implements OnInit {
   riskRank: RiskRank;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
 
   public title: string;
@@ -43,6 +43,7 @@ export class RiskRankDetailComponent implements OnInit {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
+    this.showProgress = false;
   }
 
   ngOnInit() {
@@ -55,7 +56,7 @@ export class RiskRankDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -88,19 +89,19 @@ export class RiskRankDetailComponent implements OnInit {
         this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/settings/risk-ranks']);
+    this.router.navigate(['/main/settings/risk-ranks']);
     return false;
   }
 }

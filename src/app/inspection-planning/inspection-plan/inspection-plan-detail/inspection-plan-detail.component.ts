@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -22,15 +27,18 @@ import { OrganisationUnitService } from '../../../setting/organisation-unit/orga
 export class InspectionPlanDetailComponent implements OnInit {
   inspectionPlan: InspectionPlan;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   error: string | undefined = undefined;
   organisationUnitSubject: BehaviorSubject<
     OrganisationUnit[]
   > = new BehaviorSubject([]);
-
   financialYearSubject: BehaviorSubject<FinancialYear[]> = new BehaviorSubject(
     []
   );
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,8 +47,15 @@ export class InspectionPlanDetailComponent implements OnInit {
     private inspectionPlanService: InspectionPlanService,
     private financialYearService: FinancialYearService,
     private toastService: ToastService,
-    private organisationUnitService: OrganisationUnitService
-  ) {}
+    private organisationUnitService: OrganisationUnitService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _dialogRef: MatDialogRef<InspectionPlanDetailComponent>
+  ) {
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ inspectionPlan }) => {
@@ -54,7 +69,7 @@ export class InspectionPlanDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -115,17 +130,17 @@ export class InspectionPlanDetailComponent implements OnInit {
             'Inspection Plan Updated Successfully!'
           );
         }
-        this.router.navigate(['/inspection-planning']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 

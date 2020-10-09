@@ -30,67 +30,84 @@
       <div class="error mat-error">
         {{ error ? error : '&nbsp;' }}
       </div> -->
-      <mat-card-content>
-        <mat-form-field appearance="outline">
-          <mat-label>Code</mat-label>
-          <input
-            autocomplete="off"
-            matInput
-            placeholder="Enter organisation Unit Level code"
-            formControlName="code"
-          />
-          <mat-error>
-            <hip-ngx-error
-              [control]="form.get('code')"
-              label="Code"
-            ></hip-ngx-error>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input
-            autocomplete="off"
-            matInput
-            placeholder="Enter organisationUnitLevel name"
-            formControlName="name"
-            required
-          />
-          <mat-error>
-            <hip-ngx-error
-              [control]="form.get('name')"
-              label="Name"
-            ></hip-ngx-error>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Level</mat-label>
-          <input
-            autocomplete="off"
-            matInput
-            type="number"
-            min="1"
-            placeholder="Enter organisation Unit Level"
-            formControlName="level"
-            required
-          />
-          <mat-error>
-            <hip-ngx-error
-              [control]="form.get('level')"
-              label="Level"
-            ></hip-ngx-error>
-          </mat-error>
-        </mat-form-field>
-        <ng-container>
-          <mat-slide-toggle color="accent" formControlName="isInspectionLevel">
-            <mat-label>Is Inspectable Level</mat-label>
-          </mat-slide-toggle>
-          <mat-error>
-            <hip-ngx-error
-              [control]="form.get('isInspectionLevel')"
-              label="Is Inspectable Level"
-            ></hip-ngx-error>
-          </mat-error>
-        </ng-container>
+      <mat-card-content class="p-3">
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Code</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisation Unit Level code"
+                formControlName="code"
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('code')"
+                  label="Code"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                placeholder="Enter organisationUnitLevel name"
+                formControlName="name"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('name')"
+                  label="Name"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Level</mat-label>
+              <input
+                autocomplete="off"
+                matInput
+                type="number"
+                min="1"
+                placeholder="Enter organisation Unit Level"
+                formControlName="level"
+                required
+              />
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('level')"
+                  label="Level"
+                ></hip-ngx-error>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <ng-container>
+              <mat-slide-toggle
+                color="accent"
+                formControlName="isInspectionLevel"
+              >
+                <mat-label>Is Inspectable Level</mat-label>
+              </mat-slide-toggle>
+              <mat-error>
+                <hip-ngx-error
+                  [control]="form.get('isInspectionLevel')"
+                  label="Is Inspectable Level"
+                ></hip-ngx-error>
+              </mat-error>
+            </ng-container>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </form>

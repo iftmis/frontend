@@ -24,7 +24,6 @@ import { ToastService } from '../../../shared/toast.service';
 export class RiskCategoryDetailComponent implements OnInit {
   riskCategory: RiskCategory;
   form: FormGroup;
-  isSaveOrUpdateInProgress = false;
 
   public error: string | undefined = undefined;
 

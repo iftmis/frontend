@@ -1,6 +1,9 @@
+import { ToastService } from './../../../shared/toast.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -26,7 +29,7 @@ export class UserDetailComponent implements OnInit {
   user: User;
   form: FormGroup;
   authorities: string[] = [];
-  isSaveOrUpdateInProgress = false;
+  public showProgress: boolean;
   langKeyOptions: KeyValue<string, string>[] = [
     { key: 'en', value: 'English' },
     { key: 'sw', value: 'Kiswahili' },
@@ -40,13 +43,25 @@ export class UserDetailComponent implements OnInit {
   @ViewChild('tree') tree: TreeComponent;
   error: string | undefined = undefined;
 
+  public title: string;
+  public action: string;
+  public label: string;
+
   constructor(
+    private _toastSvc: ToastService,
     private route: ActivatedRoute,
     private router: Router,
     private formService: UserFormService,
     private organisationUnitService: OrganisationUnitService,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _dialogRef: MatDialogRef<UserDetailComponent>
+  ) {
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ user }) => {
@@ -108,7 +123,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       const payload = {
@@ -122,7 +137,7 @@ export class UserDetailComponent implements OnInit {
         email: this.form.value.email,
         langKey: this.form.value.langKey,
       } as User;
-      this.subscribeToResponse(this.userService.update(payload));
+      this.subscribeToResponse(this.userService.update(payload), 'update');
     } else {
       const payload = {
         id: this.form.value.id,
@@ -136,27 +151,41 @@ export class UserDetailComponent implements OnInit {
         langKey: this.form.value.langKey,
       } as User;
       console.log(payload);
-      this.subscribeToResponse(this.userService.create(payload));
+      this.subscribeToResponse(this.userService.create(payload), 'create');
     }
   }
 
-  private subscribeToResponse(result: Observable<User>) {
+  private subscribeToResponse(result: Observable<User>, action: string) {
     result.subscribe({
-      next: () => this.router.navigate(['/user-management/users']),
+      next: () => {
+        if (action === 'update') {
+          this._toastSvc.success(
+            'Success!',
+            'Financial Year Updated Successfully'
+          );
+        } else {
+          this._toastSvc.success(
+            'Success!',
+            'Financial Year Created Successfully'
+          );
+        }
+        // this.router.navigate(['/main/user-management/users'])
+        this._dialogRef.close({ success: true });
+      },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 
   cancel() {
-    this.router.navigate(['/user-management/users']);
+    this.router.navigate(['/main/user-management/users']);
     return false;
   }
 }
