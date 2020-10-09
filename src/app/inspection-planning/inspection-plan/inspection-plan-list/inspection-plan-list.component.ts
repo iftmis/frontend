@@ -15,6 +15,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from '../../../shared/toast.service';
 import { GfsCode } from '../../../setting/gfs-code/gfs-code';
 import { InspectionActivitiesDetailComponent } from '../../inspection-activities/inspection-activities-detail/inspection-activities-detail.component';
+import { InspectionPlanDetailComponent } from '../inspection-plan-detail/inspection-plan-detail.component';
 
 @Component({
   selector: 'app-inspection-plan-list',
@@ -30,7 +31,7 @@ export class InspectionPlanListComponent implements OnInit {
     'formActions',
   ];
   routeData$ = this.route.data;
-  showLoader = false;
+  public showProgress: boolean;
 
   inspectionPlanSubject: BehaviorSubject<
     InspectionPlan[]
@@ -90,7 +91,7 @@ export class InspectionPlanListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.showLoader = true;
+        this.showProgress = true;
         this.inspectionPlanService.delete(id).subscribe({
           next: () => {
             this.loadPage();
@@ -100,8 +101,8 @@ export class InspectionPlanListComponent implements OnInit {
             );
             this.router.navigate(['inspection-planning/inspection-planning']);
           },
-          error: () => (this.showLoader = false),
-          complete: () => (this.showLoader = false),
+          error: () => (this.showProgress = false),
+          complete: () => (this.showProgress = false),
         });
       }
     });
@@ -117,15 +118,19 @@ export class InspectionPlanListComponent implements OnInit {
     };
     console.log('THE ID IS' + id);
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    /*dialogConfig.height = '80%';*/
-    dialogConfig.width = '60%';
-    dialogConfig.data = data;
+    const config = new MatDialogConfig();
+    config.disableClose = true;
+    config.autoFocus = true;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.data = data;
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
     const dialog = this.dialog.open(
       InspectionActivitiesDetailComponent,
-      dialogConfig
+      config
     );
 
     dialog.afterClosed().subscribe((response: any) => {
@@ -142,6 +147,32 @@ export class InspectionPlanListComponent implements OnInit {
           'Success!',
           'Inspection Activity Created Successfully!'
         );
+      }
+    });
+  }
+
+  open() {
+    const data = {
+      title: 'Create new Inspection Plan',
+      action: 'create',
+      label: 'Save Inspection Plan',
+    };
+
+    const config = new MatDialogConfig();
+    config.disableClose = true;
+    config.autoFocus = true;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.data = data;
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    const dialog = this.dialog.open(InspectionPlanDetailComponent, config);
+
+    dialog.afterClosed().subscribe((response: any) => {
+      if (response.success) {
+        this.loadPage();
       }
     });
   }

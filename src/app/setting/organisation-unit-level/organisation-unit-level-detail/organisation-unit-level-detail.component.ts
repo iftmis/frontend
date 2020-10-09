@@ -46,6 +46,9 @@ export class OrganisationUnitLevelDetailComponent implements OnInit {
     this.titleService.setTitle(
       'Organization Unit Level Details | ' + environment.app
     );
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
   }
 
   ngOnInit() {

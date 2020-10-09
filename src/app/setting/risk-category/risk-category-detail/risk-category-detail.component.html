@@ -9,27 +9,14 @@
     </button>
   </div>
 </div>
-
+<mat-progress-bar
+  *ngIf="showProgress"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>
 <mat-dialog-content>
   <form [formGroup]="form" novalidate>
     <mat-card>
-      <mat-progress-spinner
-        *ngIf="showProgress"
-        diameter="50"
-        class="form-overlay"
-        color="accent"
-        mode="indeterminate"
-      >
-      </mat-progress-spinner>
-      <!-- <mat-card-title>Risk Category</mat-card-title>
-      <mat-card-subtitle>{{
-        riskCategory?.id
-          ? 'Update an existing riskCategory.'
-          : 'Creates a new riskCategory.'
-      }}</mat-card-subtitle>
-      <div class="error mat-error">
-        {{ error ? error : '&nbsp;' }}
-      </div> -->
       <mat-card-content class="p-3">
         <mat-form-field appearance="outline">
           <mat-label>Code</mat-label>

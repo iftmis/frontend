@@ -9,25 +9,14 @@
     </button>
   </div>
 </div>
-
+<mat-progress-bar
+  *ngIf="showProgress"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>
 <mat-dialog-content>
   <form [formGroup]="form" novalidate autocomplete="off">
     <mat-card>
-      <mat-progress-spinner
-        *ngIf="showProgress"
-        diameter="50"
-        class="form-overlay"
-        color="accent"
-        mode="indeterminate"
-      >
-      </mat-progress-spinner>
-      <!-- <mat-card-title>SubArea</mat-card-title>
-      <mat-card-subtitle>{{
-        subArea?.id ? 'Update an existing Sub-Area.' : 'Creates a new Sub-Area.'
-      }}</mat-card-subtitle>
-      <div class="error mat-error">
-        {{ error ? error : '&nbsp;' }}
-      </div> -->
       <mat-card-content class="p-3">
         <mat-form-field appearance="outline">
           <mat-label>Auditable Area</mat-label>
