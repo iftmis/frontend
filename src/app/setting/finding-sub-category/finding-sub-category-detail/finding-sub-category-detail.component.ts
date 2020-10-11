@@ -74,6 +74,7 @@ export class FindingSubCategoryDetailComponent implements OnInit {
     if (this.form.value.id) {
       this.subscribeToResponse(
         this.findingSubCategoryService.update(
+          // @ts-ignore
           this.formService.fromFormGroup(this.form)
         ),
         'update'
@@ -81,6 +82,7 @@ export class FindingSubCategoryDetailComponent implements OnInit {
     } else {
       this.subscribeToResponse(
         this.findingSubCategoryService.create(
+          // @ts-ignore
           this.formService.fromFormGroup(this.form)
         ),
         'create'
