@@ -14,6 +14,9 @@ import { FindingSubCategoryService } from '../finding-sub-category.service';
 import { FindingSubCategoryFormService } from './finding-sub-category-form.service';
 import { FindingSubCategory } from '../finding-sub-category';
 import { ToastService } from '../../../shared/toast.service';
+import { AuditableArea } from '../../auditable-area/auditable-area';
+import { FindingCategory } from '../../finding-category/finding-category';
+import { FindingCategoryService } from '../../finding-category/finding-category.service';
 
 @Component({
   selector: 'app-finding-sub-category-detail',
@@ -30,12 +33,14 @@ export class FindingSubCategoryDetailComponent implements OnInit {
   public title: string;
   public action: string;
   public label: string;
+  findingCategories: FindingCategory[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formService: FindingSubCategoryFormService,
     private findingSubCategoryService: FindingSubCategoryService,
+    private findingCategoryService: FindingCategoryService,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<FindingSubCategoryDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -47,12 +52,20 @@ export class FindingSubCategoryDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadFindingCategories();
     this.route.data.subscribe(({ findingSubCategory }) => {
       this.findingSubCategory = findingSubCategory;
       this.form = this.formService.toFormGroup(findingSubCategory);
     });
 
     this.error = undefined;
+  }
+
+  loadFindingCategories() {
+    this.findingCategoryService.all().subscribe(resp => {
+      // @ts-ignore
+      this.findingCategories = resp.content || [];
+    });
   }
 
   saveOrUpdate() {
