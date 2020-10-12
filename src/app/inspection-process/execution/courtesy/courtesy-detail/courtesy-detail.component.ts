@@ -22,8 +22,9 @@ import { CourtesyFormService } from './courtesy-form.service';
 export class CourtesyDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
-  @Input() inspectionId: number;
+  inspectionId: any;
   error: string | undefined = undefined;
+  id: number;
   file: any;
   courtesy: Courtesy;
   payload: Courtesy;
@@ -40,7 +41,6 @@ export class CourtesyDetailComponent implements OnInit {
     private formService: CourtesyFormService,
     private titleService: Title,
     private toastService: ToastService,
-    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyDetailComponent>
   ) {
@@ -48,6 +48,7 @@ export class CourtesyDetailComponent implements OnInit {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
+    this.inspectionId = data.inspectionId;
 
     this.titleService.setTitle('Courtesy|' + environment.app);
   }
@@ -57,6 +58,8 @@ export class CourtesyDetailComponent implements OnInit {
       this.courtesy = courtesy;
       this.form = this.formService.toFormGroup(courtesy);
     });
+    this.id = this.inspectionId;
+    console.log('Joshua', this.inspectionId);
 
     this.error = undefined;
   }
@@ -65,7 +68,7 @@ export class CourtesyDetailComponent implements OnInit {
     this.payload = {
       meetingDate: this.form.value.meetingDate,
       venue: this.form.value.venue,
-      inspectionId: this.inspectionId,
+      inspectionId: this.inspectionId.id,
       type: 'COURTESY',
     };
     this.isSaveOrUpdateInProgress = true;

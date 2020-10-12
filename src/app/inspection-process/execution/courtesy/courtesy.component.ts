@@ -16,7 +16,7 @@ import { CourtesyMembersComponent } from './courtesy-members/courtesy-members.co
   styleUrls: ['./courtesy.component.scss'],
 })
 export class CourtesyComponent implements OnInit {
-  displayedColumns = ['meeting_date', 'venue', 'formActions'];
+  displayedColumns = ['meetingDate', 'venue', 'formActions'];
 
   form: FormGroup;
   routeData$ = this.route.data;
@@ -34,7 +34,6 @@ export class CourtesyComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('PeterID ', this.inspectionId);
     this.loadMeeting();
   }
 
