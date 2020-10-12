@@ -30,10 +30,11 @@ export class CourtesyComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog
   ) {
-    this.inspectionId = this.route.snapshot.paramMap.get('inspectionId');
+    // this.inspectionId = route.snapshot.parent?.parent?.params['id'];
   }
 
   ngOnInit() {
+    console.log('PeterID ', this.inspectionId);
     this.loadMeeting();
   }
 
@@ -41,7 +42,6 @@ export class CourtesyComponent implements OnInit {
     this.courtesyService.getByInspection(this.inspectionId).subscribe(res => {
       this.meetings.next(res.body || []);
     });
-    console.log('PeterID', this.inspectionId);
   }
   getMeetings(): Observable<Courtesy[]> {
     return this.meetings.asObservable();
@@ -63,6 +63,7 @@ export class CourtesyComponent implements OnInit {
   }
 
   createOrEdit() {
+    console.log('Careen', this.inspectionId);
     const dialogRef = this.dialog.open(CourtesyDetailComponent, {
       data: { inspectionId: this.inspectionId },
     });

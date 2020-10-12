@@ -3,4 +3,5 @@ export interface Courtesy {
   meetingDate: string;
   venue: string;
   inspectionId: number;
+  type: 'COURTESY';
 }

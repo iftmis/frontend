@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 import { CourtesyService } from '../courtesy.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Courtesy } from '../courtesy';
+import { environment } from '../../../../../environments/environment';
+import { Title } from '@angular/platform-browser';
+import { CourtesyFormService } from './courtesy-form.service';
 
 @Component({
   selector: 'app-courtesy-detail',
@@ -17,26 +20,36 @@ import { Courtesy } from '../courtesy';
   styleUrls: ['./courtesy-detail.component.scss'],
 })
 export class CourtesyDetailComponent implements OnInit {
-  inspectionMember: InspectionMember;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   @Input() inspectionId: number;
   error: string | undefined = undefined;
   file: any;
   courtesy: Courtesy;
+  showProgress: any;
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private formService: InspectionMemberFormService,
-    private inspectionMemberService: InspectionMemberService,
     private userService: UserService,
     private courtesyService: CourtesyService,
+    private formService: CourtesyFormService,
+    private titleService: Title,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyDetailComponent>
-  ) {}
+  ) {
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+
+    this.titleService.setTitle('Courtesy|' + environment.app);
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ courtesy }) => {
@@ -52,12 +65,12 @@ export class CourtesyDetailComponent implements OnInit {
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.courtesyService.update(this.courtesy),
+        this.courtesyService.update(this.formService.fromFormGroup(this.form)),
         'update'
       );
     } else {
       this.subscribeToResponse(
-        this.courtesyService.create(this.courtesy),
+        this.courtesyService.create(this.formService.fromFormGroup(this.form)),
         'create'
       );
     }

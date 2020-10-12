@@ -15,6 +15,8 @@ export class CourtesyFormService {
         Validators.required,
       ]),
       venue: this.formBuilder.control(courtesy.venue, [Validators.required]),
+      inspectionId: this.formBuilder.control(courtesy.inspectionId),
+      type: this.formBuilder.control(courtesy.type),
     });
   }
   fromFormGroup(formGroup: FormGroup) {
@@ -22,6 +24,8 @@ export class CourtesyFormService {
       id: formGroup.get('id')!.value,
       meetingDate: formGroup.get('meetingDate')!.value,
       venue: formGroup.get('venue')!.value,
+      inspectionId: formGroup.get('inspectionId')!.value,
+      type: formGroup.get('type')!.value,
     };
   }
 }
