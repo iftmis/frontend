@@ -22,7 +22,7 @@ export class CourtesyComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   meetings: BehaviorSubject<Courtesy[]> = new BehaviorSubject<Courtesy[]>([]);
-  @Input() inspectionId: any;
+  @Input() inspectionId: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +30,7 @@ export class CourtesyComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog
   ) {
-    // this.inspectionId = route.snapshot.parent?.parent?.params['id'];
+    this.inspectionId = route.snapshot.parent?.params['id'];
   }
 
   ngOnInit() {

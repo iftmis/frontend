@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Inspection } from '../../inspection/inspection';
 
 @Component({
   selector: 'app-execution',
@@ -9,9 +10,10 @@ import { ActivatedRoute } from '@angular/router';
 export class ExecutionComponent implements OnInit {
   inspectionId: any;
   constructor(private route: ActivatedRoute) {
-    this.inspectionId = route.snapshot.parent?.parent?.params['id'];
-    console.log('Alice', this.inspectionId);
+    this.inspectionId = route.snapshot.parent?.params;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // console.log('Aliceeeee  ', this.inspectionId);
+  }
 }

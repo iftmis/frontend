@@ -26,6 +26,7 @@ export class CourtesyDetailComponent implements OnInit {
   error: string | undefined = undefined;
   file: any;
   courtesy: Courtesy;
+  payload: Courtesy;
   showProgress: any;
   public title: string;
   public action: string;
@@ -61,16 +62,22 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
+    this.payload = {
+      meetingDate: this.form.value.meetingDate,
+      venue: this.form.value.venue,
+      inspectionId: this.inspectionId,
+      type: 'COURTESY',
+    };
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
-        this.courtesyService.update(this.formService.fromFormGroup(this.form)),
+        this.courtesyService.update(this.payload),
         'update'
       );
     } else {
       this.subscribeToResponse(
-        this.courtesyService.create(this.formService.fromFormGroup(this.form)),
+        this.courtesyService.create(this.payload),
         'create'
       );
     }
