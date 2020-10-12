@@ -202,7 +202,7 @@ export class InspectionActivitiesListComponent implements OnInit {
       title: 'Update Inspection Activity',
       action: 'update',
       inspectionPlanId: element.inspectionPlanId,
-      mzigo: element,
+      selectedInspectionActivity: element,
       organisationUnit: element.organisationUnits,
     };
 
