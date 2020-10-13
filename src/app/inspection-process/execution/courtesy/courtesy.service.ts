@@ -7,7 +7,7 @@ import { Courtesy } from './courtesy';
   providedIn: 'root',
 })
 export class CourtesyService {
-  private resourceUrl = '';
+  private resourceUrl = '/api/meetings';
   constructor(private http: HttpClient) {}
 
   query(): Observable<Courtesy[]> {
@@ -20,6 +20,14 @@ export class CourtesyService {
       { observe: 'response' }
     );
   }
+  create(courtesy: Courtesy): Observable<Courtesy> {
+    return this.http.post<Courtesy>(this.resourceUrl, courtesy);
+  }
+
+  update(row: Courtesy): Observable<Courtesy> {
+    return this.http.put<Courtesy>(`${this.resourceUrl}`, row);
+  }
+
   delete(id: number) {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`);
   }

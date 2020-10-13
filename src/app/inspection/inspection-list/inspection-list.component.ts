@@ -1,17 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { InspectionService } from './../inspection.service';
 import { InspectionDeleteComponent } from '../inspection-delete/inspection-delete.component';
 import { Inspection } from '../inspection';
 import { OrganisationUnit } from 'src/app/setting/organisation-unit/organisation-unit';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { InspectionActivitiesDetailComponent } from '../../inspection-planning/inspection-activities/inspection-activities-detail/inspection-activities-detail.component';
-import { FinancialYearService } from 'src/app/setting/financial-year/financial-year.service';
 import { FinancialYear } from 'src/app/setting/financial-year/financial-year';
 import { InspectionDetailComponent } from '../inspection-detail/inspection-detail.component';
-import { InspectionComponent } from '../inspection.component';
 
 @Component({
   selector: 'app-inspection-list',
@@ -71,6 +68,7 @@ export class InspectionListComponent implements OnInit {
   }
 
   getInspections(): Observable<Inspection[]> {
+    console.log('MyInspection', this.inspections);
     return this.inspections.asObservable();
   }
 

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { InspectionFindingService } from '../inspection-finding/inspection-finding.service';
+import { Inspection } from '../../inspection/inspection';
 
 @Component({
   selector: 'app-execution',
@@ -8,20 +8,12 @@ import { InspectionFindingService } from '../inspection-finding/inspection-findi
   styleUrls: ['./execution.component.scss'],
 })
 export class ExecutionComponent implements OnInit {
-  inspectionId: number;
-  filter = {};
-  constructor(
-    private route: ActivatedRoute,
-    private findingService: InspectionFindingService
-  ) {
-    this.inspectionId = route.snapshot.parent?.parent?.params['id'];
+  inspectionId: any;
+  constructor(private route: ActivatedRoute) {
+    this.inspectionId = route.snapshot.parent?.params;
   }
 
   ngOnInit(): void {
-    this.findingService
-      .query(this.inspectionId, this.filter)
-      .subscribe(resp => {});
+    // console.log('Aliceeeee  ', this.inspectionId);
   }
-
-  loadFindingByInspection(): void {}
 }

@@ -26,10 +26,13 @@ export class BriefyingComponent implements OnInit {
     private briefyingService: BriefyingService,
     private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.inspectionId = route.snapshot.parent?.params['id'];
+  }
 
   ngOnInit() {
     this.loadMeeting();
+    console.log('PeterID ', this.inspectionId);
   }
   loadMeeting() {
     this.briefyingService.getByInspection(this.inspectionId).subscribe(res => {

@@ -16,29 +16,33 @@ import { CourtesyMembersComponent } from './courtesy-members/courtesy-members.co
   styleUrls: ['./courtesy.component.scss'],
 })
 export class CourtesyComponent implements OnInit {
-  displayedColumns = ['meeting_date', 'venue', 'formActions'];
+  displayedColumns = ['meetingDate', 'venue', 'formActions'];
 
   form: FormGroup;
   routeData$ = this.route.data;
   showLoader = false;
   meetings: BehaviorSubject<Courtesy[]> = new BehaviorSubject<Courtesy[]>([]);
-  @Input() inspectionId: number;
+  @Input() inspectionId: any;
 
   constructor(
     private route: ActivatedRoute,
     private courtesyService: CourtesyService,
     private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.inspectionId = route.snapshot.parent?.params['id'];
+  }
 
   ngOnInit() {
     this.loadMeeting();
   }
 
   loadMeeting() {
-    this.courtesyService.getByInspection(this.inspectionId).subscribe(res => {
-      this.meetings.next(res.body || []);
-    });
+    this.courtesyService
+      .getByInspection(this.inspectionId.id)
+      .subscribe(res => {
+        this.meetings.next(res.body || []);
+      });
   }
   getMeetings(): Observable<Courtesy[]> {
     return this.meetings.asObservable();
@@ -60,6 +64,7 @@ export class CourtesyComponent implements OnInit {
   }
 
   createOrEdit() {
+    console.log('Careen', this.inspectionId);
     const dialogRef = this.dialog.open(CourtesyDetailComponent, {
       data: { inspectionId: this.inspectionId },
     });
