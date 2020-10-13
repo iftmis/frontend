@@ -100,7 +100,8 @@ export class CourtesyDetailComponent implements OnInit {
             'Courtesy Created Successfully'
           );
         }
-        this.router.navigate(['/']);
+        this.dialogRef.close();
+        // this.router.navigate(['/']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
