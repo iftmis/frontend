@@ -22,7 +22,7 @@ export class CourtesyComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   meetings: BehaviorSubject<Courtesy[]> = new BehaviorSubject<Courtesy[]>([]);
-  @Input() inspectionId: number;
+  @Input() inspectionId: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,9 +38,11 @@ export class CourtesyComponent implements OnInit {
   }
 
   loadMeeting() {
-    this.courtesyService.getByInspection(this.inspectionId).subscribe(res => {
-      this.meetings.next(res.body || []);
-    });
+    this.courtesyService
+      .getByInspection(this.inspectionId.id)
+      .subscribe(res => {
+        this.meetings.next(res.body || []);
+      });
   }
   getMeetings(): Observable<Courtesy[]> {
     return this.meetings.asObservable();
