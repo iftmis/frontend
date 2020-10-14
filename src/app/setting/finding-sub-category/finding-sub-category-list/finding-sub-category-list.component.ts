@@ -23,7 +23,7 @@ import { FindingSubCategoryDetailComponent } from '../finding-sub-category-detai
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FindingSubCategoryListComponent implements OnInit {
-  displayedColumns = ['code', 'name', 'formActions'];
+  displayedColumns = ['code', 'findingCategoryName', 'name', 'formActions'];
   routeData$ = this.route.data;
   public showProgress: boolean;
 

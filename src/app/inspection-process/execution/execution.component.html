@@ -1,18 +1,18 @@
 <mat-tab-group mat-align-tabs="start">
   <mat-tab label="Courtesy">
     <ng-template matTabContent>
-      <app-courtesy></app-courtesy>
+      <app-courtesy [inspectionId]="inspectionId"></app-courtesy>
     </ng-template>
   </mat-tab>
-  <mat-tab label="Briefying">
+  <mat-tab label="Briefing">
     <ng-template matTabContent>
-      <app-briefying></app-briefying>
+      <app-briefying [inspectionId]="inspectionId"></app-briefying>
     </ng-template>
   </mat-tab>
   <mat-tab label="Inspection">
     <ng-template matTabContent> </ng-template>
   </mat-tab>
-  <mat-tab label="Briefying">
+  <mat-tab label="Briefing">
     <ng-template matTabContent>
       <app-inspection-finding-list></app-inspection-finding-list>
     </ng-template>

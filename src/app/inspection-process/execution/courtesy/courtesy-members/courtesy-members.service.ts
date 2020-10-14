@@ -8,34 +8,38 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class CourtesyMembersService {
-  private resourceUrl = '';
+  private resourceUrl = '/api/meetings';
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
-  // tslint:disable-next-line:no-shadowed-variable
-  toFormGroup(CourtesyMember: Partial<CourtesyMember> = {}) {
+  toFormGroup(courtesyMember: Partial<CourtesyMember> = {}) {
     return this.formBuilder.group({
-      id: this.formBuilder.control(CourtesyMember.id, []),
-      full_name: this.formBuilder.control(CourtesyMember.full_name),
-      member_role: this.formBuilder.control(CourtesyMember.member_role),
+      id: this.formBuilder.control(courtesyMember.id, []),
+      meetingDate: this.formBuilder.control(courtesyMember.meetingDate),
+      venue: this.formBuilder.control(courtesyMember.venue),
     });
   }
   fromFormGroup(formGroup: FormGroup) {
     return {
       id: formGroup.get('id')!.value,
-      full_name: formGroup.get('full_name')!.value,
-      member_role: formGroup.get('member_role')!.value,
+      meetingDate: formGroup.get('meetingDate')!.value,
+      venue: formGroup.get('venue')!.value,
     };
+  }
+  getByInspection(inspectionId: number): Observable<CourtesyMember[]> {
+    return this.http.get<CourtesyMember[]>(
+      `${this.resourceUrl}/${inspectionId}`
+    );
   }
   getById(id: number): Observable<CourtesyMember> {
     return this.http.get<CourtesyMember>(`${this.resourceUrl}/${id}`);
   }
 
-  create(courtesyMember: CourtesyMember): Observable<CourtesyMember> {
+  create(courtesyMember: FormGroup): Observable<CourtesyMember> {
     return this.http.post<CourtesyMember>(this.resourceUrl, courtesyMember);
   }
 
-  update(courtesyMember: CourtesyMember): Observable<CourtesyMember> {
+  update(courtesyMember: FormGroup): Observable<CourtesyMember> {
     return this.http.put<CourtesyMember>(`${this.resourceUrl}`, courtesyMember);
   }
 

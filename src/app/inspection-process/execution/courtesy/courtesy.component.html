@@ -1,13 +1,13 @@
 <div *ngIf="getMeetings() | async as data">
   <div class="page-heading">
-    <div>
-      <button mat-raised-button color="accent" (click)="createOrEdit()">
-        <mat-icon>add</mat-icon>
-        <span>Add Meeting</span>
-      </button>
-    </div>
-    <div class="page-heading">
-      <div style="margin-left: 100px;">
+    <div class="row">
+      <div style="margin-left: 2%;">
+        <button mat-raised-button color="accent" (click)="createOrEdit()">
+          <mat-icon>add</mat-icon>
+          <span>Add Meeting</span>
+        </button>
+      </div>
+      <div style="margin-left: 50%;">
         <button mat-raised-button color="accent" (click)="uploadMinutes()">
           <mat-icon>attach_file</mat-icon>
           <span>Upload Minutes</span>
