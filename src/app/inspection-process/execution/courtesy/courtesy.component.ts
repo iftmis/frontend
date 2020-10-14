@@ -15,6 +15,7 @@ import {
 } from '../../../shared/pagination.constants';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-courtesy',
@@ -27,7 +28,6 @@ export class CourtesyComponent implements OnInit {
   form: FormGroup;
   routeData$ = this.route.data;
   showLoader = false;
-  meetings: [];
   courtesySubject: BehaviorSubject<Courtesy[]> = new BehaviorSubject<
     Courtesy[]
   >([]);
@@ -43,6 +43,7 @@ export class CourtesyComponent implements OnInit {
     private route: ActivatedRoute,
     private courtesyService: CourtesyService,
     private router: Router,
+    private toastService: ToastService,
     private dialog: MatDialog
   ) {
     this.inspectionId = route.snapshot.parent?.params['id'];
@@ -76,19 +77,26 @@ export class CourtesyComponent implements OnInit {
   }
 
   delete(id: number) {
-    const dialogRef = this.dialog.open(CourtesyDeleteComponent);
+    const dialogRef = this.dialog.open(CourtesyDeleteComponent, {
+      data: id,
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.showLoader = true;
         this.courtesyService.delete(id).subscribe({
-          next: () =>
+          next: () => {
             this.loadPage(
               this.page,
               this.itemsPerPage,
               this.inspectionId.id,
               'COURTESY'
-            ),
+            );
+            this.toastService.success(
+              'Success',
+              'Courtesy Meeting Deleted Successfully!'
+            );
+          },
           error: () => (this.showLoader = false),
           complete: () => (this.showLoader = false),
         });
@@ -147,13 +155,6 @@ export class CourtesyComponent implements OnInit {
     const dialogRef = this.dialog.open(CourtesyMembersComponent, {
       data: { inspectionId: this.inspectionId },
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.loadMeeting();
-    //   if (result) {
-    //     this.showLoader = true;
-    //   }
-    // });
   }
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
