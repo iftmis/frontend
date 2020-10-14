@@ -9,19 +9,14 @@
     </button>
   </div>
 </div>
-
+<mat-progress-bar
+  *ngIf="showProgress"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>
 <mat-dialog-content>
   <form [formGroup]="form" novalidate autocomplete="off">
     <mat-card>
-      <mat-progress-spinner
-        *ngIf="showProgress"
-        diameter="50"
-        class="form-overlay"
-        color="accent"
-        mode="indeterminate"
-      >
-      </mat-progress-spinner>
-
       <mat-card-content class="py-3 px-1">
         <div class="row">
           <div class="col-md-3">
@@ -178,7 +173,7 @@
     mat-flat-button
     color="accent"
     [disabled]="form.invalid || showProgress || !selectedOrganisationUnit"
-    (click)="saveOrUpdate()"
+    (click)="saveOrUpdate(form.value)"
   >
     <mat-icon>save</mat-icon>
     <span>{{ label }} </span>

@@ -46,6 +46,7 @@ export class UserDetailComponent implements OnInit {
   public title: string;
   public action: string;
   public label: string;
+  public userData: User;
 
   constructor(
     private _toastSvc: ToastService,
@@ -61,6 +62,11 @@ export class UserDetailComponent implements OnInit {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
+
+    if (this.action === 'update') {
+      this.userData = data.user;
+      console.log(this.userData);
+    }
   }
 
   ngOnInit() {
@@ -122,20 +128,21 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  saveOrUpdate() {
+  saveOrUpdate(item: any) {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+
+    if (this.action === 'update') {
       const payload = {
-        id: this.form.value.id,
-        firstName: this.form.value.firstName,
-        lastName: this.form.value.lastName,
-        login: this.form.value.login,
+        id: this.userData.id,
+        firstName: this.userData.firstName,
+        lastName: this.userData.lastName,
+        login: this.userData.login,
         organisationUnit: { id: this.selectedOrganisationUnit.id },
-        activated: this.form.value.activated,
-        authorities: this.form.value.authorities,
-        email: this.form.value.email,
-        langKey: this.form.value.langKey,
+        activated: this.userData.activated,
+        authorities: this.userData.authorities,
+        email: this.userData.email,
+        langKey: this.userData.langKey,
       } as User;
       this.subscribeToResponse(this.userService.update(payload), 'update');
     } else {

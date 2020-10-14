@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -30,6 +30,7 @@ export class RiskCategoryDetailComponent implements OnInit {
   public title: string;
   public action: string;
   public label: string;
+  public category: RiskCategory;
   public showProgress: boolean;
 
   constructor(
@@ -38,6 +39,7 @@ export class RiskCategoryDetailComponent implements OnInit {
     private formService: RiskCategoryFormService,
     private riskCategoryService: RiskCategoryService,
     private toastService: ToastService,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<RiskCategoryDetailComponent>
   ) {
@@ -45,22 +47,38 @@ export class RiskCategoryDetailComponent implements OnInit {
     this.action = data.action;
     this.label = data.label;
 
+    if (this.action === 'update') {
+      this.category = data.row;
+    }
+
     this.showProgress = false;
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ riskCategory }) => {
-      this.riskCategory = riskCategory;
-      this.form = this.formService.toFormGroup(riskCategory);
-    });
-
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.category.id],
+        code: [this.category.code],
+        name: [this.category.name],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        code: ['', Validators.required],
+        name: ['', Validators.required],
+      });
+    }
   }
 
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.riskCategoryService.update(
           this.formService.fromFormGroup(this.form)
