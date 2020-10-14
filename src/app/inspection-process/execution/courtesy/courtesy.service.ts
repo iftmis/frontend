@@ -8,10 +8,15 @@ import { Courtesy } from './courtesy';
 })
 export class CourtesyService {
   private resourceUrl = '/api/meetings';
+  private uploadUrl = '/api/upload';
   constructor(private http: HttpClient) {}
 
   query(): Observable<Courtesy[]> {
     return this.http.get<Courtesy[]>(this.resourceUrl);
+  }
+
+  upload(formData: FormData) {
+    return this.http.post<any>(this.uploadUrl, formData);
   }
 
   getByInspection(id: number): Observable<HttpResponse<Courtesy[]>> {
