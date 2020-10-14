@@ -1,4 +1,4 @@
-<div *ngIf="getMeetings() | async as data">
+<div *ngIf="getData() | async as data">
   <div class="page-heading">
     <div class="row">
       <div style="margin-left: 2%;">
@@ -23,13 +23,13 @@
         mode="indeterminate"
       >
       </mat-progress-spinner>
-      <div *ngIf="!data?.length">
-        <span class="table-overlay">No members found</span>
+      <div *ngIf="!getData()">
+        <span class="table-overlay">No meetings found</span>
       </div>
-      <table mat-table [dataSource]="data" matSort *ngIf="!!data?.length">
-        <ng-container matColumnDef="meeting_date">
+      <table mat-table [dataSource]="getData()" matSort *ngIf="!!getData()">
+        <ng-container matColumnDef="meetingDate">
           <th mat-header-cell *matHeaderCellDef>Meeting Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.meeting_date }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.meetingDate }}</td>
         </ng-container>
 
         <ng-container matColumnDef="venue">
@@ -40,14 +40,25 @@
         <ng-container matColumnDef="formActions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button
-              mat-icon-button
-              color="accent"
-              [matMenuTriggerFor]="menu"
-              [matMenuTriggerData]="{ id: element.id, element: element }"
-            >
-              <mat-icon>more_vert</mat-icon>
-            </button>
+            <div fxLayout="row">
+              <button
+                [routerLink]="['/main/courtesy-members', element.id]"
+                color="primary"
+                aria-label="Add Member"
+                mat-icon-button
+              >
+                <mat-icon>supervised_user_circle</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="accent"
+                [matMenuTriggerFor]="menu"
+                [matMenuTriggerData]="{ id: element.id, element: element }"
+                aria-label="Meeting form actions "
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
           </td>
         </ng-container>
 
@@ -67,7 +78,7 @@
     <ng-template matMenuContent let-id="id" let-element="element">
       <button
         mat-menu-item
-        aria-label="Edit inspectionMember"
+        aria-label="Edit inspection Meeting"
         (click)="createOrEdit()"
       >
         <mat-icon>edit</mat-icon>
@@ -75,7 +86,7 @@
       </button>
       <button
         mat-menu-item
-        aria-label="Delete inspectionMember"
+        aria-label="Delete inspection Meeting"
         (click)="delete(id)"
       >
         <mat-icon>delete</mat-icon>

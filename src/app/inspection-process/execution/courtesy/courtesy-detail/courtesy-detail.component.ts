@@ -49,8 +49,6 @@ export class CourtesyDetailComponent implements OnInit {
     this.action = data.action;
     this.label = data.label;
     this.inspectionId = data.inspectionId;
-
-    this.titleService.setTitle('Courtesy|' + environment.app);
   }
 
   ngOnInit() {
@@ -100,7 +98,7 @@ export class CourtesyDetailComponent implements OnInit {
             'Courtesy Created Successfully'
           );
         }
-        this.router.navigate(['/']);
+        this.dialogRef.close();
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;

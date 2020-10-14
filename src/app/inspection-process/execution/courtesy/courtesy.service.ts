@@ -8,16 +8,33 @@ import { Courtesy } from './courtesy';
 })
 export class CourtesyService {
   private resourceUrl = '/api/meetings';
+  private resourceUrl1 = '/api/meetings/inspection';
   constructor(private http: HttpClient) {}
 
   query(): Observable<Courtesy[]> {
-    return this.http.get<Courtesy[]>(this.resourceUrl);
+    return this.http.get<Courtesy[]>(this.resourceUrl1);
   }
 
   getByInspection(id: number): Observable<HttpResponse<Courtesy[]>> {
     return this.http.get<Courtesy[]>(
       `${this.resourceUrl}/by-inspection/${id}`,
       { observe: 'response' }
+    );
+  }
+  getAllUnPaged(): Observable<Courtesy[]> {
+    return this.http.get<any>(this.resourceUrl1);
+  }
+  getByTypeAndInspeId(
+    page: number,
+    size: number,
+    inspectionId: any,
+    meetingType: string
+  ): Observable<HttpResponse<Courtesy[]>> {
+    return this.http.get<Courtesy[]>(
+      `${this.resourceUrl1}/${inspectionId}/type/${meetingType}`,
+      {
+        observe: 'response',
+      }
     );
   }
   create(courtesy: Courtesy): Observable<Courtesy> {
