@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Inspection } from '../../inspection/inspection';
 
 @Component({
   selector: 'app-execution',
@@ -13,7 +12,5 @@ export class ExecutionComponent implements OnInit {
     this.inspectionId = route.snapshot.parent?.params;
   }
 
-  ngOnInit(): void {
-    // console.log('Aliceeeee  ', this.inspectionId);
-  }
+  ngOnInit(): void {}
 }

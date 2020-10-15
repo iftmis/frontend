@@ -68,7 +68,6 @@ export class InspectionListComponent implements OnInit {
   }
 
   getInspections(): Observable<Inspection[]> {
-    console.log('MyInspection', this.inspections);
     return this.inspections.asObservable();
   }
 

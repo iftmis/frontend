@@ -59,7 +59,6 @@ export class CourtesyDetailComponent implements OnInit {
       this.form = this.formService.toFormGroup(courtesy);
     });
     this.id = this.inspectionId;
-    console.log('Joshua', this.inspectionId);
 
     this.error = undefined;
   }
