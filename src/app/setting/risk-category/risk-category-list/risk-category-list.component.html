@@ -81,10 +81,10 @@
             <button
               mat-menu-item
               aria-label="Edit Risk Category"
-              [routerLink]="['/settings/risk-categories', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
-              <span>Edit</span>
+              <span>Edit Category</span>
             </button>
             <button
               mat-menu-item

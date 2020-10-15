@@ -98,6 +98,8 @@ export class CourtesyDetailComponent implements OnInit {
           );
         }
         this.dialogRef.close();
+
+        // this.router.navigate(['/']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;

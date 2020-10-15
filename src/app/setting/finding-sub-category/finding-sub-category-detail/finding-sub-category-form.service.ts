@@ -21,6 +21,9 @@ export class FindingSubCategoryFormService {
         Validators.minLength(2),
         Validators.maxLength(200),
       ]),
+      findingCategoryId: this.formBuilder.control(
+        findingSubCategory.findingCategoryId
+      ),
     });
   }
 
@@ -29,6 +32,7 @@ export class FindingSubCategoryFormService {
       id: formGroup.get('id')!.value,
       code: formGroup.get('code')!.value,
       name: formGroup.get('name')!.value,
+      findingCategoryId: formGroup.get('findingCategoryId')!.value,
     };
   }
 }
