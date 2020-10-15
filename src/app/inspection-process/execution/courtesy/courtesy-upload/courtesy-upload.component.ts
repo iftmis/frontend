@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourtesyService } from '../courtesy.service';
+import { UploadService } from '../../../../shared/upload.service';
 
 @Component({
   selector: 'app-courtesy-upload',
@@ -18,7 +19,8 @@ export class CourtesyUploadComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CourtesyUploadComponent>,
-    private courtesyService: CourtesyService
+    private courtesyService: CourtesyService,
+    private uploadService: UploadService
   ) {}
 
   ngOnInit() {
@@ -50,7 +52,7 @@ export class CourtesyUploadComponent implements OnInit {
       formData.append('file', this.form.get('myfile').value);
 
       // upload by formdata
-      this.courtesyService.upload(formData).subscribe(res => {
+      this.uploadService.upload(formData).subscribe(res => {
         console.log('RESPONSI   :  ' + res);
       });
     } else {
@@ -58,7 +60,7 @@ export class CourtesyUploadComponent implements OnInit {
       // @ts-ignore
       formData.append('file', this.form.get('myfile').value);
       // upload by formdata
-      this.courtesyService.upload(formData).subscribe(res => {
+      this.uploadService.upload(formData).subscribe(res => {
         console.log('RESPONSI   :  ' + res);
       });
     }
