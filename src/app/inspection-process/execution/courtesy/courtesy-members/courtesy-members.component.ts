@@ -11,8 +11,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CourtesyMembersService } from './courtesy-members.service';
 import { ActivatedRoute } from '@angular/router';
 import { CourtesyMember } from '../courtesy-member';
-import { Courtesy } from '../courtesy';
-import { SubArea } from '../../../../setting/sub-area/sub-area';
 import { ToastService } from '../../../../shared/toast.service';
 
 @Component({
@@ -28,7 +26,7 @@ export class CourtesyMembersComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   inspectionMember: InspectionMember;
-  @Input() inspectionId: any;
+  @Input() meetingId: any;
   error: string | undefined = undefined;
 
   public showProgress: boolean;
@@ -42,15 +40,18 @@ export class CourtesyMembersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastService: ToastService,
     private dialogRef: MatDialogRef<CourtesyMembersComponent>
-  ) {}
+  ) {
+    this.meetingId = route.snapshot.parent?.params['id'];
+  }
 
   ngOnInit() {
     this.loadMeeting();
+    console.log('MeetingID', this.meetingId);
   }
 
   loadMeeting() {
     this.courtesyMemberService
-      .getByInspection(this.inspectionId)
+      .getByInspection(this.meetingId)
       .subscribe(res => {
         this.meetings.next(res || []);
       });

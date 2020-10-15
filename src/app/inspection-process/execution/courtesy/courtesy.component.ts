@@ -76,9 +76,9 @@ export class CourtesyComponent implements OnInit {
     return this.courtesySubject.asObservable();
   }
 
-  delete(id: number) {
+  delete(id: number, courtesy: Courtesy) {
     const dialogRef = this.dialog.open(CourtesyDeleteComponent, {
-      data: id,
+      data: courtesy,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -136,6 +136,41 @@ export class CourtesyComponent implements OnInit {
       }
     });
   }
+  // Adding member in a meeting starts here
+  addMember() {
+    const data = {
+      title: 'Add Member in Courtesy Meeting',
+      action: 'create',
+      label: 'save',
+      // inspectionId: this.inspectionId,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = false;
+    config.width = '50%';
+    config.position = {
+      top: '80px',
+    };
+
+    const dialogRef = this.dialog.open(CourtesyMembersComponent, config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadPage(
+        this.page,
+        this.itemsPerPage,
+        this.inspectionId.id,
+        'COURTESY'
+      );
+      if (result) {
+        this.showLoader = true;
+      }
+    });
+  }
+  // Adding member in a meeting ends here
+
   uploadMinutes() {
     const dialogRef = this.dialog.open(CourtesyUploadComponent);
     dialogRef.afterClosed().subscribe(result => {
