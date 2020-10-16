@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { CourtesyService } from '../courtesy.service';
 import { ToastService } from '../../../../shared/toast.service';
-import { Courtesy } from '../courtesy';
+import { Courtesy } from '../Courtesy';
 import { Title } from '@angular/platform-browser';
 import { CourtesyFormService } from './courtesy-form.service';
 
@@ -33,10 +33,8 @@ export class CourtesyDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
     private courtesyService: CourtesyService,
     private formService: CourtesyFormService,
-    private titleService: Title,
     private toastService: ToastService,
     // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder,
@@ -139,8 +137,6 @@ export class CourtesyDetailComponent implements OnInit {
           );
         }
         this.dialogRef.close();
-
-        // this.router.navigate(['/']);
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;
@@ -155,7 +151,8 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
+    this.dialogRef.close();
     return false;
   }
 }

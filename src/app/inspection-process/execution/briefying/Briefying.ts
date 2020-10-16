@@ -1,5 +1,7 @@
 export interface Briefying {
   id?: number;
-  briefying_Date: string;
-  briefying_venue: string;
+  meetingDate: string;
+  venue: string;
+  inspectionId: number;
+  type: string;
 }
