@@ -26,6 +26,15 @@
           />
         </div>
       </div>
+      <div>
+        <button (click)="getImage()">Get Image</button>
+        <img
+          src="{{ data }}"
+          *ngIf="data"
+          alt="Your image"
+          style="display: block;"
+        />
+      </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>

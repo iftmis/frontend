@@ -15,6 +15,7 @@ export class CourtesyUploadComponent implements OnInit {
   error: string | undefined = undefined;
   fileInputLabel: string;
   file: any;
+  data: any;
 
   constructor(
     private formBuilder: FormBuilder,
