@@ -5,7 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -32,7 +32,7 @@ export class CourtesyMembersComponent implements OnInit {
   meetings: BehaviorSubject<CourtesyMember[]> = new BehaviorSubject<
     CourtesyMember[]
   >([]);
-  courtesyMember: any;
+  courtesyMember: CourtesyMember;
   showProgress: any;
   public title: string;
   public action: string;
@@ -54,8 +54,9 @@ export class CourtesyMembersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.form = this.initform();
     this.loadMeeting();
-    console.log('MeetingID', this.meetingId);
+    console.log('MeetingID : ', this.meetingId);
   }
 
   loadMeeting() {
@@ -69,21 +70,24 @@ export class CourtesyMembersComponent implements OnInit {
     return this.meetings.asObservable();
   }
 
-  // saveOrUpdate() {
-  //   this.showProgress = true;
-  //   this.error = undefined;
-  //   if (this.form.value.id) {
-  //     this.subscribeToResponse(
-  //       this.courtesyMemberService.update(this.form),
-  //       'update'
-  //     );
-  //   } else {
-  //     this.subscribeToResponse(
-  //       this.courtesyMemberService.create(this.form),
-  //       'create'
-  //     );
-  //   }
-  // }
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this.formBuilder.group({
+        phoneNumber: [this.courtesyMember.phoneNumber],
+        email: [this.courtesyMember.email],
+        title: [this.courtesyMember.title],
+        name: [this.courtesyMember.name],
+      });
+    } else {
+      return this.formBuilder.group({
+        id: [''],
+        name: ['', Validators.required],
+        email: [''],
+        title: [''],
+        phoneNumber: ['', Validators.max(10)],
+      });
+    }
+  }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
@@ -91,10 +95,14 @@ export class CourtesyMembersComponent implements OnInit {
     const coutesy = this.courtesyMemberService.fromFormGroup(this.form);
     if (this.form.value.id) {
       // @ts-ignore
-      this.subscribeToResponse(this.courtesyMemberService.update(coutesy));
+      this.subscribeToResponse(
+        this.courtesyMemberService.update(coutesy, this.meetingId)
+      );
     } else {
       // @ts-ignore
-      this.subscribeToResponse(this.courtesyMemberService.create(coutesy));
+      this.subscribeToResponse(
+        this.courtesyMemberService.create(coutesy, this.meetingId)
+      );
     }
   }
   private subscribeToResponse(
