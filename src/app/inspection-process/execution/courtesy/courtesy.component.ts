@@ -251,8 +251,24 @@ export class CourtesyComponent implements OnInit {
   }
   // Adding member in a meeting ends here
 
-  uploadMinutes() {
-    const dialogRef = this.dialog.open(CourtesyUploadComponent);
+  uploadMinutes(courtesy: any) {
+    const data = {
+      title: 'Upload Meeting Attachment',
+      action: 'upload_meeting',
+      label: 'upload',
+      row: courtesy,
+    };
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = false;
+    config.width = '50%';
+    config.position = {
+      top: '80px',
+    };
+
+    const dialogRef = this.dialog.open(CourtesyUploadComponent, config);
     dialogRef.afterClosed().subscribe(result => {
       this.loadPage(
         this.page,
