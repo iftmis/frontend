@@ -24,6 +24,7 @@ export class CourtesyDetailComponent implements OnInit {
   file: any;
   courtesy: Courtesy;
   payload: Courtesy;
+  meetingId: number;
   showProgress: any;
   public title: string;
   public action: string;
@@ -42,7 +43,7 @@ export class CourtesyDetailComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyDetailComponent>
   ) {
-    this.inspectionId = route.snapshot.parent?.params.id;
+    // this.inspectionId = route.snapshot.parent?.params.id;
     this.showProgress = false;
     this.title = data.title;
     this.action = data.action;
@@ -51,16 +52,18 @@ export class CourtesyDetailComponent implements OnInit {
 
     if (this.action === 'update') {
       this.courtesy = data.row;
+      this.meetingId = data.row.id;
     }
     this.showProgress = false;
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ courtesy }) => {
-      this.courtesy = courtesy;
-      this.form = this.formService.toFormGroup(courtesy);
-    });
-    this.id = this.inspectionId;
+    // this.route.data.subscribe(({ courtesy }) => {
+    //   this.courtesy = courtesy;
+    //
+    // });
+    console.log('INPSECTION ID ' + this.inspectionId);
+    this.form = this.formService.toFormGroup(this.courtesy);
 
     this.error = undefined;
     this.form = this.initform();
@@ -83,7 +86,7 @@ export class CourtesyDetailComponent implements OnInit {
         id: [''],
         meetingDate: ['', Validators.required],
         venue: ['', Validators.required],
-        inspectionId: this.inspectionId.id,
+        inspectionId: this.inspectionId,
         type: 'COURTESY',
       });
     }
@@ -92,18 +95,28 @@ export class CourtesyDetailComponent implements OnInit {
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    this.payload = {
-      meetingDate: this.form.value.meetingDate,
-      venue: this.form.value.venue,
-      inspectionId: this.inspectionId.id,
-      type: 'COURTESY',
-    };
+
     if (this.action === 'update') {
+      this.payload = {
+        meetingDate: this.form.value.meetingDate,
+        venue: this.form.value.venue,
+        inspectionId: this.inspectionId,
+        type: 'COURTESY',
+        id: this.meetingId,
+      };
       this.subscribeToResponse(
         this.courtesyService.update(this.payload),
         'update'
       );
+
+      // if not to update
     } else {
+      this.payload = {
+        meetingDate: this.form.value.meetingDate,
+        venue: this.form.value.venue,
+        inspectionId: this.inspectionId,
+        type: 'COURTESY',
+      };
       this.subscribeToResponse(
         this.courtesyService.create(this.payload),
         'create'
