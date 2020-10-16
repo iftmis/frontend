@@ -124,6 +124,7 @@ export class CourtesyMembersComponent implements OnInit {
             'Courtesy Created Successfully'
           );
         }
+        this.showProgress = false;
         // this.router.navigate(['/main/settings/sub-areas']);
         this.dialogRef.close({ success: true });
       },

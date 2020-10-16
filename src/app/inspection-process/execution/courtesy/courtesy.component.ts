@@ -245,7 +245,7 @@ export class CourtesyComponent implements OnInit {
         'COURTESY'
       );
       if (result) {
-        this.showLoader = true;
+        this.showLoader = false;
       }
     });
   }
