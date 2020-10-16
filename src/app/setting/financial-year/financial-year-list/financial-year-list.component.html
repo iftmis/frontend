@@ -104,10 +104,7 @@
         </mat-card>
         <mat-menu #menu="matMenu">
           <ng-template matMenuContent let-id="id" let-element="element">
-            <button
-              mat-menu-item
-              [routerLink]="['/main/settings/financial-years', id, 'edit']"
-            >
+            <button mat-menu-item (click)="update(element)">
               <mat-icon>edit</mat-icon>
               <span>Edit Record</span>
             </button>

@@ -81,6 +81,33 @@ export class FinancialYearListComponent implements OnInit {
     });
   }
 
+  update(row: any) {
+    const data = {
+      title: 'Update Financial Year',
+      action: 'update',
+      label: 'Save Financial Year',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(FinancialYearDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
+  }
+
   loadPage() {
     const pageToLoad = this.page || 0;
     this.financialYearService

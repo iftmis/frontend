@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { DatePipe, KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -59,27 +59,51 @@ export class FinancialYearDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<FinancialYearDetailComponent>,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.titleService.setTitle('Financial Year Details | ' + environment.app);
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
+    if (this.action === 'update') {
+      this.financialYear = data.row;
+    }
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ financialYear }) => {
-      this.financialYear = financialYear;
-      this.form = this.formService.toFormGroup(financialYear);
-    });
-
+    // this.route.data.subscribe(({ financialYear }) => {
+    //   this.financialYear = financialYear;
+    //   this.form = this.formService.toFormGroup(financialYear);
+    // });
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.financialYear.id],
+        name: [this.financialYear.name],
+        startDate: [this.financialYear.startDate],
+        endDate: [this.financialYear.endDate],
+        isOpened: [this.financialYear.isOpened],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [],
+        name: ['', Validators.required],
+        startDate: ['', Validators.required],
+        endDate: ['', Validators.required],
+        isOpened: ['', Validators.required],
+      });
+    }
   }
 
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.financialYearService.update(
           this.formService.fromFormGroup(this.form)
