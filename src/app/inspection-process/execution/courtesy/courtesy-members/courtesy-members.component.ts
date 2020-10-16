@@ -50,7 +50,7 @@ export class CourtesyMembersComponent implements OnInit {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
-    this.meetingId = route.snapshot.params['id'];
+    this.meetingId = data.row.id;
   }
 
   ngOnInit() {
@@ -100,6 +100,8 @@ export class CourtesyMembersComponent implements OnInit {
       );
     } else {
       // @ts-ignore
+
+      console.log('MEETING ID');
       this.subscribeToResponse(
         this.courtesyMemberService.create(coutesy, this.meetingId)
       );

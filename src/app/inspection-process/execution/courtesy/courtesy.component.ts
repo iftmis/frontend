@@ -35,6 +35,7 @@ export class CourtesyComponent implements OnInit {
   @Input() inspectionId: any;
 
   totalItems = 0;
+  meetingId: number;
   itemsPerPage = ITEMS_PER_PAGE;
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
@@ -267,7 +268,7 @@ export class CourtesyComponent implements OnInit {
 
   addMembers() {
     const dialogRef = this.dialog.open(CourtesyMembersComponent, {
-      data: { inspectionId: this.inspectionId },
+      data: { inspectionId: this.inspectionId, meetingId: this.meetingId },
     });
   }
   onSuccess(data: any, headers: HttpHeaders, page: number): void {

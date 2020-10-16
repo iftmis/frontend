@@ -39,15 +39,24 @@ export class CourtesyMembersService {
     return this.http.get<CourtesyMember>(`${this.resourceUrl}/${id}`);
   }
 
-  create(courtesyMember: FormGroup): Observable<CourtesyMember> {
-    return this.http.post<CourtesyMember>(this.resourceUrl, courtesyMember);
+  create(
+    courtesyMember: FormGroup,
+    meetingId: number
+  ): Observable<CourtesyMember> {
+    return this.http.post<CourtesyMember>(
+      this.resourceUrl + '/' + meetingId,
+      courtesyMember
+    );
   }
 
   update(
     courtesyMember: FormGroup,
     meetingId: number
   ): Observable<CourtesyMember> {
-    return this.http.put<CourtesyMember>(`${this.resourceUrl}`, courtesyMember);
+    return this.http.put<CourtesyMember>(
+      `${this.resourceUrl + '/' + meetingId}`,
+      courtesyMember
+    );
   }
 
   delete(id: number) {
