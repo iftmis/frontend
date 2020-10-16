@@ -16,6 +16,7 @@ import {
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { ToastService } from '../../../shared/toast.service';
+import { RiskCategoryDetailComponent } from '../../../setting/risk-category/risk-category-detail/risk-category-detail.component';
 
 @Component({
   selector: 'app-courtesy',
@@ -38,6 +39,7 @@ export class CourtesyComponent implements OnInit {
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
   meetingType: string;
+  payload: Courtesy;
 
   constructor(
     private route: ActivatedRoute,
@@ -76,6 +78,80 @@ export class CourtesyComponent implements OnInit {
     return this.courtesySubject.asObservable();
   }
 
+  create() {
+    const data = {
+      title: 'Creates a Courtesy Meeting',
+      action: 'create',
+      label: 'Save Courtesy Meeting',
+      inspectionId: this.inspectionId,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialogRef = this.dialog.open(CourtesyDetailComponent, config);
+    dialogRef.afterClosed().subscribe(response => {
+      console.log('Alfred', response);
+      // if (response.success) {
+      // this.loadPage(this.page, this.size);
+      this.loadPage(
+        this.page,
+        this.itemsPerPage,
+        this.inspectionId.id,
+        'COURTESY'
+      );
+      // }
+    });
+  }
+
+  update(courtesy: any) {
+    // this.payload = {
+    //   meetingDate: this.form.value.meetingDate,
+    //   venue: this.form.value.venue,
+    //   inspectionId: this.inspectionId.id,
+    //   type: 'COURTESY',
+    // };
+    const data = {
+      title: `Update Courtesy Meeting`,
+      action: 'update',
+      label: 'Update Courtesy Meeting',
+      row: courtesy,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialogRef = this.dialog.open(CourtesyDetailComponent, config);
+    dialogRef.afterClosed().subscribe(response => {
+      // console.log(response);
+      // if (response.success) {
+      // this.loadPage(this.page, this.size);
+      this.loadPage(
+        this.page,
+        this.itemsPerPage,
+        this.inspectionId.id,
+        'COURTESY'
+      );
+      // }
+    });
+  }
+
   delete(id: number, courtesy: Courtesy) {
     const dialogRef = this.dialog.open(CourtesyDeleteComponent, {
       data: courtesy,
@@ -104,44 +180,45 @@ export class CourtesyComponent implements OnInit {
     });
   }
 
-  createOrEdit() {
-    const data = {
-      title: 'Create a new Courtesy',
-      action: 'create',
-      label: 'save',
-      inspectionId: this.inspectionId,
-    };
-
-    const config = new MatDialogConfig();
-    config.data = data;
-    config.panelClass = 'mat-dialog-box';
-    config.backdropClass = 'mat-dialog-overlay';
-    config.disableClose = false;
-    config.width = '50%';
-    config.position = {
-      top: '80px',
-    };
-
-    const dialogRef = this.dialog.open(CourtesyDetailComponent, config);
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadPage(
-        this.page,
-        this.itemsPerPage,
-        this.inspectionId.id,
-        'COURTESY'
-      );
-      if (result) {
-        this.showLoader = true;
-      }
-    });
-  }
+  // createOrEdit() {
+  //   const data = {
+  //     title: 'Create a new Courtesy',
+  //     action: 'create',
+  //     label: 'save',
+  //     inspectionId: this.inspectionId,
+  //   };
+  //
+  //   const config = new MatDialogConfig();
+  //   config.data = data;
+  //   config.panelClass = 'mat-dialog-box';
+  //   config.backdropClass = 'mat-dialog-overlay';
+  //   config.disableClose = false;
+  //   config.width = '50%';
+  //   config.position = {
+  //     top: '80px',
+  //   };
+  //
+  //   const dialogRef = this.dialog.open(CourtesyDetailComponent, config);
+  //
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadPage(
+  //       this.page,
+  //       this.itemsPerPage,
+  //       this.inspectionId.id,
+  //       'COURTESY'
+  //     );
+  //     if (result) {
+  //       this.showLoader = true;
+  //     }
+  //   });
+  // }
   // Adding member in a meeting starts here
-  addMember() {
+  addMember(courtesy: any) {
     const data = {
       title: 'Add Member in Courtesy Meeting',
       action: 'create',
       label: 'save',
+      row: courtesy,
       // inspectionId: this.inspectionId,
     };
 
@@ -209,4 +286,6 @@ export class CourtesyComponent implements OnInit {
       this.meetingType
     );
   }
+
+  viewMembers(element: any) {}
 }

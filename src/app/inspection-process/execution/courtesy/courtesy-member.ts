@@ -1,5 +1,7 @@
 export interface CourtesyMember {
   id?: number;
-  meetingDate: string;
-  venue: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  title: string;
 }

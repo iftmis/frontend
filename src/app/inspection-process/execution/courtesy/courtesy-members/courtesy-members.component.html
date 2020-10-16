@@ -1,71 +1,102 @@
-<form (ngSubmit)="saveOrUpdate()" [formGroup]="form">
-  <mat-dialog-content>
-    <h2 mat-dialog-title>Courtesy</h2>
-    <mat-progress-spinner
-      *ngIf="isSaveOrUpdateInProgress"
-      class="form-overlay"
-      color="accent"
-      diameter="50"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
-    <div class="error mat-error">
-      {{ error ? error : '&nbsp;' }}
-    </div>
-    <div
-      class="container"
-      fxLayout
-      fxLayout.xs="column"
-      fxLayoutAlign="center"
-      fxLayoutGap="10px"
-      fxLayoutGap.xs="0"
-    >
-      <div fxFlex="50%">
-        <div fxFlex="50%">
-          <mat-form-field appearance="outline">
-            <mat-label>Member full name</mat-label>
-            <input
-              matInput
-              placeholder="Member full name"
-              formControlName="full_name"
-              required
-            />
-            <mat-error
-              ><hip-ngx-error
-                [control]="form.get('full_name')"
-                label="Venue"
-              ></hip-ngx-error
-            ></mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <div fxFlex="50%">
-        <mat-form-field appearance="outline">
-          <mat-label>Member Role</mat-label>
+<div class="mat-dialog-header d-flex flex-row justify-content-between">
+  <div></div>
+  <div class="header-title align-self-center">
+    <h2 mat-dialog-title>{{ title }}</h2>
+  </div>
+  <div class="close-button align-self-center">
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<mat-progress-bar
+  *ngIf="showProgress"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>
+<mat-dialog-content>
+  <form [formGroup]="form" novalidate autocomplete="off">
+    <mat-card>
+      <mat-card-content class="p-3">
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Full Name</mat-label>
           <input
+            autocomplete="off"
             matInput
-            placeholder="Enter member role"
-            formControlName="member_role"
+            placeholder="Enter full name"
+            formControlName="name"
             required
           />
-          <mat-error
-            ><hip-ngx-error
-              [control]="form.get('member_role')"
-              label="Venue"
-            ></hip-ngx-error
-          ></mat-error>
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('name')"
+              label="Full Name"
+            ></hip-ngx-error>
+          </mat-error>
         </mat-form-field>
-      </div>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-dialog-close mat-raised-button>
-      <mat-icon>cancel</mat-icon>
-      <span>Cancel</span>
-    </button>
-    <button color="accent" mat-raised-button type="submit">
-      <mat-icon>save</mat-icon>
-      <span>{{ inspectionMember?.id ? 'Update' : 'Save' }} </span>
-    </button>
-  </mat-dialog-actions>
-</form>
+
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter phone number"
+            formControlName="phoneNumber"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('phoneNumber')"
+              label="Phone Number"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter Email"
+            formControlName="email"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('email')"
+              label="Email"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Title</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter Title"
+            formControlName="title"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('title')"
+              label="Title"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid || showProgress"
+    (click)="saveOrUpdate()"
+  >
+    <mat-icon>save</mat-icon>
+    <span>{{ label }} </span>
+  </button>
+</mat-dialog-actions>
