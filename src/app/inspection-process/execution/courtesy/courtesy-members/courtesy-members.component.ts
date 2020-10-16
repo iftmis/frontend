@@ -1,11 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   Input,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CourtesyMembersService } from './courtesy-members.service';
@@ -25,23 +26,31 @@ export class CourtesyMembersComponent implements OnInit {
   showLoader = false;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
-  inspectionMember: InspectionMember;
   @Input() meetingId: any;
   error: string | undefined = undefined;
 
-  public showProgress: boolean;
   meetings: BehaviorSubject<CourtesyMember[]> = new BehaviorSubject<
     CourtesyMember[]
   >([]);
+  courtesyMember: any;
+  showProgress: any;
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
     private courtesyMemberService: CourtesyMembersService,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyMembersComponent>
   ) {
-    this.meetingId = route.snapshot.parent?.params['id'];
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+    this.meetingId = route.snapshot.params['id'];
   }
 
   ngOnInit() {
@@ -60,32 +69,34 @@ export class CourtesyMembersComponent implements OnInit {
     return this.meetings.asObservable();
   }
 
-  saveOrUpdate() {
-    this.showProgress = true;
-    this.error = undefined;
-    if (this.form.value.id) {
-      this.subscribeToResponse(
-        this.courtesyMemberService.update(this.form),
-        'update'
-      );
-    } else {
-      this.subscribeToResponse(
-        this.courtesyMemberService.create(this.form),
-        'create'
-      );
-    }
-  }
-
   // saveOrUpdate() {
-  //   this.isSaveOrUpdateInProgress = true;
+  //   this.showProgress = true;
   //   this.error = undefined;
-  //   const formData = this.courtesyMemberService.fromFormGroup(this.form);
   //   if (this.form.value.id) {
-  //     this.subscribeToResponse(this.courtesyMemberService.update(formData));
+  //     this.subscribeToResponse(
+  //       this.courtesyMemberService.update(this.form),
+  //       'update'
+  //     );
   //   } else {
-  //     this.subscribeToResponse(this.courtesyMemberService.create(formData));
+  //     this.subscribeToResponse(
+  //       this.courtesyMemberService.create(this.form),
+  //       'create'
+  //     );
   //   }
   // }
+
+  saveOrUpdate() {
+    this.isSaveOrUpdateInProgress = true;
+    this.error = undefined;
+    const coutesy = this.courtesyMemberService.fromFormGroup(this.form);
+    if (this.form.value.id) {
+      // @ts-ignore
+      this.subscribeToResponse(this.courtesyMemberService.update(coutesy));
+    } else {
+      // @ts-ignore
+      this.subscribeToResponse(this.courtesyMemberService.create(coutesy));
+    }
+  }
   private subscribeToResponse(
     result: Observable<CourtesyMember>,
     action: string

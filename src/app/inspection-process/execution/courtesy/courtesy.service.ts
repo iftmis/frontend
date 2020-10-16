@@ -8,6 +8,7 @@ import { Courtesy } from './courtesy';
 })
 export class CourtesyService {
   private resourceUrl = '/api/meetings';
+
   private resourceUrl1 = '/api/meetings/inspection';
 
   constructor(private http: HttpClient) {}

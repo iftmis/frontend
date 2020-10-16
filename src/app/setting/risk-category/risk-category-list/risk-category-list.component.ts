@@ -92,6 +92,34 @@ export class RiskCategoryListComponent implements OnInit {
     });
   }
 
+  update(category: any) {
+    const data = {
+      title: `Update Risk Category - ${category.code}`,
+      action: 'update',
+      label: 'Update Risk Category',
+      row: category,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialogRef = this.dialog.open(RiskCategoryDetailComponent, config);
+    dialogRef.afterClosed().subscribe(response => {
+      console.log(response);
+      if (response.success) {
+        this.loadPage(this.page, this.size);
+      }
+    });
+  }
+
   delete(id: number, riskCategory: RiskCategory) {
     const dialogRef = this.dialog.open(RiskCategoryDeleteComponent, {
       data: riskCategory,
