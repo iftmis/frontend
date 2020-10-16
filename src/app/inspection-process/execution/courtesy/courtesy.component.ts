@@ -4,7 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { CourtesyService } from './courtesy.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Courtesy } from './courtesy';
+import { Courtesy } from './Courtesy';
 import { CourtesyDeleteComponent } from './courtesy-delete/courtesy-delete.component';
 import { CourtesyDetailComponent } from './courtesy-detail/courtesy-detail.component';
 import { CourtesyUploadComponent } from './courtesy-upload/courtesy-upload.component';

@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { BriefyingFormService } from './briefying-form.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Briefying } from '../Briefying';
 import { BriefyingService } from '../briefying.service';
+import { CourtesyFormService } from '../../courtesy/courtesy-detail/courtesy-form.service';
 
 @Component({
   selector: 'app-briefying-detail',
@@ -14,48 +15,113 @@ import { BriefyingService } from '../briefying.service';
   styleUrls: ['./briefying-detail.component.scss'],
 })
 export class BriefyingDetailComponent implements OnInit {
-  briefying: Briefying;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
-  // users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
-  inspectionId: number;
+  inspectionId: any;
   error: string | undefined = undefined;
+  id: number;
   file: any;
-  inspectionMember: any;
+  briefying: Briefying;
+  payload: Briefying;
+  showProgress: any;
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private briefyingService: BriefyingService,
-    private formService: BriefyingFormService,
+    private formService: CourtesyFormService,
     private toastService: ToastService,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<BriefyingDetailComponent>
-  ) {}
+  ) {
+    this.inspectionId = route.snapshot.parent?.params['id'];
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+    this.inspectionId = data.inspectionId;
+
+    if (this.action === 'update') {
+      this.briefying = data.row;
+    }
+    this.showProgress = false;
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ briefying }) => {
       this.briefying = briefying;
       this.form = this.formService.toFormGroup(briefying);
     });
+    this.id = this.inspectionId;
 
     this.error = undefined;
-  }
-  saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.form = this.initform();
     this.error = undefined;
-    if (this.form.value.id) {
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        // id: this.form.value.id,
+        // code: [this.courtesy.code],
+        // name: [this.courtesy.name],
+        meetingDate: this.form.value.meetingDate,
+        venue: this.form.value.venue,
+        inspectionId: this.inspectionId,
+        type: 'BRIEFING',
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        meetingDate: ['', Validators.required],
+        venue: ['', Validators.required],
+        inspectionId: this.inspectionId.id,
+        type: 'BRIEFING',
+      });
+    }
+  }
+
+  saveOrUpdate() {
+    this.showProgress = true;
+    this.error = undefined;
+    this.payload = {
+      meetingDate: this.form.value.meetingDate,
+      venue: this.form.value.venue,
+      inspectionId: this.inspectionId.id,
+      type: 'BRIEFING',
+    };
+    if (this.action === 'update') {
       this.subscribeToResponse(
-        this.briefyingService.update(this.formService.fromFormGroup(this.form)),
+        this.briefyingService.update(this.payload),
         'update'
       );
     } else {
       this.subscribeToResponse(
-        this.briefyingService.create(this.formService.fromFormGroup(this.form)),
+        this.briefyingService.create(this.payload),
         'create'
       );
     }
   }
+
+  // saveOrUpdate() {
+  //   this.isSaveOrUpdateInProgress = true;
+  //   this.error = undefined;
+  //   if (this.form.value.id) {
+  //     this.subscribeToResponse(
+  //       this.briefyingService.update(this.formService.fromFormGroup(this.form)),
+  //       'update'
+  //     );
+  //   } else {
+  //     this.subscribeToResponse(
+  //       this.briefyingService.create(this.formService.fromFormGroup(this.form)),
+  //       'create'
+  //     );
+  //   }
+  // }
 
   private subscribeToResponse(result: Observable<Briefying>, action: string) {
     result.subscribe({
@@ -71,7 +137,7 @@ export class BriefyingDetailComponent implements OnInit {
             'Briefying Created Successfully'
           );
         }
-        this.router.navigate(['/']);
+        this.dialogRef.close();
       },
       error: response => {
         this.isSaveOrUpdateInProgress = false;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Courtesy } from '../courtesy';
+import { Courtesy } from '../Courtesy';
 
 @Injectable({
   providedIn: 'root',

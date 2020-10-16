@@ -7,7 +7,7 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../../../environments/environment';
-import { Courtesy } from '../courtesy';
+import { Courtesy } from '../Courtesy';
 
 @Component({
   selector: 'app-courtesy-delete',
