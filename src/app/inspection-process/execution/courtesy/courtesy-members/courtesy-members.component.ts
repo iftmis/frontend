@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CourtesyMembersService } from './courtesy-members.service';
 import { ActivatedRoute } from '@angular/router';
@@ -33,6 +32,7 @@ export class CourtesyMembersComponent implements OnInit {
     CourtesyMember[]
   >([]);
   courtesyMember: CourtesyMember;
+  courtesyMemberObject: CourtesyMember;
   showProgress: any;
   public title: string;
   public action: string;
@@ -94,16 +94,35 @@ export class CourtesyMembersComponent implements OnInit {
     this.error = undefined;
     const coutesy = this.courtesyMemberService.fromFormGroup(this.form);
     if (this.form.value.id) {
-      // @ts-ignore
+      this.courtesyMemberObject = {
+        title: this.form.value.title,
+        phoneNumber: this.form.value.phoneNumber,
+        email: this.form.value.email,
+        name: this.form.value.name,
+      };
+
+      this.action = 'update';
       this.subscribeToResponse(
-        this.courtesyMemberService.update(coutesy, this.meetingId)
+        this.courtesyMemberService.update(
+          this.courtesyMemberObject,
+          this.meetingId
+        ),
+        this.action
       );
     } else {
-      // @ts-ignore
+      this.courtesyMemberObject = {
+        title: this.form.value.title,
+        phoneNumber: this.form.value.phoneNumber,
+        email: this.form.value.email,
+        name: this.form.value.name,
+      };
 
-      console.log('MEETING ID');
       this.subscribeToResponse(
-        this.courtesyMemberService.create(coutesy, this.meetingId)
+        this.courtesyMemberService.create(
+          this.courtesyMemberObject,
+          this.meetingId
+        ),
+        this.action
       );
     }
   }

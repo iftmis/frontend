@@ -40,7 +40,7 @@ export class CourtesyMembersService {
   }
 
   create(
-    courtesyMember: FormGroup,
+    courtesyMember: CourtesyMember,
     meetingId: number
   ): Observable<CourtesyMember> {
     return this.http.post<CourtesyMember>(
@@ -50,7 +50,7 @@ export class CourtesyMembersService {
   }
 
   update(
-    courtesyMember: FormGroup,
+    courtesyMember: CourtesyMember,
     meetingId: number
   ): Observable<CourtesyMember> {
     return this.http.put<CourtesyMember>(
