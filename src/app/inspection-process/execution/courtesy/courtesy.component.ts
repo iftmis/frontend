@@ -35,6 +35,7 @@ export class CourtesyComponent implements OnInit {
   @Input() inspectionId: any;
 
   totalItems = 0;
+  meetingId: number;
   itemsPerPage = ITEMS_PER_PAGE;
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
@@ -244,14 +245,30 @@ export class CourtesyComponent implements OnInit {
         'COURTESY'
       );
       if (result) {
-        this.showLoader = true;
+        this.showLoader = false;
       }
     });
   }
   // Adding member in a meeting ends here
 
-  uploadMinutes() {
-    const dialogRef = this.dialog.open(CourtesyUploadComponent);
+  uploadMinutes(courtesy: any) {
+    const data = {
+      title: 'Upload Meeting Attachment',
+      action: 'upload_meeting',
+      label: 'upload',
+      row: courtesy,
+    };
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = false;
+    config.width = '50%';
+    config.position = {
+      top: '80px',
+    };
+
+    const dialogRef = this.dialog.open(CourtesyUploadComponent, config);
     dialogRef.afterClosed().subscribe(result => {
       this.loadPage(
         this.page,
@@ -267,7 +284,7 @@ export class CourtesyComponent implements OnInit {
 
   addMembers() {
     const dialogRef = this.dialog.open(CourtesyMembersComponent, {
-      data: { inspectionId: this.inspectionId },
+      data: { inspectionId: this.inspectionId, meetingId: this.meetingId },
     });
   }
   onSuccess(data: any, headers: HttpHeaders, page: number): void {

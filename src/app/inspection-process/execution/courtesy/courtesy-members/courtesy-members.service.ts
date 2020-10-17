@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class CourtesyMembersService {
-  private resourceUrl = '/api/meetings';
+  private resourceUrl = '/api/meeting-members';
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
@@ -40,12 +40,24 @@ export class CourtesyMembersService {
     return this.http.get<CourtesyMember>(`${this.resourceUrl}/${id}`);
   }
 
-  create(courtesyMember: FormGroup): Observable<CourtesyMember> {
-    return this.http.post<CourtesyMember>(this.resourceUrl, courtesyMember);
+  create(
+    courtesyMember: FormGroup,
+    meetingId: number
+  ): Observable<CourtesyMember> {
+    return this.http.post<CourtesyMember>(
+      this.resourceUrl + '/' + meetingId,
+      courtesyMember
+    );
   }
 
-  update(courtesyMember: FormGroup): Observable<CourtesyMember> {
-    return this.http.put<CourtesyMember>(`${this.resourceUrl}`, courtesyMember);
+  update(
+    courtesyMember: FormGroup,
+    meetingId: number
+  ): Observable<CourtesyMember> {
+    return this.http.put<CourtesyMember>(
+      `${this.resourceUrl + '/' + meetingId}`,
+      courtesyMember
+    );
   }
 
   delete(id: number) {

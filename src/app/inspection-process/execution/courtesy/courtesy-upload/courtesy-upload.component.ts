@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourtesyService } from '../courtesy.service';
 import { UploadService } from '../../../../shared/upload.service';
+import { MeetingAttachment } from '../../../../shared/attachment';
 
 @Component({
   selector: 'app-courtesy-upload',
@@ -14,15 +15,27 @@ export class CourtesyUploadComponent implements OnInit {
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
   fileInputLabel: string;
+  meetingAtachment: MeetingAttachment;
   file: any;
-  data: any;
+  showProgress: any;
+  public title: string;
+  public action: string;
+  public label: string;
+  @Input() meetingId: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CourtesyUploadComponent>,
     private courtesyService: CourtesyService,
-    private uploadService: UploadService
-  ) {}
+    private uploadService: UploadService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+    this.meetingId = data.row.id;
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -54,6 +67,17 @@ export class CourtesyUploadComponent implements OnInit {
 
       // upload by formdata
       this.uploadService.upload(formData).subscribe(res => {
+        // upload to meeting attachments
+
+        this.meetingAtachment = {
+          meetingId: this.meetingId,
+          attachmentId: res.fileName,
+          attachmentPath: res.fileDownloadUri,
+        };
+        this.uploadService
+          .postMeetingAttachment(this.meetingAtachment)
+          .subscribe(response => {});
+
         console.log('RESPONSI   :  ' + res);
       });
     } else {
@@ -62,7 +86,14 @@ export class CourtesyUploadComponent implements OnInit {
       formData.append('file', this.form.get('myfile').value);
       // upload by formdata
       this.uploadService.upload(formData).subscribe(res => {
-        console.log('RESPONSI   :  ' + res);
+        this.meetingAtachment = {
+          meetingId: this.meetingId,
+          attachmentId: res.fileName,
+          attachmentPath: res.fileDownloadUri,
+        };
+        this.uploadService
+          .postMeetingAttachment(this.meetingAtachment)
+          .subscribe(response => {});
       });
     }
   }
