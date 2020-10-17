@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { BriefyingFormService } from './briefying-form.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Briefying } from '../Briefying';
 import { BriefyingService } from '../briefying.service';
@@ -66,9 +65,6 @@ export class BriefyingDetailComponent implements OnInit {
   private initform(): FormGroup {
     if (this.action === 'update') {
       return this._formBuilder.group({
-        // id: this.form.value.id,
-        // code: [this.courtesy.code],
-        // name: [this.courtesy.name],
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
         inspectionId: this.inspectionId,
@@ -106,22 +102,6 @@ export class BriefyingDetailComponent implements OnInit {
       );
     }
   }
-
-  // saveOrUpdate() {
-  //   this.isSaveOrUpdateInProgress = true;
-  //   this.error = undefined;
-  //   if (this.form.value.id) {
-  //     this.subscribeToResponse(
-  //       this.briefyingService.update(this.formService.fromFormGroup(this.form)),
-  //       'update'
-  //     );
-  //   } else {
-  //     this.subscribeToResponse(
-  //       this.briefyingService.create(this.formService.fromFormGroup(this.form)),
-  //       'create'
-  //     );
-  //   }
-  // }
 
   private subscribeToResponse(result: Observable<Briefying>, action: string) {
     result.subscribe({

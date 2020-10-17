@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CourtesyMembersService } from './courtesy-members.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +20,6 @@ import { ToastService } from '../../../../shared/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourtesyMembersComponent implements OnInit {
-  displayedColumns = [];
   routeData$ = this.route.data;
   showLoader = false;
   form: FormGroup;
@@ -55,7 +53,6 @@ export class CourtesyMembersComponent implements OnInit {
 
   ngOnInit() {
     this.loadMeeting();
-    console.log('MeetingID', this.meetingId);
   }
 
   loadMeeting() {
@@ -68,22 +65,6 @@ export class CourtesyMembersComponent implements OnInit {
   getMeetings(): Observable<CourtesyMember[]> {
     return this.meetings.asObservable();
   }
-
-  // saveOrUpdate() {
-  //   this.showProgress = true;
-  //   this.error = undefined;
-  //   if (this.form.value.id) {
-  //     this.subscribeToResponse(
-  //       this.courtesyMemberService.update(this.form),
-  //       'update'
-  //     );
-  //   } else {
-  //     this.subscribeToResponse(
-  //       this.courtesyMemberService.create(this.form),
-  //       'create'
-  //     );
-  //   }
-  // }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
