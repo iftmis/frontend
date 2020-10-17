@@ -83,7 +83,7 @@ export class CourtesyComponent implements OnInit {
       title: 'Creates a Courtesy Meeting',
       action: 'create',
       label: 'Save Courtesy Meeting',
-      inspectionId: this.inspectionId,
+      inspectionId: this.inspectionId.id,
     };
 
     const config = new MatDialogConfig();
@@ -124,10 +124,12 @@ export class CourtesyComponent implements OnInit {
       action: 'update',
       label: 'Update Courtesy Meeting',
       row: courtesy,
+      inspectionId: this.inspectionId.id,
     };
 
     const config = new MatDialogConfig();
     config.data = data;
+
     config.width = '60%';
     config.position = {
       top: '80px',
