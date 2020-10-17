@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourtesyService } from '../courtesy.service';
 import { UploadService } from '../../../../shared/upload.service';
 import { MeetingAttachment } from '../../../../shared/attachment';
+import { Observable } from 'rxjs';
+import { CourtesyMember } from '../courtesy-member';
+import { ToastService } from '../../../../shared/toast.service';
 
 @Component({
   selector: 'app-courtesy-upload',
@@ -27,6 +30,7 @@ export class CourtesyUploadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CourtesyUploadComponent>,
     private courtesyService: CourtesyService,
+    private toastService: ToastService,
     private uploadService: UploadService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -70,13 +74,16 @@ export class CourtesyUploadComponent implements OnInit {
         // upload to meeting attachments
 
         this.meetingAtachment = {
+          name: res.fileName,
           meetingId: this.meetingId,
           attachmentId: res.fileName,
           attachmentPath: res.fileDownloadUri,
         };
-        this.uploadService
-          .postMeetingAttachment(this.meetingAtachment)
-          .subscribe(response => {});
+
+        this.subscribeToResponse(
+          this.uploadService.postMeetingAttachment(this.meetingAtachment),
+          'upload'
+        );
 
         console.log('RESPONSI   :  ' + res);
       });
@@ -87,14 +94,49 @@ export class CourtesyUploadComponent implements OnInit {
       // upload by formdata
       this.uploadService.upload(formData).subscribe(res => {
         this.meetingAtachment = {
+          name: res.fileName,
           meetingId: this.meetingId,
-          attachmentId: res.fileName,
+          attachmentId: res.size,
           attachmentPath: res.fileDownloadUri,
         };
-        this.uploadService
-          .postMeetingAttachment(this.meetingAtachment)
-          .subscribe(response => {});
+
+        this.subscribeToResponse(
+          this.uploadService.postMeetingAttachment(this.meetingAtachment),
+          'update'
+        );
       });
     }
+  }
+  private subscribeToResponse(
+    result: Observable<MeetingAttachment>,
+    action: string
+  ) {
+    result.subscribe({
+      next: () => {
+        if (action === 'upload') {
+          this.toastService.success(
+            'Success!',
+            'Courtesy Meeting Attachment Uploaded Successfully'
+          );
+        } else {
+          this.toastService.success(
+            'Success!',
+            'Courtesy Meeting Attachment Updated Successfully'
+          );
+        }
+        this.showProgress = false;
+        // this.router.navigate(['/main/settings/sub-areas']);
+        this.dialogRef.close({ success: true });
+      },
+      error: response => {
+        this.showProgress = false;
+        this.error = response.error
+          ? response.error.detail ||
+            response.error.title ||
+            'Internal Server Error'
+          : 'Internal Server Error';
+      },
+      complete: () => (this.showProgress = false),
+    });
   }
 }

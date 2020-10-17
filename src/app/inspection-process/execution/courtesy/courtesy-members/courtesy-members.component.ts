@@ -92,7 +92,6 @@ export class CourtesyMembersComponent implements OnInit {
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
-    const coutesy = this.courtesyMemberService.fromFormGroup(this.form);
     if (this.form.value.id) {
       this.courtesyMemberObject = {
         title: this.form.value.title,
