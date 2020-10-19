@@ -1,43 +1,43 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { CourtesyService } from '../courtesy.service';
 import { ToastService } from '../../../../shared/toast.service';
-import { Courtesy } from '../Courtesy';
-import { CourtesyFormService } from './courtesy-form.service';
+import { Briefing } from '../Briefing';
+
+import { CourtesyFormService } from '../../courtesy/courtesy-detail/courtesy-form.service';
+import { BriefingService } from '../briefing.service';
 
 @Component({
-  selector: 'app-courtesy-detail',
-  templateUrl: './courtesy-detail.component.html',
-  styleUrls: ['./courtesy-detail.component.scss'],
+  selector: 'app-briefing-detail',
+  templateUrl: './briefing-detail.component.html',
+  styleUrls: ['./briefing-detail.component.scss'],
 })
-export class CourtesyDetailComponent implements OnInit {
+export class BriefingDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   inspectionId: any;
   error: string | undefined = undefined;
   id: number;
   file: any;
-  courtesy: Courtesy;
-  payload: Courtesy;
-  meetingId: number;
+  briefing: Briefing;
+  payload: Briefing;
   showProgress: any;
   public title: string;
   public action: string;
   public label: string;
+  meetingId: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private courtesyService: CourtesyService,
+    private briefingService: BriefingService,
     private formService: CourtesyFormService,
     private toastService: ToastService,
-    // tslint:disable-next-line:variable-name
     private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CourtesyDetailComponent>
+    private dialogRef: MatDialogRef<BriefingDetailComponent>
   ) {
     this.showProgress = false;
     this.title = data.title;
@@ -46,20 +46,19 @@ export class CourtesyDetailComponent implements OnInit {
     this.inspectionId = data.inspectionId;
 
     if (this.action === 'update') {
-      this.courtesy = data.row;
+      this.briefing = data.row;
       this.meetingId = data.row.id;
     }
     this.showProgress = false;
   }
 
   ngOnInit() {
-    this.form = this.formService.toFormGroup(this.courtesy);
+    console.log('INPSECTION ID ' + this.inspectionId);
+    this.form = this.formService.toFormGroup(this.briefing);
 
     this.error = undefined;
     this.form = this.initform();
     this.error = undefined;
-    // after received data
-    this.form.patchValue(this.courtesy);
   }
 
   private initform(): FormGroup {
@@ -69,7 +68,7 @@ export class CourtesyDetailComponent implements OnInit {
         venue: this.form.value.venue,
         summary: this.form.value.summary,
         inspectionId: this.inspectionId,
-        type: 'COURTESY',
+        type: 'BRIEFING',
       });
     } else {
       return this._formBuilder.group({
@@ -78,7 +77,7 @@ export class CourtesyDetailComponent implements OnInit {
         venue: ['', Validators.required],
         summary: [''],
         inspectionId: this.inspectionId,
-        type: 'COURTESY',
+        type: 'BRIEFING',
       });
     }
   }
@@ -91,13 +90,13 @@ export class CourtesyDetailComponent implements OnInit {
       this.payload = {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
-        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
-        type: 'COURTESY',
+        summary: this.form.value.summary,
+        type: 'BRIEFING',
         id: this.meetingId,
       };
       this.subscribeToResponse(
-        this.courtesyService.update(this.payload),
+        this.briefingService.update(this.payload),
         'update'
       );
 
@@ -106,29 +105,29 @@ export class CourtesyDetailComponent implements OnInit {
       this.payload = {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
-        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
-        type: 'COURTESY',
+        summary: this.form.value.summary,
+        type: 'BRIEFING',
       };
       this.subscribeToResponse(
-        this.courtesyService.create(this.payload),
+        this.briefingService.create(this.payload),
         'create'
       );
     }
   }
 
-  private subscribeToResponse(result: Observable<Courtesy>, action: string) {
+  private subscribeToResponse(result: Observable<Briefing>, action: string) {
     result.subscribe({
       next: () => {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Courtesy Updated Successfully'
+            'Briefing Updated Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Courtesy Created Successfully'
+            'Briefing Created Successfully'
           );
         }
         this.dialogRef.close();

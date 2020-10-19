@@ -1,20 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   Input,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { InspectionMember } from '../../../preparation/inspection-member/inspection-member';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CourtesyMembersService } from './courtesy-members.service';
 import { ActivatedRoute } from '@angular/router';
 import { CourtesyMember } from '../courtesy-member';
-import { Courtesy } from '../courtesy';
-import { SubArea } from '../../../../setting/sub-area/sub-area';
 import { ToastService } from '../../../../shared/toast.service';
 
+// @ts-ignore
 @Component({
   selector: 'app-courtesy-members',
   templateUrl: './courtesy-members.component.html',
@@ -22,69 +21,107 @@ import { ToastService } from '../../../../shared/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourtesyMembersComponent implements OnInit {
-  displayedColumns = [];
   routeData$ = this.route.data;
   showLoader = false;
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
-  inspectionMember: InspectionMember;
-  @Input() inspectionId: any;
+  @Input() meetingId: any;
   error: string | undefined = undefined;
 
-  public showProgress: boolean;
   meetings: BehaviorSubject<CourtesyMember[]> = new BehaviorSubject<
     CourtesyMember[]
   >([]);
+  courtesyMember: CourtesyMember;
+  courtesyMemberObject: CourtesyMember;
+  showProgress: any;
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
     private courtesyMemberService: CourtesyMembersService,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyMembersComponent>
-  ) {}
+  ) {
+    this.showProgress = false;
+    this.title = data.title;
+    this.action = data.action;
+    this.label = data.label;
+    this.meetingId = data.row.id;
+  }
 
   ngOnInit() {
+    this.form = this.initform();
     this.loadMeeting();
   }
 
   loadMeeting() {
     this.courtesyMemberService
-      .getByInspection(this.inspectionId)
+      .getByInspection(this.meetingId)
       .subscribe(res => {
         this.meetings.next(res || []);
       });
   }
-  getMeetings(): Observable<CourtesyMember[]> {
-    return this.meetings.asObservable();
-  }
 
-  saveOrUpdate() {
-    this.showProgress = true;
-    this.error = undefined;
-    if (this.form.value.id) {
-      this.subscribeToResponse(
-        this.courtesyMemberService.update(this.form),
-        'update'
-      );
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this.formBuilder.group({
+        phoneNumber: [this.courtesyMember.phoneNumber],
+        email: [this.courtesyMember.email],
+        title: [this.courtesyMember.title],
+        name: [this.courtesyMember.name],
+      });
     } else {
-      this.subscribeToResponse(
-        this.courtesyMemberService.create(this.form),
-        'create'
-      );
+      return this.formBuilder.group({
+        id: [''],
+        name: ['', Validators.required],
+        email: [''],
+        title: [''],
+        phoneNumber: ['', Validators.maxLength(10)],
+      });
     }
   }
 
-  // saveOrUpdate() {
-  //   this.isSaveOrUpdateInProgress = true;
-  //   this.error = undefined;
-  //   const formData = this.courtesyMemberService.fromFormGroup(this.form);
-  //   if (this.form.value.id) {
-  //     this.subscribeToResponse(this.courtesyMemberService.update(formData));
-  //   } else {
-  //     this.subscribeToResponse(this.courtesyMemberService.create(formData));
-  //   }
-  // }
+  saveOrUpdate() {
+    this.isSaveOrUpdateInProgress = true;
+    this.error = undefined;
+    const courtesy = this.courtesyMemberService.fromFormGroup(this.form);
+    if (this.form.value.id) {
+      this.courtesyMemberObject = {
+        title: this.form.value.title,
+        phoneNumber: this.form.value.phoneNumber,
+        email: this.form.value.email,
+        name: this.form.value.name,
+      };
+
+      this.action = 'update';
+      this.subscribeToResponse(
+        this.courtesyMemberService.update(
+          this.courtesyMemberObject,
+          this.meetingId
+        ),
+        this.action
+      );
+    } else {
+      this.courtesyMemberObject = {
+        title: this.form.value.title,
+        phoneNumber: this.form.value.phoneNumber,
+        email: this.form.value.email,
+        name: this.form.value.name,
+      };
+
+      this.subscribeToResponse(
+        this.courtesyMemberService.create(
+          this.courtesyMemberObject,
+          this.meetingId
+        ),
+        this.action
+      );
+    }
+  }
   private subscribeToResponse(
     result: Observable<CourtesyMember>,
     action: string
@@ -102,6 +139,7 @@ export class CourtesyMembersComponent implements OnInit {
             'Courtesy Created Successfully'
           );
         }
+        this.showProgress = false;
         // this.router.navigate(['/main/settings/sub-areas']);
         this.dialogRef.close({ success: true });
       },

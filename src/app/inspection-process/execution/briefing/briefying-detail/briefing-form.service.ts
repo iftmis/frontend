@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Courtesy } from '../Courtesy';
+import { Briefing } from '../Briefing';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CourtesyFormService {
+export class BriefingFormService {
   constructor(private formBuilder: FormBuilder) {}
 
-  toFormGroup(courtesy: Partial<Courtesy> = {}) {
+  toFormGroup(briefing: Partial<Briefing> = {}) {
     return this.formBuilder.group({
-      id: this.formBuilder.control(courtesy.id, []),
-      meetingDate: this.formBuilder.control(courtesy.meetingDate, [
+      id: this.formBuilder.control(briefing.id, []),
+      meetingDate: this.formBuilder.control(briefing.meetingDate, [
         Validators.required,
       ]),
-      venue: this.formBuilder.control(courtesy.venue, [Validators.required]),
-      inspectionId: this.formBuilder.control(courtesy.inspectionId),
-      type: this.formBuilder.control(courtesy.type),
+      venue: this.formBuilder.control(briefing.venue, [Validators.required]),
+      inspectionId: this.formBuilder.control(briefing.inspectionId),
+      type: this.formBuilder.control(briefing.type),
     });
   }
   fromFormGroup(formGroup: FormGroup) {

@@ -1,4 +1,4 @@
-export interface CourtesyMember {
+export interface BriefingMember {
   id?: number;
   name: string;
   phoneNumber: string;

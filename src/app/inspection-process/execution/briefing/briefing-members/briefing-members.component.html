@@ -18,55 +18,72 @@
   <form [formGroup]="form" novalidate autocomplete="off">
     <mat-card>
       <mat-card-content class="p-3">
-        <mat-form-field appearance="outline">
-          <mat-label>Meeting Date </mat-label>
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Full Name</mat-label>
           <input
             autocomplete="off"
-            type="text"
-            required
             matInput
-            placeholder="Select Meeting date"
-            (click)="startDatePicker.open()"
-            formControlName="meetingDate"
-            [matDatepicker]="startDatePicker"
+            placeholder="Enter full name"
+            formControlName="name"
+            required
           />
-          <mat-datepicker-toggle
-            matSuffix
-            color="accent"
-            [for]="startDatePicker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker color="accent" #startDatePicker></mat-datepicker>
           <mat-error>
             <hip-ngx-error
-              [control]="form.get('meetingDate')"
-              label="Meeting Date"
+              [control]="form.get('name')"
+              label="Full Name"
             ></hip-ngx-error>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" appearance="outline">
-          <mat-label>Venue</mat-label>
+          <mat-label>Phone Number</mat-label>
           <input
             autocomplete="off"
             matInput
-            placeholder="Enter venue"
-            formControlName="venue"
+            placeholder="Enter phone number"
+            formControlName="phoneNumber"
             required
           />
           <mat-error>
             <hip-ngx-error
-              [control]="form.get('venue')"
-              label="Name"
+              [control]="form.get('phoneNumber')"
+              label="Phone Number"
             ></hip-ngx-error>
           </mat-error>
         </mat-form-field>
-        <mat-form-field class="full-width" appearance="outline">
-          <mat-label>
-            Minutes
-          </mat-label>
-          <label>
-            <textarea formControlName="summary" matInput rows="10"></textarea>
-          </label>
+
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter Email"
+            formControlName="email"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('email')"
+              label="Email"
+            ></hip-ngx-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" appearance="outline">
+          <mat-label>Title</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            placeholder="Enter Title"
+            formControlName="title"
+            required
+          />
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('title')"
+              label="Title"
+            ></hip-ngx-error>
+          </mat-error>
         </mat-form-field>
       </mat-card-content>
     </mat-card>

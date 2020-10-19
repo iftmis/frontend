@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-briefying-upload',
-  templateUrl: './briefying-upload.component.html',
-  styleUrls: ['./briefying-upload.component.scss'],
+  selector: 'app-briefing-upload',
+  templateUrl: './briefing-upload.component.html',
+  styleUrls: ['./briefing-upload.component.scss'],
 })
-export class BriefyingUploadComponent implements OnInit {
+export class BriefingUploadComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   error: string | undefined = undefined;
@@ -16,7 +16,7 @@ export class BriefyingUploadComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<BriefyingUploadComponent>
+    private dialogRef: MatDialogRef<BriefingUploadComponent>
   ) {}
 
   ngOnInit() {

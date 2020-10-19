@@ -15,7 +15,6 @@ export class InspectionProcessComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(({ inspection }) => {
       this.inspection = inspection;
-      console.log('Nick', inspection);
     });
   }
 }
