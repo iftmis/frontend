@@ -69,7 +69,7 @@
             <button
               mat-menu-item
               aria-label="Edit Finding Category"
-              [routerLink]="['/main/settings/finding-categories', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
