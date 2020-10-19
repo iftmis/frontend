@@ -6,7 +6,6 @@ import { BriefingService } from './briefing.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Briefing } from './Briefing';
 import { BriefingDeleteComponent } from './briefing-delete/briefing-delete.component';
-import { BriefingDetailComponent } from './briefing-detail/briefing-detail.component';
 import { BriefingUploadComponent } from './briefing-upload/briefing-upload.component';
 import {
   ITEMS_PER_PAGE,
@@ -17,6 +16,7 @@ import { ToastService } from 'src/app/shared/toast.service';
 import { BriefingMembersComponent } from './briefing-members/briefing-members.component';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
+import { BriefingDetailComponent } from './briefying-detail/briefing-detail.component';
 
 @Component({
   selector: 'app-briefing',
