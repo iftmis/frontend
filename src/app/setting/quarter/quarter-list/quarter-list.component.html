@@ -95,7 +95,7 @@
             <button
               mat-menu-item
               aria-label="Edit quarter"
-              [routerLink]="['/settings/quarters', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
               <span>Edit</span>

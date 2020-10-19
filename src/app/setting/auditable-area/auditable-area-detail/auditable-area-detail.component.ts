@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -41,6 +41,7 @@ export class AuditableAreaDetailComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<AuditableAreaDetailComponent>,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.showProgress = false;
@@ -48,23 +49,44 @@ export class AuditableAreaDetailComponent implements OnInit {
     this.action = data.action;
     this.label = data.label;
 
+    if (this.action === 'update') {
+      this.auditableArea = data.row;
+    }
+
     this.titleService.setTitle('Auditable Area Details|' + environment.app);
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ auditableArea }) => {
-      this.auditableArea = auditableArea;
-      this.form = this.formService.toFormGroup(auditableArea);
-    });
-
+    // this.route.data.subscribe(({ auditableArea }) => {
+    //   this.auditableArea = auditableArea;
+    //   this.form = this.formService.toFormGroup(auditableArea);
+    // });
+    this.form = this.initform();
     this.error = undefined;
   }
 
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.auditableArea.id],
+        code: [this.auditableArea.code],
+        name: [this.auditableArea.name],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        code: ['', Validators.required],
+        name: ['', Validators.required],
+      });
+    }
+  }
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
+
     const formData = this.formService.fromFormGroup(this.form);
-    if (this.form.value.id) {
+    console.log('testinf : ', formData);
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.auditableAreaService.update(formData),
         'update'

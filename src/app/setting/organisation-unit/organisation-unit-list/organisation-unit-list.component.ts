@@ -103,6 +103,33 @@ export class OrganisationUnitListComponent implements OnInit, AfterViewInit {
     });
   }
 
+  update(row: any) {
+    const data = {
+      title: 'Update Organization Unit',
+      action: 'update',
+      label: 'Save Organization Unit',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(OrganisationUnitDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(0);
+      }
+    });
+  }
+
   loadPage(page: number) {
     this.organisationUnitService
       .getPage({

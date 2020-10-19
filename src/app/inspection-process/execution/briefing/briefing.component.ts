@@ -11,7 +11,6 @@ import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from 'src/app/shared/pagination.constants';
-import { CourtesyDetailComponent } from '../courtesy/courtesy-detail/courtesy-detail.component';
 import { ToastService } from 'src/app/shared/toast.service';
 import { BriefingMembersComponent } from './briefing-members/briefing-members.component';
 import { HttpHeaders } from '@angular/common/http';

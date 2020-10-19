@@ -5,7 +5,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -40,27 +40,48 @@ export class FindingCategoryDetailComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<FindingCategoryDetailComponent>,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
-    this.titleService.setTitle('Finding Category Details | ' + environment.app);
+    this.showProgress = false;
+
+    if (this.action === 'update') {
+      this.findingCategory = data.row;
+    }
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ findingCategory }) => {
-      this.findingCategory = findingCategory;
-      this.form = this.formService.toFormGroup(findingCategory);
-    });
-
+    // this.route.data.subscribe(({ findingCategory }) => {
+    //   this.findingCategory = findingCategory;
+    //   this.form = this.formService.toFormGroup(findingCategory);
+    // });
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.findingCategory.id],
+        code: [this.findingCategory.code],
+        name: [this.findingCategory.name],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        code: ['', Validators.required],
+        name: ['', Validators.required],
+      });
+    }
   }
 
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.findingCategoryService.update(
           this.formService.fromFormGroup(this.form)

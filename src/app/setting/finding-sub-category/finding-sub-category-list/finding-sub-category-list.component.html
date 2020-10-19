@@ -75,11 +75,7 @@
             <button
               mat-menu-item
               aria-label="Edit Finding Sub-Category"
-              [routerLink]="[
-                '/main/settings/finding-sub-categories',
-                id,
-                'edit'
-              ]"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
               <span>Edit</span>

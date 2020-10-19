@@ -69,7 +69,39 @@ export class ObjectiveListComponent implements OnInit {
     config.disableClose = true;
     config.autoFocus = false;
 
-    this.dialog.open(ObjectiveDetailComponent, config);
+    const dialog = this.dialog.open(ObjectiveDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
+  }
+
+  update(row: any) {
+    const data = {
+      title: 'Update Objective',
+      action: 'update',
+      label: 'Save Objective',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(ObjectiveDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   delete(id: number, objective: Objective) {

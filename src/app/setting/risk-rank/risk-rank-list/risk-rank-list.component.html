@@ -102,10 +102,10 @@
             <button
               mat-menu-item
               aria-label="Edit Risk Rank"
-              [routerLink]="['/settings/risk-ranks', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
-              <span>Edit</span>
+              <span>Edit Risk Rank</span>
             </button>
             <button
               mat-menu-item
@@ -113,7 +113,7 @@
               (click)="delete(id, element)"
             >
               <mat-icon>delete</mat-icon>
-              <span>Delete</span>
+              <span>Delete Risk Rank</span>
             </button>
           </ng-template>
         </mat-menu>

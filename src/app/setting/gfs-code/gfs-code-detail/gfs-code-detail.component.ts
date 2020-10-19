@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -41,6 +41,7 @@ export class GfsCodeDetailComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<GfsCodeDetailComponent>,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.titleService.setTitle('GFS Code Details | ' + environment.app);
@@ -48,21 +49,41 @@ export class GfsCodeDetailComponent implements OnInit {
     this.title = data.title;
     this.label = data.label;
     this.action = data.action;
+
+    if (this.action === 'update') {
+      this.gfsCode = data.row;
+    }
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ gfsCode }) => {
-      this.gfsCode = gfsCode;
-      this.form = this.formService.toFormGroup(gfsCode);
-    });
-
+    // this.route.data.subscribe(({ gfsCode }) => {
+    //   this.gfsCode = gfsCode;
+    //   this.form = this.formService.toFormGroup(gfsCode);
+    // });
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.gfsCode.id],
+        code: [this.gfsCode.code],
+        description: [this.gfsCode.description],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        code: ['', Validators.required],
+        description: ['', Validators.required],
+      });
+    }
   }
 
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.gfsCodeService.update(this.formService.fromFormGroup(this.form)),
         'update'

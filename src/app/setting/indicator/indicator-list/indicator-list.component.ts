@@ -109,6 +109,33 @@ export class IndicatorListComponent implements OnInit {
     });
   }
 
+  update(row: any) {
+    const data = {
+      title: 'Update indicator',
+      action: 'update',
+      label: 'Save Indicator',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(IndicatorDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.page, this.size, this.subAreaId);
+      }
+    });
+  }
+
   delete(id: number, indicator: Indicator) {
     const dialogRef = this.dialog.open(IndicatorDeleteComponent, {
       data: indicator,

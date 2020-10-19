@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -42,6 +42,7 @@ export class IndicatorDetailComponent implements OnInit {
     private subAreaService: SubAreaService,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<IndicatorDetailComponent>,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.title = data.title;
@@ -49,16 +50,39 @@ export class IndicatorDetailComponent implements OnInit {
     this.action = data.action;
 
     this.showProgress = false;
+
+    if (this.action === 'update') {
+      this.indicator = data.row;
+    }
   }
 
   ngOnInit() {
     this.loadSubAreas();
-    this.route.data.subscribe(({ indicator }) => {
-      this.indicator = indicator;
-      this.form = this.formService.toFormGroup(indicator);
-    });
+    // this.route.data.subscribe(({ indicator }) => {
+    //   this.indicator = indicator;
+    //   this.form = this.formService.toFormGroup(indicator);
+    // });
+    this.form = this.initform();
 
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.indicator.id],
+        subAreaId: [this.indicator.subAreaId],
+        subAreaName: [this.indicator.subAreaName],
+        name: [this.indicator.name],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [],
+        subAreaId: [],
+        subAreaName: ['', Validators.required],
+        name: ['', Validators.required],
+      });
+    }
   }
 
   loadSubAreas() {
@@ -74,7 +98,7 @@ export class IndicatorDetailComponent implements OnInit {
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.indicatorService.update(this.formService.fromFormGroup(this.form)),
         'update'
