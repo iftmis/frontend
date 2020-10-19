@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Briefying } from '../Briefying';
+import { Briefing } from '../Briefing';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ import { Briefying } from '../Briefying';
 export class BriefyingFormService {
   constructor(private formBuilder: FormBuilder) {}
 
-  toFormGroup(briefying: Partial<Briefying> = {}) {
+  toFormGroup(briefying: Partial<Briefing> = {}) {
     return this.formBuilder.group({
       id: this.formBuilder.control(briefying.id, []),
       meetingDate: this.formBuilder.control(briefying.meetingDate, [

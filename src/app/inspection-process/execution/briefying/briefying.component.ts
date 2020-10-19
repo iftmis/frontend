@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BriefyingService } from './briefying.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Briefying } from './Briefying';
+import { Briefing } from './Briefing';
 import { BriefyingDeleteComponent } from './briefying-delete/briefying-delete.component';
 import { BriefyingDetailComponent } from './briefying-detail/briefying-detail.component';
 import { BriefyingUploadComponent } from './briefying-upload/briefying-upload.component';
@@ -28,8 +28,8 @@ export class BriefyingComponent implements OnInit {
   form: FormGroup;
   routeData$ = this.route.data;
   showLoader = false;
-  briefyingSubject: BehaviorSubject<Briefying[]> = new BehaviorSubject<
-    Briefying[]
+  briefyingSubject: BehaviorSubject<Briefing[]> = new BehaviorSubject<
+    Briefing[]
   >([]);
   @Input() inspectionId: any;
 
@@ -38,7 +38,7 @@ export class BriefyingComponent implements OnInit {
   pageSizeOptions: number[] = PAGE_SIZE_OPTIONS;
   page!: number;
   meetingType: string;
-  payload: Briefying;
+  payload: Briefing;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,7 +73,7 @@ export class BriefyingComponent implements OnInit {
       );
   }
 
-  getData(): Observable<Briefying[]> {
+  getData(): Observable<Briefing[]> {
     return this.briefyingSubject.asObservable();
   }
 
@@ -165,7 +165,7 @@ export class BriefyingComponent implements OnInit {
     });
   }
 
-  delete(id: number, briefying: Briefying) {
+  delete(id: number, briefying: Briefing) {
     const dialogRef = this.dialog.open(BriefyingDeleteComponent, {
       data: briefying,
     });

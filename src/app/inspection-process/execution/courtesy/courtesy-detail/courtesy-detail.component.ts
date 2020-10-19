@@ -9,6 +9,7 @@ import { ToastService } from '../../../../shared/toast.service';
 import { Courtesy } from '../Courtesy';
 import { Title } from '@angular/platform-browser';
 import { CourtesyFormService } from './courtesy-form.service';
+import { Briefing } from '../../briefying/Briefing';
 
 @Component({
   selector: 'app-courtesy-detail',
@@ -56,10 +57,6 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.route.data.subscribe(({ courtesy }) => {
-    //   this.courtesy = courtesy;
-    //
-    // });
     console.log('INPSECTION ID ' + this.inspectionId);
     this.form = this.formService.toFormGroup(this.courtesy);
 
@@ -71,9 +68,6 @@ export class CourtesyDetailComponent implements OnInit {
   private initform(): FormGroup {
     if (this.action === 'update') {
       return this._formBuilder.group({
-        // id: this.form.value.id,
-        // code: [this.courtesy.code],
-        // name: [this.courtesy.name],
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
         inspectionId: this.inspectionId,
@@ -122,18 +116,18 @@ export class CourtesyDetailComponent implements OnInit {
     }
   }
 
-  private subscribeToResponse(result: Observable<Courtesy>, action: string) {
+  private subscribeToResponse(result: Observable<Briefing>, action: string) {
     result.subscribe({
       next: () => {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Courtesy Updated Successfully'
+            'Briefying Updated Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Courtesy Created Successfully'
+            'Briefying Created Successfully'
           );
         }
         this.dialogRef.close();
@@ -151,8 +145,7 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   cancel() {
-    // this.router.navigate(['/']);
-    this.dialogRef.close();
+    this.router.navigate(['/']);
     return false;
   }
 }
