@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CourtesyMember } from '../courtesy-member';
 import { ToastService } from '../../../../shared/toast.service';
 
+// @ts-ignore
 @Component({
   selector: 'app-courtesy-members',
   templateUrl: './courtesy-members.component.html',
@@ -63,9 +64,6 @@ export class CourtesyMembersComponent implements OnInit {
         this.meetings.next(res || []);
       });
   }
-  getMeetings(): Observable<CourtesyMember[]> {
-    return this.meetings.asObservable();
-  }
 
   private initform(): FormGroup {
     if (this.action === 'update') {
@@ -81,7 +79,7 @@ export class CourtesyMembersComponent implements OnInit {
         name: ['', Validators.required],
         email: [''],
         title: [''],
-        phoneNumber: ['', Validators.max(10)],
+        phoneNumber: ['', Validators.maxLength(10)],
       });
     }
   }
@@ -89,16 +87,16 @@ export class CourtesyMembersComponent implements OnInit {
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
-    const coutesy = this.courtesyMemberService.fromFormGroup(this.form);
+    const courtesy = this.courtesyMemberService.fromFormGroup(this.form);
     if (this.form.value.id) {
       // @ts-ignore
       this.subscribeToResponse(
-        this.courtesyMemberService.update(coutesy, this.meetingId)
+        this.courtesyMemberService.update(courtesy, this.meetingId)
       );
     } else {
       // @ts-ignore
       this.subscribeToResponse(
-        this.courtesyMemberService.create(coutesy, this.meetingId)
+        this.courtesyMemberService.create(courtesy, this.meetingId)
       );
     }
   }

@@ -41,7 +41,6 @@ export class CourtesyDetailComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyDetailComponent>
   ) {
-    // this.inspectionId = route.snapshot.parent?.params.id;
     this.showProgress = false;
     this.title = data.title;
     this.action = data.action;
@@ -56,11 +55,7 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.route.data.subscribe(({ courtesy }) => {
-    //   this.courtesy = courtesy;
-    //
-    // });
-    console.log('INPSECTION ID ' + this.inspectionId);
+    // console.log('INPSECTION ID ' + this.inspectionId);
     this.form = this.formService.toFormGroup(this.courtesy);
 
     this.error = undefined;
@@ -71,11 +66,9 @@ export class CourtesyDetailComponent implements OnInit {
   private initform(): FormGroup {
     if (this.action === 'update') {
       return this._formBuilder.group({
-        // id: this.form.value.id,
-        // code: [this.courtesy.code],
-        // name: [this.courtesy.name],
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'COURTESY',
       });
@@ -84,6 +77,7 @@ export class CourtesyDetailComponent implements OnInit {
         id: [''],
         meetingDate: ['', Validators.required],
         venue: ['', Validators.required],
+        summary: [''],
         inspectionId: this.inspectionId,
         type: 'COURTESY',
       });
@@ -98,6 +92,7 @@ export class CourtesyDetailComponent implements OnInit {
       this.payload = {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'COURTESY',
         id: this.meetingId,
@@ -112,6 +107,7 @@ export class CourtesyDetailComponent implements OnInit {
       this.payload = {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'COURTESY',
       };
@@ -151,7 +147,6 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   cancel() {
-    // this.router.navigate(['/']);
     this.dialogRef.close();
     return false;
   }
