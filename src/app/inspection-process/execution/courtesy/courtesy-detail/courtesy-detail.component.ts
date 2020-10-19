@@ -42,7 +42,6 @@ export class CourtesyDetailComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CourtesyDetailComponent>
   ) {
-    // this.inspectionId = route.snapshot.parent?.params.id;
     this.showProgress = false;
     this.title = data.title;
     this.action = data.action;
@@ -57,7 +56,6 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('INPSECTION ID ' + this.inspectionId);
     this.form = this.formService.toFormGroup(this.courtesy);
 
     this.error = undefined;
@@ -70,6 +68,7 @@ export class CourtesyDetailComponent implements OnInit {
       return this._formBuilder.group({
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'COURTESY',
       });
@@ -78,6 +77,7 @@ export class CourtesyDetailComponent implements OnInit {
         id: [''],
         meetingDate: ['', Validators.required],
         venue: ['', Validators.required],
+        summary: [''],
         inspectionId: this.inspectionId,
         type: 'COURTESY',
       });
@@ -92,6 +92,7 @@ export class CourtesyDetailComponent implements OnInit {
       this.payload = {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'COURTESY',
         id: this.meetingId,
@@ -106,6 +107,7 @@ export class CourtesyDetailComponent implements OnInit {
       this.payload = {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'COURTESY',
       };
@@ -116,18 +118,18 @@ export class CourtesyDetailComponent implements OnInit {
     }
   }
 
-  private subscribeToResponse(result: Observable<Briefing>, action: string) {
+  private subscribeToResponse(result: Observable<Courtesy>, action: string) {
     result.subscribe({
       next: () => {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Briefying Updated Successfully'
+            'Courtesy Updated Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Briefying Created Successfully'
+            'Courtesy Created Successfully'
           );
         }
         this.dialogRef.close();
@@ -145,7 +147,7 @@ export class CourtesyDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/']);
+    this.dialogRef.close();
     return false;
   }
 }

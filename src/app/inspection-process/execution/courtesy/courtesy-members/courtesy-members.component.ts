@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CourtesyMember } from '../courtesy-member';
 import { ToastService } from '../../../../shared/toast.service';
 
+// @ts-ignore
 @Component({
   selector: 'app-courtesy-members',
   templateUrl: './courtesy-members.component.html',
@@ -20,7 +21,6 @@ import { ToastService } from '../../../../shared/toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourtesyMembersComponent implements OnInit {
-  displayedColumns = [];
   routeData$ = this.route.data;
   showLoader = false;
   form: FormGroup;
@@ -56,7 +56,6 @@ export class CourtesyMembersComponent implements OnInit {
   ngOnInit() {
     this.form = this.initform();
     this.loadMeeting();
-    console.log('MeetingID : ', this.meetingId);
   }
 
   loadMeeting() {
@@ -65,9 +64,6 @@ export class CourtesyMembersComponent implements OnInit {
       .subscribe(res => {
         this.meetings.next(res || []);
       });
-  }
-  getMeetings(): Observable<CourtesyMember[]> {
-    return this.meetings.asObservable();
   }
 
   private initform(): FormGroup {
@@ -84,7 +80,7 @@ export class CourtesyMembersComponent implements OnInit {
         name: ['', Validators.required],
         email: [''],
         title: [''],
-        phoneNumber: ['', Validators.max(10)],
+        phoneNumber: ['', Validators.maxLength(10)],
       });
     }
   }
@@ -92,6 +88,7 @@ export class CourtesyMembersComponent implements OnInit {
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
+    const courtesy = this.courtesyMemberService.fromFormGroup(this.form);
     if (this.form.value.id) {
       this.courtesyMemberObject = {
         title: this.form.value.title,

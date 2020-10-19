@@ -66,6 +66,7 @@ export class BriefyingDetailComponent implements OnInit {
       return this._formBuilder.group({
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
+        summary: this.form.value.summary,
         inspectionId: this.inspectionId,
         type: 'BRIEFING',
       });
@@ -74,6 +75,7 @@ export class BriefyingDetailComponent implements OnInit {
         id: [''],
         meetingDate: ['', Validators.required],
         venue: ['', Validators.required],
+        summary: [''],
         inspectionId: this.inspectionId,
         type: 'BRIEFING',
       });
@@ -89,6 +91,7 @@ export class BriefyingDetailComponent implements OnInit {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
         inspectionId: this.inspectionId,
+        summary: this.form.value.summary,
         type: 'BRIEFING',
         id: this.meetingId,
       };
@@ -103,6 +106,7 @@ export class BriefyingDetailComponent implements OnInit {
         meetingDate: this.form.value.meetingDate,
         venue: this.form.value.venue,
         inspectionId: this.inspectionId,
+        summary: this.form.value.summary,
         type: 'BRIEFING',
       };
       this.subscribeToResponse(

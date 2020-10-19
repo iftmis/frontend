@@ -58,6 +58,7 @@ export class FinancialYearDetailComponent implements OnInit {
     private titleService: Title,
     private datePipe: DatePipe,
     private toastService: ToastService,
+    // tslint:disable-next-line:variable-name
     private _dialogRef: MatDialogRef<FinancialYearDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
