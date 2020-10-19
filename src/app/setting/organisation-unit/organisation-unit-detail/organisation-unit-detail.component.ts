@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -15,7 +15,6 @@ import { OrganisationUnitFormService } from './organisation-unit-form.service';
 import { OrganisationUnit } from '../organisation-unit';
 import { OrganisationUnitLevelService } from 'src/app/setting/organisation-unit-level/organisation-unit-level.service';
 import { OrganisationUnitLevel } from 'src/app/setting/organisation-unit-level/organisation-unit-level';
-import { environment } from '../../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ToastService } from '../../../shared/toast.service';
 import { JhiDataUtils, JhiFileLoadError } from 'ng-jhipster';
@@ -50,14 +49,17 @@ export class OrganisationUnitDetailComponent implements OnInit {
     protected dataUtils: JhiDataUtils,
     protected elementRef: ElementRef,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<OrganisationUnitDetailComponent>
   ) {
-    this.titleService.setTitle(
-      'Organization Unit Details | ' + environment.app
-    );
     this.title = data.title;
     this.label = data.label;
     this.action = data.action;
+    this.showProgress = false;
+
+    if (this.action === 'update') {
+      this.organisationUnit = data.row;
+    }
   }
 
   ngOnInit() {
@@ -70,11 +72,46 @@ export class OrganisationUnitDetailComponent implements OnInit {
     });
 
     this.error = undefined;
+    this.form = this.initform();
   }
   setParent(parent: OrganisationUnit) {
     if (parent) {
       this.parent = parent;
       this.form.patchValue({ parentId: parent.id });
+    }
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.organisationUnit.id],
+        code: [this.organisationUnit.code],
+        name: [this.organisationUnit.name],
+        address: [this.organisationUnit.address],
+        phoneNumber: [this.organisationUnit.phoneNumber],
+        email: [this.organisationUnit.email],
+        background: [this.organisationUnit.background],
+        logo: [this.organisationUnit.logo],
+        logoContentType: [this.organisationUnit.logoContentType],
+        organisationUnitLevelId: [
+          this.organisationUnit.organisationUnitLevelId,
+        ],
+        parentId: [this.organisationUnit.parentId],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        code: ['', Validators.required],
+        name: ['', Validators.required],
+        address: ['', Validators.required],
+        phoneNumber: ['', Validators.required],
+        email: ['', Validators.required],
+        background: ['', Validators.required],
+        logo: ['', Validators.required],
+        logoContentType: ['', Validators.required],
+        organisationUnitLevelId: ['', Validators.required],
+        parentId: ['', Validators.required],
+      });
     }
   }
 

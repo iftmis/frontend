@@ -108,7 +108,39 @@ export class ProcedureListComponent implements OnInit {
     config.disableClose = true;
     config.autoFocus = false;
 
-    this.dialog.open(ProcedureDetailComponent, config);
+    const dialog = this.dialog.open(ProcedureDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
+  }
+
+  update(row: any) {
+    const data = {
+      title: 'Update Procedure',
+      action: 'update',
+      label: 'Save Procedure',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(ProcedureDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
   }
 
   onSuccess(data: any, headers: HttpHeaders, page: number): void {

@@ -92,10 +92,10 @@
             <button
               mat-menu-item
               aria-label="Edit subArea"
-              [routerLink]="['/settings/sub-areas', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
-              <span>Edit</span>
+              <span>Edit Sub Area</span>
             </button>
             <button
               mat-menu-item
@@ -103,7 +103,7 @@
               (click)="delete(id, element)"
             >
               <mat-icon>delete</mat-icon>
-              <span>Delete</span>
+              <span>Delete Sub Area</span>
             </button>
           </ng-template>
         </mat-menu>

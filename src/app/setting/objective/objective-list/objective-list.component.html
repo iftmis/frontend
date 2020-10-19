@@ -78,7 +78,7 @@
             <button
               mat-menu-item
               aria-label="Edit objective"
-              [routerLink]="['/settings/objectives', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
               <span>Edit</span>

@@ -92,7 +92,7 @@
             <button
               mat-menu-item
               aria-label="Edit Indicator"
-              [routerLink]="['/settings/indicators', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
               <span>Edit</span>

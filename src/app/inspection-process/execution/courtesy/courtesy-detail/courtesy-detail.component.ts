@@ -58,6 +58,8 @@ export class CourtesyDetailComponent implements OnInit {
     this.error = undefined;
     this.form = this.initform();
     this.error = undefined;
+    // after received data
+    this.form.patchValue(this.courtesy);
   }
 
   private initform(): FormGroup {

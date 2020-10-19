@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -38,27 +38,52 @@ export class RiskRankDetailComponent implements OnInit {
     private riskRankService: RiskRankService,
     private toastService: ToastService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<RiskRankDetailComponent>
   ) {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
     this.showProgress = false;
+    if (this.action === 'update') {
+      this.riskRank = data.row;
+    }
   }
 
   ngOnInit() {
-    this.route.data.subscribe(({ riskRank }) => {
-      this.riskRank = riskRank;
-      this.form = this.formService.toFormGroup(riskRank);
-    });
-
+    // this.route.data.subscribe(({ riskRank }) => {
+    //   this.riskRank = riskRank;
+    //   this.form = this.formService.toFormGroup(riskRank);
+    // });
+    this.form = this.initform();
     this.error = undefined;
   }
 
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.riskRank.id],
+        name: [this.riskRank.name],
+        minValue: [this.riskRank.minValue],
+        maxValue: [this.riskRank.maxValue],
+        hexColor: [this.riskRank.hexColor],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        name: ['', Validators.required],
+        minValue: ['', Validators.required],
+        maxValue: ['', Validators.required],
+        hexColor: ['', Validators.required],
+      });
+    }
+  }
+
   saveOrUpdate() {
+    console.log(this.form.value);
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.riskRankService.update(this.formService.fromFormGroup(this.form)),
         'update'

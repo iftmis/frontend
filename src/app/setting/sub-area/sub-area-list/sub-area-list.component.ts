@@ -83,6 +83,33 @@ export class SubAreaListComponent implements OnInit {
     });
   }
 
+  update(row: any) {
+    const data = {
+      title: 'Update Sub Area',
+      action: 'update',
+      label: 'Save Sub Area',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(SubAreaDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.areaId);
+      }
+    });
+  }
+
   loadPage(auditableAreaId: number) {
     const pageToLoad = this.page || 0;
     this.subAreaService

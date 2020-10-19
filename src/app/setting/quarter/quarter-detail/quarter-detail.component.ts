@@ -6,7 +6,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -45,6 +45,7 @@ export class QuarterDetailComponent implements OnInit {
     private titleService: Title,
     private toastService: ToastService,
     private _dialogRef: MatDialogRef<QuarterDetailComponent>,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.titleService.setTitle('Quarter Details | ' + environment.app);
@@ -52,17 +53,45 @@ export class QuarterDetailComponent implements OnInit {
     this.action = data.action;
     this.label = data.label;
     this.showProgress = false;
+    if (this.action === 'update') {
+      this.quarter = data.row;
+    }
   }
 
   ngOnInit() {
     this.loadFinancialYear();
 
-    this.route.data.subscribe(({ quarter }) => {
-      this.quarter = quarter;
-      this.form = this.formService.toFormGroup(quarter);
-    });
+    // this.route.data.subscribe(({ quarter }) => {
+    //   this.quarter = quarter;
+    //   this.form = this.formService.toFormGroup(quarter);
+    // });
 
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.quarter.id],
+        code: [this.quarter.code],
+        name: [this.quarter.name],
+        startDate: [this.quarter.startDate],
+        endDate: [this.quarter.endDate],
+        financialYearId: [this.quarter.financialYearId],
+        financialYearName: [this.quarter.financialYearName],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [''],
+        code: ['', Validators.required],
+        name: ['', Validators.required],
+        startDate: ['', Validators.required],
+        endDate: ['', Validators.required],
+        financialYearId: ['', Validators.required],
+        financialYearName: ['', Validators.required],
+      });
+    }
   }
 
   loadFinancialYear() {

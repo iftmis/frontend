@@ -1,11 +1,11 @@
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ToastService } from '../../../shared/toast.service';
@@ -39,22 +39,46 @@ export class ProcedureDetailComponent implements OnInit {
     private procedureService: ProcedureService,
     private toastService: ToastService,
     private indicatorService: IndicatorService,
+    private _formBuilder: FormBuilder,
+    private _dialogRef: MatDialogRef<ProcedureDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
     this.showProgress = false;
+
+    if (this.action === 'update') {
+      this.procedure = data.row;
+    }
   }
 
   ngOnInit() {
     this.loadIndicators();
-    this.route.data.subscribe(({ procedure }) => {
-      this.procedure = procedure;
-      this.form = this.formService.toFormGroup(procedure);
-    });
-
+    // this.route.data.subscribe(({ procedure }) => {
+    //   this.procedure = procedure;
+    //   this.form = this.formService.toFormGroup(procedure);
+    // });
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.procedure.id],
+        indicatorId: [this.procedure.indicatorId],
+        indicatorName: [this.procedure.indicatorName],
+        name: [this.procedure.name],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [],
+        indicatorId: ['', Validators.required],
+        indicatorName: [''],
+        name: ['', Validators.required],
+      });
+    }
   }
 
   loadIndicators() {
@@ -67,7 +91,7 @@ export class ProcedureDetailComponent implements OnInit {
     this.showProgress = true;
 
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.procedureService.update(this.formService.fromFormGroup(this.form)),
         'update'
@@ -94,7 +118,7 @@ export class ProcedureDetailComponent implements OnInit {
             'Procedure Created Successfully!'
           );
         }
-        this.router.navigate(['/main/settings/procedures']);
+        this._dialogRef.close({ success: true });
       },
       error: response => {
         this.showProgress = false;
