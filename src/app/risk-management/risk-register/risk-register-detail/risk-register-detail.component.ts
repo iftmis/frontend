@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -19,17 +25,20 @@ import { OrganisationUnit } from '../../../setting/organisation-unit/organisatio
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RiskRegisterDetailComponent implements OnInit {
-  riskRegister: RiskRegister;
-  form: FormGroup;
-  isSaveOrUpdateInProgress = false;
-  error: string | undefined = undefined;
+  public riskRegister: RiskRegister;
+  public form: FormGroup;
+  public showProgress: boolean;
+  public error: string | undefined = undefined;
   organisationUnitSubject: BehaviorSubject<
     OrganisationUnit[]
   > = new BehaviorSubject([]);
-
   financialYearSubject: BehaviorSubject<FinancialYear[]> = new BehaviorSubject(
     []
   );
+
+  public title: string;
+  public action: string;
+  public label: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,8 +47,19 @@ export class RiskRegisterDetailComponent implements OnInit {
     private riskRegisterService: RiskRegisterService,
     private financialYearService: FinancialYearService,
     private toastService: ToastService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _formBuilder: FormBuilder,
     private organisationUnitService: OrganisationUnitService
-  ) {}
+  ) {
+    this.action = data.title;
+    this.label = data.label;
+    this.title = data.title;
+    this.showProgress = false;
+
+    if (this.action === 'update') {
+      this.riskRegister = data.row;
+    }
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ riskRegister }) => {
@@ -78,7 +98,7 @@ export class RiskRegisterDetailComponent implements OnInit {
   }
 
   saveOrUpdate() {
-    this.isSaveOrUpdateInProgress = true;
+    this.showProgress = true;
     this.error = undefined;
     if (this.form.value.id) {
       this.subscribeToResponse(
@@ -111,14 +131,14 @@ export class RiskRegisterDetailComponent implements OnInit {
         this.router.navigate(['/risk-management/risk-register']);
       },
       error: response => {
-        this.isSaveOrUpdateInProgress = false;
+        this.showProgress = false;
         this.error = response.error
           ? response.error.detail ||
             response.error.title ||
             'Internal Server Error'
           : 'Internal Server Error';
       },
-      complete: () => (this.isSaveOrUpdateInProgress = false),
+      complete: () => (this.showProgress = false),
     });
   }
 

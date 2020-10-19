@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
@@ -21,6 +21,7 @@ import { OrganisationUnitService } from '../../../setting/organisation-unit/orga
 import { RiskRegisterApproveComponent } from '../risk-register-approve/risk-register-approve.component';
 import { MatListOption, MatSelectionListChange } from '@angular/material/list';
 import { SelectionModel } from '@angular/cdk/collections';
+import { RiskRegisterDetailComponent } from '../risk-register-detail/risk-register-detail.component';
 
 @Component({
   selector: 'app-risk-register-list',
@@ -85,6 +86,58 @@ export class RiskRegisterListComponent implements OnInit {
         resp => this.onSuccessFinancialYears(resp.body),
         () => this.onError()
       );
+  }
+  create() {
+    const data = {
+      title: 'Create a new Risk Register',
+      action: 'create',
+      label: 'Save Risk Register',
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(RiskRegisterDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadLast5Years();
+      }
+    });
+  }
+
+  update(row: any) {
+    const data = {
+      title: 'Update  Risk Register',
+      action: 'update',
+      label: 'Save Risk Register',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(RiskRegisterDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadLast5Years();
+      }
+    });
   }
 
   loadData(page: number, size: number, financialYearId: number) {

@@ -109,12 +109,7 @@
                 <button
                   mat-menu-item
                   aria-label="Edit organisationUnit"
-                  [routerLink]="[
-                    '/settings/organisation-units',
-                    parentId,
-                    id,
-                    'edit'
-                  ]"
+                  (click)="update(element)"
                 >
                   <mat-icon>edit</mat-icon>
                   <span>Edit</span>
