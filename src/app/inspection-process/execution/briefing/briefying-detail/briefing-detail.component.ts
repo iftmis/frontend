@@ -59,6 +59,7 @@ export class BriefingDetailComponent implements OnInit {
     this.error = undefined;
     this.form = this.initform();
     this.error = undefined;
+    this.form.patchValue(this.briefing);
   }
 
   private initform(): FormGroup {

@@ -100,8 +100,6 @@ export class CourtesyComponent implements OnInit {
     const dialogRef = this.dialog.open(CourtesyDetailComponent, config);
     dialogRef.afterClosed().subscribe(response => {
       console.log('Alfred', response);
-      // if (response.success) {
-      // this.loadPage(this.page, this.size);
       this.loadPage(
         this.page,
         this.itemsPerPage,
@@ -113,12 +111,7 @@ export class CourtesyComponent implements OnInit {
   }
 
   update(courtesy: any) {
-    // this.payload = {
-    //   meetingDate: this.form.value.meetingDate,
-    //   venue: this.form.value.venue,
-    //   inspectionId: this.inspectionId.id,
-    //   type: 'COURTESY',
-    // };
+    console.log('OurSummary', courtesy.summary);
     const data = {
       title: `Update Courtesy Meeting`,
       action: 'update',
@@ -141,16 +134,12 @@ export class CourtesyComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CourtesyDetailComponent, config);
     dialogRef.afterClosed().subscribe(response => {
-      // console.log(response);
-      // if (response.success) {
-      // this.loadPage(this.page, this.size);
       this.loadPage(
         this.page,
         this.itemsPerPage,
         this.inspectionId.id,
         'COURTESY'
       );
-      // }
     });
   }
 

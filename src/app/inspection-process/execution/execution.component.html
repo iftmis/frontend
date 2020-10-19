@@ -12,9 +12,11 @@
   <mat-tab label="Inspection">
     <ng-template matTabContent> </ng-template>
   </mat-tab>
-  <mat-tab label="Briefing">
+  <mat-tab label="Debriefing">
     <ng-template matTabContent>
-      <app-inspection-finding-list></app-inspection-finding-list>
+      <app-inspection-finding-list
+        [inspectionId]="inspectionId"
+      ></app-inspection-finding-list>
     </ng-template>
   </mat-tab>
 </mat-tab-group>

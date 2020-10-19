@@ -88,12 +88,12 @@ export class BriefingMembersComponent implements OnInit {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Briefing Member Updated Successfully'
+            'Briefing Member added Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Briefing Member Created Successfully'
+            'Briefing Member added Successfully'
           );
         }
         this.dialogRef.close({ success: true });
