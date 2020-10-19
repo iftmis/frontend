@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -42,23 +42,48 @@ export class SubAreaDetailComponent implements OnInit {
     private areaService: AuditableAreaService,
     private toastService: ToastService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<SubAreaDetailComponent>
   ) {
     this.title = data.title;
     this.action = data.action;
     this.label = data.label;
 
+    if (this.action === 'update') {
+      this.subArea = data.row;
+    }
+
     this.showProgress = false;
   }
 
   ngOnInit() {
     this.loadAuditableAreas();
-    this.route.data.subscribe(({ subArea }) => {
-      this.subArea = subArea;
-      this.form = this.formService.toFormGroup(subArea);
-    });
-
+    // this.route.data.subscribe(({ subArea }) => {
+    //   this.subArea = subArea;
+    //   this.form = this.formService.toFormGroup(subArea);
+    // });
+    this.form = this.initform();
     this.error = undefined;
+  }
+
+  private initform(): FormGroup {
+    if (this.action === 'update') {
+      return this._formBuilder.group({
+        id: [this.subArea.id],
+        name: [this.subArea.name],
+        areaId: [this.subArea.areaId],
+        areaName: [this.subArea.areaName],
+        generalObjective: [this.subArea.generalObjective],
+      });
+    } else {
+      return this._formBuilder.group({
+        id: [],
+        name: ['', Validators.required],
+        areaId: ['', Validators.required],
+        areaName: ['', Validators.required],
+        generalObjective: ['', Validators.required],
+      });
+    }
   }
 
   loadAuditableAreas() {
@@ -70,7 +95,7 @@ export class SubAreaDetailComponent implements OnInit {
   saveOrUpdate() {
     this.showProgress = true;
     this.error = undefined;
-    if (this.form.value.id) {
+    if (this.action === 'update') {
       this.subscribeToResponse(
         this.subAreaService.update(this.formService.fromFormGroup(this.form)),
         'update'
