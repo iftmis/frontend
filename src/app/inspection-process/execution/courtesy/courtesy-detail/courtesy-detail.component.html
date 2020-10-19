@@ -65,6 +65,12 @@
             Minutes
           </mat-label>
           <textarea formControlName="summary" matInput rows="10"></textarea>
+          <mat-error>
+            <hip-ngx-error
+              [control]="form.get('summary')"
+              label="Minutes"
+            ></hip-ngx-error>
+          </mat-error>
         </mat-form-field>
       </mat-card-content>
     </mat-card>

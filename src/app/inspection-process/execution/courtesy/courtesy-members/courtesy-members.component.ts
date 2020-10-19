@@ -129,15 +129,9 @@ export class CourtesyMembersComponent implements OnInit {
     result.subscribe({
       next: () => {
         if (action === 'update') {
-          this.toastService.success(
-            'Success!',
-            'Courtesy Updated Successfully'
-          );
+          this.toastService.success('Success!', 'Member updated Successfully');
         } else {
-          this.toastService.success(
-            'Success!',
-            'Courtesy Created Successfully'
-          );
+          this.toastService.success('Success!', 'Member added Successfully');
         }
         this.showProgress = false;
         // this.router.navigate(['/main/settings/sub-areas']);

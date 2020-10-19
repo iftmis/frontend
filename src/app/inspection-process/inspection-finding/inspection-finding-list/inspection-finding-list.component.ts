@@ -1,8 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { InspectionFindingService } from './../inspection-finding.service';
+import { InspectionFindingService } from '../inspection-finding.service';
 import { InspectionFindingDeleteComponent } from '../inspection-finding-delete/inspection-finding-delete.component';
 import { InspectionFinding } from '../inspection-finding';
 
@@ -16,6 +21,7 @@ export class InspectionFindingListComponent implements OnInit {
   displayedColumns = ['formActions'];
   routeData$ = this.route.data;
   showLoader = false;
+  @Input() inspectionId: any;
 
   constructor(
     private route: ActivatedRoute,
