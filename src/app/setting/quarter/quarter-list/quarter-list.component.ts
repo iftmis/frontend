@@ -94,6 +94,33 @@ export class QuarterListComponent implements OnInit {
     });
   }
 
+  update(row: any) {
+    const data = {
+      title: 'Update Quarter',
+      action: 'update',
+      label: 'Save Quarter',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(QuarterDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage();
+      }
+    });
+  }
+
   loadPage() {
     const pageToLoad = this.page || 0;
     this.quarterService
