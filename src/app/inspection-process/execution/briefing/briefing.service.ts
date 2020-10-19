@@ -6,7 +6,7 @@ import { Briefing } from './Briefing';
 @Injectable({
   providedIn: 'root',
 })
-export class BriefyingService {
+export class BriefingService {
   private resourceUrl = '/api/meetings';
 
   private resourceUrl1 = '/api/meetings/inspection';
@@ -51,16 +51,16 @@ export class BriefyingService {
     );
   }
 
-  create(briefying: Briefing): Observable<Briefing> {
-    return this.http.post<Briefing>(this.resourceUrl, briefying);
+  create(briefing: Briefing): Observable<Briefing> {
+    return this.http.post<Briefing>(this.resourceUrl, briefing);
   }
 
   update(row: Briefing): Observable<Briefing> {
     return this.http.put<Briefing>(`${this.resourceUrl}`, row);
   }
 
-  // getByInspection(id: number): Observable<HttpResponse<Briefying[]>> {
-  //   return this.http.get<Briefying[]>(
+  // getByInspection(id: number): Observable<HttpResponse<Briefing[]>> {
+  //   return this.http.get<Briefing[]>(
   //     `${this.resourceUrl}/by-inspection/${id}`,
   //     { observe: 'response' }
   //   );

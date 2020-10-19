@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BriefyingFormService } from './briefying-form.service';
+import { BriefingFormService } from './briefing-form.service';
 
-describe('BriefyingFormService', () => {
-  let service: BriefyingFormService;
+describe('BriefingFormService', () => {
+  let service: BriefingFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BriefyingFormService);
+    service = TestBed.inject(BriefingFormService);
   });
 
   it('should be created', () => {

@@ -2,33 +2,33 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { BriefyingService } from './briefying.service';
+import { BriefingService } from './briefing.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Briefing } from './Briefing';
-import { BriefyingDeleteComponent } from './briefying-delete/briefying-delete.component';
-import { BriefyingDetailComponent } from './briefying-detail/briefying-detail.component';
-import { BriefyingUploadComponent } from './briefying-upload/briefying-upload.component';
+import { BriefingDeleteComponent } from './briefing-delete/briefing-delete.component';
+import { BriefingDetailComponent } from './briefing-detail/briefing-detail.component';
+import { BriefingUploadComponent } from './briefing-upload/briefing-upload.component';
 import {
   ITEMS_PER_PAGE,
   PAGE_SIZE_OPTIONS,
 } from 'src/app/shared/pagination.constants';
 import { CourtesyDetailComponent } from '../courtesy/courtesy-detail/courtesy-detail.component';
 import { ToastService } from 'src/app/shared/toast.service';
-import { BriefyingMembersComponent } from './briefying-members/briefying-members.component';
+import { BriefingMembersComponent } from './briefing-members/briefing-members.component';
 import { HttpHeaders } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-briefying',
-  templateUrl: './briefying.component.html',
-  styleUrls: ['./briefying.component.scss'],
+  selector: 'app-briefing',
+  templateUrl: './briefing.component.html',
+  styleUrls: ['./briefing.component.scss'],
 })
-export class BriefyingComponent implements OnInit {
+export class BriefingComponent implements OnInit {
   displayedColumns = ['meetingDate', 'venue', 'formActions'];
   form: FormGroup;
   routeData$ = this.route.data;
   showLoader = false;
-  briefyingSubject: BehaviorSubject<Briefing[]> = new BehaviorSubject<
+  briefingSubject: BehaviorSubject<Briefing[]> = new BehaviorSubject<
     Briefing[]
   >([]);
   @Input() inspectionId: any;
@@ -42,7 +42,7 @@ export class BriefyingComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private briefingService: BriefyingService,
+    private briefingService: BriefingService,
     private toastService: ToastService,
     private router: Router,
     private dialog: MatDialog
@@ -74,11 +74,11 @@ export class BriefyingComponent implements OnInit {
   }
 
   getData(): Observable<Briefing[]> {
-    return this.briefyingSubject.asObservable();
+    return this.briefingSubject.asObservable();
   }
 
   uploadMinutes() {
-    const dialogRef = this.dialog.open(BriefyingUploadComponent);
+    const dialogRef = this.dialog.open(BriefingUploadComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.loadPage(
         this.page,
@@ -111,7 +111,7 @@ export class BriefyingComponent implements OnInit {
     config.disableClose = true;
     config.autoFocus = false;
 
-    const dialogRef = this.dialog.open(BriefyingDetailComponent, config);
+    const dialogRef = this.dialog.open(BriefingDetailComponent, config);
     dialogRef.afterClosed().subscribe(response => {
       // if (response.success) {
       // this.loadPage(this.page, this.size);
@@ -125,7 +125,7 @@ export class BriefyingComponent implements OnInit {
     });
   }
 
-  update(briefying: any) {
+  update(briefing: any) {
     // this.payload = {
     //   meetingDate: this.form.value.meetingDate,
     //   venue: this.form.value.venue,
@@ -136,7 +136,7 @@ export class BriefyingComponent implements OnInit {
       title: `Update Briefing Meeting`,
       action: 'update',
       label: 'Update Briefing Meeting',
-      row: briefying,
+      row: briefing,
     };
 
     const config = new MatDialogConfig();
@@ -150,7 +150,7 @@ export class BriefyingComponent implements OnInit {
     config.disableClose = true;
     config.autoFocus = false;
 
-    const dialogRef = this.dialog.open(BriefyingDetailComponent, config);
+    const dialogRef = this.dialog.open(BriefingDetailComponent, config);
     dialogRef.afterClosed().subscribe(response => {
       // console.log(response);
       // if (response.success) {
@@ -165,9 +165,9 @@ export class BriefyingComponent implements OnInit {
     });
   }
 
-  delete(id: number, briefying: Briefing) {
-    const dialogRef = this.dialog.open(BriefyingDeleteComponent, {
-      data: briefying,
+  delete(id: number, briefing: Briefing) {
+    const dialogRef = this.dialog.open(BriefingDeleteComponent, {
+      data: briefing,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -194,12 +194,12 @@ export class BriefyingComponent implements OnInit {
   }
 
   // Adding member in a meeting starts here
-  addMember(briefying: any) {
+  addMember(briefing: any) {
     const data = {
       title: 'Add Member in Briefing Meeting',
       action: 'create',
       label: 'save',
-      row: briefying,
+      row: briefing,
       // inspectionId: this.inspectionId,
     };
 
@@ -213,7 +213,7 @@ export class BriefyingComponent implements OnInit {
       top: '80px',
     };
 
-    const dialogRef = this.dialog.open(BriefyingMembersComponent, config);
+    const dialogRef = this.dialog.open(BriefingMembersComponent, config);
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadPage(
@@ -232,7 +232,7 @@ export class BriefyingComponent implements OnInit {
   onSuccess(data: any, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.briefyingSubject.next(data);
+    this.briefingSubject.next(data);
   }
 
   onError(): void {}

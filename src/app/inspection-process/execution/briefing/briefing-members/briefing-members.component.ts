@@ -10,16 +10,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from 'src/app/shared/toast.service';
-import { BriefyingMember } from '../Briefying-member';
-import { BriefyingMembersService } from './briefying-members.service';
+import { BriefingMember } from '../Briefing-member';
+import { BriefingMembersService } from './briefing-members.service';
 
 @Component({
-  selector: 'app-briefying-members',
-  templateUrl: './briefying-members.component.html',
-  styleUrls: ['./briefying-members.component.scss'],
+  selector: 'app-briefing-members',
+  templateUrl: './briefing-members.component.html',
+  styleUrls: ['./briefing-members.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BriefyingMembersComponent implements OnInit {
+export class BriefingMembersComponent implements OnInit {
   routeData$ = this.route.data;
   showLoader = false;
   form: FormGroup;
@@ -27,10 +27,10 @@ export class BriefyingMembersComponent implements OnInit {
   @Input() meetingId: any;
   error: string | undefined = undefined;
 
-  meetings: BehaviorSubject<BriefyingMember[]> = new BehaviorSubject<
-    BriefyingMember[]
+  meetings: BehaviorSubject<BriefingMember[]> = new BehaviorSubject<
+    BriefingMember[]
   >([]);
-  briefyingMember: any;
+  briefingMember: any;
   showProgress: any;
   public title: string;
   public action: string;
@@ -38,11 +38,11 @@ export class BriefyingMembersComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private briefyingMembersService: BriefyingMembersService,
+    private briefingMembersService: BriefingMembersService,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<BriefyingMembersComponent>
+    private dialogRef: MatDialogRef<BriefingMembersComponent>
   ) {
     this.showProgress = false;
     this.title = data.title;
@@ -56,31 +56,31 @@ export class BriefyingMembersComponent implements OnInit {
   }
 
   loadMeeting() {
-    this.briefyingMembersService
+    this.briefingMembersService
       .getByInspection(this.meetingId)
       .subscribe(res => {
         this.meetings.next(res || []);
       });
   }
-  getMeetings(): Observable<BriefyingMember[]> {
+  getMeetings(): Observable<BriefingMember[]> {
     return this.meetings.asObservable();
   }
 
   saveOrUpdate() {
     this.isSaveOrUpdateInProgress = true;
     this.error = undefined;
-    const briefying = this.briefyingMembersService.fromFormGroup(this.form);
+    const briefing = this.briefingMembersService.fromFormGroup(this.form);
     if (this.form.value.id) {
       // @ts-ignore
-      this.subscribeToResponse(this.briefyingMembersService.update(briefying));
+      this.subscribeToResponse(this.briefingMembersService.update(briefing));
     } else {
       // @ts-ignore
-      this.subscribeToResponse(this.briefyingMembersService.create(briefying));
+      this.subscribeToResponse(this.briefingMembersService.create(briefing));
     }
   }
 
   private subscribeToResponse(
-    result: Observable<BriefyingMember>,
+    result: Observable<BriefingMember>,
     action: string
   ) {
     result.subscribe({
@@ -88,12 +88,12 @@ export class BriefyingMembersComponent implements OnInit {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Briefying Member Updated Successfully'
+            'Briefing Member Updated Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Briefying Member Created Successfully'
+            'Briefing Member Created Successfully'
           );
         }
         this.dialogRef.close({ success: true });

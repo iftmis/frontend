@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BriefyingDetailComponent } from './briefying-detail.component';
+import { BriefingMembersComponent } from './briefing-members.component';
 
-describe('BriefyingDetailComponent', () => {
-  let component: BriefyingDetailComponent;
-  let fixture: ComponentFixture<BriefyingDetailComponent>;
+describe('BriefingMembersComponent', () => {
+  let component: BriefingMembersComponent;
+  let fixture: ComponentFixture<BriefingMembersComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BriefyingDetailComponent],
+      declarations: [BriefingMembersComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BriefyingDetailComponent);
+    fixture = TestBed.createComponent(BriefingMembersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

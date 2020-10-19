@@ -1,4 +1,4 @@
-export interface BriefyingMember {
+export interface BriefingMember {
   id?: number;
   name: string;
   phoneNumber: string;

@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BriefyingDeleteComponent } from './briefying-delete.component';
+import { BriefingDeleteComponent } from './briefing-delete.component';
 
-describe('BriefyingDeleteComponent', () => {
-  let component: BriefyingDeleteComponent;
-  let fixture: ComponentFixture<BriefyingDeleteComponent>;
+describe('BriefingDeleteComponent', () => {
+  let component: BriefingDeleteComponent;
+  let fixture: ComponentFixture<BriefingDeleteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BriefyingDeleteComponent],
+      declarations: [BriefingDeleteComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BriefyingDeleteComponent);
+    fixture = TestBed.createComponent(BriefingDeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

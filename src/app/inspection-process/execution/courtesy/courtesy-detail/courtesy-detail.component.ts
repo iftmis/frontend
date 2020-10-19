@@ -1,15 +1,12 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../../../user-management/user/user.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { CourtesyService } from '../courtesy.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Courtesy } from '../Courtesy';
-import { Title } from '@angular/platform-browser';
 import { CourtesyFormService } from './courtesy-form.service';
-import { Briefing } from '../../briefying/Briefing';
 
 @Component({
   selector: 'app-courtesy-detail',

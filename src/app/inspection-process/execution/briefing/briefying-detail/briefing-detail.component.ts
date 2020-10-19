@@ -7,14 +7,14 @@ import { ToastService } from '../../../../shared/toast.service';
 import { Briefing } from '../Briefing';
 
 import { CourtesyFormService } from '../../courtesy/courtesy-detail/courtesy-form.service';
-import { BriefyingService } from '../briefying.service';
+import { BriefingService } from '../briefing.service';
 
 @Component({
   selector: 'app-briefing-detail',
   templateUrl: './briefing-detail.component.html',
   styleUrls: ['./briefing-detail.component.scss'],
 })
-export class BriefyingDetailComponent implements OnInit {
+export class BriefingDetailComponent implements OnInit {
   form: FormGroup;
   isSaveOrUpdateInProgress = false;
   inspectionId: any;
@@ -32,12 +32,12 @@ export class BriefyingDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private briefingService: BriefyingService,
+    private briefingService: BriefingService,
     private formService: CourtesyFormService,
     private toastService: ToastService,
     private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<BriefyingDetailComponent>
+    private dialogRef: MatDialogRef<BriefingDetailComponent>
   ) {
     this.showProgress = false;
     this.title = data.title;
@@ -122,12 +122,12 @@ export class BriefyingDetailComponent implements OnInit {
         if (action === 'update') {
           this.toastService.success(
             'Success!',
-            'Briefying Updated Successfully'
+            'Briefing Updated Successfully'
           );
         } else {
           this.toastService.success(
             'Success!',
-            'Briefying Created Successfully'
+            'Briefing Created Successfully'
           );
         }
         this.dialogRef.close();
@@ -145,7 +145,7 @@ export class BriefyingDetailComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/']);
+    this.dialogRef.close();
     return false;
   }
 }

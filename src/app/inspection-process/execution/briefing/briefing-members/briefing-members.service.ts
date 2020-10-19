@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CourtesyMember } from '../../courtesy/Courtesy-member';
 import { Observable } from 'rxjs';
-import { BriefyingMember } from '../Briefying-member';
+import { BriefingMember } from '../Briefing-member';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BriefyingMembersService {
+export class BriefingMembersService {
   private resourceUrl = '/api/meetings';
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
@@ -30,20 +30,20 @@ export class BriefyingMembersService {
       title: formGroup.get('title')!.value,
     };
   }
-  getByInspection(inspectionId: number): Observable<BriefyingMember[]> {
-    return this.http.get<BriefyingMember[]>(
+  getByInspection(inspectionId: number): Observable<BriefingMember[]> {
+    return this.http.get<BriefingMember[]>(
       `${this.resourceUrl}/${inspectionId}`
     );
   }
-  getById(id: number): Observable<BriefyingMember> {
-    return this.http.get<BriefyingMember>(`${this.resourceUrl}/${id}`);
+  getById(id: number): Observable<BriefingMember> {
+    return this.http.get<BriefingMember>(`${this.resourceUrl}/${id}`);
   }
 
-  create(briefingMember: FormGroup): Observable<BriefyingMember> {
-    return this.http.post<BriefyingMember>(this.resourceUrl, briefingMember);
+  create(briefingMember: FormGroup): Observable<BriefingMember> {
+    return this.http.post<BriefingMember>(this.resourceUrl, briefingMember);
   }
 
-  update(briefingMember: FormGroup): Observable<BriefyingMember> {
+  update(briefingMember: FormGroup): Observable<BriefingMember> {
     return this.http.put<CourtesyMember>(`${this.resourceUrl}`, briefingMember);
   }
   delete(id: number) {
