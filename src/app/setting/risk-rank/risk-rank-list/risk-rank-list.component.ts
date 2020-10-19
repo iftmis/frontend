@@ -85,6 +85,33 @@ export class RiskRankListComponent implements OnInit {
     });
   }
 
+  update(row: any) {
+    const data = {
+      title: 'Update Risk Rank',
+      action: 'update',
+      label: 'Save Risk Rank',
+      row: row,
+    };
+
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.width = '60%';
+    config.position = {
+      top: '80px',
+    };
+    config.panelClass = 'mat-dialog-box';
+    config.backdropClass = 'mat-dialog-overlay';
+    config.disableClose = true;
+    config.autoFocus = false;
+
+    const dialog = this.dialog.open(RiskRankDetailComponent, config);
+    dialog.afterClosed().subscribe(response => {
+      if (response.success) {
+        this.loadPage(this.page, this.size);
+      }
+    });
+  }
+
   loadPage(page: number, size: number) {
     this.riskRankService.getAllPaged(page, size).subscribe(
       resp => this.onSuccess(resp.body, resp.headers),
