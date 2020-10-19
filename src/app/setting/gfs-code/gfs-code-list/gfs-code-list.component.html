@@ -76,7 +76,7 @@
             <button
               mat-menu-item
               aria-label="Edit gfsCode"
-              [routerLink]="['/settings/gfs-codes', id, 'edit']"
+              (click)="update(element)"
             >
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
