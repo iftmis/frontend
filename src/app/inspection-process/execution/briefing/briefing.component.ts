@@ -97,7 +97,7 @@ export class BriefingComponent implements OnInit {
       title: 'Creates a Briefing Meeting',
       action: 'create',
       label: 'Save Briefing Meeting',
-      inspectionId: this.inspectionId,
+      inspectionId: this.inspectionId.id,
     };
 
     const config = new MatDialogConfig();
@@ -137,6 +137,7 @@ export class BriefingComponent implements OnInit {
       action: 'update',
       label: 'Update Briefing Meeting',
       row: briefing,
+      inspectionId: this.inspectionId.id,
     };
 
     const config = new MatDialogConfig();
