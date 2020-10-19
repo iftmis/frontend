@@ -14,6 +14,7 @@ import { CourtesyMembersComponent } from './courtesy/courtesy-members/courtesy-m
 import { BriefingUploadComponent } from './briefing/briefing-upload/briefing-upload.component';
 import { BriefingMembersComponent } from './briefing/briefing-members/briefing-members.component';
 import { BriefingDetailComponent } from './briefing/briefying-detail/briefing-detail.component';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,6 @@ import { BriefingDetailComponent } from './briefing/briefying-detail/briefing-de
     CourtesyUploadComponent,
     CourtesyMembersComponent,
   ],
-  imports: [CommonModule, SharedModule, FormsModule],
+  imports: [CommonModule, SharedModule, FormsModule, CKEditorModule],
 })
 export class ExecutionModule {}

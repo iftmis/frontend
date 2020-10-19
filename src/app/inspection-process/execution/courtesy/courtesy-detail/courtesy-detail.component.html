@@ -60,19 +60,15 @@
             ></hip-ngx-error>
           </mat-error>
         </mat-form-field>
-        <mat-form-field class="full-width" appearance="outline">
-          <mat-label>
-            Minutes
-          </mat-label>
-          <label>
-            <textarea
-              formControlName="summary"
-              matInput
-              rows="10"
-              cols="100"
-            ></textarea>
-          </label>
-        </mat-form-field>
+        <mat-label>
+          Minutes
+        </mat-label>
+        <ckeditor
+          formControlName="summary"
+          matInput
+          rows="10"
+          cols="100"
+        ></ckeditor>
       </mat-card-content>
     </mat-card>
   </form>
