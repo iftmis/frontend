@@ -1,8 +1,8 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { CourtesyMember } from '../Courtesy-member';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { CourtesyMember } from '../courtesy-member';
 
 // @ts-ignore
 @Injectable({
