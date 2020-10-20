@@ -79,8 +79,8 @@ export class SubAreaDetailComponent implements OnInit {
       return this._formBuilder.group({
         id: [],
         name: ['', Validators.required],
-        areaId: ['', Validators.required],
-        areaName: ['', Validators.required],
+        areaId: [''],
+        areaName: [''],
         generalObjective: ['', Validators.required],
       });
     }

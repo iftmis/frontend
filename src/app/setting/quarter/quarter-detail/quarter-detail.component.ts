@@ -88,8 +88,8 @@ export class QuarterDetailComponent implements OnInit {
         name: ['', Validators.required],
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
-        financialYearId: ['', Validators.required],
-        financialYearName: ['', Validators.required],
+        financialYearId: [''],
+        financialYearName: [''],
       });
     }
   }

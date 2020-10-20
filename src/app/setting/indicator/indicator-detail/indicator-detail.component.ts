@@ -77,9 +77,9 @@ export class IndicatorDetailComponent implements OnInit {
       });
     } else {
       return this._formBuilder.group({
-        id: [],
-        subAreaId: [],
-        subAreaName: ['', Validators.required],
+        id: [''],
+        subAreaId: [''],
+        subAreaName: [''],
         name: ['', Validators.required],
       });
     }
