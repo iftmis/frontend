@@ -96,9 +96,10 @@ export class CourtesyUploadComponent implements OnInit {
         this.meetingAtachment = {
           name: res.fileName,
           meetingId: this.meetingId,
-          attachmentId: res.size,
-          attachmentPath: res.fileDownloadUri,
+          attachmentId: res.fileResourceDTO.id,
+          attachmentPath: res.fileResourceDTO.path,
         };
+        console.log('attachment path : ' + res.fileResourceDTO.path);
 
         this.subscribeToResponse(
           this.uploadService.postMeetingAttachment(this.meetingAtachment),

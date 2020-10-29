@@ -12,13 +12,14 @@ import { SharedModule } from './shared/shared.module';
 import { TreeModule } from 'angular-tree-component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './layout/layout.module';
-
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    CKEditorModule,
     SharedModule,
     HttpClientModule,
     BrowserAnimationsModule,

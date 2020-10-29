@@ -8,6 +8,9 @@ import { Briefing } from '../Briefing';
 
 import { CourtesyFormService } from '../../courtesy/courtesy-detail/courtesy-form.service';
 import { BriefingService } from '../briefing.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-angular';
+import { ChangeEvent, CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import Editor = CKEditor5.Editor;
 
 @Component({
   selector: 'app-briefing-detail',
@@ -28,6 +31,8 @@ export class BriefingDetailComponent implements OnInit {
   public action: string;
   public label: string;
   meetingId: number;
+
+  public Editor = ClassicEditor;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +65,13 @@ export class BriefingDetailComponent implements OnInit {
     this.form = this.initform();
     this.error = undefined;
     this.form.patchValue(this.briefing);
+    //
+    // ClassicEditor.create(document.querySelector('#editor'))
+    //   .then((editor: Editor) => {
+    //
+    //     editor.setData(this.briefing.summary);
+    //
+    //      })
   }
 
   private initform(): FormGroup {
@@ -143,6 +155,12 @@ export class BriefingDetailComponent implements OnInit {
       },
       complete: () => (this.isSaveOrUpdateInProgress = false),
     });
+  }
+
+  public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+
+    console.log(data);
   }
 
   cancel() {

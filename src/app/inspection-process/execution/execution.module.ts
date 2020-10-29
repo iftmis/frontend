@@ -15,6 +15,7 @@ import { BriefingUploadComponent } from './briefing/briefing-upload/briefing-upl
 import { BriefingMembersComponent } from './briefing/briefing-members/briefing-members.component';
 import { BriefingDetailComponent } from './briefing/briefying-detail/briefing-detail.component';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,12 @@ import { CKEditorModule } from 'ckeditor4-angular';
     CourtesyUploadComponent,
     CourtesyMembersComponent,
   ],
-  imports: [CommonModule, SharedModule, FormsModule, CKEditorModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    CKEditorModule,
+    CKEditorModule,
+  ],
 })
 export class ExecutionModule {}

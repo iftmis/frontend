@@ -64,6 +64,10 @@
           Minutes
         </mat-label>
         <ckeditor
+          id="editor"
+          #editor
+          [editor]="Editor"
+          (change)="onChange($event)"
           formControlName="summary"
           matInput
           rows="10"

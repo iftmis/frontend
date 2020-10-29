@@ -78,7 +78,7 @@ export class AuthenticationService {
   }
 
   private fetchUserInfo(): Observable<User | undefined> {
-    return this.http.get<User>('api/account').pipe(
+    return this.http.get<User>('user?access_token').pipe(
       tap(user => this.principalCache$.next(user)),
       catchError(() => this.handleUnauthenticatedUser())
     );
