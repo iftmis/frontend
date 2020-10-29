@@ -92,7 +92,7 @@ export class FinancialYearDetailComponent implements OnInit {
       });
     } else {
       return this._formBuilder.group({
-        id: [],
+        id: [''],
         name: ['', Validators.required],
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],

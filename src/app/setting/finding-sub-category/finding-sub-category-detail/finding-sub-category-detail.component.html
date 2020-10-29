@@ -23,7 +23,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Finding Category</mat-label>
               <mat-select
-                formControlName="findingCategoryId"
+                formControlName="finding_category_id"
                 required
                 placeholder="Select finding Category"
               >
@@ -35,7 +35,7 @@
               </mat-select>
               <mat-error>
                 <hip-ngx-error
-                  [control]="form.get('findingCategoryId')"
+                  [control]="form.get('finding_category_id')"
                   label="Finding Category"
                 ></hip-ngx-error>
               </mat-error>

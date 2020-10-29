@@ -71,14 +71,14 @@ export class FindingSubCategoryDetailComponent implements OnInit {
         id: [this.findingSubCategory.id],
         code: [this.findingSubCategory.code],
         name: [this.findingSubCategory.name],
-        findingCategoryId: [this.findingSubCategory.findingCategoryId],
+        finding_category_id: [this.findingSubCategory.findingCategoryId],
       });
     } else {
       return this._formBuilder.group({
         id: [''],
         code: ['', Validators.required],
         name: ['', Validators.required],
-        findingCategoryId: ['', Validators.required],
+        finding_category_id: ['', Validators.required],
       });
     }
   }
